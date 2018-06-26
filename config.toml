@@ -1,0 +1,4 @@
+baseURL = "https://xenomai.org/"
+languageCode = "en-us"
+title = "Dovetail"
+theme = "hugo-theme-learn"
