@@ -84,3 +84,7 @@ the `.release()` handler may proceed with dismantling the file. A
 "core/kernel-api/file/_index.md#evl_release_file" %}}) for writing EVL
 drivers ensures this.
 {{% /notice %}}
+
+---
+
+{{<lastmodified>}}

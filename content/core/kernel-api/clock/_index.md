@@ -80,3 +80,7 @@ EVL abstracts clock event devices and clock sources
 ---
 
 #### void evl_put_clock(struct evl_clock *clock)
+
+---
+
+{{<lastmodified>}}

@@ -420,3 +420,7 @@ file descriptor:
   [evl_timedget_sem()]({{< relref "#evl_timedget_sem" >}}) _might_ be
   successful without blocking (i.e. unless another thread sneaks in
   in the meantime and fully depletes the semaphore).
+
+---
+
+{{<lastmodified>}}

@@ -306,3 +306,7 @@ index 69c3a6d94933..bc7d177759c3 100644
 +			clocksource_gpt.mmio.clksrc.name, clksrc.rate);
  }
  ```
+
+---
+
+{{<lastmodified>}}

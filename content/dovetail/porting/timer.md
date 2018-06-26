@@ -274,3 +274,7 @@ in-band kernel, which would honor the pending (hr)timer request.
 	             clockevents_handle_event(proxy_dev)
 	                 inband_event_handler(proxy_dev)
 ```
+
+---
+
+{{<lastmodified>}}

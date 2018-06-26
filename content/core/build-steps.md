@@ -157,3 +157,7 @@ $ make O=/tmp/build-native UAPI=~/git/linux-evl DESTDIR=/usr/evl install
 
 At this point, you really want to [test the EVL installation]({{<
 relref "core/testing.md" >}}).
+
+---
+
+{{<lastmodified>}}

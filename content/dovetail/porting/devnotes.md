@@ -212,3 +212,7 @@ hardware, equipped with PL22x cache units, or PL31x with errata 588369
 or 727915 for particular hardware revisions, as each background
 operation would be awaited for completion with hard irqs disabled, in
 order to work around some silicon bug.
+
+---
+
+{{<lastmodified>}}

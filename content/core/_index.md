@@ -160,3 +160,7 @@ kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
 This branch is routinely rebased over Dovetail's [dovetail/master]({{<
 relref "dovetail/_index.md#developing-dovetail" >}}) branch from the
 same repository.
+
+---
+
+{{<lastmodified>}}

@@ -94,3 +94,7 @@ need the following set of changes:
   for userr task rescheduling or/and kernel preemption.
 
 ![Alt text](/images/wip.png "To be continued")
+
+---
+
+{{<lastmodified>}}

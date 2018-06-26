@@ -229,3 +229,7 @@ file descriptor:
   process. Timer events should be awaited for and collected by a call
   to [oob_read()]({{< relref "core/user-api/io/_index.md#oob_read"
   >}}).
+
+---
+
+{{<lastmodified>}}

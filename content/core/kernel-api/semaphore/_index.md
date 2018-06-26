@@ -26,3 +26,7 @@ weight: 20
 ---
 
 #### void evl_up(struct evl_ksem *ksem)
+
+---
+
+{{<lastmodified>}}

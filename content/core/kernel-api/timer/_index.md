@@ -42,3 +42,7 @@ weight: 35
 ---
 
 #### ktime_t evl_get_stopped_timer_delta(struct evl_timer *timer)
+
+---
+
+{{<lastmodified>}}

@@ -133,3 +133,7 @@ machinery can be used from out-of-band context when Dovetail is
 enabled, you should rather use the [raw_printk()]({{%relref
 "dovetail/porting/rawprintk.md" %}}) interface for
 this.
+
+---
+
+{{<lastmodified>}}

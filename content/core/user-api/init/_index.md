@@ -123,3 +123,7 @@ is returned:
   		"core/build-steps.md#building-evl-prereq" >}}). If in
   		doubt, rebuild both components, (re-)install the newly
   		built _libevl.so_ and boot on the rebuilt kernel.
+
+---
+
+{{<lastmodified>}}

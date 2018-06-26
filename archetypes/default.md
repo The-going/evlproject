@@ -4,3 +4,7 @@ date: {{ .Date }}
 draft: true
 ---
 
+
+---
+
+{{<lastmodified>}}

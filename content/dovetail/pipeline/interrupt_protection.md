@@ -50,3 +50,7 @@ calls affecting the stall bit for each stage:
 |  local_irq_restore(flags)   |    oob_irq_restore(flags)          |
 |  irqs_disabled()            |    oob_irqs_disabled()             |
 |  irqs_disabled_flags(flags) |             -none-                 |
+
+---
+
+{{<lastmodified>}}

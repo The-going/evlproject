@@ -85,3 +85,7 @@ options, starting with CONFIG_SMP.
   utterly sluggish ACPI driver code at each event. Since disabling
   CONFIG_PERF is not an option, passing **nmi_watchodg=0** on the
   kernel command line at boot may help.
+
+---
+
+{{<lastmodified>}}

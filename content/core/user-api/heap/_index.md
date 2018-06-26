@@ -413,3 +413,7 @@ The in-memory mutex descriptor previously constructed by
 
 Return the amount of space (in bytes) consumed within _heap_. This
 value is lower or equal to the user (or payload) size.
+
+---
+
+{{<lastmodified>}}

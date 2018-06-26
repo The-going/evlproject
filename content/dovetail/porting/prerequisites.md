@@ -37,3 +37,7 @@ of cache invalidation in context switches has been maintained until
 2013 by **Gilles Chanteperdrix**, as part of the legacy *I-pipe* project, Dovetail's ancestor.
 This work can still be cloned from this [GIT repository](git://archive.xenomai.org/ipipe-gch.git).
 {{% /notice %}}
+
+---
+
+{{<lastmodified>}}

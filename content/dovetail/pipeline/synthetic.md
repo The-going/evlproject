@@ -168,3 +168,7 @@ returning. In other words, the `sirq` event would still be pending for
 the oob stage despite the fact that it should have preempted the in-band
 stage before returning to the caller.
 {{% /notice %}}
+
+---
+
+{{<lastmodified>}}

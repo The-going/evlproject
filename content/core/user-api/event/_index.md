@@ -484,3 +484,7 @@ error code is returned:
 Closing a [statically initialized]({{< relref
 "#EVL_EVENT_ANY_INITIALIZER" >}}) event descriptor which has never
 been used in wait or signal operations always returns zero.
+
+---
+
+{{<lastmodified>}}

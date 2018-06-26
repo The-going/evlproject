@@ -187,3 +187,7 @@ For all other cases, the [IRQ work API]({{%relref
 scheduling the execution of a routine from the out-of-band stage, which will
 be invoked later from the in-band stage as soon as it gets back in
 control on the current CPU.
+
+---
+
+{{<lastmodified>}}

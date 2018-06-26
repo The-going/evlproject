@@ -124,3 +124,7 @@ make sure that we go through the vDSO for reading timestamps, without
 incurring any in-band syscall. In the ARM case, switching in-band when
 calling clock_gettime() would denote a system clocksource which was
 not enabled for user MMIO access, which is bad.
+
+---
+
+{{<lastmodified>}}

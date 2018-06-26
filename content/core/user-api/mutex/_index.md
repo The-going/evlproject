@@ -471,3 +471,7 @@ error code is returned:
 Closing a [statically initialized]({{< relref
 "#EVL_MUTEX_ANY_INITIALIZER" >}}) mutex descriptor which has never
 been locked always returns zero.
+
+---
+
+{{<lastmodified>}}

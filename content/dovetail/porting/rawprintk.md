@@ -145,3 +145,7 @@ cause of lockup at boot. You do want to make sure that the proper
 `CONFIG_DEBUG_UART_xx` symbol matching your hardware is selected along
 with `CONFIG_DEBUG_LL`.
 {{% /notice %}}
+
+---
+
+{{<lastmodified>}}

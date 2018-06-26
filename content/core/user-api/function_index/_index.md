@@ -688,3 +688,7 @@ statically initialized (`EVL_*_INITIALIZER()`), this routine may
 switch the caller to the in-band stage in order to finalize the
 construction before carrying out the requested operation. This is
 required only once in the object's lifetime.
+
+---
+
+{{<lastmodified>}}

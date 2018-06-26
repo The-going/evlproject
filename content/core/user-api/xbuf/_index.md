@@ -162,3 +162,7 @@ cross-buffer file descriptor, monitoring the following events:
   the output ring buffer for sending more data to the out-of-band
   side, using
   [write(2)](http://man7.org/linux/man-pages/man2/write.2.html).
+
+---
+
+{{<lastmodified>}}

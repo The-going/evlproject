@@ -39,7 +39,7 @@ of the Linux system. This ongoing work is composed of:
   core, with many cross-references between them, so that engineers can
   implement their software core of choice almost by example.
 
-The result looks promising:
+First results look promising:
 
 - Low engineering and maintenance costs. With a manageable code
   footprint (20 KLOC, which is not even half the size of the
@@ -108,3 +108,7 @@ licensing terms of each file clearly. This boils down to:
 - [MIT](https://spdx.org/licenses/MIT.html) for all code from
   `libevl`, which implements the EVL system call wrappers, a few
   utilities and test programs.
+
+---
+
+{{<lastmodified>}}

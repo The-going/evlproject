@@ -144,3 +144,7 @@ In addition, EVL provides a mechanism which come in handy for sharing
 memory between processes, using the [file proxy]({{< relref
 "core/user-api/proxy/_index.md#proxy-mapping-export" >}}) as an anchor
 point for memory-mappable devices.
+
+---
+
+{{<lastmodified>}}
