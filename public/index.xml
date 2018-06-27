@@ -17,8 +17,8 @@
       <pubDate>Sun, 01 Jul 2018 15:47:56 +0200</pubDate>
       
       <guid>https://xenomai.org/pipeline/usage/stage_push/</guid>
-      <description>irq_push_stage()
- irq_pop_stage()
+      <description>irq_stage_push()
+ irq_stage_pop()
   TBD.</description>
     </item>
     
@@ -62,9 +62,9 @@ However, critical sections delimited this way by the in-band code must still be 
       <pubDate>Wed, 27 Jun 2018 15:20:04 +0200</pubDate>
       
       <guid>https://xenomai.org/pipeline/porting/irqflow/</guid>
-      <description>Pipelined interrupt flow Pipelining involves a basic change in controlling the interrupt flow: handle_domain_irq() from the IRQ domain API redirects all parent IRQs to the pipeline entry by calling generic_pipeline_irq().
+      <description>Pipelined interrupt flow Interrupt pipelining involves a basic change in controlling the interrupt flow: handle_domain_irq() from the IRQ domain API redirects all parent IRQs to the pipeline entry by calling generic_pipeline_irq().
  Redirecting the interrupt flow to the pipeline
- asm_irq_entry -&amp;gt; irqchip_handle_irq() -&amp;gt; handle_domain_irq() -&amp;gt; generic_pipeline_irq() -&amp;gt; irq_flow_handler() &amp;lt;IRQ delivery logic&amp;gt;  IRQ flow handlers Generic flow handlers acknowledge the incoming IRQ event in the hardware as usual, by calling the appropriate irqchip routine (e.</description>
+ asm_irq_entry -&amp;gt; irqchip_handle_irq() -&amp;gt; handle_domain_irq() -&amp;gt; generic_pipeline_irq() -&amp;gt; irq_flow_handler() -&amp;gt; handle_oob_irq()  IRQ flow handling Generic flow handlers acknowledge the incoming IRQ event in the hardware as usual, by calling the appropriate irqchip routine (e.</description>
     </item>
     
     <item>
@@ -104,10 +104,9 @@ However, interrupt pipelining would still allow out-of-band activity to take pla
       <pubDate>Sat, 30 Jun 2018 19:02:50 +0200</pubDate>
       
       <guid>https://xenomai.org/pipeline/rulesofthumb/</guid>
-      <description>Dealing with spinlocks Converting regular kernel spinlocks (e.g. spinlock_t, raw_spin_lock_t) to hard spinlocks should involve a careful review of every section covered by such lock. Any such section would then inherit the following requirements:
- no in-band kernel service should be called within the section,
- the section covered by the lock should be short enough to keep interrupt latency low.
-  TBD.</description>
+      <description>Turn on debug options in the kernel configuration! During the development phase, do yourself a favour: turn on CONFIG_DEBUG_IRQ_PIPELINE and CONFIG_DEBUG_DOVETAIL.
+The first one will catch many nasty issues, such as calling unsafe in-band code from out-of-band context. The second one checks the integrity of the alternate task control mechanism, detecting issues in the architecture port.
+The runtime overhead induced by enabling these options is marginal. Just don&amp;rsquo;t port Dovetail or implement out-of-band client code without them enabled in your target kernel, seriously.</description>
     </item>
     
     <item>
@@ -128,8 +127,7 @@ However, interrupt pipelining would still allow out-of-band activity to take pla
       <pubDate>Wed, 27 Jun 2018 17:15:23 +0200</pubDate>
       
       <guid>https://xenomai.org/pipeline/porting/timer/</guid>
-      <description>Proxy tick device The proxy tick device is a synthetic clock event device for handing over the control of the hardware tick device to a high-precision, out-of-band timing logic, which does not run into delays caused by the in-band kernel code.
-With this proxy in place, any out-of-band code can gain control over the timer hardware for carrying out its own timing duties. In the same move, it is required to honor the timing requests received from the in-band timer core (i.</description>
+      <description>Proxy tick device The proxy tick device is a synthetic clock event device for handing over the control of the hardware tick device to a high-precision, out-of-band timing logic, which cannot be delayed by the in-band kernel code. With this proxy in place, any out-of-band code can gain control over the timer hardware for carrying out its own timing duties. In the same move, it is required to honor the timing requests received from the in-band timer core (i.</description>
     </item>
     
     <item>
@@ -165,10 +163,10 @@ A set of helpers is provided for manipulating the interrupt disable flag in the 
     
     <item>
       <title>Locking</title>
-      <link>https://xenomai.org/pipeline/porting/locking/</link>
+      <link>https://xenomai.org/pipeline/usage/locking/</link>
       <pubDate>Wed, 27 Jun 2018 17:23:53 +0200</pubDate>
       
-      <guid>https://xenomai.org/pipeline/porting/locking/</guid>
+      <guid>https://xenomai.org/pipeline/usage/locking/</guid>
       <description>Additional spinlock types The pipeline core introduces two spinlock types:
  hard spinlocks manipulate the CPU interrupt mask, and don&amp;rsquo;t affect the kernel preemption state in locking/unlocking operations.  This type of spinlock is useful for implementing a critical section to serialize concurrent accesses from both in-band and out-of-band contexts, i.e. from root and head stages. Obviously, sleeping into a critical section protected by a hard spinlock would be a very bad idea.</description>
     </item>

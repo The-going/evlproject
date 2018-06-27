@@ -6,8 +6,8 @@ weight: 1
 draft: false
 ---
 
-- `irq_push_stage()`
+- `irq_stage_push()`
 
-- `irq_pop_stage()`
+- `irq_stage_pop()`
 
 TBD.

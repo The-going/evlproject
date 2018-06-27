@@ -1,5 +1,5 @@
 ---
-title: "Shared Task Control"
+title: "Alternate Task Control"
 date: 2018-06-27T19:01:42+02:00
 weight: 2
 draft: false

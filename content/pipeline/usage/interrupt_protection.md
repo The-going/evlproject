@@ -5,7 +5,7 @@ weight: 7
 draft: false
 ---
 
-## Disabling interrupts in the CPU
+## Disabling interrupts in the CPU {# hard-irq-protection}
 
 The `local_irq_save()` and `local_irq_disable()` helpers are no more
 disabling interrupts in the CPU when interrupt pipelining is enabled,

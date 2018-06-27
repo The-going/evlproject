@@ -4,7 +4,7 @@ date: 2018-06-26T19:28:38+02:00
 draft: false
 ---
 
-# Introduction to Dovetail {#dual-kernel-upsides}
+# Dovetail {#dual-kernel-upsides}
 
 Using Linux as a host for lightweight software cores specialized in
 delivering very short and bounded response times has been a popular
@@ -46,7 +46,7 @@ GPOS infrastructure:
 This documentation presents the two software layers forming Dovetail:
 firstly the interrupt pipeline which creates a high-priority execution
 stage for a real-time infrastructure, and finally the support for
-*shared task control* between the Linux kernel and the real-time
+*alternate task control* between the Linux kernel and the real-time
 component over the *kthreads* and *user* tasks.
 
 Dovetail is the successor to the *I-pipe*, the interrupt pipeline

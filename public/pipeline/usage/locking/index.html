@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
-    <title>IRQ handling :: Dovetail</title>
+    <title>Locking :: Dovetail</title>
     
     
     <link href="/css/nucleus.css?1530528189" rel="stylesheet">
@@ -38,7 +38,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/pipeline/usage/irq_handling/">
+  <body class="" data-url="/pipeline/usage/locking/">
     <nav id="sidebar" class="">
 
 
@@ -168,7 +168,7 @@
  
   
     
-      <li data-nav-id="/pipeline/usage/irq_handling/" title="IRQ handling" class="dd-item active">
+      <li data-nav-id="/pipeline/usage/irq_handling/" title="IRQ handling" class="dd-item ">
         <a href="/pipeline/usage/irq_handling/">
         IRQ handling
         
@@ -282,7 +282,7 @@
  
   
     
-      <li data-nav-id="/pipeline/usage/locking/" title="Locking" class="dd-item ">
+      <li data-nav-id="/pipeline/usage/locking/" title="Locking" class="dd-item active">
         <a href="/pipeline/usage/locking/">
         Locking
         
@@ -550,7 +550,7 @@
             
           
           
-            <a href='/'>Introduction</a> > <a href='/pipeline/'>Interrupt pipeline</a> > <a href='/pipeline/usage/'>Usage</a> > IRQ handling
+            <a href='/'>Introduction</a> > <a href='/pipeline/'>Interrupt pipeline</a> > <a href='/pipeline/usage/'>Usage</a> > Locking
           
          
           
@@ -564,7 +564,15 @@
                 
                     <div class="progress">
     <div class="wrapper">
-
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#new-spinlocks">Additional spinlock types</a></li>
+<li><a href="#lockdep-support">Lockdep support</a></li>
+</ul></li>
+</ul>
+</nav>
     </div>
 </div>
 
@@ -576,85 +584,60 @@
         
         <div id="body-inner">
           
-            <h1>IRQ handling</h1>
+            <h1>Locking</h1>
           
 
         
 
 
-<p>The driver API to the IRQ subsystem exposes the new interrupt type
-flag <code>IRQF_OOB</code>, denoting an out-of-band handler with the
-following routines:</p>
+
+
+<h2 id="new-spinlocks">Additional spinlock types</h2>
+
+<p>The pipeline core introduces two spinlock types:</p>
 
 <ul>
-<li><code>setup_irq()</code> for early registration of special interrupts</li>
-<li><code>request_irq()</code> for device interrupts</li>
-<li><code>__request_percpu_irq()</code> for per-CPU interrupts</li>
+<li><em>hard</em> spinlocks manipulate the CPU interrupt mask, and don&rsquo;t affect
+the kernel preemption state in locking/unlocking operations.</li>
 </ul>
 
-<p>An IRQ action handler bearing this flag will run from out-of-band
-context over the head stage, <a href="/pipeline/#two-stage-pipeline">regardless of the current interrupt
-state</a> of
-the root stage. If no head stage is present, the flag will be ignored,
-with the interrupt handler running in-band over the root stage as
-usual.</p>
-
-<p>Conversely, out-of-band handlers can be dismissed using the regular
-API, such as:</p>
+<p>This type of spinlock is useful for implementing a critical section to
+serialize concurrent accesses from both in-band and out-of-band
+contexts, i.e. from root and head stages. Obviously, sleeping into a
+critical section protected by a hard spinlock would be a very bad
+idea. In other words, hard spinlocks are not subject to virtual
+interrupt masking, therefore can be used to serialize with out-of-band
+activities, including from the in-band kernel code. At any rate, those
+sections ought to be quite short, for keeping latency low.</p>
 
 <ul>
-<li><code>free_irq()</code> for device interrupts</li>
-<li><code>free_percpu_irq()</code> for per-CPU interrupts</li>
+<li><em>mutable</em> spinlocks are used internally by the pipeline core to
+protect access to IRQ descriptors (<code>struct irq_desc::lock</code>), so that
+we can keep the original locking scheme of the generic IRQ core
+unmodified for handling out-of-band interrupts.</li>
 </ul>
 
-<p>Out-of-band IRQ handling has the following constraints:</p>
+<p>Mutable spinlocks behave like <em>hard</em> spinlocks when traversed by the
+low-level IRQ handling code on entry to the pipeline, or common <em>raw</em>
+spinlocks otherwise, preserving the kernel (virtualized) interrupt and
+preemption states as perceived by the in-band context. This type of
+lock is not meant to be used in any other situation.</p>
 
-<ul>
-<li>If the IRQ is shared, with multiple action handlers registered for
-the same event, all other handlers on the same interrupt channel
-must bear the <code>IRQF_OOB</code> flag too, or the request will fail.</li>
-</ul>
+<h2 id="lockdep-support">Lockdep support</h2>
 
-<div class="notices warning" ><p>If meeting real-time requirements is your goal, sharing an IRQ line
-among multiple devices can only be a bad idea. You may want to do
-that in desparate hardware situations <strong>only</strong>.</p>
+<p>The lock validator automatically reconciles the real and virtual
+interrupt states, so it can deliver proper diagnosis for locking
+constructs defined in both in-band and out-of-band contexts. This
+means that <em>hard</em> and <em>mutable</em> spinlocks are included in the
+validation set when LOCKDEP is enabled.</p>
+
+<div class="notices warning" ><p>These two additional types are subject to LOCKDEP analysis. However,
+be aware that latency figures are likely to be <strong>really bad</strong> when
+LOCKDEP is enabled, due to the large amount of work the lock validator
+may have to do with interrupts disabled for the CPU (i.e. <em>hard</em>
+locking) for enforcing critical sections.</p>
 </div>
 
-
-<ul>
-<li>Obviously, out-of-band handlers cannot be threaded (<code>IRQF_NO_THREAD</code>
-is implicit, <code>IRQF_ONESHOT</code> is ignored).</li>
-</ul>
-
-<blockquote>
-<p>Installing an out-of-band handler for a device interrupt</p>
-</blockquote>
-
-<pre><code>#include &lt;linux/interrupt.h&gt;
-
-static irqreturn_t oob_interrupt_handler(int irq, void *dev_id)
-{
-	...
-	return IRQ_HANDLED;
-}
-
-init __init driver_init_routine(void)
-{
-	int ret;
-
-	...
-	ret = request_irq(DEVICE_IRQ, oob_interrupt_handler,
-			  IRQF_OOB, &quot;Out-of-band device IRQ&quot;,
-			  device_data);
-	if (ret)
-		goto fail;
-
-	return 0;
-fail:
-	/* Unwind upon error. */
-	...
-}
-</code></pre>
 
 
 <footer class=" footline" >
@@ -761,26 +744,6 @@ fail:
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
                 
                 
 
@@ -872,26 +835,11 @@ fail:
             
         
                     
-            
-        
-                    
                         
             
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
                     
                 
                 
@@ -904,19 +852,6 @@ fail:
             
         
                     
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
             
         
                     
@@ -925,6 +860,9 @@ fail:
             
                 
                     
+                        
+                        
+                    
                 
                 
 
@@ -932,9 +870,6 @@ fail:
                     
                     
 
-                    
-            
-        
                     
                         
             
@@ -984,6 +919,35 @@ fail:
             
         
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
             
         
                     
@@ -1024,15 +988,34 @@ fail:
                     
             
         
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
         
         
 
 
         
-            <a class="nav nav-prev" href="/pipeline/usage/stage_push/" title="Installing the head stage"> <i class="fa fa-chevron-left"></i></a>
+            <a class="nav nav-prev" href="/pipeline/usage/interrupt_protection/" title="Interrupt Protection"> <i class="fa fa-chevron-left"></i></a>
         
         
-            <a class="nav nav-next" href="/pipeline/usage/synthetic/" title="Synthetic IRQs" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+            <a class="nav nav-next" href="/pipeline/porting/" title="Porting" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
         
     </div>
 
