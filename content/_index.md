@@ -94,10 +94,10 @@ mainline code shows its age, as explained in [this document]
 The intended audience of this document is people having common kernel
 development knowledge, who may be interested in building a real-time
 component on Dovetail, porting it to their architecture or platform of
-choice. Knowing about the basics of IRQ chip and clock event device
-drivers in the kernel tree would be a requirement for porting
-this code.
+choice. Knowing about the basics of interrupt flow, IRQ chip and clock
+event device drivers in the kernel tree would be a requirement for
+porting this code.
 
 However, this document is not suited for getting one's feet wet with
 kernel development. Many assumptions about pre-existing knowledge of
-the reader regarding kernel basics are made.
+the reader regarding kernel fundamentals are made.
