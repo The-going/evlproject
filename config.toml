@@ -2,3 +2,13 @@ baseURL = "https://xenomai.org/"
 languageCode = "en-us"
 title = "Dovetail"
 theme = "hugo-theme-learn"
+
+[params]
+author = "Philippe Gerum <rpm@xenomai.org>"
+description = "Dovetail co-kernel interface for Linux"
+disableSearch = false
+disableInlineCopyToClipBoard = true
+themeVariant = "blue"
+
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
