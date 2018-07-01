@@ -14,7 +14,7 @@ should be split between real and virtual interrupt control. The real
 interrupt control operations are inherited from the in-band kernel
 implementation. The virtual ones should be built upon services
 provided by the [interrupt pipeline core]({{%relref
-"pipeline/porting/genirq.md" %}}).
+"pipeline/porting/irqflow.md" %}}).
 
 + firstly, the original *arch\_local_*\* helpers should be renamed as
 *native_*\* helpers, affecting the hardware interrupt state in the

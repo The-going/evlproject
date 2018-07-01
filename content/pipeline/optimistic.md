@@ -117,7 +117,7 @@ helpers are such routines, which serialize in-band and out-of-band
 callers.
 
 For all other cases, the [IRQ work API]({{%relref
-"pipeline/porting/genirq.md#irq-work" %}}) is available for scheduling
+"pipeline/porting/irqflow.md#irq-work" %}}) is available for scheduling
 the execution of a routine from the head stage, which will be invoked
 later from the root stage as soon as it gets back in control on the
 current CPU.
