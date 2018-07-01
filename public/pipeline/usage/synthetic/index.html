@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.31" />
+    <meta name="description" content="Dovetail co-kernel interface for Linux">
+<meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+<link rel="icon" href="/images/favicon.png" type="image/x-icon" />
+    <title>Synthetic IRQs :: Dovetail</title>
+    
+    
+    <link href="/css/nucleus.css?1530465323" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1530465323" rel="stylesheet">
+    <link href="/css/hybrid.css?1530465323" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1530465323" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1530465323" rel="stylesheet">
+    <link href="/css/auto-complete.css?1530465323" rel="stylesheet">
+    <link href="/css/theme.css?1530465323" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1530465323" rel="stylesheet">
+    
+      <link href="/css/theme-blue.css?1530465323" rel="stylesheet">
+    
+
+    <script src="/js/jquery-2.x.min.js?1530465323"></script>
+    
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{ 
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/pipeline/usage/synthetic/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <img src="/images/logo.png">
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fa fa-search"></i></label>
+    <input data-search-input id="search-by" type="text" placeholder="Search...">
+    <span data-search-clear=""><i class="fa fa-close"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1530465323"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1530465323"></script>
+<script type="text/javascript">
+    
+        var baseurl = '\/';
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1530465323"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/pipeline/" title="Interrupt pipeline" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/pipeline/">
+          Interrupt pipeline
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/optimistic/" title="Optimistic Interrupt Protection" class="dd-item ">
+        <a href="/pipeline/optimistic/">
+        Optimistic protection
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/pipeline/usage/" title="Usage" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/pipeline/usage/">
+          Usage
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/stage_push/" title="Installing the head stage" class="dd-item ">
+        <a href="/pipeline/usage/stage_push/">
+        Head stage installation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/irq_handling/" title="IRQ handling" class="dd-item ">
+        <a href="/pipeline/usage/irq_handling/">
+        IRQ handling
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/synthetic/" title="Synthetic IRQs" class="dd-item active">
+        <a href="/pipeline/usage/synthetic/">
+        Synthetic IRQs
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/pipeline_stop/" title="Pipeline Stop" class="dd-item ">
+        <a href="/pipeline/usage/pipeline_stop/">
+        Pipeline Stop
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/pipeline_inject/" title="IRQ injection" class="dd-item ">
+        <a href="/pipeline/usage/pipeline_inject/">
+        IRQ injection
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/stage_escalation/" title="Stage escalation" class="dd-item ">
+        <a href="/pipeline/usage/stage_escalation/">
+        Stage escalation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/interrupt_protection/" title="Interrupt Protection" class="dd-item ">
+        <a href="/pipeline/usage/interrupt_protection/">
+        Interrupt Protection
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/pipeline/porting/" title="Porting" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/pipeline/porting/">
+          Porting
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/prerequisites/" title="Prerequisites" class="dd-item ">
+        <a href="/pipeline/porting/prerequisites/">
+        Prerequisites
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/irqflow/" title="Interrupt flow" class="dd-item ">
+        <a href="/pipeline/porting/irqflow/">
+        Interrupt flow
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/arch/" title="Architecture-specific bits" class="dd-item ">
+        <a href="/pipeline/porting/arch/">
+        Architecture bits
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/timer/" title="Timer management" class="dd-item ">
+        <a href="/pipeline/porting/timer/">
+        Timer management
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/atomic/" title="Atomic operations" class="dd-item ">
+        <a href="/pipeline/porting/atomic/">
+        Atomic operations
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/locking/" title="Locking" class="dd-item ">
+        <a href="/pipeline/porting/locking/">
+        Locking
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/misc/" title="Misc" class="dd-item ">
+        <a href="/pipeline/porting/misc/">
+        Misc
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/rulesofthumb/" title="Rules Of Thumb" class="dd-item ">
+        <a href="/pipeline/rulesofthumb/">
+        Rules Of Thumb
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/altsched/" title="Shared Task Control" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/altsched/">
+          Shared Task Control
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fa fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/'>Introduction</a> > <a href='/pipeline/'>Interrupt pipeline</a> > <a href='/pipeline/usage/'>Usage</a> > Synthetic IRQs
+          
+         
+          
+         
+          
+         
+          
+           
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1>Synthetic IRQs</h1>
+          
+
+        
+
+
+<p>The pipeline introduces an additional type of interrupts, which are
+purely software-originated, with no hardware involvement. These IRQs
+can be triggered by any kernel code. Synthetic IRQs are inherently
+per-CPU events.</p>
+
+<p>Because the common pipeline flow_ applies to synthetic interrupts, it
+is possible to attach them to out-of-band and/or in-band handlers,
+just like device interrupts.</p>
+
+<div class="notices note" ><p>Synthetic interrupts and regular softirqs differ in essence: the
+latter only exist in the in-band context, and therefore cannot trigger
+out-of-band activities.</p>
+</div>
+
+
+<p>Synthetic interrupt vectors are allocated from the
+<em>synthetic_irq_domain</em>, using the <code>irq_create_direct_mapping()</code>
+routine.</p>
+
+<p>For instance, a synthetic interrupt can be used for triggering an
+in-band activity on the root stage from the head stage as follows:</p>
+
+<pre><code class="language-markdown">#include &lt;linux/irq_pipeline.h&gt;
+
+static irqreturn_t sirq_handler(int sirq, void *dev_id)
+{
+	do_in_band_work();
+
+	return IRQ_HANDLED;
+}
+
+static struct irqaction sirq_action = {
+        .handler = sirq_handler,
+        .name = &quot;In-band synthetic interrupt&quot;,
+        .flags = IRQF_NO_THREAD,
+};
+
+unsigned int alloc_sirq(void)
+{
+	unsigned int sirq;
+
+	sirq = irq_create_direct_mapping(synthetic_irq_domain);
+	if (!sirq)
+		return 0;
+	
+	setup_percpu_irq(sirq, &amp;sirq_action);
+
+	return sirq;
+}
+</code></pre>
+
+<p>Code can schedule the execution of <code>sirq_handler()</code> from the
+out-of-band context in two different ways:</p>
+
+<blockquote>
+<p>Using the common injection service</p>
+</blockquote>
+
+<pre><code class="language-markdown">	irq_pipeline_inject(sirq);
+</code></pre>
+
+<blockquote>
+<p>Using the lightweight injection method (requires interrupts to be
+  disabled in the CPU)</p>
+</blockquote>
+
+<pre><code class="language-markdown">	unsigned long flags = hard_local_irqsave();
+	irq_stage_post_root(sirq);
+	hard_local_irqrestore(flags);
+</code></pre>
+
+<div class="notices tip" ><p>Assuming that no interrupt may be pending in the event log for the
+head stage at the time this code runs, the method above relies on the
+invariant that in a pipeline interrupt model, IRQs pending for the
+root stage will have to wait for the head stage to quiesce before they
+can be handled. Therefore, it is pointless to try synchronizing the
+interrupts pending for the root stage from the head stage, which the
+<code>irq_pipeline_inject()</code> service would do systematically.
+<code>irq_stage_post_root()</code> simply marks the event as pending in the event
+log of the root stage for the current CPU, then returns. This event
+would be played as a result of synchronizing the log automatically when
+the current CPU switches back to the root stage.</p>
+</div>
+
+
+<p>Conversely, a synthetic interrupt can be handled from the out-of-band
+context:</p>
+
+<pre><code class="language-markdown">static irqreturn_t sirq_oob_handler(int sirq, void *dev_id)
+{
+	do_out_of_band_work();
+
+	return IRQ_HANDLED;
+}
+
+unsigned int alloc_sirq(void)
+{
+	unsigned int sirq;
+
+	sirq  = irq_create_direct_mapping(synthetic_irq_domain);
+	if (!sirq)
+		return 0;
+     
+	ret = __request_percpu_irq(sirq, sirq_oob_handler,
+                                   IRQF_OOB,
+                                   &quot;Out-of-band synthetic interrupt&quot;,
+                                   dev_id);
+	if (ret) {
+        	irq_dispose_mapping(sirq);
+		return 0;
+	}
+
+	return sirq;
+}
+</code></pre>
+
+<p>Code can trigger the immediate execution of <code>sirq_oob_handler()</code> on
+the head stage as follows:</p>
+
+<pre><code class="language-markdown">	irq_pipeline_inject(sirq);
+</code></pre>
+
+<div class="notices note" ><p>Calling <code>irq_stage_post_head(sirq)</code> from the root stage to trigger an
+out-of-band event is most often not the right way to do this, because
+this service would not synchronize the interrupt log before
+returning. In other words, the <code>sirq</code> event would still be pending for
+the head stage despite the fact that it should have preempted the root
+stage before returning to the caller.</p>
+</div>
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+        
+            <a class="nav nav-prev" href="/pipeline/usage/irq_handling/" title="IRQ handling"> <i class="fa fa-chevron-left"></i></a>
+        
+        
+            <a class="nav nav-next" href="/pipeline/usage/pipeline_stop/" title="Pipeline Stop" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+        
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1530465323"></script>
+    <script src="/js/perfect-scrollbar.min.js?1530465323"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1530465323"></script>
+    <script src="/js/jquery.sticky.js?1530465323"></script>
+    <script src="/js/featherlight.min.js?1530465323"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1530465323"></script>
+    <script src="/js/highlight.pack.js?1530465323"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom.71422.js?1530465323"></script>
+    <script src="/js/learn.js?1530465323"></script>
+    <script src="/js/hugo-learn.js?1530465323"></script>
+
+    <link href="/mermaid/mermaid.css?1530465323" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1530465323"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+
+  </body>
+</html>
+

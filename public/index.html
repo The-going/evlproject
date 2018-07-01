@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.31" />
+    <meta name="description" content="Dovetail co-kernel interface for Linux">
+<meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+<link rel="icon" href="/images/favicon.png" type="image/x-icon" />
+    <title>Introduction :: Dovetail</title>
+    
+    
+    <link href="/css/nucleus.css?1530465323" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1530465323" rel="stylesheet">
+    <link href="/css/hybrid.css?1530465323" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1530465323" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1530465323" rel="stylesheet">
+    <link href="/css/auto-complete.css?1530465323" rel="stylesheet">
+    <link href="/css/theme.css?1530465323" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1530465323" rel="stylesheet">
+    
+      <link href="/css/theme-blue.css?1530465323" rel="stylesheet">
+    
+
+    <script src="/js/jquery-2.x.min.js?1530465323"></script>
+    
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{ 
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <img src="/images/logo.png">
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fa fa-search"></i></label>
+    <input data-search-input id="search-by" type="text" placeholder="Search...">
+    <span data-search-clear=""><i class="fa fa-close"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1530465323"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1530465323"></script>
+<script type="text/javascript">
+    
+        var baseurl = '\/';
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1530465323"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/pipeline/" title="Interrupt pipeline" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/pipeline/">
+          Interrupt pipeline
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/optimistic/" title="Optimistic Interrupt Protection" class="dd-item ">
+        <a href="/pipeline/optimistic/">
+        Optimistic protection
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/pipeline/usage/" title="Usage" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/pipeline/usage/">
+          Usage
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/stage_push/" title="Installing the head stage" class="dd-item ">
+        <a href="/pipeline/usage/stage_push/">
+        Head stage installation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/irq_handling/" title="IRQ handling" class="dd-item ">
+        <a href="/pipeline/usage/irq_handling/">
+        IRQ handling
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/synthetic/" title="Synthetic IRQs" class="dd-item ">
+        <a href="/pipeline/usage/synthetic/">
+        Synthetic IRQs
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/pipeline_stop/" title="Pipeline Stop" class="dd-item ">
+        <a href="/pipeline/usage/pipeline_stop/">
+        Pipeline Stop
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/pipeline_inject/" title="IRQ injection" class="dd-item ">
+        <a href="/pipeline/usage/pipeline_inject/">
+        IRQ injection
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/stage_escalation/" title="Stage escalation" class="dd-item ">
+        <a href="/pipeline/usage/stage_escalation/">
+        Stage escalation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/usage/interrupt_protection/" title="Interrupt Protection" class="dd-item ">
+        <a href="/pipeline/usage/interrupt_protection/">
+        Interrupt Protection
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/pipeline/porting/" title="Porting" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/pipeline/porting/">
+          Porting
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/prerequisites/" title="Prerequisites" class="dd-item ">
+        <a href="/pipeline/porting/prerequisites/">
+        Prerequisites
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/irqflow/" title="Interrupt flow" class="dd-item ">
+        <a href="/pipeline/porting/irqflow/">
+        Interrupt flow
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/arch/" title="Architecture-specific bits" class="dd-item ">
+        <a href="/pipeline/porting/arch/">
+        Architecture bits
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/timer/" title="Timer management" class="dd-item ">
+        <a href="/pipeline/porting/timer/">
+        Timer management
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/atomic/" title="Atomic operations" class="dd-item ">
+        <a href="/pipeline/porting/atomic/">
+        Atomic operations
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/locking/" title="Locking" class="dd-item ">
+        <a href="/pipeline/porting/locking/">
+        Locking
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/misc/" title="Misc" class="dd-item ">
+        <a href="/pipeline/porting/misc/">
+        Misc
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/rulesofthumb/" title="Rules Of Thumb" class="dd-item ">
+        <a href="/pipeline/rulesofthumb/">
+        Rules Of Thumb
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/altsched/" title="Shared Task Control" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/altsched/">
+          Shared Task Control
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+
+        
+        <div id="body-inner">
+          
+
+        
+
+<span id="sidebar-toggle-span">
+<a href="#" id="sidebar-toggle" data-sidebar-toggle=""><i class="fa fa-bars"></i> navigation</a>
+</span>
+
+ 
+
+
+<h1 id="dual-kernel-upsides">Introduction to Dovetail</h1>
+
+<p>Using Linux as a host for lightweight software cores specialized in
+delivering very short and bounded response times has been a popular
+way of supporting real-time applications in the embedded space over
+the years.</p>
+
+<p>This design - known as the <em>dual kernel</em> approach - introduces a small
+real-time infrastructure which schedules time-critical activities
+independently from the main kernel. Application threads co-managed by
+this infrastructure still benefit from the ancillary kernel services
+such as virtual memory management, and can also leverage the rich GPOS
+feature set Linux provides such as networking, data storage or GUIs.</p>
+
+<p>Although the real-time infrastructure has to present specific driver
+stack and API implementations to applications, there are nonetheless
+significant upsides to keeping the real-time core separate from the
+GPOS infrastructure:</p>
+
+<ul>
+<li><p>because the two kernels are independent, real-time activities are
+not serialized with GPOS operations internally, removing potential
+delays which might be induced by the non time-critical
+work. Likewise, there is no requirement for keeping the GPOS
+operations fine-grained and highly preemptible at any time, which
+would otherwise induce noticeable overhead on low-end hardware, due
+to the requirement for pervasive task priority inheritance and IRQ
+threading.</p></li>
+
+<li><p>the functional isolation of the real-time infrastructure from the
+rest of the kernel code restricts common bug hunting to the scope of
+the smaller kernel, excluding most interactions with the very large
+GPOS kernel base.</p></li>
+
+<li><p>with a dedicated infrastructure providing a specific, well-defined
+set of real-time services, applications can unambiguously figure out
+which API calls are available for supporting time-critical work,
+excluding all the rest as being potentially non-deterministic with
+respect to response time.</p></li>
+</ul>
+
+<p>This documentation presents the two software layers forming Dovetail:
+firstly the interrupt pipeline which creates a high-priority execution
+stage for a real-time infrastructure, and finally the support for
+<em>shared task control</em> between the Linux kernel and the real-time
+component over the <em>kthreads</em> and <em>user</em> tasks.</p>
+
+<p>Dovetail is the successor to the <em>I-pipe</em>, the interrupt pipeline
+implementation <a href="https://xenomai.org/gitlab/xenomai/">Xenomai&rsquo;s Cobalt</a>
+real-time core currently relies on.</p>
+
+<div class="notices note" ><p>Dovetail only introduces the basic mechanisms for hosting a real-time
+core into the Linux kernel, enabling the common programming model for
+its applications in user-space. It does <strong>not</strong> implement the
+real-time core per se, which should be provided by a separate kernel
+component.</p>
+</div>
+
+	
+  
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+        
+        
+            <a class="nav nav-next" href="/pipeline/" title="Interrupt pipeline" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+        
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1530465323"></script>
+    <script src="/js/perfect-scrollbar.min.js?1530465323"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1530465323"></script>
+    <script src="/js/jquery.sticky.js?1530465323"></script>
+    <script src="/js/featherlight.min.js?1530465323"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1530465323"></script>
+    <script src="/js/highlight.pack.js?1530465323"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom.71422.js?1530465323"></script>
+    <script src="/js/learn.js?1530465323"></script>
+    <script src="/js/hugo-learn.js?1530465323"></script>
+
+    <link href="/mermaid/mermaid.css?1530465323" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1530465323"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+
+  </body>
+</html>
+
