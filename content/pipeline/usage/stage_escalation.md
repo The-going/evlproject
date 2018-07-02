@@ -7,4 +7,4 @@ draft: false
 
 - `irq_stage_escalate()`
 
-TBD.
+TBC.

@@ -565,4 +565,4 @@ must be skipped.
 
 Support for inter-processor interrupts is architecture-specific code.
 
-TBD.
+TBC.

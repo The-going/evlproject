@@ -10,4 +10,4 @@ draft: false
 
 - `irq_stage_pop()`
 
-TBD.
+TBC.

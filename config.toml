@@ -1,4 +1,4 @@
-baseURL = "https://xenomai.org/"
+baseURL = "https://xenomai.org/dovetail/"
 languageCode = "en-us"
 title = "Dovetail"
 theme = "hugo-theme-learn"

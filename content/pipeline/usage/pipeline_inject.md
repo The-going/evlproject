@@ -11,4 +11,4 @@ draft: false
 
 - `irq_stage_post_head()`
 
-TBD.
+TBC.

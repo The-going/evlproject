@@ -19,3 +19,5 @@ As a result, real-time core applications in user-space benefit from
 the common Linux programming model - including virtual memory
 protection -, and still have access to the regular Linux services when
 carrying out non time-critical work.
+
+TBC.
