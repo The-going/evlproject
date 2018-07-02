@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
-    <title>Interrupt Protection :: Dovetail</title>
+    <title>Contributing to Dovetail :: Dovetail</title>
     
     
     <link href="/css/nucleus.css?1530552860" rel="stylesheet">
@@ -38,7 +38,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/pipeline/usage/interrupt_protection/">
+  <body class="" data-url="/contributing/">
     <nav id="sidebar" class="">
 
 
@@ -79,7 +79,7 @@
   
     
     <li data-nav-id="/pipeline/" title="Interrupt pipeline" class="dd-item 
-        parent
+        
         
         
         ">
@@ -125,7 +125,7 @@
   
     
     <li data-nav-id="/pipeline/usage/" title="Usage" class="dd-item 
-        parent
+        
         
         
         ">
@@ -263,7 +263,7 @@
  
   
     
-      <li data-nav-id="/pipeline/usage/interrupt_protection/" title="Interrupt Protection" class="dd-item active">
+      <li data-nav-id="/pipeline/usage/interrupt_protection/" title="Interrupt Protection" class="dd-item ">
         <a href="/pipeline/usage/interrupt_protection/">
         Interrupt Protection
         
@@ -507,8 +507,8 @@
   
     
     <li data-nav-id="/contributing/" title="Contributing to Dovetail" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/contributing/">
@@ -586,19 +586,7 @@
             
           
           
-            
-            
-          
-          
-            
-            
-          
-          
-            <a href='/'>Introduction</a> > <a href='/pipeline/'>Interrupt pipeline</a> > <a href='/pipeline/usage/'>Usage</a> > Interrupt Protection
-          
-         
-          
-         
+            <a href='/'>Introduction</a> > Contributing to Dovetail
           
          
           
@@ -612,8 +600,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="# hard-irq-protection">Disabling interrupts in the CPU</a></li>
-<li><a href="#stalling-the-head-stage">Stalling the head stage</a></li>
+<li><a href="#git-trees">GIT trees</a></li>
+<li><a href="#organization-and-workflow">Organization and workflow</a></li>
+<li><a href="#submitting-changes">Submitting changes</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -628,7 +617,7 @@
         
         <div id="body-inner">
           
-            <h1>Interrupt Protection</h1>
+            <h1>Contributing to Dovetail</h1>
           
 
         
@@ -636,137 +625,64 @@
 
 
 
-<h2 id=" hard-irq-protection">Disabling interrupts in the CPU</h2>
+<h2 id="git-trees">GIT trees</h2>
 
-<p>The <code>local_irq_save()</code> and <code>local_irq_disable()</code> helpers are no more
-disabling interrupts in the CPU when interrupt pipelining is enabled,
-but only disable interrupt events <a href="/pipeline/optimistic/#virtual-i-flag">virtually for the root
-stage</a>.</p>
+<p>You can clone the Dovetail code base indifferently from those URLs:</p>
 
-<p>A set of helpers is provided for manipulating the interrupt disable
-flag in the CPU instead. When CONFIG_IRQ_PIPELINE is disabled, this
-set maps 1:1 over the regular <code>local_irq_*()</code> API.</p>
+<ul>
+<li>git://lab.xenomai.org/linux-dovetail.git</li>
+<li><a href="https://lab.xenomai.org/linux-dovetail.git">https://lab.xenomai.org/linux-dovetail.git</a></li>
+</ul>
 
-<table>
-<thead>
-<tr>
-<th align="left">Original/Virtual</th>
-<th align="left">Non-virtualized call</th>
-</tr>
-</thead>
+<p>In addition, a <em>cgit</em> server is running on that tree at
+<a href="https://lab.xenomai.org/linux-dovetail.git/">https://lab.xenomai.org/linux-dovetail.git</a>.</p>
 
-<tbody>
-<tr>
-<td align="left">local_save_flags(flags)</td>
-<td align="left">flags = hard_local_save_flags()</td>
-</tr>
+<h2 id="organization-and-workflow">Organization and workflow</h2>
 
-<tr>
-<td align="left">local_irq_disable()</td>
-<td align="left">hard_local_irq_disable()</td>
-</tr>
+<p>Our basic goal is to keep the Dovetail development as close as
+possible to the tip of the <a href="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git">mainline
+kernel</a>.</p>
 
-<tr>
-<td align="left">local_irq_enable()</td>
-<td align="left">hard_local_irq_enable()</td>
-</tr>
-
-<tr>
-<td align="left">local_irq_save(flags)</td>
-<td align="left">flags = hard_local_irq_save()</td>
-</tr>
-
-<tr>
-<td align="left">local_irq_restore(flags)</td>
-<td align="left">hard_local_irq_restore(flags)</td>
-</tr>
-
-<tr>
-<td align="left">irqs_disabled()</td>
-<td align="left">hard_irqs_disabled()</td>
-</tr>
-
-<tr>
-<td align="left">irqs_disabled_flags(flags)</td>
-<td align="left">hard_irqs_disabled_flags(flags)</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="stalling-the-head-stage">Stalling the head stage</h2>
-
-<p>Just like the root stage is affected by the state of the <a href="/pipeline/optimistic/#virtual-i-flag">virtual
-interrupt disable flag</a>, the interrupt state of
-the head stage is controlled by a dedicated <em>stall bit</em> flag in the
-head stage&rsquo;s status. In combination with the interrupt disable bit in
-the CPU, this software bit controls interrupt delivery to the head
-stage.</p>
-
-<p>When this <em>stall bit</em> is set, interrupts which might be pending in the
-head stage&rsquo;s event log of the current CPU are not played. Conversely,
-the out-of-band handlers attached to pending IRQs are fired when the
-<em>stall bit</em> is clear. The following table represents the equivalent
-calls affecting the stall bit for each stage:</p>
-
-<table>
-<thead>
-<tr>
-<th align="left">Root stage operation</th>
-<th align="left">Head stage operation</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="left">local_save_flags(flags)</td>
-<td align="left">-none-</td>
-</tr>
-
-<tr>
-<td align="left">local_irq_disable()</td>
-<td align="left">head_irq_disable()</td>
-</tr>
-
-<tr>
-<td align="left">local_irq_enable()</td>
-<td align="left">head_irq_enable()</td>
-</tr>
-
-<tr>
-<td align="left">local_irq_save(flags)</td>
-<td align="left">flags = head_irq_save()</td>
-</tr>
-
-<tr>
-<td align="left">local_irq_restore(flags)</td>
-<td align="left">head_irq_restore(flags)</td>
-</tr>
-
-<tr>
-<td align="left">irqs_disabled()</td>
-<td align="left">head_irqs_disabled()</td>
-</tr>
-
-<tr>
-<td align="left">irqs_disabled_flags(flags)</td>
-<td align="left">-none-</td>
-</tr>
-</tbody>
-</table>
-
-<div class="notices tip" ><p>Using this set of helpers only makes sense from out-of-band code,
-typically in the real-time core implementation. Calling them from any
-other context would be highly suspicious. Adapting in-band code to
-interrupt pipelining might involve using the <code>hard_local_*()</code>
-set instead, but only in marginal cases, always with extreme care.</p>
+<div class="notices note" ><p>We are not in the business of maintaining vendor ports, or long-term
+maintenance releases of Dovetail, although anyone would be welcome to
+take on such task. However, we are very much in the business of
+<em>lowering the engineering cost of maintaining a current dual kernel
+interface for the Linux kernel</em>, by aiming at a lean and mean
+implementation.</p>
 </div>
 
+
+<p>With this in mind, simple rules apply:</p>
+
+<ol>
+<li><p>Development takes place in the <em>master</em> branch. This branch is
+routinely rebased on the <a href="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git">mainline
+kernel&rsquo;s</a>
+<em>master</em> branch, as the upstream kernel progresses. However, the
+linear history of changes to the <em>master</em> branch implementing Dovetail
+is (from now on) kept.</p></li>
+
+<li><p>From time to time, a snapshot branch will be made of the current
+state of the <em>master</em> branch, usually when the mainline code it is
+based on reaches a release milestone (possibly <em>-rc</em> ones). Some of
+the Dovetail-related changes in this branch may be squashed into a
+general feature commit, so as to present Dovetail as a clean-cut,
+incremental set of changes on top of the <em>upstream</em> kernel
+release. Those branches are named after the reference <em>upstream</em>
+release, appearing as <em>squashed/<release></em> in our tree. At times, we
+may convert some of the older snapshot branches to plain tags if/when
+having too many branches hanging around becomes impractical.</p></li>
+</ol>
+
+<h2 id="submitting-changes">Submitting changes</h2>
+
+<p>Please post any patch you would like to submit for integration to
+the <a href="mailto:xenomai@xenomai.org">Xenomai mainling list</a>.</p>
 
 
 <footer class=" footline" >
 	
 </footer>
-
 
         
         </div> 
@@ -799,22 +715,6 @@ set instead, but only in marginal cases, always with extreme care.</p>
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
                         
                         
                     
@@ -823,22 +723,7 @@ set instead, but only in marginal cases, always with extreme care.</p>
 
                     
                     
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
                     
                     
 
@@ -847,9 +732,6 @@ set instead, but only in marginal cases, always with extreme care.</p>
             
             
                 
-                    
-                        
-                        
                     
                 
                 
@@ -861,6 +743,19 @@ set instead, but only in marginal cases, always with extreme care.</p>
                     
             
         
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
                     
                         
             
@@ -947,7 +842,6 @@ set instead, but only in marginal cases, always with extreme care.</p>
             
                 
                     
-                    
                 
                 
 
@@ -964,8 +858,21 @@ set instead, but only in marginal cases, always with extreme care.</p>
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
                         
-                        
+            
+            
+                
                     
                 
                 
@@ -1133,6 +1040,7 @@ set instead, but only in marginal cases, always with extreme care.</p>
             
                 
                     
+                    
                 
                 
 
@@ -1149,6 +1057,9 @@ set instead, but only in marginal cases, always with extreme care.</p>
             
                 
                     
+                        
+                        
+                    
                 
                 
 
@@ -1167,10 +1078,10 @@ set instead, but only in marginal cases, always with extreme care.</p>
 
 
         
-            <a class="nav nav-prev" href="/pipeline/usage/stage_escalation/" title="Stage escalation"> <i class="fa fa-chevron-left"></i></a>
+            <a class="nav nav-prev" href="/altsched/" title="Alternate Task Control"> <i class="fa fa-chevron-left"></i></a>
         
         
-            <a class="nav nav-next" href="/pipeline/usage/locking/" title="Locking" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+            <a class="nav nav-next" href="/status/" title="Status" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
         
     </div>
 
@@ -1200,4 +1111,3 @@ set instead, but only in marginal cases, always with extreme care.</p>
 
   </body>
 </html>
-

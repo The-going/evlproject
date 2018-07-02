@@ -43,6 +43,11 @@
   </url>
   
   <url>
+    <loc>https://xenomai.org/contributing/</loc>
+    <lastmod>2018-07-02T15:54:45+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xenomai.org/pipeline/porting/arch/</loc>
     <lastmod>2018-06-27T17:07:51+02:00</lastmod>
   </url>
@@ -55,6 +60,11 @@
   <url>
     <loc>https://xenomai.org/pipeline/usage/synthetic/</loc>
     <lastmod>2018-06-27T09:55:57+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xenomai.org/status/</loc>
+    <lastmod>2018-07-02T16:47:21+02:00</lastmod>
   </url>
   
   <url>

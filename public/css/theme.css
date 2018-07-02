@@ -1126,4 +1126,12 @@ pre .copy-to-clipboard:hover {
     text-align: left;
 }
 
+table.status {
+    text-align: center;
+}
+
+th, td {
+    text-align: center;
+}
+
 /*# sourceMappingURL=theme.css.map */
