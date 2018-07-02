@@ -2,32 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Introduction on Dovetail</title>
-    <link>https://xenomai.org/dovetail/</link>
+    <link>https://dovetail.xenomai.org/</link>
     <description>Recent content in Introduction on Dovetail</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 26 Jun 2018 19:28:38 +0200</lastBuildDate>
     
-	<atom:link href="https://xenomai.org/dovetail/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://dovetail.xenomai.org/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Installing the head stage</title>
-      <link>https://xenomai.org/dovetail/pipeline/usage/stage_push/</link>
+      <link>https://dovetail.xenomai.org/pipeline/usage/stage_push/</link>
       <pubDate>Sun, 01 Jul 2018 15:47:56 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/usage/stage_push/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/stage_push/</guid>
       <description>irq_stage_push()
  irq_stage_pop()
-  TBD.</description>
+  TBC.</description>
     </item>
     
     <item>
       <title>Prerequisites</title>
-      <link>https://xenomai.org/dovetail/pipeline/porting/prerequisites/</link>
+      <link>https://dovetail.xenomai.org/pipeline/porting/prerequisites/</link>
       <pubDate>Wed, 27 Jun 2018 11:09:03 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/porting/prerequisites/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/porting/prerequisites/</guid>
       <description>Generic requirements The interrupt pipeline requires the following features to be available from the target Linux kernel:
  Generic IRQ handling (CONFIG_GENERIC_IRQ), which most architectures should support these days.
  IRQ domains (CONFIG_IRQ_DOMAIN).
@@ -38,30 +38,30 @@
     
     <item>
       <title>Optimistic Interrupt Protection</title>
-      <link>https://xenomai.org/dovetail/pipeline/optimistic/</link>
+      <link>https://dovetail.xenomai.org/pipeline/optimistic/</link>
       <pubDate>Wed, 27 Jun 2018 10:08:28 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/optimistic/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/optimistic/</guid>
       <description>Predictable response time of out-of-band handlers to IRQ receipts requires the in-band kernel work not to be allowed to delay them by masking interrupts in the CPU.
 However, critical sections delimited this way by the in-band code must still be enforced for the root stage, so that system integrity is not at risk. This means that although out-of-band IRQ handlers may run at any time while the head stage is accepting interrupts, in-band IRQ handlers should be allowed to run only when the root stage is accepting interrupts too.</description>
     </item>
     
     <item>
       <title>IRQ handling</title>
-      <link>https://xenomai.org/dovetail/pipeline/usage/irq_handling/</link>
+      <link>https://dovetail.xenomai.org/pipeline/usage/irq_handling/</link>
       <pubDate>Sun, 01 Jul 2018 14:05:58 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/usage/irq_handling/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/irq_handling/</guid>
       <description>The driver API to the IRQ subsystem exposes the new interrupt type flag IRQF_OOB, denoting an out-of-band handler with the following routines:
  setup_irq() for early registration of special interrupts request_irq() for device interrupts __request_percpu_irq() for per-CPU interrupts  An IRQ action handler bearing this flag will run from out-of-band context over the head stage, regardless of the current interrupt state of the root stage. If no head stage is present, the flag will be ignored, with the interrupt handler running in-band over the root stage as usual.</description>
     </item>
     
     <item>
       <title>Interrupt flow</title>
-      <link>https://xenomai.org/dovetail/pipeline/porting/irqflow/</link>
+      <link>https://dovetail.xenomai.org/pipeline/porting/irqflow/</link>
       <pubDate>Wed, 27 Jun 2018 15:20:04 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/porting/irqflow/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/porting/irqflow/</guid>
       <description>Pipelined interrupt flow Interrupt pipelining involves a basic change in controlling the interrupt flow: handle_domain_irq() from the IRQ domain API redirects all parent IRQs to the pipeline entry by calling generic_pipeline_irq().
  Redirecting the interrupt flow to the pipeline
  asm_irq_entry -&amp;gt; irqchip_handle_irq() -&amp;gt; handle_domain_irq() -&amp;gt; generic_pipeline_irq() -&amp;gt; irq_flow_handler() -&amp;gt; handle_oob_irq()  IRQ flow handling Generic flow handlers acknowledge the incoming IRQ event in the hardware as usual, by calling the appropriate irqchip routine (e.</description>
@@ -69,20 +69,20 @@ However, critical sections delimited this way by the in-band code must still be 
     
     <item>
       <title>Architecture-specific bits</title>
-      <link>https://xenomai.org/dovetail/pipeline/porting/arch/</link>
+      <link>https://dovetail.xenomai.org/pipeline/porting/arch/</link>
       <pubDate>Wed, 27 Jun 2018 17:07:51 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/porting/arch/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/porting/arch/</guid>
       <description>Interrupt mask virtualization The architecture-specific code which manipulates the interrupt flag in the CPU&amp;rsquo;s state register in arch//include/asm/irqflags.h should be split between real and virtual interrupt control. The real interrupt control operations are inherited from the in-band kernel implementation. The virtual ones should be built upon services provided by the interrupt pipeline core.
  firstly, the original arch_local_* helpers should be renamed as native_* helpers, affecting the hardware interrupt state in the CPU.</description>
     </item>
     
     <item>
       <title>Synthetic IRQs</title>
-      <link>https://xenomai.org/dovetail/pipeline/usage/synthetic/</link>
+      <link>https://dovetail.xenomai.org/pipeline/usage/synthetic/</link>
       <pubDate>Wed, 27 Jun 2018 09:55:57 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/usage/synthetic/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/synthetic/</guid>
       <description>The pipeline introduces an additional type of interrupts, which are purely software-originated, with no hardware involvement. These IRQs can be triggered by any kernel code. Synthetic IRQs are inherently per-CPU events.
 Because the common pipeline flow_ applies to synthetic interrupts, it is possible to attach them to out-of-band and/or in-band handlers, just like device interrupts.
 Synthetic interrupts and regular softirqs differ in essence: the latter only exist in the in-band context, and therefore cannot trigger out-of-band activities.</description>
@@ -90,20 +90,20 @@ Synthetic interrupts and regular softirqs differ in essence: the latter only exi
     
     <item>
       <title>Pipeline Stop</title>
-      <link>https://xenomai.org/dovetail/pipeline/usage/pipeline_stop/</link>
+      <link>https://dovetail.xenomai.org/pipeline/usage/pipeline_stop/</link>
       <pubDate>Sun, 01 Jul 2018 15:13:13 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/usage/pipeline_stop/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/pipeline_stop/</guid>
       <description>In some circumstances, it may be required to stop all activities in the whole machine, forcing all CPUs to come to a stall before running a user-defined handler. A non-pipelined kernel would call the stop_machine() service for this purpose.
 However, interrupt pipelining would still allow out-of-band activity to take place on the head stage as stop_machine() would only affect the root stage onto which the in-band kernel code runs. For the purpose of enforcing a complete stall encompassing all execution stages, the stop_machine_pipelined() service has been introduced.</description>
     </item>
     
     <item>
       <title>Rules Of Thumb</title>
-      <link>https://xenomai.org/dovetail/pipeline/rulesofthumb/</link>
+      <link>https://dovetail.xenomai.org/pipeline/rulesofthumb/</link>
       <pubDate>Sat, 30 Jun 2018 19:02:50 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/rulesofthumb/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/rulesofthumb/</guid>
       <description>Turn on debug options in the kernel configuration! During the development phase, do yourself a favour: turn on CONFIG_DEBUG_IRQ_PIPELINE and CONFIG_DEBUG_DOVETAIL.
 The first one will catch many nasty issues, such as calling unsafe in-band code from out-of-band context. The second one checks the integrity of the alternate task control mechanism, detecting issues in the architecture port.
 The runtime overhead induced by enabling these options is marginal. Just don&amp;rsquo;t port Dovetail or implement out-of-band client code without them enabled in your target kernel, seriously.</description>
@@ -111,40 +111,40 @@ The runtime overhead induced by enabling these options is marginal. Just don&amp
     
     <item>
       <title>IRQ injection</title>
-      <link>https://xenomai.org/dovetail/pipeline/usage/pipeline_inject/</link>
+      <link>https://dovetail.xenomai.org/pipeline/usage/pipeline_inject/</link>
       <pubDate>Sun, 01 Jul 2018 15:38:34 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/usage/pipeline_inject/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/pipeline_inject/</guid>
       <description>irq_pipeline_inject()
  irq_stage_post_root()
  irq_stage_post_head()
-  TBD.</description>
+  TBC.</description>
     </item>
     
     <item>
       <title>Timer management</title>
-      <link>https://xenomai.org/dovetail/pipeline/porting/timer/</link>
+      <link>https://dovetail.xenomai.org/pipeline/porting/timer/</link>
       <pubDate>Wed, 27 Jun 2018 17:15:23 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/porting/timer/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/porting/timer/</guid>
       <description>Proxy tick device The proxy tick device is a synthetic clock event device for handing over the control of the hardware tick device to a high-precision, out-of-band timing logic, which cannot be delayed by the in-band kernel code. With this proxy in place, any out-of-band code can gain control over the timer hardware for carrying out its own timing duties. In the same move, it is required to honor the timing requests received from the in-band timer core (i.</description>
     </item>
     
     <item>
       <title>Stage escalation</title>
-      <link>https://xenomai.org/dovetail/pipeline/usage/stage_escalation/</link>
+      <link>https://dovetail.xenomai.org/pipeline/usage/stage_escalation/</link>
       <pubDate>Sun, 01 Jul 2018 15:46:04 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/usage/stage_escalation/</guid>
-      <description>irq_stage_escalate()  TBD.</description>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/stage_escalation/</guid>
+      <description>irq_stage_escalate()  TBC.</description>
     </item>
     
     <item>
       <title>Atomic operations</title>
-      <link>https://xenomai.org/dovetail/pipeline/porting/atomic/</link>
+      <link>https://dovetail.xenomai.org/pipeline/porting/atomic/</link>
       <pubDate>Wed, 27 Jun 2018 17:17:25 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/porting/atomic/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/porting/atomic/</guid>
       <description>The effect of virtualizing interrupt protection must be reversed for atomic helpers in asm-generic/atomic.h, asm-generic/bitops/atomic.h and asm-generic/cmpxchg-local.h, so that no interrupt can preempt their execution, regardless of the stage their caller live on.
 This is required to keep those helpers usable on data which might be accessed concurrently from both stages.
 The usual way to revert such virtualization consists of delimiting the protected section with hard_local_irq_save(), hard_local_irq_restore() calls, in replacement for local_irq_save(), local_irq_restore() respectively.</description>
@@ -152,10 +152,10 @@ The usual way to revert such virtualization consists of delimiting the protected
     
     <item>
       <title>Interrupt Protection</title>
-      <link>https://xenomai.org/dovetail/pipeline/usage/interrupt_protection/</link>
+      <link>https://dovetail.xenomai.org/pipeline/usage/interrupt_protection/</link>
       <pubDate>Sun, 01 Jul 2018 17:54:11 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/usage/interrupt_protection/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/interrupt_protection/</guid>
       <description>Disabling interrupts in the CPU The local_irq_save() and local_irq_disable() helpers are no more disabling interrupts in the CPU when interrupt pipelining is enabled, but only disable interrupt events virtually for the root stage.
 A set of helpers is provided for manipulating the interrupt disable flag in the CPU instead. When CONFIG_IRQ_PIPELINE is disabled, this set maps 1:1 over the regular local_irq_*() API.
    Original/Virtual Non-virtualized call     local_save_flags(flags) flags = hard_local_save_flags()   local_irq_disable() hard_local_irq_disable()   local_irq_enable() hard_local_irq_enable()   local_irq_save(flags) flags = hard_local_irq_save()   local_irq_restore(flags) hard_local_irq_restore(flags)   irqs_disabled() hard_irqs_disabled()   irqs_disabled_flags(flags) hard_irqs_disabled_flags(flags)    Stalling the head stage Just like the root stage is affected by the state of the virtual interrupt disable flag, the interrupt state of the head stage is controlled by a dedicated stall bit flag in the head stage&amp;rsquo;s status.</description>
@@ -163,20 +163,20 @@ A set of helpers is provided for manipulating the interrupt disable flag in the 
     
     <item>
       <title>Locking</title>
-      <link>https://xenomai.org/dovetail/pipeline/usage/locking/</link>
+      <link>https://dovetail.xenomai.org/pipeline/usage/locking/</link>
       <pubDate>Wed, 27 Jun 2018 17:23:53 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/usage/locking/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/locking/</guid>
       <description>Additional spinlock types The pipeline core introduces two spinlock types:
  hard spinlocks manipulate the CPU interrupt mask, and don&amp;rsquo;t affect the kernel preemption state in locking/unlocking operations.  This type of spinlock is useful for implementing a critical section to serialize concurrent accesses from both in-band and out-of-band contexts, i.e. from root and head stages. Obviously, sleeping into a critical section protected by a hard spinlock would be a very bad idea.</description>
     </item>
     
     <item>
       <title>Misc</title>
-      <link>https://xenomai.org/dovetail/pipeline/porting/misc/</link>
+      <link>https://dovetail.xenomai.org/pipeline/porting/misc/</link>
       <pubDate>Wed, 27 Jun 2018 17:40:50 +0200</pubDate>
       
-      <guid>https://xenomai.org/dovetail/pipeline/porting/misc/</guid>
+      <guid>https://dovetail.xenomai.org/pipeline/porting/misc/</guid>
       <description>printk() support printk() may be called by out-of-band code safely, without encurring extra latency. The output is conveyed like NMI-originated output, which involves some delay until the in-band code resumes, and the console driver(s) can handle it.
 Tracing Tracepoints can be traversed by out-of-band code safely. Dynamic tracing is available to a kernel running the pipelined interrupt model too.</description>
     </item>
