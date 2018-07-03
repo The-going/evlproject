@@ -8,11 +8,9 @@ draft: false
 The pipeline introduces an additional type of interrupts, which are
 purely software-originated, with no hardware involvement. These IRQs
 can be triggered by any kernel code. Synthetic IRQs are inherently
-per-CPU events.
-
-Because the common pipeline flow_ applies to synthetic interrupts, it
-is possible to attach them to out-of-band and/or in-band handlers,
-just like device interrupts.
+per-CPU events. Because the common pipeline flow applies to synthetic
+interrupts, it is possible to attach them to out-of-band and/or
+in-band handlers, just like device interrupts.
 
 {{% notice note %}}
 Synthetic interrupts and regular softirqs differ in essence: the
