@@ -38,6 +38,13 @@ execution context to the head stage if not current yet. Otherwise, the
 event is marked as pending in the root stage's log for the current
 CPU.
 
+{{% notice tip %}}
+This is important to notice: _every_ interrupt which is _not_ handled
+by an out-of-band handler will end up into the root stage's event
+log. This means that all external interrupts must have a handler in
+the in-band code - which should be the case for a sane kernel anyway.
+{{% /notice %}}
+
 Once `generic_pipeline_irq()` has returned, if the preempted execution
 context was running over the root stage unstalled, the pipeline core
 synchronizes the interrupt state immediately, meaning that all IRQs

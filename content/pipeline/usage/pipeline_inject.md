@@ -11,4 +11,6 @@ draft: false
 
 - `irq_stage_post_head()`
 
+- `irq_pipeline_send_remote()`
+
 TBC.

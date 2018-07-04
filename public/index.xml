@@ -117,6 +117,7 @@ The runtime overhead induced by enabling these options is marginal. Just don&amp
       <description>irq_pipeline_inject()
  irq_stage_post_root()
  irq_stage_post_head()
+ irq_pipeline_send_remote()
   TBC.</description>
     </item>
     
@@ -178,6 +179,17 @@ A set of helpers is provided for manipulating the interrupt disable flag in the 
       <guid>https://dovetail.xenomai.org/pipeline/porting/misc/</guid>
       <description>printk() support printk() may be called by out-of-band code safely, without encurring extra latency. The output is conveyed like NMI-originated output, which involves some delay until the in-band code resumes, and the console driver(s) can handle it.
 Tracing Tracepoints can be traversed by out-of-band code safely. Dynamic tracing is available to a kernel running the pipelined interrupt model too.</description>
+    </item>
+    
+    <item>
+      <title>Developer&#39;s Notes</title>
+      <link>https://dovetail.xenomai.org/pipeline/porting/devnotes/</link>
+      <pubDate>Tue, 03 Jul 2018 19:32:57 +0200</pubDate>
+      
+      <guid>https://dovetail.xenomai.org/pipeline/porting/devnotes/</guid>
+      <description>Intrinsically preemption-safe contexts Over a few contexts, we may traverse code using unprotected, preemption-sensitive accessors such as percpu() without disabling preemption specifically, because either one condition is true;
+ if preempt_count() bears either of the PIPELINE_MASK or STAGE_MASK bits, which turns preemption off, therefore CPU migration cannot happen (debug_smp_processor_id() and preempt checks in percpu accessors would detect such context properly too).
+ if we are running over the context of the root stage&amp;rsquo;s event log syncer (irq_stage_sync_current()) playing a deferred interrupt, in which case the virtual interrupt disable bit is set, so no CPU migration may occur either.</description>
     </item>
     
   </channel>

@@ -118,6 +118,11 @@
   </url>
   
   <url>
+    <loc>https://dovetail.xenomai.org/pipeline/porting/devnotes/</loc>
+    <lastmod>2018-07-03T19:32:57+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://dovetail.xenomai.org/</loc>
     <lastmod>2018-06-26T19:28:38+02:00</lastmod>
   </url>

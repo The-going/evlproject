@@ -71,7 +71,7 @@ device interrupt.
 Only oneshot-capable clock event devices can be shared via the proxy tick device.
 {{% /notice %}}
 
-### Theory of operations
+### Theory of operations {#proxy-tick-logic}
 
 Calling `tick_install_proxy()` creates an instance of the proxy tick
 device on each CPU mentioned in the `cpumask` it receives.  This

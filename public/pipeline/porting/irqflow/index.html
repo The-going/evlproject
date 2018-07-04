@@ -12,19 +12,19 @@
     <title>Interrupt flow :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1530626997" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1530626997" rel="stylesheet">
-    <link href="/css/hybrid.css?1530626997" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1530626997" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1530626997" rel="stylesheet">
-    <link href="/css/auto-complete.css?1530626997" rel="stylesheet">
-    <link href="/css/theme.css?1530626997" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1530626997" rel="stylesheet">
+    <link href="/css/nucleus.css?1530691120" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1530691120" rel="stylesheet">
+    <link href="/css/hybrid.css?1530691120" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1530691120" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1530691120" rel="stylesheet">
+    <link href="/css/auto-complete.css?1530691120" rel="stylesheet">
+    <link href="/css/theme.css?1530691120" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1530691120" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1530626997" rel="stylesheet">
+      <link href="/css/theme-blue.css?1530691120" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1530626997"></script>
+    <script src="/js/jquery-2.x.min.js?1530691120"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1530626997"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1530626997"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1530691120"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1530691120"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1530626997"></script>
+<script type="text/javascript" src="/js/search.js?1530691120"></script>
 
     
   </div>
@@ -442,6 +442,25 @@
 
             
           
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/pipeline/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item ">
+        <a href="/pipeline/porting/devnotes/">
+        Developer&#39;s Notes
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
         
         </ul>
               
@@ -696,6 +715,13 @@ core by calling <code>handle_oob_irq()</code>.</p>
 execution context to the head stage if not current yet. Otherwise, the
 event is marked as pending in the root stage&rsquo;s log for the current
 CPU.</p>
+
+<div class="notices tip" ><p>This is important to notice: <em>every</em> interrupt which is <em>not</em> handled
+by an out-of-band handler will end up into the root stage&rsquo;s event
+log. This means that all external interrupts must have a handler in
+the in-band code - which should be the case for a sane kernel anyway.</p>
+</div>
+
 
 <p>Once <code>generic_pipeline_irq()</code> has returned, if the preempted execution
 context was running over the root stage unstalled, the pipeline core
@@ -1291,6 +1317,22 @@ hardware-specific interrupt vector. This special IRQ is labeled
             
         
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
             
         
                     
@@ -1396,20 +1438,20 @@ hardware-specific interrupt vector. This special IRQ is labeled
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1530626997"></script>
-    <script src="/js/perfect-scrollbar.min.js?1530626997"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1530626997"></script>
-    <script src="/js/jquery.sticky.js?1530626997"></script>
-    <script src="/js/featherlight.min.js?1530626997"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1530626997"></script>
-    <script src="/js/highlight.pack.js?1530626997"></script>
+    <script src="/js/clipboard.min.js?1530691120"></script>
+    <script src="/js/perfect-scrollbar.min.js?1530691120"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1530691120"></script>
+    <script src="/js/jquery.sticky.js?1530691120"></script>
+    <script src="/js/featherlight.min.js?1530691120"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1530691120"></script>
+    <script src="/js/highlight.pack.js?1530691120"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1530626997"></script>
-    <script src="/js/learn.js?1530626997"></script>
-    <script src="/js/hugo-learn.js?1530626997"></script>
+    <script src="/js/modernizr.custom.71422.js?1530691120"></script>
+    <script src="/js/learn.js?1530691120"></script>
+    <script src="/js/hugo-learn.js?1530691120"></script>
 
-    <link href="/mermaid/mermaid.css?1530626997" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1530626997"></script>
+    <link href="/mermaid/mermaid.css?1530691120" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1530691120"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
