@@ -36,9 +36,7 @@ With this in mind, simple rules apply:
 1. Development takes place in the _master_ branch. This branch is
 routinely rebased on the [mainline
 kernel's](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git)
-_master_ branch, as the upstream kernel progresses. However, the
-linear history of changes to the _master_ branch implementing Dovetail
-is (from now on) kept.
+_master_ branch, as the upstream kernel progresses.
 
 2. From time to time, a snapshot branch will be made of the current
 state of the _master_ branch, usually when the mainline code it is
