@@ -15,19 +15,25 @@ This page summarizes the status of the ongoing ports of Dovetail.
   <col width="20%">
   <col width="20%">
   <tr>
-    <th>Soc</th>
+    <th>Soc (Board)</th>
     <th>IRQ pipeline <sup>1</sup></th> 
     <th>Alternate task control</th>
     <th>Steely<sup>2</sup></th>
   </tr>
   <tr>
-    <td align="left"><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">i.MX6qp</a></td>
+    <td align="left"><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">i.MX6qp (SabreSD)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
   </tr>
   <tr>
-    <td align="left"><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-7dual-applications-processors:MCIMX7SABRE" target="_blank">i.MX7D</a></td>
+    <td align="left"><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-7dual-applications-processors:MCIMX7SABRE" target="_blank">i.MX7D (SabreSD)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+  </tr>
+  <tr>
+    <td align="left"><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">Cannes2-STiH410 (B2260)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
@@ -42,19 +48,19 @@ This page summarizes the status of the ongoing ports of Dovetail.
   <col width="20%">
   <col width="20%">
   <tr>
-    <th>Soc</th>
+    <th>Soc (Board)</th>
     <th>IRQ pipeline <sup>1</sup></th> 
     <th>Alternate task control</th>
     <th>Steely<sup>2</sup></th>
   </tr>
   <tr>
-    <td align="left"><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">QEMU/virt</a></td>
+    <td align="left"><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">virt (QEMU)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/unchecked.png"></td>
     <td><img src="/images/unchecked.png"></td>
   </tr>
   <tr>
-    <td align="left"><a href="https://www.96boards.org/product/hikey/" target="_blank">HiKey LeMaker</a></td>
+    <td align="left"><a href="https://www.96boards.org/product/hikey/" target="_blank">Kirin 620 (HiKey LeMaker)</a></td>
     <td><img src="/images/wip.png"></td> 
     <td><img src="/images/unchecked.png"></td>
     <td><img src="/images/unchecked.png"></td>
@@ -74,4 +80,5 @@ improving Dovetail.  Steely is nowhere near production software, we
 try fundamental changes there for going beyond Cobalt's current
 limitations, which could not be merged into the mature Xenomai code
 base at this point. When this box is checked, the corresponding
-Dovetail port is known to be capable of supporting a real-time core.
+Dovetail port has been tested successfully with a _Steely_ real-time
+core.
