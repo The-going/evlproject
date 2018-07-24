@@ -7,6 +7,10 @@ draft: false
 
 This page summarizes the status of the ongoing ports of Dovetail.
 
+> Target kernel release
+
+4.18-rc6
+
 > ARM SoC
 
 <table class="status" style="width:50%">
@@ -34,6 +38,12 @@ This page summarizes the status of the ongoing ports of Dovetail.
   </tr>
   <tr>
     <td align="left"><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">Cannes2-STiH410 (B2260)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+  </tr>
+  <tr>
+    <td align="left"><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">Cyclone V SoC FPGA (DevKit)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
