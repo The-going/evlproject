@@ -12,19 +12,19 @@
     <title>Developer&#39;s Notes :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1530773199" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1530773199" rel="stylesheet">
-    <link href="/css/hybrid.css?1530773199" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1530773199" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1530773199" rel="stylesheet">
-    <link href="/css/auto-complete.css?1530773199" rel="stylesheet">
-    <link href="/css/theme.css?1530773199" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1530773199" rel="stylesheet">
+    <link href="/css/nucleus.css?1532446856" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1532446856" rel="stylesheet">
+    <link href="/css/hybrid.css?1532446856" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1532446856" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1532446856" rel="stylesheet">
+    <link href="/css/auto-complete.css?1532446856" rel="stylesheet">
+    <link href="/css/theme.css?1532446856" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1532446856" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1530773199" rel="stylesheet">
+      <link href="/css/theme-blue.css?1532446856" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1530773199"></script>
+    <script src="/js/jquery-2.x.min.js?1532446856"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1530773199"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1530773199"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1532446856"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1532446856"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1530773199"></script>
+<script type="text/javascript" src="/js/search.js?1532446856"></script>
 
     
   </div>
@@ -430,6 +430,25 @@
  
   
     
+      <li data-nav-id="/pipeline/porting/rawprintk/" title="Raw printk support" class="dd-item ">
+        <a href="/pipeline/porting/rawprintk/">
+        Serial debugging
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
       <li data-nav-id="/pipeline/porting/misc/" title="Misc" class="dd-item ">
         <a href="/pipeline/porting/misc/">
         Misc
@@ -653,8 +672,15 @@
 <ul>
 <li>
 <ul>
-<li><a href="#intrinsically-preemption-safe-contexts">Intrinsically preemption-safe contexts</a></li>
+<li><a href="#generic">Generic</a>
+<ul>
+<li><a href="#fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</a></li>
 <li><a href="#checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</a></li>
+</ul></li>
+<li><a href="#arm">ARM</a>
+<ul>
+<li><a href="#context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -677,7 +703,9 @@
 
 
 
-<h2 id="intrinsically-preemption-safe-contexts">Intrinsically preemption-safe contexts</h2>
+<h2 id="generic">Generic</h2>
+
+<h3 id="fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</h3>
 
 <p>Over a few contexts, we may traverse code using unprotected,
 preemption-sensitive accessors such as <code>percpu()</code> without disabling
@@ -712,7 +740,7 @@ PIPELINE_MASK is set. When called for playing a deferred interrupt
 on the root stage, the virtual interrupt disable bit is set.</p></li>
 </ul>
 
-<h2 id="checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</h2>
+<h3 id="checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</h3>
 
 <p>The <code>IRQF_OOB</code> action flag should <strong>NOT</strong> be used for testing whether
 an interrupt is out-of-band, because out-of-band handling may be
@@ -721,6 +749,24 @@ turned on/off dynamically on an IRQ descriptor using
 set/cleared for the attached action handlers.</p>
 
 <p><code>irq_is_oob()</code> is the right way to check for out-of-band handling.</p>
+
+<h2 id="arm">ARM</h2>
+
+<h3 id="context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</h3>
+
+<p>There is no reason for the outer cache to be
+invalidated/flushed/cleaned from an out-of-band context, all cache
+maintenance operations must happen from in-band code. Therefore, we
+neither need nor want to convert the spinlock serializing access to
+the cache maintenance operations for L2 to a hard lock.</p>
+
+<div class="notices tip" ><p>Conversion to hard lock may have cause latency to skyrocket on some
+i.MX6 hardware, equipped with PL22x cache units, or PL31x with errata
+588369 or 727915 for particular hardware revisions, as each background
+operation was awaited for completion for working around some silicon
+bug, with hard irqs disabled.</p>
+</div>
+
 
 
 <footer class=" footline" >
@@ -1051,6 +1097,22 @@ set/cleared for the attached action handlers.</p>
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                     
                 
                 
@@ -1171,20 +1233,20 @@ set/cleared for the attached action handlers.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1530773199"></script>
-    <script src="/js/perfect-scrollbar.min.js?1530773199"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1530773199"></script>
-    <script src="/js/jquery.sticky.js?1530773199"></script>
-    <script src="/js/featherlight.min.js?1530773199"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1530773199"></script>
-    <script src="/js/highlight.pack.js?1530773199"></script>
+    <script src="/js/clipboard.min.js?1532446856"></script>
+    <script src="/js/perfect-scrollbar.min.js?1532446856"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1532446856"></script>
+    <script src="/js/jquery.sticky.js?1532446856"></script>
+    <script src="/js/featherlight.min.js?1532446856"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1532446856"></script>
+    <script src="/js/highlight.pack.js?1532446856"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1530773199"></script>
-    <script src="/js/learn.js?1530773199"></script>
-    <script src="/js/hugo-learn.js?1530773199"></script>
+    <script src="/js/modernizr.custom.71422.js?1532446856"></script>
+    <script src="/js/learn.js?1532446856"></script>
+    <script src="/js/hugo-learn.js?1532446856"></script>
 
-    <link href="/mermaid/mermaid.css?1530773199" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1530773199"></script>
+    <link href="/mermaid/mermaid.css?1532446856" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1532446856"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

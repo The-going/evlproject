@@ -19,13 +19,15 @@ from the target Linux kernel:
 
 ## Other assumptions
 
-### ARM
+### ARM {#porting-prereq}
 
 - a target ARM machine port must be allowed to specify its own IRQ
   handler at run time (CONFIG_MULTI_IRQ_HANDLER).
 
 - only armv6 CPUs and later are supported, excluding older generations
   of ARM CPUs. Support for ASID (CONFIG_CPU_HAS_ASID) is required.
+
+- machine does not have VIVT cache.
 
 {{% notice warning %}}
 armv5 is not supported due to the use of VIVT caches on these

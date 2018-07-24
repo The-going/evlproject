@@ -89,3 +89,12 @@ inherit the following requirements:
 
 - the section covered by the lock should be short enough to keep
   interrupt latency low.
+
+## Enable RAW_PRINTK support for printk-like debugging
+
+Unless you are lucky enough to have an ICE for debugging hard issues
+involving out-of-band contexts, you might have to resort to basic
+printk-style debugging. If so, do **NOT** rely on the regular
+_printk()_ routine for this, this won't work in most cases.  See how
+to provide for a printk-like [raw debug channel]({{% relref
+"pipeline/porting/rawprintk.md" %}}) over a serial console instead.

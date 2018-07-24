@@ -1,7 +1,7 @@
 ---
 title: "Timer management"
 date: 2018-06-27T17:15:23+02:00
-weight: 5
+weight: 4
 draft: false
 ---
 
