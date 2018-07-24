@@ -16,8 +16,10 @@ out-of-band context, the output is deferred until the root stage gets
 back in control, which means that:
 
 - you can't reliably trace out-of-band code on the spot, deferred
-  output issued from out-of-band context may appear after in-band
-  messages, although it was sent earlier.
+  output issued from an out-of-band context, or from a section of code
+  running with interrupts disabled in the CPU may appear after
+  subsequent in-band messages under some circumstances, due to a
+  buffering effect.
 
 - if the debug traces are sent at high pace (e.g. from an out-of-band
   IRQ handler every few hundreds of microseconds), the machine is

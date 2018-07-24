@@ -181,16 +181,6 @@ Tracing Tracepoints can be traversed by out-of-band code safely. Dynamic tracing
     </item>
     
     <item>
-      <title>Locking</title>
-      <link>https://dovetail.xenomai.org/pipeline/usage/locking/</link>
-      <pubDate>Wed, 27 Jun 2018 17:23:53 +0200</pubDate>
-      
-      <guid>https://dovetail.xenomai.org/pipeline/usage/locking/</guid>
-      <description>Additional spinlock types The pipeline core introduces two spinlock types:
- hard spinlocks manipulate the CPU interrupt mask, and don&amp;rsquo;t affect the kernel preemption state in locking/unlocking operations.  This type of spinlock is useful for implementing a critical section to serialize concurrent accesses from both in-band and out-of-band contexts, i.e. from root and head stages. Obviously, sleeping into a critical section protected by a hard spinlock would be a very bad idea.</description>
-    </item>
-    
-    <item>
       <title>Developer&#39;s Notes</title>
       <link>https://dovetail.xenomai.org/pipeline/porting/devnotes/</link>
       <pubDate>Tue, 03 Jul 2018 19:32:57 +0200</pubDate>
@@ -199,6 +189,16 @@ Tracing Tracepoints can be traversed by out-of-band code safely. Dynamic tracing
       <description>Generic Fundamentally preemption-safe contexts Over a few contexts, we may traverse code using unprotected, preemption-sensitive accessors such as percpu() without disabling preemption specifically, because either one condition is true;
  if preempt_count() bears either of the PIPELINE_MASK or STAGE_MASK bits, which turns preemption off, therefore CPU migration cannot happen (debug_smp_processor_id() and preempt checks in percpu accessors would detect such context properly too).
  if we are running over the context of the root stage&amp;rsquo;s event log syncer (irq_stage_sync_current()) playing a deferred interrupt, in which case the virtual interrupt disable bit is set, so no CPU migration may occur either.</description>
+    </item>
+    
+    <item>
+      <title>Locking</title>
+      <link>https://dovetail.xenomai.org/pipeline/usage/locking/</link>
+      <pubDate>Wed, 27 Jun 2018 17:23:53 +0200</pubDate>
+      
+      <guid>https://dovetail.xenomai.org/pipeline/usage/locking/</guid>
+      <description>Additional spinlock types The pipeline core introduces two spinlock types:
+ hard spinlocks manipulate the CPU interrupt mask, and don&amp;rsquo;t affect the kernel preemption state in locking/unlocking operations.  This type of spinlock is useful for implementing a critical section to serialize concurrent accesses from both in-band and out-of-band contexts, i.e. from root and head stages. Obviously, sleeping into a critical section protected by a hard spinlock would be a very bad idea.</description>
     </item>
     
   </channel>
