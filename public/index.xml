@@ -88,13 +88,16 @@ Synthetic interrupts and regular softirqs differ in essence: the latter only exi
     </item>
     
     <item>
-      <title>Pipeline Stop</title>
-      <link>https://dovetail.xenomai.org/pipeline/usage/pipeline_stop/</link>
-      <pubDate>Sun, 01 Jul 2018 15:13:13 +0200</pubDate>
+      <title>IRQ injection</title>
+      <link>https://dovetail.xenomai.org/pipeline/usage/pipeline_inject/</link>
+      <pubDate>Sun, 01 Jul 2018 15:38:34 +0200</pubDate>
       
-      <guid>https://dovetail.xenomai.org/pipeline/usage/pipeline_stop/</guid>
-      <description>In some circumstances, it may be required to stop all activities in the whole machine, forcing all CPUs to come to a stall before running a user-defined handler. A non-pipelined kernel would call the stop_machine() service for this purpose.
-However, interrupt pipelining would still allow out-of-band activity to take place on the head stage as stop_machine() would only affect the root stage onto which the in-band kernel code runs. For the purpose of enforcing a complete stall encompassing all execution stages, the stop_machine_pipelined() service has been introduced.</description>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/pipeline_inject/</guid>
+      <description>irq_pipeline_inject()
+ irq_stage_post_root()
+ irq_stage_post_head()
+ irq_pipeline_send_remote()
+  TBC.</description>
     </item>
     
     <item>
@@ -118,16 +121,12 @@ The runtime overhead induced by enabling these options is marginal. Just don&amp
     </item>
     
     <item>
-      <title>IRQ injection</title>
-      <link>https://dovetail.xenomai.org/pipeline/usage/pipeline_inject/</link>
-      <pubDate>Sun, 01 Jul 2018 15:38:34 +0200</pubDate>
+      <title>Stage escalation</title>
+      <link>https://dovetail.xenomai.org/pipeline/usage/stage_escalation/</link>
+      <pubDate>Sun, 01 Jul 2018 15:46:04 +0200</pubDate>
       
-      <guid>https://dovetail.xenomai.org/pipeline/usage/pipeline_inject/</guid>
-      <description>irq_pipeline_inject()
- irq_stage_post_root()
- irq_stage_post_head()
- irq_pipeline_send_remote()
-  TBC.</description>
+      <guid>https://dovetail.xenomai.org/pipeline/usage/stage_escalation/</guid>
+      <description>irq_stage_escalate()  TBC.</description>
     </item>
     
     <item>
@@ -148,15 +147,6 @@ The usual way to revert such virtualization consists of delimiting the protected
       
       <guid>https://dovetail.xenomai.org/pipeline/porting/rawprintk/</guid>
       <description>Unless you are lucky enough to have an ICE for debugging hard issues involving out-of-band contexts, you might have to resort to basic printk-style debugging over a serial line. If so, do NOT rely on the regular printk() routine for this, this won&amp;rsquo;t work in most cases, potentially adding even more sources of lockups to the whole gloomy picture. Although the printk() machinery can be used from out-of-band context, the output is deferred until the root stage gets back in control, which means that:</description>
-    </item>
-    
-    <item>
-      <title>Stage escalation</title>
-      <link>https://dovetail.xenomai.org/pipeline/usage/stage_escalation/</link>
-      <pubDate>Sun, 01 Jul 2018 15:46:04 +0200</pubDate>
-      
-      <guid>https://dovetail.xenomai.org/pipeline/usage/stage_escalation/</guid>
-      <description>irq_stage_escalate()  TBC.</description>
     </item>
     
     <item>
@@ -181,6 +171,16 @@ Tracing Tracepoints can be traversed by out-of-band code safely. Dynamic tracing
     </item>
     
     <item>
+      <title>Locking</title>
+      <link>https://dovetail.xenomai.org/pipeline/usage/locking/</link>
+      <pubDate>Wed, 27 Jun 2018 17:23:53 +0200</pubDate>
+      
+      <guid>https://dovetail.xenomai.org/pipeline/usage/locking/</guid>
+      <description>Additional spinlock types The pipeline core introduces two spinlock types:
+ hard spinlocks manipulate the CPU interrupt mask, and don&amp;rsquo;t affect the kernel preemption state in locking/unlocking operations.  This type of spinlock is useful for implementing a critical section to serialize concurrent accesses from both in-band and out-of-band contexts, i.e. from root and head stages. Obviously, sleeping into a critical section protected by a hard spinlock would be a very bad idea.</description>
+    </item>
+    
+    <item>
       <title>Developer&#39;s Notes</title>
       <link>https://dovetail.xenomai.org/pipeline/porting/devnotes/</link>
       <pubDate>Tue, 03 Jul 2018 19:32:57 +0200</pubDate>
@@ -189,16 +189,6 @@ Tracing Tracepoints can be traversed by out-of-band code safely. Dynamic tracing
       <description>Generic Fundamentally preemption-safe contexts Over a few contexts, we may traverse code using unprotected, preemption-sensitive accessors such as percpu() without disabling preemption specifically, because either one condition is true;
  if preempt_count() bears either of the PIPELINE_MASK or STAGE_MASK bits, which turns preemption off, therefore CPU migration cannot happen (debug_smp_processor_id() and preempt checks in percpu accessors would detect such context properly too).
  if we are running over the context of the root stage&amp;rsquo;s event log syncer (irq_stage_sync_current()) playing a deferred interrupt, in which case the virtual interrupt disable bit is set, so no CPU migration may occur either.</description>
-    </item>
-    
-    <item>
-      <title>Locking</title>
-      <link>https://dovetail.xenomai.org/pipeline/usage/locking/</link>
-      <pubDate>Wed, 27 Jun 2018 17:23:53 +0200</pubDate>
-      
-      <guid>https://dovetail.xenomai.org/pipeline/usage/locking/</guid>
-      <description>Additional spinlock types The pipeline core introduces two spinlock types:
- hard spinlocks manipulate the CPU interrupt mask, and don&amp;rsquo;t affect the kernel preemption state in locking/unlocking operations.  This type of spinlock is useful for implementing a critical section to serialize concurrent accesses from both in-band and out-of-band contexts, i.e. from root and head stages. Obviously, sleeping into a critical section protected by a hard spinlock would be a very bad idea.</description>
     </item>
     
   </channel>

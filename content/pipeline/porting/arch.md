@@ -394,8 +394,8 @@ interrupt pipeline.
 was actually accepting interrupts when the event happened (i.e. the
 virtual interrupt disable flag was clear), and running in-band code.
 
-In all other cases, except the interrupt pipeline core, the rest of
-the kernel does _not_ expect those IRQs to ever happen in the first
+In all other cases, except for the interrupt pipeline core, the rest
+of the kernel does _not_ expect those IRQs to ever happen in the first
 place. Therefore, running the epilogue in such circumstances would be
 at odds with the kernel's logic.  In addition, low-level handlers must
 have been made aware that they might receive an event under such

@@ -12,19 +12,19 @@
     <title>Developer&#39;s Notes :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1532462079" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1532462079" rel="stylesheet">
-    <link href="/css/hybrid.css?1532462079" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1532462079" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1532462079" rel="stylesheet">
-    <link href="/css/auto-complete.css?1532462079" rel="stylesheet">
-    <link href="/css/theme.css?1532462079" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1532462079" rel="stylesheet">
+    <link href="/css/nucleus.css?1532619549" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1532619549" rel="stylesheet">
+    <link href="/css/hybrid.css?1532619549" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1532619549" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1532619549" rel="stylesheet">
+    <link href="/css/auto-complete.css?1532619549" rel="stylesheet">
+    <link href="/css/theme.css?1532619549" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1532619549" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1532462079" rel="stylesheet">
+      <link href="/css/theme-blue.css?1532619549" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1532462079"></script>
+    <script src="/js/jquery-2.x.min.js?1532619549"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1532462079"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1532462079"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1532619549"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1532619549"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1532462079"></script>
+<script type="text/javascript" src="/js/search.js?1532619549"></script>
 
     
   </div>
@@ -392,25 +392,6 @@
  
   
     
-      <li data-nav-id="/pipeline/usage/pipeline_stop/" title="Pipeline Stop" class="dd-item ">
-        <a href="/pipeline/usage/pipeline_stop/">
-        Pipeline Stop
-        
-        </a>
-    </li>
-     
-  
- 
-
-            
-          
-            
-            
-
-
- 
-  
-    
       <li data-nav-id="/pipeline/usage/pipeline_inject/" title="IRQ injection" class="dd-item ">
         <a href="/pipeline/usage/pipeline_inject/">
         IRQ injection
@@ -676,6 +657,7 @@
 <ul>
 <li><a href="#fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</a></li>
 <li><a href="#checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</a></li>
+<li><a href="#stop-machine-hard-disables-interrupts">stop_machine() hard disables interrupts</a></li>
 </ul></li>
 <li><a href="#arm">ARM</a>
 <ul>
@@ -749,6 +731,32 @@ turned on/off dynamically on an IRQ descriptor using
 set/cleared for the attached action handlers.</p>
 
 <p><code>irq_is_oob()</code> is the right way to check for out-of-band handling.</p>
+
+<h3 id="stop-machine-hard-disables-interrupts">stop_machine() hard disables interrupts</h3>
+
+<p>The regular stop_machine() services guarantees that all online CPUs
+are spinning non-preemptible in a known code location before a subset
+of them may safely run a stop-context function. This service is
+typically useful for live patching the kernel code, or changing global
+memory mappings, so that no activity could run in parallel until the
+system has returned to a stable state after all stop-context
+operations have completed.</p>
+
+<p>When interrupt pipelining is enabled, Dovetail provides the same
+guarantee by restoring hard interrupt disabling where virtualizing the
+interrupt disable flag would defeat it.</p>
+
+<p>As those lines are written, all stop_machine() use cases must also
+exclude any head stage activity (e.g. ftrace live patching the kernel
+code for installing tracepoints), or happen before any such activity
+can ever take place (e.g. KPTI boot mappings). This is a basic
+assumption: stop_machine() could not get in the way of
+latency-sensitive processes, simply because the latter could not keep
+running safely until a call to the former has completed anyway.</p>
+
+<p>However, one should keep an eye on stop_machine() upstream,
+identifying new callers which might cause unwanted latency spots under
+specific circumstances (maybe even abusing the interface).</p>
 
 <h2 id="arm">ARM</h2>
 
@@ -1112,22 +1120,6 @@ bug, with hard irqs disabled.</p>
             
         
                     
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
             
         
                     
@@ -1233,20 +1225,20 @@ bug, with hard irqs disabled.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1532462079"></script>
-    <script src="/js/perfect-scrollbar.min.js?1532462079"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1532462079"></script>
-    <script src="/js/jquery.sticky.js?1532462079"></script>
-    <script src="/js/featherlight.min.js?1532462079"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1532462079"></script>
-    <script src="/js/highlight.pack.js?1532462079"></script>
+    <script src="/js/clipboard.min.js?1532619549"></script>
+    <script src="/js/perfect-scrollbar.min.js?1532619549"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1532619549"></script>
+    <script src="/js/jquery.sticky.js?1532619549"></script>
+    <script src="/js/featherlight.min.js?1532619549"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1532619549"></script>
+    <script src="/js/highlight.pack.js?1532619549"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1532462079"></script>
-    <script src="/js/learn.js?1532462079"></script>
-    <script src="/js/hugo-learn.js?1532462079"></script>
+    <script src="/js/modernizr.custom.71422.js?1532619549"></script>
+    <script src="/js/learn.js?1532619549"></script>
+    <script src="/js/hugo-learn.js?1532619549"></script>
 
-    <link href="/mermaid/mermaid.css?1532462079" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1532462079"></script>
+    <link href="/mermaid/mermaid.css?1532619549" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1532619549"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
