@@ -49,6 +49,32 @@ set/cleared for the attached action handlers.
 
 `irq_is_oob()` is the right way to check for out-of-band handling.
 
+### stop_machine() hard disables interrupts
+
+The regular stop_machine() services guarantees that all online CPUs
+are spinning non-preemptible in a known code location before a subset
+of them may safely run a stop-context function. This service is
+typically useful for live patching the kernel code, or changing global
+memory mappings, so that no activity could run in parallel until the
+system has returned to a stable state after all stop-context
+operations have completed.
+    
+When interrupt pipelining is enabled, Dovetail provides the same
+guarantee by restoring hard interrupt disabling where virtualizing the
+interrupt disable flag would defeat it.
+
+As those lines are written, all stop_machine() use cases must also
+exclude any head stage activity (e.g. ftrace live patching the kernel
+code for installing tracepoints), or happen before any such activity
+can ever take place (e.g. KPTI boot mappings). This is a basic
+assumption: stop_machine() could not get in the way of
+latency-sensitive processes, simply because the latter could not keep
+running safely until a call to the former has completed anyway.
+
+However, one should keep an eye on stop_machine() upstream,
+identifying new callers which might cause unwanted latency spots under
+specific circumstances (maybe even abusing the interface).
+
 ## ARM
 
 ### Context assumption with outer L2 cache
