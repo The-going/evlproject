@@ -70,6 +70,12 @@ This page summarizes the status of the ongoing ports of Dovetail.
     <td><img src="/images/unchecked.png"></td>
   </tr>
   <tr>
+    <td align="left"><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">BCM2837 (Raspberry 3 Model B)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/unchecked.png"></td>
+    <td><img src="/images/unchecked.png"></td>
+  </tr>
+  <tr>
     <td align="left"><a href="https://www.96boards.org/product/hikey/" target="_blank">Kirin 620 (HiKey LeMaker)</a></td>
     <td><img src="/images/wip.png"></td> 
     <td><img src="/images/unchecked.png"></td>
