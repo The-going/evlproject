@@ -48,7 +48,7 @@ which interrupts are disabled is said to be *stalled*. Conversely,
 
 {{% notice warning %}}
 Obviously, stalling the head stage implicitly means disabling
-further IRQ receipts for the root stage too.
+further IRQ receipts for the root stage down the pipeline too.
 {{% /notice %}}
 
 ## Interrupt deferral for the *root stage*
