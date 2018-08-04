@@ -66,12 +66,12 @@ interrupt disable flag would defeat it.
 As those lines are written, all `stop_machine()` use cases must also
 exclude any head stage activity (e.g. ftrace live patching the kernel
 code for installing tracepoints), or happen before any such activity
-can ever take place (e.g. KPTI boot mappings). This is a basic
-assumption: `stop_machine()` could not get in the way of
+can ever take place (e.g. KPTI boot mappings). Dovetail makes a basic
+assumption that `stop_machine()` could not get in the way of
 latency-sensitive processes, simply because the latter could not keep
 running safely until a call to the former has completed anyway.
 
-However, one should keep an eye on `stop_machine()` upstream,
+However, one should keep an eye on `stop_machine()` usage upstream,
 identifying new callers which might cause unwanted latency spots under
 specific circumstances (maybe even abusing the interface).
 
