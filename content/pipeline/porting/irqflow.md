@@ -90,7 +90,7 @@ continuous interrupt request.
 
 Since all of the IRQ handlers sharing an interrupt line are either
 in-band or out-of-band in a mutually exclusive way, such masking
-cannot delay out-of-band events though.
+cannot delay out-of-band events.
 
 > The pathological case of deferring level-triggered IRQs
 
@@ -118,7 +118,8 @@ cannot delay out-of-band events though.
 The logic behind masking interrupt lines until events are processed at
 some point later - out of the original interrupt context - also
 applies to the threaded interrupt model. In this case, interrupt lines
-may be masked until the IRQ thread is scheduled in.
+may be masked until the IRQ thread is scheduled in, after the
+interrupt handler clears the event cause eventually.
 {{% /notice %}}
 
 The logic for adapting flow handlers dealing with any kind of
@@ -196,6 +197,29 @@ out_unlock:
 }
 ```
 
+This change reads as follows:
+
+- on entering the pipeline, which means immediately over the interrupt
+  frame context set up by the CPU for receiving the event, tell the
+  pipeline core about the incoming IRQ.
+
+- if this IRQ was handled by an out-of-band handler
+  (`handle_oob_irq()` returns _true_), consider the event to have been
+  fully processed, unmasking the interrupt line before leaving. We
+  can't do more than this, simply because the in-band kernel code
+  might expect not to receive any interrupt at this point (i.e. the
+  [virtual interrupt disable flag]({{%relref
+  "pipeline/optimistic.md#virtual-i-flag" %}}) might be set for the
+  root stage).
+
+- otherwise, keep the interrupt line masked until `handle_level_irq()`
+  is called again from a safe context for handling in-band interrupts,
+  at which point the event should be delivered to the (regular)
+  in-band interrupt handler. We have to keep the line masked to
+  prevent the IRQ storm which would certainly happen otherwise, since
+  no handler has cleared the cause of the interrupt event in the
+  device yet.
+
 ## IRQ chip drivers
 
 `irqchip` drivers need to be specifically adapted for supporting the
@@ -266,6 +290,93 @@ interrupt mode.
  };
  
  void __init gic_cascade_irq(unsigned int gic_nr, unsigned int irq)
+```
+
+In some (rare) cases, we might have a bit more work for adapting an
+interrupt chip driver. For instance, we might have to convert a
+sleeping spinlock to a raw spinlock first, so that we can convert the
+latter to a hard spinlock eventually. Hard spinlocks like raw ones
+should be manipulated via the raw_spin_lock() API, unlike sleeping
+spinlocks. This change makes even more sense as sleeping is not
+allowed while running in the pipeline entry context anyway.
+
+> Adapting the BCM2835 pin control driver to interrupt pipelining
+
+```
+--- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
++++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
+@@ -90,7 +90,7 @@ struct bcm2835_pinctrl {
+ 	struct gpio_chip gpio_chip;
+ 	struct pinctrl_gpio_range gpio_range;
+ 
+-	spinlock_t irq_lock[BCM2835_NUM_BANKS];
++	hard_spinlock_t irq_lock[BCM2835_NUM_BANKS];
+ };
+ 
+ /* pins are just named GPIO0..GPIO53 */
+@@ -461,10 +461,10 @@ static void bcm2835_gpio_irq_enable(struct irq_data *data)
+ 	unsigned bank = GPIO_REG_OFFSET(gpio);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&pc->irq_lock[bank], flags);
++	raw_spin_lock_irqsave(&pc->irq_lock[bank], flags);
+ 	set_bit(offset, &pc->enabled_irq_map[bank]);
+ 	bcm2835_gpio_irq_config(pc, gpio, true);
+-	spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
++	raw_spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
+ }
+ 
+ static void bcm2835_gpio_irq_disable(struct irq_data *data)
+@@ -476,12 +476,12 @@ static void bcm2835_gpio_irq_disable(struct irq_data *data)
+ 	unsigned bank = GPIO_REG_OFFSET(gpio);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&pc->irq_lock[bank], flags);
++	raw_spin_lock_irqsave(&pc->irq_lock[bank], flags);
+ 	bcm2835_gpio_irq_config(pc, gpio, false);
+ 	/* Clear events that were latched prior to clearing event sources */
+ 	bcm2835_gpio_set_bit(pc, GPEDS0, gpio);
+ 	clear_bit(offset, &pc->enabled_irq_map[bank]);
+-	spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
++	raw_spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
+ }
+ 
+ static int __bcm2835_gpio_irq_set_type_disabled(struct bcm2835_pinctrl *pc,
+@@ -584,7 +584,7 @@ static int bcm2835_gpio_irq_set_type(struct irq_data *data, unsigned int type)
+ 	unsigned long flags;
+ 	int ret;
+ 
+-	spin_lock_irqsave(&pc->irq_lock[bank], flags);
++	raw_spin_lock_irqsave(&pc->irq_lock[bank], flags);
+ 
+ 	if (test_bit(offset, &pc->enabled_irq_map[bank]))
+ 		ret = __bcm2835_gpio_irq_set_type_enabled(pc, gpio, type);
+@@ -596,7 +596,7 @@ static int bcm2835_gpio_irq_set_type(struct irq_data *data, unsigned int type)
+ 	else
+ 		irq_set_handler_locked(data, handle_level_irq);
+ 
+-	spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
++	raw_spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
+ 
+ 	return ret;
+ }
+@@ -618,6 +618,7 @@ static struct irq_chip bcm2835_gpio_irq_chip = {
+ 	.irq_ack = bcm2835_gpio_irq_ack,
+ 	.irq_mask = bcm2835_gpio_irq_disable,
+ 	.irq_unmask = bcm2835_gpio_irq_enable,
++	.flags = IRQCHIP_PIPELINE_SAFE,
+ };
+ 
+ static int bcm2835_pctl_get_groups_count(struct pinctrl_dev *pctldev)
+@@ -1047,7 +1048,7 @@ static int bcm2835_pinctrl_probe(struct platform_device *pdev)
+ 		for_each_set_bit(offset, &events, 32)
+ 			bcm2835_gpio_wr(pc, GPEDS0 + i * 4, BIT(offset));
+ 
+-		spin_lock_init(&pc->irq_lock[i]);
++		raw_spin_lock_init(&pc->irq_lock[i]);
+ 	}
+ 
+ 	err = gpiochip_add_data(&pc->gpio_chip, pc);
 ```
 
 {{% notice note %}}
