@@ -71,13 +71,74 @@ device interrupt.
 Only oneshot-capable clock event devices can be shared via the proxy tick device.
 {{% /notice %}}
 
+> Adapting the ARM Global timer driver to out-of-band timing
+
+```
+--- a/drivers/clocksource/arm_global_timer.c
++++ b/drivers/clocksource/arm_global_timer.c
+@@ -156,11 +156,11 @@ static irqreturn_t gt_clockevent_interrupt(int irq, void *dev_id)
+ 	 *	the Global Timer flag _after_ having incremented
+ 	 *	the Comparator register	value to a higher value.
+ 	 */
+-	if (clockevent_state_oneshot(evt))
++	if (clockevent_is_oob(evt) || clockevent_state_oneshot(evt))
+ 		gt_compare_set(ULONG_MAX, 0);
+ 
+ 	writel_relaxed(GT_INT_STATUS_EVENT_FLAG, gt_base + GT_INT_STATUS);
+-	evt->event_handler(evt);
++	clockevents_handle_event(evt);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -171,7 +171,7 @@ static int gt_starting_cpu(unsigned int cpu)
+ 
+ 	clk->name = "arm_global_timer";
+ 	clk->features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT |
+-		CLOCK_EVT_FEAT_PERCPU;
++		CLOCK_EVT_FEAT_PERCPU | CLOCK_EVT_FEAT_PIPELINE;
+ 	clk->set_state_shutdown = gt_clockevent_shutdown;
+ 	clk->set_state_periodic = gt_clockevent_set_periodic;
+ 	clk->set_state_oneshot = gt_clockevent_shutdown;
+@@ -195,11 +195,6 @@ static int gt_dying_cpu(unsigned int cpu)
+ 	return 0;
+ }
+ 
+@@ -302,8 +307,8 @@ static int __init global_timer_of_register(struct device_node *np)
+ 		goto out_clk;
+ 	}
+ 
+-	err = request_percpu_irq(gt_ppi, gt_clockevent_interrupt,
+-				 "gt", gt_evt);
++	err = __request_percpu_irq(gt_ppi, gt_clockevent_interrupt,
++				   IRQF_TIMER, "gt", gt_evt);
+ 	if (err) {
+ 		pr_warn("global-timer: can't register interrupt %d (%d)\n",
+ 			gt_ppi, err);
+```
+
+This is another example of adapting an existing clock chip driver for
+serving out-of-band timing requests, with a subtle change in the way
+we should test for the current state of the clock device in the
+interrupt handler:
+
+- a real/original device (such as the ARM global timer in this
+  example) is switched to _detached_ mode by Dovetail when it is
+  controlled by the proxy tick driver. Therefore, testing the original
+  device state for `clockevent_state_oneshot()` always leads to
+  _false_.
+
+- since a real device controlled by the proxy for receiving
+  out-of-band events has to be driven in one-shot mode under the hood,
+  one should always check for `clockevent_state_oob()` in addition to
+  `clockevent_state_oneshot()`.
+
 ### Theory of operations {#proxy-tick-logic}
 
 Calling `tick_install_proxy()` creates an instance of the proxy tick
 device on each CPU mentioned in the `cpumask` it receives.  This
 routine is also passed a pointer to a `struct proxy_tick_ops`
 operation descriptor (`ops`), defining a few handlers the caller
-should provide for contolling the proxy device.
+should provide for installing and managing the proxy device.
 
 > The proxy operation descriptor
 
@@ -91,10 +152,21 @@ struct proxy_tick_ops {
 };
 ```
 
-`tick_install_proxy()` invokes `ops->register_device()` for doing the
-prep work for the synthetic device, allowing the client code to chose
-its settings before registering it, typically by a call to
-`clockevents_config_and_register()`.
+`tick_install_proxy()` first invokes `ops->register_device()` for
+doing the prep work for the synthetic device, allowing the client code
+to chose its settings before registering it, typically by a call to
+`clockevents_config_and_register()`. This device registration handler
+should fill the clock event device structure pointed by `proxy_ced`,
+defining the proxy device characteristics from the standpoint of the
+in-band kernel, just like a clock chip driver would do. `real_ced` is
+the actual clock event device being substituted for.
+
+Conversely, `ops->unregister_device()` is an optional handler called
+by `tick_uninstall_proxy()` for dismantling a proxy device. NULL may
+be given if the co-kernel has no specific action to take upon such
+event. In any case, Dovetail ensures that the proxy is fully detached
+and all the related resources freed upon return from
+`tick_uninstall_proxy()`.
 
 {{% notice note %}}
 Although this is not strictly required, it is highly expected that
@@ -135,6 +207,23 @@ static void proxy_device_register(struct clock_event_device *proxy_ced,
 	clockevents_register_device(proxy_ced);
 }
 ```
+
+{{% notice tip %}}
+As illustrated above, the `set_next_event()` or `set_next_ktime()`
+member should be set in the structure pointed by `proxy_ced` with the
+address of a handler which receives timer requests from the in-band
+kernel. This handler is normally implemented by the co-kernel which
+takes control over the timer hardware via the proxy device. Whenever
+the co-kernel determines that a tick is due for an outstanding request
+received from such handler, it should call `tick_notify_proxy()` to
+signal the event to the in-band kernel.
+
+We add `CLOCK_EVT_FEAT_KTIME` to the proxy device flags because the
+co-kernel managing this device uses nanoseconds internally for
+expressing delays. For this reason, we want the in-band kernel to send
+timer requests to the co-kernel by passing delays as a count of
+nanoseconds to `set_next_ktime()` directly, without any conversion.
+{{% /notice %}}
 
 Once the user-supplied `ops->register_device()` handler returns, the
 following events happen in sequence:
