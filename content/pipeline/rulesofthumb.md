@@ -62,11 +62,15 @@ never does, directly or indirectly, any of the following:
 
 {{% notice tip %}}
 In the early days of dual kernel support in Linux, some people would
-invoke the `do_gettimeofday()` routine from the in-band kernel from an
-out-of-band context in order to get a wallclock timestamp for their
-real-time code. Nowadays, enabling CONFIG_DEBUG_IRQ_PIPELINE would be
-enough to detect such mistake early enough to preserve your mental
-health.
+mistakenly invoke the `do_gettimeofday()` routine from an out-of-band
+context in order to get a wallclock timestamp for their real-time
+code. Doing so would create a deadlock situation if some in-band code
+running `do_gettimeofday()` is preempted by the out-of-band code
+re-entering the same routine on the same CPU.  The out-of-band code
+would then wait spinning indefinitely for the in-band context to leave the
+routine - which won't happen by design - leading to a lockup.  Nowadays,
+enabling CONFIG_DEBUG_IRQ_PIPELINE would be enough to detect such mistake
+early enough to preserve your mental health.
 {{% /notice %}}
 
 ## Careful with disabling interrupts in the CPU
