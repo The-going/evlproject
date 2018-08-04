@@ -12,19 +12,19 @@
     <title>Timer management :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1532676166" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1532676166" rel="stylesheet">
-    <link href="/css/hybrid.css?1532676166" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1532676166" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1532676166" rel="stylesheet">
-    <link href="/css/auto-complete.css?1532676166" rel="stylesheet">
-    <link href="/css/theme.css?1532676166" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1532676166" rel="stylesheet">
+    <link href="/css/nucleus.css?1533401075" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1533401075" rel="stylesheet">
+    <link href="/css/hybrid.css?1533401075" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1533401075" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1533401075" rel="stylesheet">
+    <link href="/css/auto-complete.css?1533401075" rel="stylesheet">
+    <link href="/css/theme.css?1533401075" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1533401075" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1532676166" rel="stylesheet">
+      <link href="/css/theme-blue.css?1533401075" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1532676166"></script>
+    <script src="/js/jquery-2.x.min.js?1533401075"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1532676166"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1532676166"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1533401075"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1533401075"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1532676166"></script>
+<script type="text/javascript" src="/js/search.js?1533401075"></script>
 
     
   </div>
@@ -748,13 +748,77 @@ device interrupt.</p></li>
 </div>
 
 
+<blockquote>
+<p>Adapting the ARM Global timer driver to out-of-band timing</p>
+</blockquote>
+
+<pre><code>--- a/drivers/clocksource/arm_global_timer.c
++++ b/drivers/clocksource/arm_global_timer.c
+@@ -156,11 +156,11 @@ static irqreturn_t gt_clockevent_interrupt(int irq, void *dev_id)
+ 	 *	the Global Timer flag _after_ having incremented
+ 	 *	the Comparator register	value to a higher value.
+ 	 */
+-	if (clockevent_state_oneshot(evt))
++	if (clockevent_is_oob(evt) || clockevent_state_oneshot(evt))
+ 		gt_compare_set(ULONG_MAX, 0);
+ 
+ 	writel_relaxed(GT_INT_STATUS_EVENT_FLAG, gt_base + GT_INT_STATUS);
+-	evt-&gt;event_handler(evt);
++	clockevents_handle_event(evt);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -171,7 +171,7 @@ static int gt_starting_cpu(unsigned int cpu)
+ 
+ 	clk-&gt;name = &quot;arm_global_timer&quot;;
+ 	clk-&gt;features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT |
+-		CLOCK_EVT_FEAT_PERCPU;
++		CLOCK_EVT_FEAT_PERCPU | CLOCK_EVT_FEAT_PIPELINE;
+ 	clk-&gt;set_state_shutdown = gt_clockevent_shutdown;
+ 	clk-&gt;set_state_periodic = gt_clockevent_set_periodic;
+ 	clk-&gt;set_state_oneshot = gt_clockevent_shutdown;
+@@ -195,11 +195,6 @@ static int gt_dying_cpu(unsigned int cpu)
+ 	return 0;
+ }
+ 
+@@ -302,8 +307,8 @@ static int __init global_timer_of_register(struct device_node *np)
+ 		goto out_clk;
+ 	}
+ 
+-	err = request_percpu_irq(gt_ppi, gt_clockevent_interrupt,
+-				 &quot;gt&quot;, gt_evt);
++	err = __request_percpu_irq(gt_ppi, gt_clockevent_interrupt,
++				   IRQF_TIMER, &quot;gt&quot;, gt_evt);
+ 	if (err) {
+ 		pr_warn(&quot;global-timer: can't register interrupt %d (%d)\n&quot;,
+ 			gt_ppi, err);
+</code></pre>
+
+<p>This is another example of adapting an existing clock chip driver for
+serving out-of-band timing requests, with a subtle change in the way
+we should test for the current state of the clock device in the
+interrupt handler:</p>
+
+<ul>
+<li><p>a real/original device (such as the ARM global timer in this
+example) is switched to <em>detached</em> mode by Dovetail when it is
+controlled by the proxy tick driver. Therefore, testing the original
+device state for <code>clockevent_state_oneshot()</code> always leads to
+<em>false</em>.</p></li>
+
+<li><p>since a real device controlled by the proxy for receiving
+out-of-band events has to be driven in one-shot mode under the hood,
+one should always check for <code>clockevent_state_oob()</code> in addition to
+<code>clockevent_state_oneshot()</code>.</p></li>
+</ul>
+
 <h3 id="proxy-tick-logic">Theory of operations</h3>
 
 <p>Calling <code>tick_install_proxy()</code> creates an instance of the proxy tick
 device on each CPU mentioned in the <code>cpumask</code> it receives.  This
 routine is also passed a pointer to a <code>struct proxy_tick_ops</code>
 operation descriptor (<code>ops</code>), defining a few handlers the caller
-should provide for contolling the proxy device.</p>
+should provide for installing and managing the proxy device.</p>
 
 <blockquote>
 <p>The proxy operation descriptor</p>
@@ -769,10 +833,21 @@ should provide for contolling the proxy device.</p>
 };
 </code></pre>
 
-<p><code>tick_install_proxy()</code> invokes <code>ops-&gt;register_device()</code> for doing the
-prep work for the synthetic device, allowing the client code to chose
-its settings before registering it, typically by a call to
-<code>clockevents_config_and_register()</code>.</p>
+<p><code>tick_install_proxy()</code> first invokes <code>ops-&gt;register_device()</code> for
+doing the prep work for the synthetic device, allowing the client code
+to chose its settings before registering it, typically by a call to
+<code>clockevents_config_and_register()</code>. This device registration handler
+should fill the clock event device structure pointed by <code>proxy_ced</code>,
+defining the proxy device characteristics from the standpoint of the
+in-band kernel, just like a clock chip driver would do. <code>real_ced</code> is
+the actual clock event device being substituted for.</p>
+
+<p>Conversely, <code>ops-&gt;unregister_device()</code> is an optional handler called
+by <code>tick_uninstall_proxy()</code> for dismantling a proxy device. NULL may
+be given if the co-kernel has no specific action to take upon such
+event. In any case, Dovetail ensures that the proxy is fully detached
+and all the related resources freed upon return from
+<code>tick_uninstall_proxy()</code>.</p>
 
 <div class="notices note" ><p>Although this is not strictly required, it is highly expected that
 <code>register_device()</code> gives a better rating to the proxy device than the
@@ -814,6 +889,23 @@ former for the latter.</p>
 	clockevents_register_device(proxy_ced);
 }
 </code></pre>
+
+<div class="notices tip" ><p>As illustrated above, the <code>set_next_event()</code> or <code>set_next_ktime()</code>
+member should be set in the structure pointed by <code>proxy_ced</code> with the
+address of a handler which receives timer requests from the in-band
+kernel. This handler is normally implemented by the co-kernel which
+takes control over the timer hardware via the proxy device. Whenever
+the co-kernel determines that a tick is due for an outstanding request
+received from such handler, it should call <code>tick_notify_proxy()</code> to
+signal the event to the in-band kernel.</p>
+
+<p>We add <code>CLOCK_EVT_FEAT_KTIME</code> to the proxy device flags because the
+co-kernel managing this device uses nanoseconds internally for
+expressing delays. For this reason, we want the in-band kernel to send
+timer requests to the co-kernel by passing delays as a count of
+nanoseconds to <code>set_next_ktime()</code> directly, without any conversion.</p>
+</div>
+
 
 <p>Once the user-supplied <code>ops-&gt;register_device()</code> handler returns, the
 following events happen in sequence:</p>
@@ -1325,20 +1417,20 @@ in-band kernel, which would honor the pending (hr)timer request.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1532676166"></script>
-    <script src="/js/perfect-scrollbar.min.js?1532676166"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1532676166"></script>
-    <script src="/js/jquery.sticky.js?1532676166"></script>
-    <script src="/js/featherlight.min.js?1532676166"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1532676166"></script>
-    <script src="/js/highlight.pack.js?1532676166"></script>
+    <script src="/js/clipboard.min.js?1533401075"></script>
+    <script src="/js/perfect-scrollbar.min.js?1533401075"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1533401075"></script>
+    <script src="/js/jquery.sticky.js?1533401075"></script>
+    <script src="/js/featherlight.min.js?1533401075"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1533401075"></script>
+    <script src="/js/highlight.pack.js?1533401075"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1532676166"></script>
-    <script src="/js/learn.js?1532676166"></script>
-    <script src="/js/hugo-learn.js?1532676166"></script>
+    <script src="/js/modernizr.custom.71422.js?1533401075"></script>
+    <script src="/js/learn.js?1533401075"></script>
+    <script src="/js/hugo-learn.js?1533401075"></script>
 
-    <link href="/mermaid/mermaid.css?1532676166" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1532676166"></script>
+    <link href="/mermaid/mermaid.css?1533401075" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1533401075"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

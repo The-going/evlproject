@@ -12,19 +12,19 @@
     <title>Interrupt flow :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1532676166" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1532676166" rel="stylesheet">
-    <link href="/css/hybrid.css?1532676166" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1532676166" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1532676166" rel="stylesheet">
-    <link href="/css/auto-complete.css?1532676166" rel="stylesheet">
-    <link href="/css/theme.css?1532676166" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1532676166" rel="stylesheet">
+    <link href="/css/nucleus.css?1533401075" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1533401075" rel="stylesheet">
+    <link href="/css/hybrid.css?1533401075" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1533401075" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1533401075" rel="stylesheet">
+    <link href="/css/auto-complete.css?1533401075" rel="stylesheet">
+    <link href="/css/theme.css?1533401075" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1533401075" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1532676166" rel="stylesheet">
+      <link href="/css/theme-blue.css?1533401075" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1532676166"></script>
+    <script src="/js/jquery-2.x.min.js?1533401075"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1532676166"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1532676166"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1533401075"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1533401075"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1532676166"></script>
+<script type="text/javascript" src="/js/search.js?1533401075"></script>
 
     
   </div>
@@ -767,7 +767,7 @@ continuous interrupt request.</p>
 
 <p>Since all of the IRQ handlers sharing an interrupt line are either
 in-band or out-of-band in a mutually exclusive way, such masking
-cannot delay out-of-band events though.</p>
+cannot delay out-of-band events.</p>
 
 <blockquote>
 <p>The pathological case of deferring level-triggered IRQs</p>
@@ -795,7 +795,8 @@ cannot delay out-of-band events though.</p>
 <div class="notices tip" ><p>The logic behind masking interrupt lines until events are processed at
 some point later - out of the original interrupt context - also
 applies to the threaded interrupt model. In this case, interrupt lines
-may be masked until the IRQ thread is scheduled in.</p>
+may be masked until the IRQ thread is scheduled in, after the
+interrupt handler clears the event cause eventually.</p>
 </div>
 
 
@@ -879,6 +880,30 @@ out_unlock:
 }
 </code></pre>
 
+<p>This change reads as follows:</p>
+
+<ul>
+<li><p>on entering the pipeline, which means immediately over the interrupt
+frame context set up by the CPU for receiving the event, tell the
+pipeline core about the incoming IRQ.</p></li>
+
+<li><p>if this IRQ was handled by an out-of-band handler
+(<code>handle_oob_irq()</code> returns <em>true</em>), consider the event to have been
+fully processed, unmasking the interrupt line before leaving. We
+can&rsquo;t do more than this, simply because the in-band kernel code
+might expect not to receive any interrupt at this point (i.e. the
+<a href="/pipeline/optimistic/#virtual-i-flag">virtual interrupt disable flag</a> might be set for the
+root stage).</p></li>
+
+<li><p>otherwise, keep the interrupt line masked until <code>handle_level_irq()</code>
+is called again from a safe context for handling in-band interrupts,
+at which point the event should be delivered to the (regular)
+in-band interrupt handler. We have to keep the line masked to
+prevent the IRQ storm which would certainly happen otherwise, since
+no handler has cleared the cause of the interrupt event in the
+device yet.</p></li>
+</ul>
+
 <h2 id="irq-chip-drivers">IRQ chip drivers</h2>
 
 <p><code>irqchip</code> drivers need to be specifically adapted for supporting the
@@ -949,6 +974,94 @@ interrupt mode.</p>
  };
  
  void __init gic_cascade_irq(unsigned int gic_nr, unsigned int irq)
+</code></pre>
+
+<p>In some (rare) cases, we might have a bit more work for adapting an
+interrupt chip driver. For instance, we might have to convert a
+sleeping spinlock to a raw spinlock first, so that we can convert the
+latter to a hard spinlock eventually. Hard spinlocks like raw ones
+should be manipulated via the raw_spin_lock() API, unlike sleeping
+spinlocks. This change makes even more sense as sleeping is not
+allowed while running in the pipeline entry context anyway.</p>
+
+<blockquote>
+<p>Adapting the BCM2835 pin control driver to interrupt pipelining</p>
+</blockquote>
+
+<pre><code>--- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
++++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
+@@ -90,7 +90,7 @@ struct bcm2835_pinctrl {
+ 	struct gpio_chip gpio_chip;
+ 	struct pinctrl_gpio_range gpio_range;
+ 
+-	spinlock_t irq_lock[BCM2835_NUM_BANKS];
++	hard_spinlock_t irq_lock[BCM2835_NUM_BANKS];
+ };
+ 
+ /* pins are just named GPIO0..GPIO53 */
+@@ -461,10 +461,10 @@ static void bcm2835_gpio_irq_enable(struct irq_data *data)
+ 	unsigned bank = GPIO_REG_OFFSET(gpio);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
++	raw_spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
+ 	set_bit(offset, &amp;pc-&gt;enabled_irq_map[bank]);
+ 	bcm2835_gpio_irq_config(pc, gpio, true);
+-	spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
++	raw_spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
+ }
+ 
+ static void bcm2835_gpio_irq_disable(struct irq_data *data)
+@@ -476,12 +476,12 @@ static void bcm2835_gpio_irq_disable(struct irq_data *data)
+ 	unsigned bank = GPIO_REG_OFFSET(gpio);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
++	raw_spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
+ 	bcm2835_gpio_irq_config(pc, gpio, false);
+ 	/* Clear events that were latched prior to clearing event sources */
+ 	bcm2835_gpio_set_bit(pc, GPEDS0, gpio);
+ 	clear_bit(offset, &amp;pc-&gt;enabled_irq_map[bank]);
+-	spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
++	raw_spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
+ }
+ 
+ static int __bcm2835_gpio_irq_set_type_disabled(struct bcm2835_pinctrl *pc,
+@@ -584,7 +584,7 @@ static int bcm2835_gpio_irq_set_type(struct irq_data *data, unsigned int type)
+ 	unsigned long flags;
+ 	int ret;
+ 
+-	spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
++	raw_spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
+ 
+ 	if (test_bit(offset, &amp;pc-&gt;enabled_irq_map[bank]))
+ 		ret = __bcm2835_gpio_irq_set_type_enabled(pc, gpio, type);
+@@ -596,7 +596,7 @@ static int bcm2835_gpio_irq_set_type(struct irq_data *data, unsigned int type)
+ 	else
+ 		irq_set_handler_locked(data, handle_level_irq);
+ 
+-	spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
++	raw_spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
+ 
+ 	return ret;
+ }
+@@ -618,6 +618,7 @@ static struct irq_chip bcm2835_gpio_irq_chip = {
+ 	.irq_ack = bcm2835_gpio_irq_ack,
+ 	.irq_mask = bcm2835_gpio_irq_disable,
+ 	.irq_unmask = bcm2835_gpio_irq_enable,
++	.flags = IRQCHIP_PIPELINE_SAFE,
+ };
+ 
+ static int bcm2835_pctl_get_groups_count(struct pinctrl_dev *pctldev)
+@@ -1047,7 +1048,7 @@ static int bcm2835_pinctrl_probe(struct platform_device *pdev)
+ 		for_each_set_bit(offset, &amp;events, 32)
+ 			bcm2835_gpio_wr(pc, GPEDS0 + i * 4, BIT(offset));
+ 
+-		spin_lock_init(&amp;pc-&gt;irq_lock[i]);
++		raw_spin_lock_init(&amp;pc-&gt;irq_lock[i]);
+ 	}
+ 
+ 	err = gpiochip_add_data(&amp;pc-&gt;gpio_chip, pc);
 </code></pre>
 
 <div class="notices note" ><p><code>irq_set_chip()</code> will complain loudly with a kernel warning whenever
@@ -1438,20 +1551,20 @@ hardware-specific interrupt vector. This special IRQ is labeled
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1532676166"></script>
-    <script src="/js/perfect-scrollbar.min.js?1532676166"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1532676166"></script>
-    <script src="/js/jquery.sticky.js?1532676166"></script>
-    <script src="/js/featherlight.min.js?1532676166"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1532676166"></script>
-    <script src="/js/highlight.pack.js?1532676166"></script>
+    <script src="/js/clipboard.min.js?1533401075"></script>
+    <script src="/js/perfect-scrollbar.min.js?1533401075"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1533401075"></script>
+    <script src="/js/jquery.sticky.js?1533401075"></script>
+    <script src="/js/featherlight.min.js?1533401075"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1533401075"></script>
+    <script src="/js/highlight.pack.js?1533401075"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1532676166"></script>
-    <script src="/js/learn.js?1532676166"></script>
-    <script src="/js/hugo-learn.js?1532676166"></script>
+    <script src="/js/modernizr.custom.71422.js?1533401075"></script>
+    <script src="/js/learn.js?1533401075"></script>
+    <script src="/js/hugo-learn.js?1533401075"></script>
 
-    <link href="/mermaid/mermaid.css?1532676166" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1532676166"></script>
+    <link href="/mermaid/mermaid.css?1533401075" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1533401075"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
