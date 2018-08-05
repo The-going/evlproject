@@ -122,10 +122,9 @@ we should test for the current state of the clock device in the
 interrupt handler:
 
 - a real/original device (such as the ARM global timer in this
-  example) is switched to _detached_ mode by Dovetail when it is
-  controlled by the proxy tick driver. Therefore, testing the original
-  device state for `clockevent_state_oneshot()` always leads to
-  _false_.
+  example) is switched to _detached_ mode when it is controlled by the
+  proxy tick driver. Therefore, testing the original device state for
+  `clockevent_state_oneshot()` always leads to _false_.
 
 - since a real device controlled by the proxy for receiving
   out-of-band events has to be driven in one-shot mode under the hood,
@@ -164,9 +163,9 @@ the actual clock event device being substituted for.
 Conversely, `ops->unregister_device()` is an optional handler called
 by `tick_uninstall_proxy()` for dismantling a proxy device. NULL may
 be given if the co-kernel has no specific action to take upon such
-event. In any case, Dovetail ensures that the proxy is fully detached
-and all the related resources freed upon return from
-`tick_uninstall_proxy()`.
+event. In any case, `tick_uninstall_proxy()` ensures that the proxy is
+fully detached and all the related resources are freed before
+returning.
 
 {{% notice note %}}
 Although this is not strictly required, it is highly expected that
