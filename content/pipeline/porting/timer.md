@@ -129,7 +129,14 @@ interrupt handler:
 - since a real device controlled by the proxy for receiving
   out-of-band events has to be driven in one-shot mode under the hood,
   one should always check for `clockevent_state_oob()` in addition to
-  `clockevent_state_oneshot()`.
+  `clockevent_state_oneshot()`, so that we do apply the work-around as
+  expected.
+
+{{% notice warning %}}
+Failing to fix up the way we test for the clock device state would
+certainly lead to an interrupt storm with any ARM global timer
+suffering erratum 740657, quickly locking up the board.
+{{% /notice %}}
 
 ### Theory of operations {#proxy-tick-logic}
 

@@ -220,7 +220,7 @@ This change reads as follows:
   no handler has cleared the cause of the interrupt event in the
   device yet.
 
-## IRQ chip drivers
+## IRQ chip drivers {#irqchip-fixup}
 
 `irqchip` drivers need to be specifically adapted for supporting the
 pipelined interrupt model. The basic task is to ensure that the

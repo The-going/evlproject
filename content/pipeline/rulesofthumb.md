@@ -42,7 +42,7 @@ suggests, this option enables test code which excercizes the
 related features such as the [proxy tick device]({{%
 relref "pipeline/porting/timer.md" %}}).
 
-## Know how to differentiate safe from unsafe in-band code
+## Know how to differentiate safe from unsafe in-band code {#safe-inband-code}
 
 Not all in-band kernel code is safe to be called from out-of-band
 context, actually most of it is **unsafe** for doing so.
