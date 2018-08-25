@@ -12,19 +12,19 @@
     <title>Timer management :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1533401075" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1533401075" rel="stylesheet">
-    <link href="/css/hybrid.css?1533401075" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1533401075" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1533401075" rel="stylesheet">
-    <link href="/css/auto-complete.css?1533401075" rel="stylesheet">
-    <link href="/css/theme.css?1533401075" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1533401075" rel="stylesheet">
+    <link href="/css/nucleus.css?1535190895" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1535190895" rel="stylesheet">
+    <link href="/css/hybrid.css?1535190895" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1535190895" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1535190895" rel="stylesheet">
+    <link href="/css/auto-complete.css?1535190895" rel="stylesheet">
+    <link href="/css/theme.css?1535190895" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1535190895" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1533401075" rel="stylesheet">
+      <link href="/css/theme-blue.css?1535190895" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1533401075"></script>
+    <script src="/js/jquery-2.x.min.js?1535190895"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1533401075"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1533401075"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1535190895"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1535190895"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1533401075"></script>
+<script type="text/javascript" src="/js/search.js?1535190895"></script>
 
     
   </div>
@@ -801,16 +801,22 @@ interrupt handler:</p>
 
 <ul>
 <li><p>a real/original device (such as the ARM global timer in this
-example) is switched to <em>detached</em> mode by Dovetail when it is
-controlled by the proxy tick driver. Therefore, testing the original
-device state for <code>clockevent_state_oneshot()</code> always leads to
-<em>false</em>.</p></li>
+example) is switched to <em>detached</em> mode when it is controlled by the
+proxy tick driver. Therefore, testing the original device state for
+<code>clockevent_state_oneshot()</code> always leads to <em>false</em>.</p></li>
 
 <li><p>since a real device controlled by the proxy for receiving
 out-of-band events has to be driven in one-shot mode under the hood,
 one should always check for <code>clockevent_state_oob()</code> in addition to
-<code>clockevent_state_oneshot()</code>.</p></li>
+<code>clockevent_state_oneshot()</code>, so that we do apply the work-around as
+expected.</p></li>
 </ul>
+
+<div class="notices warning" ><p>Failing to fix up the way we test for the clock device state would
+certainly lead to an interrupt storm with any ARM global timer
+suffering erratum 740657, quickly locking up the board.</p>
+</div>
+
 
 <h3 id="proxy-tick-logic">Theory of operations</h3>
 
@@ -845,9 +851,9 @@ the actual clock event device being substituted for.</p>
 <p>Conversely, <code>ops-&gt;unregister_device()</code> is an optional handler called
 by <code>tick_uninstall_proxy()</code> for dismantling a proxy device. NULL may
 be given if the co-kernel has no specific action to take upon such
-event. In any case, Dovetail ensures that the proxy is fully detached
-and all the related resources freed upon return from
-<code>tick_uninstall_proxy()</code>.</p>
+event. In any case, <code>tick_uninstall_proxy()</code> ensures that the proxy is
+fully detached and all the related resources are freed before
+returning.</p>
 
 <div class="notices note" ><p>Although this is not strictly required, it is highly expected that
 <code>register_device()</code> gives a better rating to the proxy device than the
@@ -1417,20 +1423,20 @@ in-band kernel, which would honor the pending (hr)timer request.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1533401075"></script>
-    <script src="/js/perfect-scrollbar.min.js?1533401075"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1533401075"></script>
-    <script src="/js/jquery.sticky.js?1533401075"></script>
-    <script src="/js/featherlight.min.js?1533401075"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1533401075"></script>
-    <script src="/js/highlight.pack.js?1533401075"></script>
+    <script src="/js/clipboard.min.js?1535190895"></script>
+    <script src="/js/perfect-scrollbar.min.js?1535190895"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1535190895"></script>
+    <script src="/js/jquery.sticky.js?1535190895"></script>
+    <script src="/js/featherlight.min.js?1535190895"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1535190895"></script>
+    <script src="/js/highlight.pack.js?1535190895"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1533401075"></script>
-    <script src="/js/learn.js?1533401075"></script>
-    <script src="/js/hugo-learn.js?1533401075"></script>
+    <script src="/js/modernizr.custom.71422.js?1535190895"></script>
+    <script src="/js/learn.js?1535190895"></script>
+    <script src="/js/hugo-learn.js?1535190895"></script>
 
-    <link href="/mermaid/mermaid.css?1533401075" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1533401075"></script>
+    <link href="/mermaid/mermaid.css?1535190895" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1535190895"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

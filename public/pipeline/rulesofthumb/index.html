@@ -12,19 +12,19 @@
     <title>Rules Of Thumb :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1533401075" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1533401075" rel="stylesheet">
-    <link href="/css/hybrid.css?1533401075" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1533401075" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1533401075" rel="stylesheet">
-    <link href="/css/auto-complete.css?1533401075" rel="stylesheet">
-    <link href="/css/theme.css?1533401075" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1533401075" rel="stylesheet">
+    <link href="/css/nucleus.css?1535190895" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1535190895" rel="stylesheet">
+    <link href="/css/hybrid.css?1535190895" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1535190895" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1535190895" rel="stylesheet">
+    <link href="/css/auto-complete.css?1535190895" rel="stylesheet">
+    <link href="/css/theme.css?1535190895" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1535190895" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1533401075" rel="stylesheet">
+      <link href="/css/theme-blue.css?1535190895" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1533401075"></script>
+    <script src="/js/jquery-2.x.min.js?1535190895"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1533401075"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1533401075"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1535190895"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1535190895"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1533401075"></script>
+<script type="text/javascript" src="/js/search.js?1535190895"></script>
 
     
   </div>
@@ -650,7 +650,7 @@
 <li><a href="#turn-on-debug-options-in-the-kernel-configuration">Turn on debug options in the kernel configuration!</a></li>
 <li><a href="#serialize-stages-when-accessing-shared-data">Serialize stages when accessing shared data</a></li>
 <li><a href="#check-that-the-pipeline-torture-tests-pass">Check that the pipeline torture tests pass</a></li>
-<li><a href="#know-how-to-differentiate-safe-from-unsafe-in-band-code">Know how to differentiate safe from unsafe in-band code</a></li>
+<li><a href="#safe-inband-code">Know how to differentiate safe from unsafe in-band code</a></li>
 <li><a href="#careful-with-disabling-interrupts-in-the-cpu">Careful with disabling interrupts in the CPU</a></li>
 <li><a href="#spinlock-rule">Dealing with spinlocks</a></li>
 <li><a href="#enable-raw-printk-support-for-printk-like-debugging">Enable RAW_PRINTK support for printk-like debugging</a></li>
@@ -712,7 +712,7 @@ suggests, this option enables test code which excercizes the
 <a href="/pipeline/porting/irqflow/">interrupt pipeline core</a>, and
 related features such as the <a href="/pipeline/porting/timer/">proxy tick device</a>.</p>
 
-<h2 id="know-how-to-differentiate-safe-from-unsafe-in-band-code">Know how to differentiate safe from unsafe in-band code</h2>
+<h2 id="safe-inband-code">Know how to differentiate safe from unsafe in-band code</h2>
 
 <p>Not all in-band kernel code is safe to be called from out-of-band
 context, actually most of it is <strong>unsafe</strong> for doing so.</p>
@@ -733,11 +733,15 @@ might reschedule if <code>CONFIG_PREEMPT</code> is enabled.</p></li>
 </ul>
 
 <div class="notices tip" ><p>In the early days of dual kernel support in Linux, some people would
-invoke the <code>do_gettimeofday()</code> routine from the in-band kernel from an
-out-of-band context in order to get a wallclock timestamp for their
-real-time code. Nowadays, enabling CONFIG_DEBUG_IRQ_PIPELINE would be
-enough to detect such mistake early enough to preserve your mental
-health.</p>
+mistakenly invoke the <code>do_gettimeofday()</code> routine from an out-of-band
+context in order to get a wallclock timestamp for their real-time
+code. Doing so would create a deadlock situation if some in-band code
+running <code>do_gettimeofday()</code> is preempted by the out-of-band code
+re-entering the same routine on the same CPU.  The out-of-band code
+would then wait spinning indefinitely for the in-band context to leave the
+routine - which won&rsquo;t happen by design - leading to a lockup.  Nowadays,
+enabling CONFIG_DEBUG_IRQ_PIPELINE would be enough to detect such mistake
+early enough to preserve your mental health.</p>
 </div>
 
 
@@ -1216,20 +1220,20 @@ to provide for a printk-like <a href="/pipeline/porting/rawprintk/">raw debug ch
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1533401075"></script>
-    <script src="/js/perfect-scrollbar.min.js?1533401075"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1533401075"></script>
-    <script src="/js/jquery.sticky.js?1533401075"></script>
-    <script src="/js/featherlight.min.js?1533401075"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1533401075"></script>
-    <script src="/js/highlight.pack.js?1533401075"></script>
+    <script src="/js/clipboard.min.js?1535190895"></script>
+    <script src="/js/perfect-scrollbar.min.js?1535190895"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1535190895"></script>
+    <script src="/js/jquery.sticky.js?1535190895"></script>
+    <script src="/js/featherlight.min.js?1535190895"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1535190895"></script>
+    <script src="/js/highlight.pack.js?1535190895"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1533401075"></script>
-    <script src="/js/learn.js?1533401075"></script>
-    <script src="/js/hugo-learn.js?1533401075"></script>
+    <script src="/js/modernizr.custom.71422.js?1535190895"></script>
+    <script src="/js/learn.js?1535190895"></script>
+    <script src="/js/hugo-learn.js?1535190895"></script>
 
-    <link href="/mermaid/mermaid.css?1533401075" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1533401075"></script>
+    <link href="/mermaid/mermaid.css?1535190895" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1535190895"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
