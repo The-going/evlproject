@@ -26,7 +26,7 @@ set maps 1:1 over the regular `local_irq_*()` API.
 |  irqs_disabled()            |   hard_irqs_disabled()             |
 |  irqs_disabled_flags(flags) |   hard_irqs_disabled_flags(flags)  |
 
-## Stalling the head stage
+## Stalling the head stage {# head-stall-flag}
 
 Just like the root stage is affected by the state of the [virtual
 interrupt disable flag]({{%relref

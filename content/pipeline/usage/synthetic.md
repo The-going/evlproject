@@ -12,18 +12,30 @@ per-CPU events. Because the common pipeline flow applies to synthetic
 interrupts, it is possible to attach them to out-of-band and/or
 in-band handlers, just like device interrupts.
 
+Synthetic interrupts abide by the normal rules with respect to
+interrupt masking: such IRQs may be deferred until the stage they
+should be handled from is unstalled.
+
 {{% notice note %}}
 Synthetic interrupts and regular softirqs differ in essence: the
 latter only exist in the in-band context, and therefore cannot trigger
-out-of-band activities.
+out-of-band activities. Synthetic interrupts used to be called
+_virtual_ IRQs (or _virq_ for short) by the legacy I-pipe
+implementation, Dovetail's ancestor; such rename clears the confusion
+with the way abstract interrupt numbers defined within interrupt
+domains may be called elsewhere in the kernel code base (i.e.
+_virtual interrupts_ too).
 {{% /notice %}}
+
+## Allocating synthetic interrupts
 
 Synthetic interrupt vectors are allocated from the
 *synthetic_irq_domain*, using the `irq_create_direct_mapping()`
 routine.
 
-For instance, a synthetic interrupt can be used for triggering an
-in-band activity on the root stage from the head stage as follows:
+A synthetic interrupt handler can be installed for running on the root
+stage upon a scheduling request (i.e. being posted) from an
+out-of-band context as follows:
 
 ```markdown
 #include <linux/irq_pipeline.h>
@@ -55,40 +67,8 @@ unsigned int alloc_sirq(void)
 }
 ```
 
-Code can schedule the execution of `sirq_handler()` from the
-out-of-band context in two different ways:
-
-> Using the common injection service
-
-```markdown
-	irq_pipeline_inject(sirq);
-```
-
-> Using the lightweight injection method (requires interrupts to be
-  disabled in the CPU)
-
-```markdown
-	unsigned long flags = hard_local_irqsave();
-	irq_stage_post_root(sirq);
-	hard_local_irqrestore(flags);
-```
-
-{{% notice tip %}}
-Assuming that no interrupt may be pending in the event log for the
-head stage at the time this code runs, the method above relies on the
-invariant that in a pipeline interrupt model, IRQs pending for the
-root stage will have to wait for the head stage to quiesce before they
-can be handled. Therefore, it is pointless to try synchronizing the
-interrupts pending for the root stage from the head stage, which the
-`irq_pipeline_inject()` service would do systematically.
-`irq_stage_post_root()` simply marks the event as pending in the event
-log of the root stage for the current CPU, then returns. This event
-would be played as a result of synchronizing the log automatically when
-the current CPU switches back to the root stage.
-{{% /notice %}}
-
-Conversely, a synthetic interrupt can be handled from the out-of-band
-context:
+A synthetic interrupt handler can be installed for running from the
+head stage upon a trigger from an in-band context as follows:
 
 ```markdown
 static irqreturn_t sirq_oob_handler(int sirq, void *dev_id)
@@ -119,12 +99,67 @@ unsigned int alloc_sirq(void)
 }
 ```
   
-Code can trigger the immediate execution of `sirq_oob_handler()` on
-the head stage as follows:
+## Scheduling in-band execution of a synthetic interrupt handler
+
+The execution of `sirq_handler()` in the in-band context can be
+scheduled (or posted) from the out-of-band context in two different
+ways:
+
+### Using the common injection service
 
 ```markdown
 	irq_pipeline_inject(sirq);
 ```
+
+### Using the lightweight injection method (requires interrupts to be disabled in the CPU)
+
+```markdown
+	unsigned long flags = hard_local_irqsave();
+	irq_stage_post_root(sirq);
+	hard_local_irqrestore(flags);
+```
+
+{{% notice tip %}}
+Assuming that no interrupt may be pending in the event log for the
+head stage at the time this code runs, the second method relies on the
+invariant that in a pipeline interrupt model, IRQs pending for the
+root stage will have to wait for the head stage to quiesce before they
+can be handled. Therefore, it is pointless to check for synchronizing the
+interrupts pending for the root stage from the head stage, which the
+`irq_pipeline_inject()` service would do systematically.
+`irq_stage_post_root()` simply marks the event as pending in the event
+log of the root stage for the current CPU, then returns. This event
+would be played as a result of synchronizing the log automatically when
+the current CPU switches back to the root stage.
+{{% /notice %}}
+
+It is also valid to post a synthetic interrupt to be handled on the
+root stage from an in-band context, using `irq_pipeline_inject()`. In
+such a case, the normal rules of interrupt delivery apply, depending
+on the state of the [virtual interrupt disable flag]({{%relref
+"pipeline/optimistic.md#virtual-i-flag" %}}) for the root stage: the
+IRQ is immediately delivered, with the call to `irq_pipeline_inject()`
+returning only after the handler has run.
+
+## Triggering out-of-band execution of a synthetic interrupt handler
+
+Conversely, the execution of `sirq_handler()` on the head stage can be
+triggered from the in-band context as follows:
+
+```markdown
+	irq_pipeline_inject(sirq);
+```
+
+Since the head stage has precedence over the root stage for execution
+of any pending event, this IRQ is immediately delivered, with the call
+to `irq_pipeline_inject()` returning only after the handler has run.
+
+It is also valid to post a synthetic interrupt to be handled on the
+head stage from an out-of-band context, using
+`irq_pipeline_inject()`. In such a case, the normal rules of interrupt
+delivery apply, depending on the state of the virtual interrupt
+disable flag [for the head stage]({{%relref
+"pipeline/usage/interrupt_protection.md#head-stall-flag" %}}).
 
 {{% notice note %}}
 Calling `irq_stage_post_head(sirq)` from the root stage to trigger an
