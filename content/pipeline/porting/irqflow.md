@@ -67,7 +67,7 @@ Yes, you did read it right: interrupt flow handlers may run twice for
 a single IRQ in Dovetail's pipelined interrupt model: firstly to
 submit the event immediately to any out-of-band handler which may be
 interested in it, finally to run the in-band handler(s) accepting that
-event if its was not delivered to any out-of-band handler. You may
+event if it was not delivered to any out-of-band handler. You may
 construe the meaning of calling `handle_oob_irq()` as _"let's poll for
 any out-of-band handler which might be interested in this event"_.
 This also means that any interrupt can have either an in-band or an
