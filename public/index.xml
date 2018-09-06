@@ -84,7 +84,7 @@ However, critical sections delimited this way by the in-band code must still be 
       
       <guid>https://dovetail.xenomai.org/pipeline/usage/synthetic/</guid>
       <description>The pipeline introduces an additional type of interrupts, which are purely software-originated, with no hardware involvement. These IRQs can be triggered by any kernel code. Synthetic IRQs are inherently per-CPU events. Because the common pipeline flow applies to synthetic interrupts, it is possible to attach them to out-of-band and/or in-band handlers, just like device interrupts.
-Synthetic interrupts and regular softirqs differ in essence: the latter only exist in the in-band context, and therefore cannot trigger out-of-band activities.</description>
+Synthetic interrupts abide by the normal rules with respect to interrupt masking: such IRQs may be deferred until the stage they should be handled from is unstalled.</description>
     </item>
     
     <item>

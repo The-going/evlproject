@@ -12,19 +12,19 @@
     <title>Synthetic IRQs :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1535190895" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1535190895" rel="stylesheet">
-    <link href="/css/hybrid.css?1535190895" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1535190895" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1535190895" rel="stylesheet">
-    <link href="/css/auto-complete.css?1535190895" rel="stylesheet">
-    <link href="/css/theme.css?1535190895" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1535190895" rel="stylesheet">
+    <link href="/css/nucleus.css?1536250690" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1536250690" rel="stylesheet">
+    <link href="/css/hybrid.css?1536250690" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1536250690" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1536250690" rel="stylesheet">
+    <link href="/css/auto-complete.css?1536250690" rel="stylesheet">
+    <link href="/css/theme.css?1536250690" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1536250690" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1535190895" rel="stylesheet">
+      <link href="/css/theme-blue.css?1536250690" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1535190895"></script>
+    <script src="/js/jquery-2.x.min.js?1536250690"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1535190895"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1535190895"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1536250690"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1536250690"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1535190895"></script>
+<script type="text/javascript" src="/js/search.js?1536250690"></script>
 
     
   </div>
@@ -649,7 +649,20 @@
                 
                     <div class="progress">
     <div class="wrapper">
-
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#allocating-synthetic-interrupts">Allocating synthetic interrupts</a></li>
+<li><a href="#scheduling-in-band-execution-of-a-synthetic-interrupt-handler">Scheduling in-band execution of a synthetic interrupt handler</a>
+<ul>
+<li><a href="#using-the-common-injection-service">Using the common injection service</a></li>
+<li><a href="#using-the-lightweight-injection-method-requires-interrupts-to-be-disabled-in-the-cpu">Using the lightweight injection method (requires interrupts to be disabled in the CPU)</a></li>
+</ul></li>
+<li><a href="#triggering-out-of-band-execution-of-a-synthetic-interrupt-handler">Triggering out-of-band execution of a synthetic interrupt handler</a></li>
+</ul></li>
+</ul>
+</nav>
     </div>
 </div>
 
@@ -667,6 +680,8 @@
         
 
 
+
+
 <p>The pipeline introduces an additional type of interrupts, which are
 purely software-originated, with no hardware involvement. These IRQs
 can be triggered by any kernel code. Synthetic IRQs are inherently
@@ -674,18 +689,30 @@ per-CPU events. Because the common pipeline flow applies to synthetic
 interrupts, it is possible to attach them to out-of-band and/or
 in-band handlers, just like device interrupts.</p>
 
+<p>Synthetic interrupts abide by the normal rules with respect to
+interrupt masking: such IRQs may be deferred until the stage they
+should be handled from is unstalled.</p>
+
 <div class="notices note" ><p>Synthetic interrupts and regular softirqs differ in essence: the
 latter only exist in the in-band context, and therefore cannot trigger
-out-of-band activities.</p>
+out-of-band activities. Synthetic interrupts used to be called
+<em>virtual</em> IRQs (or <em>virq</em> for short) by the legacy I-pipe
+implementation, Dovetail&rsquo;s ancestor; such rename clears the confusion
+with the way abstract interrupt numbers defined within interrupt
+domains may be called elsewhere in the kernel code base (i.e.
+<em>virtual interrupts</em> too).</p>
 </div>
 
+
+<h2 id="allocating-synthetic-interrupts">Allocating synthetic interrupts</h2>
 
 <p>Synthetic interrupt vectors are allocated from the
 <em>synthetic_irq_domain</em>, using the <code>irq_create_direct_mapping()</code>
 routine.</p>
 
-<p>For instance, a synthetic interrupt can be used for triggering an
-in-band activity on the root stage from the head stage as follows:</p>
+<p>A synthetic interrupt handler can be installed for running on the root
+stage upon a scheduling request (i.e. being posted) from an
+out-of-band context as follows:</p>
 
 <pre><code class="language-markdown">#include &lt;linux/irq_pipeline.h&gt;
 
@@ -716,42 +743,8 @@ unsigned int alloc_sirq(void)
 }
 </code></pre>
 
-<p>Code can schedule the execution of <code>sirq_handler()</code> from the
-out-of-band context in two different ways:</p>
-
-<blockquote>
-<p>Using the common injection service</p>
-</blockquote>
-
-<pre><code class="language-markdown">	irq_pipeline_inject(sirq);
-</code></pre>
-
-<blockquote>
-<p>Using the lightweight injection method (requires interrupts to be
-  disabled in the CPU)</p>
-</blockquote>
-
-<pre><code class="language-markdown">	unsigned long flags = hard_local_irqsave();
-	irq_stage_post_root(sirq);
-	hard_local_irqrestore(flags);
-</code></pre>
-
-<div class="notices tip" ><p>Assuming that no interrupt may be pending in the event log for the
-head stage at the time this code runs, the method above relies on the
-invariant that in a pipeline interrupt model, IRQs pending for the
-root stage will have to wait for the head stage to quiesce before they
-can be handled. Therefore, it is pointless to try synchronizing the
-interrupts pending for the root stage from the head stage, which the
-<code>irq_pipeline_inject()</code> service would do systematically.
-<code>irq_stage_post_root()</code> simply marks the event as pending in the event
-log of the root stage for the current CPU, then returns. This event
-would be played as a result of synchronizing the log automatically when
-the current CPU switches back to the root stage.</p>
-</div>
-
-
-<p>Conversely, a synthetic interrupt can be handled from the out-of-band
-context:</p>
+<p>A synthetic interrupt handler can be installed for running from the
+head stage upon a trigger from an in-band context as follows:</p>
 
 <pre><code class="language-markdown">static irqreturn_t sirq_oob_handler(int sirq, void *dev_id)
 {
@@ -781,11 +774,62 @@ unsigned int alloc_sirq(void)
 }
 </code></pre>
 
-<p>Code can trigger the immediate execution of <code>sirq_oob_handler()</code> on
-the head stage as follows:</p>
+<h2 id="scheduling-in-band-execution-of-a-synthetic-interrupt-handler">Scheduling in-band execution of a synthetic interrupt handler</h2>
+
+<p>The execution of <code>sirq_handler()</code> in the in-band context can be
+scheduled (or posted) from the out-of-band context in two different
+ways:</p>
+
+<h3 id="using-the-common-injection-service">Using the common injection service</h3>
 
 <pre><code class="language-markdown">	irq_pipeline_inject(sirq);
 </code></pre>
+
+<h3 id="using-the-lightweight-injection-method-requires-interrupts-to-be-disabled-in-the-cpu">Using the lightweight injection method (requires interrupts to be disabled in the CPU)</h3>
+
+<pre><code class="language-markdown">	unsigned long flags = hard_local_irqsave();
+	irq_stage_post_root(sirq);
+	hard_local_irqrestore(flags);
+</code></pre>
+
+<div class="notices tip" ><p>Assuming that no interrupt may be pending in the event log for the
+head stage at the time this code runs, the second method relies on the
+invariant that in a pipeline interrupt model, IRQs pending for the
+root stage will have to wait for the head stage to quiesce before they
+can be handled. Therefore, it is pointless to check for synchronizing the
+interrupts pending for the root stage from the head stage, which the
+<code>irq_pipeline_inject()</code> service would do systematically.
+<code>irq_stage_post_root()</code> simply marks the event as pending in the event
+log of the root stage for the current CPU, then returns. This event
+would be played as a result of synchronizing the log automatically when
+the current CPU switches back to the root stage.</p>
+</div>
+
+
+<p>It is also valid to post a synthetic interrupt to be handled on the
+root stage from an in-band context, using <code>irq_pipeline_inject()</code>. In
+such a case, the normal rules of interrupt delivery apply, depending
+on the state of the <a href="/pipeline/optimistic/#virtual-i-flag">virtual interrupt disable flag</a> for the root stage: the
+IRQ is immediately delivered, with the call to <code>irq_pipeline_inject()</code>
+returning only after the handler has run.</p>
+
+<h2 id="triggering-out-of-band-execution-of-a-synthetic-interrupt-handler">Triggering out-of-band execution of a synthetic interrupt handler</h2>
+
+<p>Conversely, the execution of <code>sirq_handler()</code> on the head stage can be
+triggered from the in-band context as follows:</p>
+
+<pre><code class="language-markdown">	irq_pipeline_inject(sirq);
+</code></pre>
+
+<p>Since the head stage has precedence over the root stage for execution
+of any pending event, this IRQ is immediately delivered, with the call
+to <code>irq_pipeline_inject()</code> returning only after the handler has run.</p>
+
+<p>It is also valid to post a synthetic interrupt to be handled on the
+head stage from an out-of-band context, using
+<code>irq_pipeline_inject()</code>. In such a case, the normal rules of interrupt
+delivery apply, depending on the state of the virtual interrupt
+disable flag <a href="/pipeline/usage/interrupt_protection/#head-stall-flag">for the head stage</a>.</p>
 
 <div class="notices note" ><p>Calling <code>irq_stage_post_head(sirq)</code> from the root stage to trigger an
 out-of-band event is most often not the right way to do this, because
@@ -1245,20 +1289,20 @@ stage before returning to the caller.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1535190895"></script>
-    <script src="/js/perfect-scrollbar.min.js?1535190895"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1535190895"></script>
-    <script src="/js/jquery.sticky.js?1535190895"></script>
-    <script src="/js/featherlight.min.js?1535190895"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1535190895"></script>
-    <script src="/js/highlight.pack.js?1535190895"></script>
+    <script src="/js/clipboard.min.js?1536250690"></script>
+    <script src="/js/perfect-scrollbar.min.js?1536250690"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1536250690"></script>
+    <script src="/js/jquery.sticky.js?1536250690"></script>
+    <script src="/js/featherlight.min.js?1536250690"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1536250690"></script>
+    <script src="/js/highlight.pack.js?1536250690"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1535190895"></script>
-    <script src="/js/learn.js?1535190895"></script>
-    <script src="/js/hugo-learn.js?1535190895"></script>
+    <script src="/js/modernizr.custom.71422.js?1536250690"></script>
+    <script src="/js/learn.js?1536250690"></script>
+    <script src="/js/hugo-learn.js?1536250690"></script>
 
-    <link href="/mermaid/mermaid.css?1535190895" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1535190895"></script>
+    <link href="/mermaid/mermaid.css?1536250690" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1536250690"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
