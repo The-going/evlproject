@@ -341,7 +341,7 @@ over the root stage.
     
 ## Adapting the assembly code to IRQ pipelining {#arch-irq-handling}
 
-### Interrupt entry
+### Interrupt entry {#arch-irq-entry}
 
 As generic IRQ handling [is a requirement]({{%relref
 "pipeline/porting/prerequisites.md" %}}) for supporting Dovetail, the
@@ -375,7 +375,7 @@ IPIs must be dealt with by [specific changes]({{%relref
 "pipeline/porting/arch.md#dealing-with-ipis" %}}) introduced by the
 port we will cover later.
 
-### Interrupt exit
+### Interrupt exit {#arch-irq-exit}
 
 When interrupt pipelining is disabled, the kernel normally runs an
 epilogue after each interrupt or exception event was handled. If the
@@ -560,6 +560,57 @@ over an out-of-band context:
 `_TLF_HEAD` is a local `thread_info` flag denoting a current task
 running out-of-band code over the head stage. If set, the epilogue
 must be skipped.
+
+## Reconciling the virtual interrupt state to the epilogue logic
+
+A tricky issue to address when pipelining interrupts is about making
+sure that the logic from the epilogue routine
+(e.g. _do\_work\_pending()_, _do\_notify\_resume()_) actually runs in
+the expected [(virtual) interrupt state]({{%relref
+"pipeline/optimistic.md#virtual-i-flag" %}}) for the root stage.
+
+Reconciling the virtual interrupt state to the in-band logic dealing
+with interrupts is required because in a pipelined interrupt model,
+the virtual interrupt state of the root stage does not necessarily
+reflect the CPU's interrupt state on entry to the early assembly code
+handling the IRQ events. Typically, a CPU would always automatically
+disable interrupts hardware-wise when taking an IRQ, which may
+contradict the software-managed virtual state until both are
+eventually reconciled.
+
+Those rules of thumb should be kept in mind when adapting the epilogue
+routine to interrupt pipelining:
+
+- most often, such routine is supposed to be entered with (hard)
+  interrupts off when called from the assembly code which handles
+  kernel entry/exit transitions (e.g. arch/arm/kernel/entry-common.S).
+  Therefore, this routine may have to reconcile the virtual interrupt
+  state with such expectation, since according to the [interrupt exit
+  rules]({{%relref "pipeline/porting/arch.md#arch-irq-exit" %}}) we
+  discussed earlier, such state has to be originally enabled (i.e. the
+  root stall bit is clear) for the epilogue code to run in the first
+  place.
+
+- conversely, we must keep the hard interrupt state consistent upon
+  return from the epilogue code with the one received on
+  entry. Typically, hard interrupts must be disabled before leaving
+  this code if we entered it that way.
+
+- likewise, we must also keep the virtual interrupt state consistent
+  upon return of the epilogue code with the one received on entry. In
+  other words, the stall bit of the root stage must be restored to its
+  original state on entry before leaving this code.
+
+- _schedule()_ must be called with interrupts virtually disabled for
+  the root stage, but the CPU's interrupt state should allow for IRQs
+  to be taken in order to minimize latency for the head stage.
+
+- generally speaking, while we may need the root stage to be stalled
+  when the in-band kernel code expects this, we still want most of the
+  epilogue code to run with [hard interrupts enabled]({{%relref
+  "pipeline/usage/interrupt_protection.md#hard-irq-protection"%}}) to
+  shorten the interrupt latency for the head stage, where co-kernels
+  live.
 
 ## Dealing with IPIs {#dealing-with-ipis}
 
