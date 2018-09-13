@@ -150,7 +150,7 @@ bool irq_cpuidle_control(struct cpuidle_device *dev,
 	 * Deny entering sleep state if this entails stopping the
 	 * timer (i.e. C3STOP misfeature).
 	 */
-	if (state->flags & CPUIDLE_FLAG_TIMER_STOP)
+	if (state && (state->flags & CPUIDLE_FLAG_TIMER_STOP))
 		return false;
 
 	return true;
