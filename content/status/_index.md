@@ -101,4 +101,4 @@ core.
 
 To build _Steely_, you will also need the user-space companion tools
 and libraries available at [this
-URL.](https://lab.xenomai.org/steely.git/).
+URL](https://lab.xenomai.org/steely.git/).
