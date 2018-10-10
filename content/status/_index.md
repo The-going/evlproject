@@ -9,7 +9,7 @@ This page summarizes the status of the ongoing ports of Dovetail.
 
 > Target kernel release
 
-4.19-rc5
+4.19-rc7
 
 > ARM SoC
 
@@ -98,3 +98,7 @@ limitations, which could not be merged into the mature Xenomai code
 base at this point. When this box is checked, the corresponding
 Dovetail port has been tested successfully with a _Steely_ real-time
 core.
+
+To build _Steely_, you will also need the user-space companion tools
+and libraries available at [this
+URL.](https://lab.xenomai.org/steely.git/).
