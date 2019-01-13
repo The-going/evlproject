@@ -12,19 +12,19 @@
     <title>Synthetic IRQs :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1540716880" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1540716880" rel="stylesheet">
-    <link href="/css/hybrid.css?1540716880" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1540716880" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1540716880" rel="stylesheet">
-    <link href="/css/auto-complete.css?1540716880" rel="stylesheet">
-    <link href="/css/theme.css?1540716880" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1540716880" rel="stylesheet">
+    <link href="/css/nucleus.css?1547394156" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1547394156" rel="stylesheet">
+    <link href="/css/hybrid.css?1547394156" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1547394156" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1547394156" rel="stylesheet">
+    <link href="/css/auto-complete.css?1547394156" rel="stylesheet">
+    <link href="/css/theme.css?1547394156" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1547394156" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1540716880" rel="stylesheet">
+      <link href="/css/theme-blue.css?1547394156" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1540716880"></script>
+    <script src="/js/jquery-2.x.min.js?1547394156"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1540716880"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1540716880"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1547394156"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1547394156"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1540716880"></script>
+<script type="text/javascript" src="/js/search.js?1547394156"></script>
 
     
   </div>
@@ -788,7 +788,7 @@ ways:</p>
 <h3 id="using-the-lightweight-injection-method-requires-interrupts-to-be-disabled-in-the-cpu">Using the lightweight injection method (requires interrupts to be disabled in the CPU)</h3>
 
 <pre><code class="language-markdown">	unsigned long flags = hard_local_irqsave();
-	irq_stage_post_root(sirq);
+	irq_post_inband(sirq);
 	hard_local_irqrestore(flags);
 </code></pre>
 
@@ -799,7 +799,7 @@ root stage will have to wait for the head stage to quiesce before they
 can be handled. Therefore, it is pointless to check for synchronizing the
 interrupts pending for the root stage from the head stage, which the
 <code>irq_pipeline_inject()</code> service would do systematically.
-<code>irq_stage_post_root()</code> simply marks the event as pending in the event
+<code>irq_post_inband()</code> simply marks the event as pending in the event
 log of the root stage for the current CPU, then returns. This event
 would be played as a result of synchronizing the log automatically when
 the current CPU switches back to the root stage.</p>
@@ -831,7 +831,7 @@ head stage from an out-of-band context, using
 delivery apply, depending on the state of the virtual interrupt
 disable flag <a href="/pipeline/usage/interrupt_protection/#head-stall-flag">for the head stage</a>.</p>
 
-<div class="notices note" ><p>Calling <code>irq_stage_post_head(sirq)</code> from the root stage to trigger an
+<div class="notices note" ><p>Calling <code>irq_post_oob(sirq)</code> from the root stage to trigger an
 out-of-band event is most often not the right way to do this, because
 this service would not synchronize the interrupt log before
 returning. In other words, the <code>sirq</code> event would still be pending for
@@ -1289,20 +1289,20 @@ stage before returning to the caller.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1540716880"></script>
-    <script src="/js/perfect-scrollbar.min.js?1540716880"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1540716880"></script>
-    <script src="/js/jquery.sticky.js?1540716880"></script>
-    <script src="/js/featherlight.min.js?1540716880"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1540716880"></script>
-    <script src="/js/highlight.pack.js?1540716880"></script>
+    <script src="/js/clipboard.min.js?1547394156"></script>
+    <script src="/js/perfect-scrollbar.min.js?1547394156"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1547394156"></script>
+    <script src="/js/jquery.sticky.js?1547394156"></script>
+    <script src="/js/featherlight.min.js?1547394156"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1547394156"></script>
+    <script src="/js/highlight.pack.js?1547394156"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1540716880"></script>
-    <script src="/js/learn.js?1540716880"></script>
-    <script src="/js/hugo-learn.js?1540716880"></script>
+    <script src="/js/modernizr.custom.71422.js?1547394156"></script>
+    <script src="/js/learn.js?1547394156"></script>
+    <script src="/js/hugo-learn.js?1547394156"></script>
 
-    <link href="/mermaid/mermaid.css?1540716880" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1540716880"></script>
+    <link href="/mermaid/mermaid.css?1547394156" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1547394156"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

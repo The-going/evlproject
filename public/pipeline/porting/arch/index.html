@@ -12,19 +12,19 @@
     <title>Architecture-specific bits :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1540716880" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1540716880" rel="stylesheet">
-    <link href="/css/hybrid.css?1540716880" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1540716880" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1540716880" rel="stylesheet">
-    <link href="/css/auto-complete.css?1540716880" rel="stylesheet">
-    <link href="/css/theme.css?1540716880" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1540716880" rel="stylesheet">
+    <link href="/css/nucleus.css?1547394156" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1547394156" rel="stylesheet">
+    <link href="/css/hybrid.css?1547394156" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1547394156" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1547394156" rel="stylesheet">
+    <link href="/css/auto-complete.css?1547394156" rel="stylesheet">
+    <link href="/css/theme.css?1547394156" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1547394156" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1540716880" rel="stylesheet">
+      <link href="/css/theme-blue.css?1547394156" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1540716880"></script>
+    <script src="/js/jquery-2.x.min.js?1547394156"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1540716880"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1540716880"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1547394156"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1547394156"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1540716880"></script>
+<script type="text/javascript" src="/js/search.js?1547394156"></script>
 
     
   </div>
@@ -862,7 +862,7 @@ file available for inclusion from <em>&lt;asm/irq_pipeline.h&gt;</em>.</li>
 +
 +static inline notrace unsigned long arch_local_irq_save(void)
 +{
-+	int stalled = root_irq_save();
++	int stalled = inband_irq_save();
 +	barrier();
 +	return arch_irqs_virtual_to_native_flags(stalled);
 +}
@@ -870,18 +870,18 @@ file available for inclusion from <em>&lt;asm/irq_pipeline.h&gt;</em>.</li>
 +static inline notrace void arch_local_irq_enable(void)
 +{
 +	barrier();
-+	root_irq_enable();
++	inband_irq_enable();
 +}
 +
 +static inline notrace void arch_local_irq_disable(void)
 +{
-+	root_irq_disable();
++	inband_irq_disable();
 +	barrier();
 +}
 +
 +static inline notrace unsigned long arch_local_save_flags(void)
 +{
-+	int stalled = root_irqs_disabled();
++	int stalled = inband_irqs_disabled();
 +	barrier();
 +	return arch_irqs_virtual_to_native_flags(stalled);
 +}
@@ -894,7 +894,7 @@ file available for inclusion from <em>&lt;asm/irq_pipeline.h&gt;</em>.</li>
 +static inline notrace void arch_local_irq_restore(unsigned long flags)
 +{
 +	if (!arch_irqs_disabled_flags(flags))
-+		__root_irq_enable();
++		__inband_irq_enable();
 +	barrier();
 +}
 +
@@ -1161,7 +1161,7 @@ whether the regular epilogue may run for such event.</p>
 +handle_arch_irq_pipelined(struct pt_regs *regs)
 +{
 +	handle_arch_irq(regs);
-+	return on_root_stage() &amp;&amp; !irqs_disabled();
++	return running_inband() &amp;&amp; !irqs_disabled();
 +}
 +#endif
 +
@@ -1238,7 +1238,7 @@ over an out-of-band context:</p>
 +	.macro ret_to_user_pipelined, tmp
 +#ifdef CONFIG_IRQ_PIPELINE
 +	ldr	\tmp, [tsk, #TI_LOCAL_FLAGS]
-+	tst	\tmp, #_TLF_HEAD
++	tst	\tmp, #_TLF_OOB
 +	bne	fast_ret_to_user
 +#endif
 +	b	ret_to_user
@@ -1246,7 +1246,7 @@ over an out-of-band context:</p>
 +
 </code></pre>
 
-<p><code>_TLF_HEAD</code> is a local <code>thread_info</code> flag denoting a current task
+<p><code>_TLF_OOB</code> is a local <code>thread_info</code> flag denoting a current task
 running out-of-band code over the head stage. If set, the epilogue
 must be skipped.</p>
 
@@ -1756,20 +1756,20 @@ live.</p></li>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1540716880"></script>
-    <script src="/js/perfect-scrollbar.min.js?1540716880"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1540716880"></script>
-    <script src="/js/jquery.sticky.js?1540716880"></script>
-    <script src="/js/featherlight.min.js?1540716880"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1540716880"></script>
-    <script src="/js/highlight.pack.js?1540716880"></script>
+    <script src="/js/clipboard.min.js?1547394156"></script>
+    <script src="/js/perfect-scrollbar.min.js?1547394156"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1547394156"></script>
+    <script src="/js/jquery.sticky.js?1547394156"></script>
+    <script src="/js/featherlight.min.js?1547394156"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1547394156"></script>
+    <script src="/js/highlight.pack.js?1547394156"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1540716880"></script>
-    <script src="/js/learn.js?1540716880"></script>
-    <script src="/js/hugo-learn.js?1540716880"></script>
+    <script src="/js/modernizr.custom.71422.js?1547394156"></script>
+    <script src="/js/learn.js?1547394156"></script>
+    <script src="/js/hugo-learn.js?1547394156"></script>
 
-    <link href="/mermaid/mermaid.css?1540716880" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1540716880"></script>
+    <link href="/mermaid/mermaid.css?1547394156" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1547394156"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

@@ -12,19 +12,19 @@
     <title>Status :: Dovetail</title>
     
     
-    <link href="/css/nucleus.css?1540716880" rel="stylesheet">
-    <link href="/css/font-awesome.min.css?1540716880" rel="stylesheet">
-    <link href="/css/hybrid.css?1540716880" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1540716880" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1540716880" rel="stylesheet">
-    <link href="/css/auto-complete.css?1540716880" rel="stylesheet">
-    <link href="/css/theme.css?1540716880" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1540716880" rel="stylesheet">
+    <link href="/css/nucleus.css?1547394156" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1547394156" rel="stylesheet">
+    <link href="/css/hybrid.css?1547394156" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1547394156" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1547394156" rel="stylesheet">
+    <link href="/css/auto-complete.css?1547394156" rel="stylesheet">
+    <link href="/css/theme.css?1547394156" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1547394156" rel="stylesheet">
     
-      <link href="/css/theme-blue.css?1540716880" rel="stylesheet">
+      <link href="/css/theme-blue.css?1547394156" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1540716880"></script>
+    <script src="/js/jquery-2.x.min.js?1547394156"></script>
     
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{ 
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1540716880"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1540716880"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1547394156"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1547394156"></script>
 <script type="text/javascript">
     
         var baseurl = '\/';
     
 </script>
-<script type="text/javascript" src="/js/search.js?1540716880"></script>
+<script type="text/javascript" src="/js/search.js?1547394156"></script>
 
     
   </div>
@@ -661,7 +661,7 @@
 <p>Target kernel release</p>
 </blockquote>
 
-<p>4.19</p>
+<p>4.20</p>
 
 <blockquote>
 <p>ARM SoC</p>
@@ -676,7 +676,7 @@
     <th>Soc (Board)</th>
     <th>IRQ pipeline <sup>1</sup></th> 
     <th>Alternate task control</th>
-    <th>Steely<sup>2</sup></th>
+    <th>EVL<sup>2</sup></th>
   </tr>
   <tr>
     <td align="left"><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">i.MX6qp (SabreSD)</a></td>
@@ -717,7 +717,7 @@
     <th>Soc (Board)</th>
     <th>IRQ pipeline <sup>1</sup></th> 
     <th>Alternate task control</th>
-    <th>Steely<sup>2</sup></th>
+    <th>EVL<sup>2</sup></th>
   </tr>
   <tr>
     <td align="left"><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">virt (QEMU)</a></td>
@@ -741,22 +741,16 @@
 
 <p><br></p>
 
-<p><sup>1</sup> Means that we pass the pipeline torture test (see
+<p><sup>1</sup> Means that the pipeline torture tests pass (see
 <code>CONFIG_IRQ_PIPELINE_TORTURE_TEST</code>).</p>
 
-<p><sup>2</sup> <a href="https://lab.xenomai.org/linux-steely.git/"><em>Steely</em></a> is
-an actively developed <a href="https://xenomai.org/gitlab/xenomai/">Xenomai
-Cobalt</a> derivative we have been
-using as a workhorse (or guinea pig at times) for developing and
-improving Dovetail.  Steely is nowhere near production software, we
-try fundamental changes there for going beyond Cobalt&rsquo;s current
-limitations, which could not be merged into the mature Xenomai code
-base at this point. When this box is checked, the corresponding
-Dovetail port has been tested successfully with a <em>Steely</em> real-time
-core.</p>
+<p><sup>2</sup> <a href="EVL for short">&lsquo;evenless&rsquo;</a> is a basic co-kernel with
+real-time capabilities used in testing and improving the Dovetail
+interface.  When this box is checked, the corresponding Dovetail port
+has been tested successfully with this core.</p>
 
-<p>To build <em>Steely</em>, you will also need the user-space companion tools
-and libraries available at <a href="https://lab.xenomai.org/steely.git/">this
+<p>To build <em>EVL</em>, you will also need the user-space companion tools and
+libraries available at <a href="https://lab.xenomai.org/evl.git/">this
 URL</a>.</p>
 
 
@@ -1202,20 +1196,20 @@ URL</a>.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1540716880"></script>
-    <script src="/js/perfect-scrollbar.min.js?1540716880"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1540716880"></script>
-    <script src="/js/jquery.sticky.js?1540716880"></script>
-    <script src="/js/featherlight.min.js?1540716880"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1540716880"></script>
-    <script src="/js/highlight.pack.js?1540716880"></script>
+    <script src="/js/clipboard.min.js?1547394156"></script>
+    <script src="/js/perfect-scrollbar.min.js?1547394156"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1547394156"></script>
+    <script src="/js/jquery.sticky.js?1547394156"></script>
+    <script src="/js/featherlight.min.js?1547394156"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1547394156"></script>
+    <script src="/js/highlight.pack.js?1547394156"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1540716880"></script>
-    <script src="/js/learn.js?1540716880"></script>
-    <script src="/js/hugo-learn.js?1540716880"></script>
+    <script src="/js/modernizr.custom.71422.js?1547394156"></script>
+    <script src="/js/learn.js?1547394156"></script>
+    <script src="/js/hugo-learn.js?1547394156"></script>
 
-    <link href="/mermaid/mermaid.css?1540716880" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1540716880"></script>
+    <link href="/mermaid/mermaid.css?1547394156" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1547394156"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
