@@ -115,7 +115,7 @@ ways:
 
 ```markdown
 	unsigned long flags = hard_local_irqsave();
-	irq_stage_post_root(sirq);
+	irq_post_inband(sirq);
 	hard_local_irqrestore(flags);
 ```
 
@@ -127,7 +127,7 @@ root stage will have to wait for the head stage to quiesce before they
 can be handled. Therefore, it is pointless to check for synchronizing the
 interrupts pending for the root stage from the head stage, which the
 `irq_pipeline_inject()` service would do systematically.
-`irq_stage_post_root()` simply marks the event as pending in the event
+`irq_post_inband()` simply marks the event as pending in the event
 log of the root stage for the current CPU, then returns. This event
 would be played as a result of synchronizing the log automatically when
 the current CPU switches back to the root stage.
@@ -162,7 +162,7 @@ disable flag [for the head stage]({{%relref
 "pipeline/usage/interrupt_protection.md#head-stall-flag" %}}).
 
 {{% notice note %}}
-Calling `irq_stage_post_head(sirq)` from the root stage to trigger an
+Calling `irq_post_oob(sirq)` from the root stage to trigger an
 out-of-band event is most often not the right way to do this, because
 this service would not synchronize the interrupt log before
 returning. In other words, the `sirq` event would still be pending for

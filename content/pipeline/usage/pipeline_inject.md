@@ -7,9 +7,9 @@ draft: false
 
 - `irq_pipeline_inject()`
 
-- `irq_stage_post_root()`
+- `irq_post_inband()`
 
-- `irq_stage_post_head()`
+- `irq_post_oob()`
 
 - `irq_pipeline_send_remote()`
 

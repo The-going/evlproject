@@ -6,8 +6,8 @@ weight: 1
 draft: false
 ---
 
-- `irq_stage_push()`
+- `enable_oob_stage()`
 
-- `irq_stage_pop()`
+- `disable_oob_stage()`
 
 TBC.

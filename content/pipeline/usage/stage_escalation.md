@@ -5,6 +5,6 @@ weight: 5
 draft: false
 ---
 
-- `irq_stage_escalate()`
+- `run_oob_call()`
 
 TBC.

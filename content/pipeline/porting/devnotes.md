@@ -20,7 +20,7 @@ preemption specifically, because either one condition is true;
   too).
 
 - if we are running over the context of the root stage's event log
-  syncer (`irq_stage_sync_current()`) playing a deferred interrupt, in
+  syncer (`sync_current_stage()`) playing a deferred interrupt, in
   which case the virtual interrupt disable bit is set, so no CPU
   migration may occur either.
 

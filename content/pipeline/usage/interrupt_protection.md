@@ -45,11 +45,11 @@ calls affecting the stall bit for each stage:
 |     Root stage operation    |       Head stage operation         |
 | :-------------------------- |:---------------------------------- |
 |  local_save_flags(flags)    |             -none-                 |
-|  local_irq_disable()	      |       head_irq_disable()           |
-|  local_irq_enable()	      |       head_irq_enable()            |
-|  local_irq_save(flags)      |   flags = head_irq_save()          |
-|  local_irq_restore(flags)   |   head_irq_restore(flags)          |
-|  irqs_disabled()            |   head_irqs_disabled()             |
+|  local_irq_disable()	      |        oob_irq_disable()           |
+|  local_irq_enable()	      |        oob_irq_enable()            |
+|  local_irq_save(flags)      |    flags = oob_irq_save()          |
+|  local_irq_restore(flags)   |    oob_irq_restore(flags)          |
+|  irqs_disabled()            |    oob_irqs_disabled()             |
 |  irqs_disabled_flags(flags) |             -none-                 |
 
 {{% notice tip %}}

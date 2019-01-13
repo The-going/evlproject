@@ -176,7 +176,7 @@ CPU.
 +
 +static inline notrace unsigned long arch_local_irq_save(void)
 +{
-+	int stalled = root_irq_save();
++	int stalled = inband_irq_save();
 +	barrier();
 +	return arch_irqs_virtual_to_native_flags(stalled);
 +}
@@ -184,18 +184,18 @@ CPU.
 +static inline notrace void arch_local_irq_enable(void)
 +{
 +	barrier();
-+	root_irq_enable();
++	inband_irq_enable();
 +}
 +
 +static inline notrace void arch_local_irq_disable(void)
 +{
-+	root_irq_disable();
++	inband_irq_disable();
 +	barrier();
 +}
 +
 +static inline notrace unsigned long arch_local_save_flags(void)
 +{
-+	int stalled = root_irqs_disabled();
++	int stalled = inband_irqs_disabled();
 +	barrier();
 +	return arch_irqs_virtual_to_native_flags(stalled);
 +}
@@ -208,7 +208,7 @@ CPU.
 +static inline notrace void arch_local_irq_restore(unsigned long flags)
 +{
 +	if (!arch_irqs_disabled_flags(flags))
-+		__root_irq_enable();
++		__inband_irq_enable();
 +	barrier();
 +}
 +
@@ -469,7 +469,7 @@ whether the regular epilogue may run for such event.
 +handle_arch_irq_pipelined(struct pt_regs *regs)
 +{
 +	handle_arch_irq(regs);
-+	return on_root_stage() && !irqs_disabled();
++	return running_inband() && !irqs_disabled();
 +}
 +#endif
 +
@@ -549,7 +549,7 @@ over an out-of-band context:
 +	.macro ret_to_user_pipelined, tmp
 +#ifdef CONFIG_IRQ_PIPELINE
 +	ldr	\tmp, [tsk, #TI_LOCAL_FLAGS]
-+	tst	\tmp, #_TLF_HEAD
++	tst	\tmp, #_TLF_OOB
 +	bne	fast_ret_to_user
 +#endif
 +	b	ret_to_user
@@ -557,7 +557,7 @@ over an out-of-band context:
 +
 ```
 
-`_TLF_HEAD` is a local `thread_info` flag denoting a current task
+`_TLF_OOB` is a local `thread_info` flag denoting a current task
 running out-of-band code over the head stage. If set, the epilogue
 must be skipped.
 
