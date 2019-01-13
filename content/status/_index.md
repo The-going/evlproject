@@ -92,7 +92,3 @@ This page summarizes the status of the ongoing ports of Dovetail.
 real-time capabilities used in testing and improving the Dovetail
 interface.  When this box is checked, the corresponding Dovetail port
 has been tested successfully with this core.
-
-To build _EVL_, you will also need the user-space companion tools and
-libraries available at [this
-URL](https://lab.xenomai.org/evl.git/).
