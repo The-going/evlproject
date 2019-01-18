@@ -9,7 +9,7 @@ This page summarizes the status of the ongoing ports of Dovetail.
 
 > Target kernel release
 
-4.20
+5.0-rc2
 
 > ARM SoC
 
