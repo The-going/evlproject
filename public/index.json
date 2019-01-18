@@ -88,7 +88,7 @@
 	"title": "Status",
 	"tags": [],
 	"description": "",
-	"content": "This page summarizes the status of the ongoing ports of Dovetail.\n Target kernel release\n 4.20\n ARM SoC\n  Soc (Board) IRQ pipeline 1 Alternate task control EVL2   i.MX6qp (SabreSD)      i.MX7D (SabreSD)      Cannes2-STiH410 (B2260)      Cyclone V SoC FPGA (DevKit)       ARM64 SoC\n  Soc (Board) IRQ pipeline 1 Alternate task control EVL2   virt (QEMU)      BCM2837 (Raspberry 3 Model B)      Kirin 620 (HiKey LeMaker)      \n1 Means that the pipeline torture tests pass (see CONFIG_IRQ_PIPELINE_TORTURE_TEST).\n2 \u0026lsquo;evenless\u0026rsquo; is a basic co-kernel with real-time capabilities used in testing and improving the Dovetail interface. When this box is checked, the corresponding Dovetail port has been tested successfully with this core.\n"
+	"content": "This page summarizes the status of the ongoing ports of Dovetail.\n Target kernel release\n 5.0-rc2\n ARM SoC\n  Soc (Board) IRQ pipeline 1 Alternate task control EVL2   i.MX6qp (SabreSD)      i.MX7D (SabreSD)      Cannes2-STiH410 (B2260)      Cyclone V SoC FPGA (DevKit)       ARM64 SoC\n  Soc (Board) IRQ pipeline 1 Alternate task control EVL2   virt (QEMU)      BCM2837 (Raspberry 3 Model B)      Kirin 620 (HiKey LeMaker)      \n1 Means that the pipeline torture tests pass (see CONFIG_IRQ_PIPELINE_TORTURE_TEST).\n2 \u0026lsquo;evenless\u0026rsquo; is a basic co-kernel with real-time capabilities used in testing and improving the Dovetail interface. When this box is checked, the corresponding Dovetail port has been tested successfully with this core.\n"
 },
 {
 	"uri": "https://dovetail.xenomai.org/pipeline/usage/pipeline_inject/",
