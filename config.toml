@@ -1,11 +1,11 @@
-baseURL = "https://dovetail.xenomai.org/"
+baseURL = "https://evenless.org/"
 languageCode = "en-us"
-title = "Dovetail"
+title = "Evenless"
 theme = "hugo-theme-learn"
 
 [params]
 author = "Philippe Gerum <rpm@xenomai.org>"
-description = "Dovetail co-kernel interface for Linux"
+description = "Evenless co-kernel"
 disableSearch = false
 disableInlineCopyToClipBoard = true
 themeVariant = "blue"
