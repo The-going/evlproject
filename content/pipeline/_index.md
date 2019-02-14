@@ -43,9 +43,9 @@ resume normally, which may involve handling the deferred interrupts.
 In other words, interrupts are flowing down from the out-of-band to
 the in-band interrupt stages, which form a two-stage pipeline for
 prioritizing interrupt delivery. The runtime context of the
-out-of-band interrupt handlers is known as the *head stage* of the
+out-of-band interrupt handlers is known as the *oob stage* of the
 pipeline, as opposed to the in-band kernel activities sitting on the
-*root stage*:
+*in-band stage*:
 
 > Flow of interrupts through the pipeline
 
@@ -64,9 +64,9 @@ pipeline, as opposed to the in-band kernel activities sitting on the
                _____________________________________________
 ```
 
-A real-time core can base its own activities on the head stage,
+A real-time core can base its own activities on the oob stage,
 interposing on specific IRQ events, for delivering real-time
 capabilities to a particular set of applications. Meanwhile, the
-regular kernel operations keep going over the root stage unaffected,
-only delayed by short preemption times for running the out-of-band
-work.
+regular kernel operations keep going over the in-band stage
+unaffected, only delayed by short preemption times for running the
+out-of-band work.

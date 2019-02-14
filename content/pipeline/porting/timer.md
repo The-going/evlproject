@@ -254,7 +254,7 @@ following events happen in sequence:
 
 4. the timer interrupt triggered by the real device is switched to
    out-of-band handling. As a result, `ops->handle_event()` receives
-   tick events sent by the real device hardware directly from the head
+   tick events sent by the real device hardware directly from the oob
    stage of the interrupt pipeline, over the out-of-band context. This
    ensures high-precision timing. From that point, the out-of-band
    code can carry out its own timing duties, in addition to honoring

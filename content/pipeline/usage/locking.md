@@ -14,7 +14,7 @@ The pipeline core introduces two spinlock types:
 
 This type of spinlock is useful for implementing a critical section to
 serialize concurrent accesses from both in-band and out-of-band
-contexts, i.e. from root and head stages. Obviously, sleeping into a
+contexts, i.e. from in-band and oob stages. Obviously, sleeping into a
 critical section protected by a hard spinlock would be a very bad
 idea. In other words, hard spinlocks are not subject to virtual
 interrupt masking, therefore can be used to serialize with out-of-band

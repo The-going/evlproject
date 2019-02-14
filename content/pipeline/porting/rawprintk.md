@@ -12,8 +12,8 @@ printk-style debugging over a serial line. If so, do **NOT** rely on
 the regular _printk()_ routine for this, this won't work in most
 cases, potentially adding even more sources of lockups to the whole
 gloomy picture. Although the _printk()_ machinery can be used from
-out-of-band context, the output is deferred until the root stage gets
-back in control, which means that:
+out-of-band context, the output is deferred until the in-band stage
+gets back in control, which means that:
 
 - you can't reliably trace out-of-band code on the spot, deferred
   output issued from an out-of-band context, or from a section of code

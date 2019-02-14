@@ -34,21 +34,21 @@ core by calling `handle_oob_irq()`.
 
 If an out-of-band handler exists for the interrupt received,
 `handle_oob_irq()` invokes it immediately, after switching the
-execution context to the head stage if not current yet. Otherwise, the
-event is marked as pending in the root stage's log for the current
+execution context to the oob stage if not current yet. Otherwise, the
+event is marked as pending in the in-band stage's log for the current
 CPU.
 
 {{% notice tip %}}
 This is important to notice: _every_ interrupt which is _not_ handled
-by an out-of-band handler will end up into the root stage's event
+by an out-of-band handler will end up into the in-band stage's event
 log. This means that all external interrupts must have a handler in
 the in-band code - which should be the case for a sane kernel anyway.
 {{% /notice %}}
 
 Once `generic_pipeline_irq()` has returned, if the preempted execution
-context was running over the root stage unstalled, the pipeline core
+context was running over the in-band stage unstalled, the pipeline core
 synchronizes the interrupt state immediately, meaning that all IRQs
-found pending in the root stage's log are immediately delivered to
+found pending in the in-band stage's log are immediately delivered to
 their respective in-band handlers. In all other situations, the IRQ
 frame is left immediately without running those handlers. The IRQs may
 remain pending until the in-band code resumes from preemption, then
@@ -78,12 +78,12 @@ In absence of any out-of-band handler for the event, the device may
 keep asserting the interrupt signal until the cause has been lifted in
 its own registers. At the same time, we might not be allowed to run
 the in-band handler immediately over the current interrupt context if
-the root stage is currently stalled, we would have to wait for the
+the in-band stage is currently stalled, we would have to wait for the
 in-band code to accept interrupts again. However, the interrupt
 disable bit in the CPU would certainly be cleared in the meantime. For
 this reason, depending on the interrupt type, the flow handlers as
 modified by the pipeline code may have to mask the interrupt line
-until the in-band handler has run from the root stage, lifting the
+until the in-band handler has run from the in-band stage, lifting the
 interrupt cause. This typically happens with level-triggered
 interrupts, preventing the device from storming the CPU with a
 continuous interrupt request.
@@ -95,7 +95,7 @@ cannot delay out-of-band events.
 > The pathological case of deferring level-triggered IRQs
 
 ```markdown
-    /* root stage stalled on entry, no OOB handler */
+    /* in-band stage stalled on entry, no OOB handler */
     asm_irq_entry
        ...
           -> generic_pipeline_irq()
@@ -155,7 +155,7 @@ interrupt to pipelining can be decomposed in the following steps:
     explained earlier.
 
 + if not on pipeline entry (i.e. second entry of the flow handler),
-  then we must be running over the root stage, accepting interrupts,
+  then we must be running over the in-band stage, accepting interrupts,
   therefore we should fire the in-band handler(s) for the incoming
   event.
 
@@ -210,7 +210,7 @@ This change reads as follows:
   might expect not to receive any interrupt at this point (i.e. the
   [virtual interrupt disable flag]({{%relref
   "pipeline/optimistic.md#virtual-i-flag" %}}) might be set for the
-  root stage).
+  in-band stage).
 
 - otherwise, keep the interrupt line masked until `handle_level_irq()`
   is called again from a safe context for handling in-band interrupts,
@@ -397,8 +397,8 @@ scheduler core, such as entering with (virtual) interrupts disabled.
 ## Extended IRQ work API {#irq-work}
 
 Due to the NMI-type nature of interrupts running out-of-band code,
-such code might preempt in-band activities over the root stage in the
-middle of a [critical section]({{%relref
+such code might preempt in-band activities over the in-band stage in
+the middle of a [critical section]({{%relref
 "pipeline/optimistic.md#no-inband-reentry" %}}). For this reason, it
 would be unsafe to call any in-band routine from an out-of-band
 context.
@@ -406,10 +406,10 @@ context.
 However, we may schedule execution of in-band work handlers from
 out-of-band code, using the regular `irq_work_queue()` service which
 has been extended by the IRQ pipeline core. Such work request from the
-head stage is scheduled for running over the root stage on the issuing
-CPU as soon as the out-of-band activity quiesces on this processor. As
-its name implies, the work handler runs in (in-band) interrupt
-context.
+oob stage is scheduled for running over the in-band stage on the
+issuing CPU as soon as the out-of-band activity quiesces on this
+processor. As its name implies, the work handler runs in (in-band)
+interrupt context.
 
 {{% notice note %}}
 The interrupt pipeline forces the use of a synthetic IRQ as a

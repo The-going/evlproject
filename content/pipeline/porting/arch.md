@@ -157,7 +157,7 @@ CPU.
 
 + finally, a new set of *arch\_local\_*\* helpers should be provided,
   affecting the virtual interrupt disable flag implemented by the
-  pipeline core for controlling the root stage protection against
+  pipeline core for controlling the in-band stage protection against
   interrupts. It is good practice to implement this set in a separate
   file available for inclusion from *\<asm/irq_pipeline.h>*.
 
@@ -336,7 +336,7 @@ Once all of these changes are in, the generic helpers from
 scheme when interrupts are pipelined, which eventually allows to
 implement [interrupt deferral]({{%relref
 "pipeline/optimistic.md" %}}) for the protected in-band code running
-over the root stage.
+over the in-band stage.
 {{% /notice %}}
     
 ## Adapting the assembly code to IRQ pipelining {#arch-irq-handling}
@@ -544,7 +544,7 @@ over an out-of-band context:
 +++ b/arch/arm/kernel/entry-header.S
 +/*
 + * Branch to the exception epilogue, skipping the in-band work
-+ * if running over the head interrupt stage.
++ * if running over the oob interrupt stage.
 + */
 +	.macro ret_to_user_pipelined, tmp
 +#ifdef CONFIG_IRQ_PIPELINE
@@ -558,8 +558,8 @@ over an out-of-band context:
 ```
 
 `_TLF_OOB` is a local `thread_info` flag denoting a current task
-running out-of-band code over the head stage. If set, the epilogue
-must be skipped.
+running out-of-band code over the oob stage. If set, the epilogue must
+be skipped.
 
 ## Reconciling the virtual interrupt state to the epilogue logic
 
@@ -567,11 +567,11 @@ A tricky issue to address when pipelining interrupts is about making
 sure that the logic from the epilogue routine
 (e.g. _do\_work\_pending()_, _do\_notify\_resume()_) actually runs in
 the expected [(virtual) interrupt state]({{%relref
-"pipeline/optimistic.md#virtual-i-flag" %}}) for the root stage.
+"pipeline/optimistic.md#virtual-i-flag" %}}) for the in-band stage.
 
 Reconciling the virtual interrupt state to the in-band logic dealing
 with interrupts is required because in a pipelined interrupt model,
-the virtual interrupt state of the root stage does not necessarily
+the virtual interrupt state of the in-band stage does not necessarily
 reflect the CPU's interrupt state on entry to the early assembly code
 handling the IRQ events. Typically, a CPU would always automatically
 disable interrupts hardware-wise when taking an IRQ, which may
@@ -588,8 +588,8 @@ routine to interrupt pipelining:
   state with such expectation, since according to the [interrupt exit
   rules]({{%relref "pipeline/porting/arch.md#arch-irq-exit" %}}) we
   discussed earlier, such state has to be originally enabled (i.e. the
-  root stall bit is clear) for the epilogue code to run in the first
-  place.
+  in-band stall bit is clear) for the epilogue code to run in the
+  first place.
 
 - conversely, we must keep the hard interrupt state consistent upon
   return from the epilogue code with the one received on
@@ -598,18 +598,18 @@ routine to interrupt pipelining:
 
 - likewise, we must also keep the virtual interrupt state consistent
   upon return of the epilogue code with the one received on entry. In
-  other words, the stall bit of the root stage must be restored to its
+  other words, the stall bit of the in-band stage must be restored to its
   original state on entry before leaving this code.
 
 - _schedule()_ must be called with interrupts virtually disabled for
-  the root stage, but the CPU's interrupt state should allow for IRQs
-  to be taken in order to minimize latency for the head stage.
+  the in-band stage, but the CPU's interrupt state should allow for
+  IRQs to be taken in order to minimize latency for the oob stage.
 
-- generally speaking, while we may need the root stage to be stalled
+- generally speaking, while we may need the in-band stage to be stalled
   when the in-band kernel code expects this, we still want most of the
   epilogue code to run with [hard interrupts enabled]({{%relref
   "pipeline/usage/interrupt_protection.md#hard-irq-protection"%}}) to
-  shorten the interrupt latency for the head stage, where co-kernels
+  shorten the interrupt latency for the oob stage, where co-kernels
   live.
 
 ## Dealing with IPIs {#dealing-with-ipis}

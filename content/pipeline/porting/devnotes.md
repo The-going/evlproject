@@ -19,7 +19,7 @@ preemption specifically, because either one condition is true;
   checks in `percpu` accessors would detect such context properly
   too).
 
-- if we are running over the context of the root stage's event log
+- if we are running over the context of the in-band stage's event log
   syncer (`sync_current_stage()`) playing a deferred interrupt, in
   which case the virtual interrupt disable bit is set, so no CPU
   migration may occur either.
@@ -27,17 +27,17 @@ preemption specifically, because either one condition is true;
 For instance, the following contexts qualify:
 
 - `clockevents_handle_event()`, which should either be called from the
-  head stage - therefore `STAGE_MASK` is set - when the [proxy tick
+  oob stage - therefore `STAGE_MASK` is set - when the [proxy tick
   device is active] ({{% relref
   "/pipeline/porting/timer.md#proxy-tick-logic" %}}) on the CPU,
-  and/or from the root stage playing a timer interrupt event from the
+  and/or from the in-band stage playing a timer interrupt event from the
   corresponding device.
 
 - any IRQ flow handler _from kernel/irq/chip.c_. When called from
   `generic_pipeline_irq()` for pushing an external event to the
   pipeline, `on_pipeline_entry()` is true, which indicates that
   PIPELINE_MASK is set. When called for playing a deferred interrupt
-  on the root stage, the virtual interrupt disable bit is set.
+  on the in-band stage, the virtual interrupt disable bit is set.
 
 ### Checking for out-of-band interrupt property
 
@@ -64,7 +64,7 @@ guarantee by restoring hard interrupt disabling where virtualizing the
 interrupt disable flag would defeat it.
 
 As those lines are written, all `stop_machine()` use cases must also
-exclude any head stage activity (e.g. ftrace live patching the kernel
+exclude any oob stage activity (e.g. ftrace live patching the kernel
 code for installing tracepoints), or happen before any such activity
 can ever take place (e.g. KPTI boot mappings). Dovetail makes a basic
 assumption that `stop_machine()` could not get in the way of
@@ -116,7 +116,7 @@ proxy tick device replaced the regular device for serving in-band
 timing requests. When this happens, we should check the following code
 spots for bugs:
 
-- the timer acknowledge code is wrong once called from the [head
+- the timer acknowledge code is wrong once called from the [oob
   stage]({{%relref "pipeline/_index.md#two-stage-pipeline" %}}), which
   is going to be the case as soon as a co-kernel installs the [proxy
   tick device]({{% relref "/pipeline/porting/timer.md" %}}) for

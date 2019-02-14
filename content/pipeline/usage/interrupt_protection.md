@@ -9,7 +9,7 @@ draft: false
 
 The `local_irq_save()` and `local_irq_disable()` helpers are no more
 disabling interrupts in the CPU when interrupt pipelining is enabled,
-but only disable interrupt events [virtually for the root
+but only disable interrupt events [virtually for the in-band
 stage]({{%relref "pipeline/optimistic.md#virtual-i-flag" %}}).
 
 A set of helpers is provided for manipulating the interrupt disable
@@ -26,18 +26,18 @@ set maps 1:1 over the regular `local_irq_*()` API.
 |  irqs_disabled()            |   hard_irqs_disabled()             |
 |  irqs_disabled_flags(flags) |   hard_irqs_disabled_flags(flags)  |
 
-## Stalling the head stage {# head-stall-flag}
+## Stalling the oob stage {# head-stall-flag}
 
-Just like the root stage is affected by the state of the [virtual
+Just like the in-band stage is affected by the state of the [virtual
 interrupt disable flag]({{%relref
 "pipeline/optimistic.md#virtual-i-flag" %}}), the interrupt state of
-the head stage is controlled by a dedicated _stall bit_ flag in the
-head stage's status. In combination with the interrupt disable bit in
-the CPU, this software bit controls interrupt delivery to the head
+the oob stage is controlled by a dedicated _stall bit_ flag in the
+oob stage's status. In combination with the interrupt disable bit in
+the CPU, this software bit controls interrupt delivery to the oob
 stage.
 
 When this _stall bit_ is set, interrupts which might be pending in the
-head stage's event log of the current CPU are not played. Conversely,
+oob stage's event log of the current CPU are not played. Conversely,
 the out-of-band handlers attached to pending IRQs are fired when the
 _stall bit_ is clear. The following table represents the equivalent
 calls affecting the stall bit for each stage:
