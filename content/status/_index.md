@@ -9,7 +9,7 @@ This page summarizes the status of the ongoing ports of Dovetail.
 
 > Target kernel release
 
-5.0-rc4
+5.0-rc6
 
 > ARM SoC
 
@@ -88,7 +88,7 @@ This page summarizes the status of the ongoing ports of Dovetail.
 <sup>1</sup> Means that the pipeline torture tests pass (see
 `CONFIG_IRQ_PIPELINE_TORTURE_TEST`).
 
-<sup>2</sup> ['evenless'](EVL for short) is a basic co-kernel with
+<sup>2</sup> _evenless_ (EVL for short) is a basic co-kernel with
 real-time capabilities used in testing and improving the Dovetail
 interface.  When this box is checked, the corresponding Dovetail port
 has been tested successfully with this core.
