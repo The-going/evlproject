@@ -18,10 +18,8 @@ this infrastructure still benefit from the ancillary kernel services
 such as virtual memory management, and can also leverage the rich GPOS
 feature set Linux provides such as networking, data storage or GUIs.
 
-Although the real-time infrastructure has to present specific driver
-stack and API implementations to applications, there are nonetheless
-significant upsides to keeping the real-time core separate from the
-GPOS infrastructure:
+There are significant upsides to keeping the real-time core separate
+from the GPOS infrastructure:
 
 - because the two kernels are independent, real-time activities are
   not serialized with GPOS operations internally, removing potential
@@ -29,7 +27,7 @@ GPOS infrastructure:
   work. Likewise, there is no requirement for keeping the GPOS
   operations fine-grained and highly preemptible at any time, which
   would otherwise induce noticeable overhead on low-end hardware, due
-  to the requirement for pervasive task priority inheritance and IRQ
+  to the need for pervasive task priority inheritance and IRQ
   threading.
 
 - the functional isolation of the real-time infrastructure from the
@@ -75,10 +73,11 @@ component.
 Dovetail is the successor to the *I-pipe*, the interrupt pipeline
 implementation [Xenomai's Cobalt](https://xenomai.org/gitlab/xenomai/)
 real-time core currently relies on. The rationale behind this effort
-is about securing the maintenance of this key component of Xenomai so
-that it could be maintained with common kernel development knowledge,
-at a fraction of the engineering and maintenance cost native
-preemption requires. For several reasons, the I-pipe does not qualify.
+is about securing the maintenance of this key component of dual kernel
+systems such as Xenomai, so that they could be maintained with common
+kernel development knowledge, at a fraction of the engineering and
+maintenance cost native preemption requires. For several reasons, the
+I-pipe does not qualify.
 
 Maintaining the I-pipe proved to be difficult over the years as
 changes to the mainline kernel regularly caused non-trivial code
@@ -99,5 +98,5 @@ event device drivers in the kernel tree would be a requirement for
 porting this code.
 
 However, this document is not suited for getting one's feet wet with
-kernel development. Many assumptions about pre-existing knowledge of
-the reader regarding kernel fundamentals are made.
+kernel development, as it assumes that the reader is already familiar
+with kernel fundamentals.
