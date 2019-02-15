@@ -30,10 +30,10 @@ from the GPOS infrastructure:
   to the need for pervasive task priority inheritance and IRQ
   threading.
 
-- the functional isolation of the real-time infrastructure from the
-  rest of the kernel code restricts common bug hunting to the scope of
-  the smaller kernel, excluding most interactions with the very large
-  GPOS kernel base.
+- when debugging a real-time issue, the functional isolation of the
+  real-time infrastructure from the rest of the kernel code restricts
+  bug hunting to the scope of the small co-kernel, excluding most
+  interactions with the very large GPOS kernel base.
 
 - with a dedicated infrastructure providing a specific, well-defined
   set of real-time services, applications can unambiguously figure out
@@ -74,10 +74,10 @@ Dovetail is the successor to the *I-pipe*, the interrupt pipeline
 implementation [Xenomai's Cobalt](https://xenomai.org/gitlab/xenomai/)
 real-time core currently relies on. The rationale behind this effort
 is about securing the maintenance of this key component of dual kernel
-systems such as Xenomai, so that they could be maintained with common
-kernel development knowledge, at a fraction of the engineering and
-maintenance cost native preemption requires. For several reasons, the
-I-pipe does not qualify.
+systems such as _Xenomai_, so that they could be maintained with
+common kernel development knowledge, at a fraction of the engineering
+and maintenance cost native preemption requires. For several reasons,
+the I-pipe does not qualify.
 
 Maintaining the I-pipe proved to be difficult over the years as
 changes to the mainline kernel regularly caused non-trivial code
@@ -90,9 +90,9 @@ mainline code shows its age, as explained in [this document]
 
 ## Audience
 
-The intended audience of this document is people having common kernel
-development knowledge, who may be interested in building a real-time
-component on Dovetail, porting it to their architecture or platform of
+This document is intended to people having common kernel development
+knowledge, who may be interested in building a real-time component on
+Dovetail, porting it to their architecture or platform of
 choice. Knowing about the basics of interrupt flow, IRQ chip and clock
 event device drivers in the kernel tree would be a requirement for
 porting this code.
