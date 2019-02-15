@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.37.1" />
+    <meta name="description" content="Evenless co-kernel">
+<meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+<link rel="icon" href="/images/favicon.png" type="image/x-icon" />
+    <title>Rules Of Thumb :: Evenless</title>
+
+    
+    <link href="/css/nucleus.css?1550257800" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1550257800" rel="stylesheet">
+    <link href="/css/hybrid.css?1550257800" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1550257800" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1550257800" rel="stylesheet">
+    <link href="/css/auto-complete.css?1550257800" rel="stylesheet">
+    <link href="/css/theme.css?1550257800" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1550257800" rel="stylesheet">
+    
+      <link href="/css/theme-green.css?1550257800" rel="stylesheet">
+    
+
+    <script src="/js/jquery-2.x.min.js?1550257800"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/dovetail/pipeline/rulesofthumb/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="/"><img src="/images/logo.png"></a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1550257800"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1550257800"></script>
+<script type="text/javascript">
+    
+        var baseurl = "https:\/\/evenless.org\/";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1550257800"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/dovetail/" title="Introduction" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/dovetail/">
+          Introduction
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/dovetail/pipeline/">
+          Interrupt pipeline
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/optimistic/" title="Optimistic Interrupt Protection" class="dd-item ">
+        <a href="/dovetail/pipeline/optimistic/">
+        Optimistic protection
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dovetail/pipeline/porting/" title="Porting" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dovetail/pipeline/porting/">
+          Porting
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/porting/prerequisites/" title="Prerequisites" class="dd-item ">
+        <a href="/dovetail/pipeline/porting/prerequisites/">
+        Prerequisites
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/porting/irqflow/" title="Interrupt flow" class="dd-item ">
+        <a href="/dovetail/pipeline/porting/irqflow/">
+        Interrupt flow
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/porting/arch/" title="Architecture-specific bits" class="dd-item ">
+        <a href="/dovetail/pipeline/porting/arch/">
+        Architecture bits
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/porting/timer/" title="Timer management" class="dd-item ">
+        <a href="/dovetail/pipeline/porting/timer/">
+        Timer management
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/porting/atomic/" title="Atomic operations" class="dd-item ">
+        <a href="/dovetail/pipeline/porting/atomic/">
+        Atomic operations
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/porting/rawprintk/" title="Raw printk support" class="dd-item ">
+        <a href="/dovetail/pipeline/porting/rawprintk/">
+        Serial debugging
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/porting/misc/" title="Misc" class="dd-item ">
+        <a href="/dovetail/pipeline/porting/misc/">
+        Misc
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item ">
+        <a href="/dovetail/pipeline/porting/devnotes/">
+        Developer&#39;s Notes
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dovetail/pipeline/usage/" title="Usage" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dovetail/pipeline/usage/">
+          Usage
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/usage/stage_push/" title="Installing the out-of-band stage" class="dd-item ">
+        <a href="/dovetail/pipeline/usage/stage_push/">
+        OOB stage installation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/usage/irq_handling/" title="IRQ handling" class="dd-item ">
+        <a href="/dovetail/pipeline/usage/irq_handling/">
+        IRQ handling
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/usage/synthetic/" title="Synthetic IRQs" class="dd-item ">
+        <a href="/dovetail/pipeline/usage/synthetic/">
+        Synthetic IRQs
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/usage/pipeline_inject/" title="IRQ injection" class="dd-item ">
+        <a href="/dovetail/pipeline/usage/pipeline_inject/">
+        IRQ injection
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/usage/stage_escalation/" title="Stage escalation" class="dd-item ">
+        <a href="/dovetail/pipeline/usage/stage_escalation/">
+        Stage escalation
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/usage/interrupt_protection/" title="Interrupt Protection" class="dd-item ">
+        <a href="/dovetail/pipeline/usage/interrupt_protection/">
+        Interrupt Protection
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/usage/locking/" title="Locking" class="dd-item ">
+        <a href="/dovetail/pipeline/usage/locking/">
+        Locking
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/dovetail/pipeline/rulesofthumb/" title="Rules Of Thumb" class="dd-item active">
+        <a href="/dovetail/pipeline/rulesofthumb/">
+        Rules Of Thumb
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dovetail/altsched/" title="Alternate Task Control" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dovetail/altsched/">
+          Alternate Task Control
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dovetail/contributing/" title="Contributing to Dovetail" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dovetail/contributing/">
+          Contributing
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dovetail/status/" title="Status" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dovetail/status/">
+          Status
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+    <li data-nav-id="/dovetail/about/" title="About this site" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/dovetail/about/">
+          About
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/'>Evenless</a> > <a href='/dovetail/'>Introduction</a> > <a href='/dovetail/pipeline/'>Interrupt pipeline</a> > Rules Of Thumb
+          
+         
+          
+         
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#turn-on-debug-options-in-the-kernel-configuration">Turn on debug options in the kernel configuration!</a></li>
+<li><a href="#serialize-stages-when-accessing-shared-data">Serialize stages when accessing shared data</a></li>
+<li><a href="#check-that-the-pipeline-torture-tests-pass">Check that the pipeline torture tests pass</a></li>
+<li><a href="#safe-inband-code">Know how to differentiate safe from unsafe in-band code</a></li>
+<li><a href="#careful-with-disabling-interrupts-in-the-cpu">Careful with disabling interrupts in the CPU</a></li>
+<li><a href="#spinlock-rule">Dealing with spinlocks</a></li>
+<li><a href="#enable-raw-printk-support-for-printk-like-debugging">Enable RAW_PRINTK support for printk-like debugging</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1>Rules Of Thumb</h1>
+          
+
+        
+
+
+
+
+<h2 id="turn-on-debug-options-in-the-kernel-configuration">Turn on debug options in the kernel configuration!</h2>
+
+<p>During the development phase, do yourself a favour: turn on
+<code>CONFIG_DEBUG_IRQ_PIPELINE</code> and <code>CONFIG_DEBUG_DOVETAIL</code>.</p>
+
+<p>The first one will catch many nasty issues, such as calling unsafe
+in-band code from out-of-band context. The second one checks the
+integrity of the alternate task control mechanism, detecting issues in
+the architecture port.</p>
+
+<p>The runtime overhead induced by enabling these options is
+marginal. Just don&rsquo;t port Dovetail or implement out-of-band client
+code without them enabled in your target kernel, seriously.</p>
+
+<h2 id="serialize-stages-when-accessing-shared-data">Serialize stages when accessing shared data</h2>
+
+<p>If some writable data is shared between in-band and out-of-band code,
+you have to guard against out-of-band code preempting or racing with
+the in-band code which accesses the same data. This is required to
+prevent dirty reads and dirty writes:</p>
+
+<ul>
+<li><p>one the same CPU, by <a href="/dovetail/pipeline/usage/interrupt_protection/#hard-irq-protection">disabling interrupts in the CPU</a>.</p></li>
+
+<li><p>from different CPUs, by using <a href="/dovetail/pipeline/usage/locking/#new-spinlocks">hard or mutable spinlocks</a>.</p></li>
+</ul>
+
+<h2 id="check-that-the-pipeline-torture-tests-pass">Check that the pipeline torture tests pass</h2>
+
+<p>Before any consideration is made to implement out-of-band code on a
+platform, check that interrupt pipelining is sane there, by enabling
+<code>CONFIG_IRQ_PIPELINE_TORTURE_TEST</code> in the configuration. As its name
+suggests, this option enables test code which excercizes the
+<a href="/dovetail/pipeline/porting/irqflow/">interrupt pipeline core</a>, and
+related features such as the <a href="/dovetail/pipeline/porting/timer/">proxy tick device</a>.</p>
+
+<h2 id="safe-inband-code">Know how to differentiate safe from unsafe in-band code</h2>
+
+<p>Not all in-band kernel code is safe to be called from out-of-band
+context, actually most of it is <strong>unsafe</strong> for doing so.</p>
+
+<p>A code is deemed safe in this respect when you are 101% sure that it
+never does, directly or indirectly, any of the following:</p>
+
+<ul>
+<li><p>attempts to reschedule in-band wise, meaning that <code>schedule()</code> would
+end up being called. The rule of thumb is that any section of code
+traversing the regular <code>might_sleep()</code> check cannot be called from
+out-of-band context.</p></li>
+
+<li><p>takes a spinlock from any regular type like raw_spinlock_t or
+spinlock_t. The former would affect the virtual interrupt disable
+flag which is invalid outside of the in-band context, the latter
+might reschedule if <code>CONFIG_PREEMPT</code> is enabled.</p></li>
+</ul>
+
+<div class="notices tip" ><p>In the early days of dual kernel support in Linux, some people would
+mistakenly invoke the <code>do_gettimeofday()</code> routine from an out-of-band
+context in order to get a wallclock timestamp for their real-time
+code. Doing so would create a deadlock situation if some in-band code
+running <code>do_gettimeofday()</code> is preempted by the out-of-band code
+re-entering the same routine on the same CPU.  The out-of-band code
+would then wait spinning indefinitely for the in-band context to leave the
+routine - which won&rsquo;t happen by design - leading to a lockup.  Nowadays,
+enabling CONFIG_DEBUG_IRQ_PIPELINE would be enough to detect such mistake
+early enough to preserve your mental health.</p>
+</div>
+
+
+<h2 id="careful-with-disabling-interrupts-in-the-cpu">Careful with disabling interrupts in the CPU</h2>
+
+<p>When pipelining is enabled, use <a href="/dovetail/pipeline/usage/interrupt_protection/#hard-irq-protection">hard interrupt protection</a> with
+caution, especially from in-band code. Not only this might send
+latency figures over the top, but this might even cause random lockups
+would a rescheduling happen while interrupts are hard disabled.</p>
+
+<h2 id="spinlock-rule">Dealing with spinlocks</h2>
+
+<p>Converting regular kernel spinlocks (e.g. <code>spinlock_t</code>,
+<code>raw_spin_lock_t</code>) to hard spinlocks should involve a careful review
+of every section covered by such lock. Any such section would then
+inherit the following requirements:</p>
+
+<ul>
+<li><p>no unsafe in-band kernel service should be called within the
+section.</p></li>
+
+<li><p>the section covered by the lock should be short enough to keep
+interrupt latency low.</p></li>
+</ul>
+
+<h2 id="enable-raw-printk-support-for-printk-like-debugging">Enable RAW_PRINTK support for printk-like debugging</h2>
+
+<p>Unless you are lucky enough to have an ICE for debugging hard issues
+involving out-of-band contexts, you might have to resort to basic
+printk-style debugging. If so, do <strong>NOT</strong> rely on the regular
+<em>printk()</em> routine for this, this won&rsquo;t work in most cases.  See how
+to provide for a printk-like <a href="/dovetail/pipeline/porting/rawprintk/">raw debug channel</a> over a serial console instead.</p>
+
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/dovetail/pipeline/usage/locking/" title="Locking"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/dovetail/altsched/" title="Alternate Task Control" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1550257800"></script>
+    <script src="/js/perfect-scrollbar.min.js?1550257800"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1550257800"></script>
+    <script src="/js/jquery.sticky.js?1550257800"></script>
+    <script src="/js/featherlight.min.js?1550257800"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1550257800"></script>
+    <script src="/js/highlight.pack.js?1550257800"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom.71422.js?1550257800"></script>
+    <script src="/js/learn.js?1550257800"></script>
+    <script src="/js/hugo-learn.js?1550257800"></script>
+
+    <link href="/mermaid/mermaid.css?1550257800" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1550257800"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+
+  </body>
+</html>
+
