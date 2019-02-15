@@ -15,10 +15,10 @@ following routines:
 
 An IRQ action handler bearing this flag will run from out-of-band
 context over the oob stage, [regardless of the current interrupt
-state]({{%relref "pipeline/_index.md#two-stage-pipeline" %}}) of the
-in-band stage. If no oob stage is present, the flag will be ignored,
-with the interrupt handler running in-band over the in-band stage as
-usual.
+state]({{%relref "dovetail/pipeline/_index.md#two-stage-pipeline" %}})
+of the in-band stage. If no oob stage is present, the flag will be
+ignored, with the interrupt handler running in-band over the in-band
+stage as usual.
 
 Conversely, out-of-band handlers can be dismissed using the regular
 API, such as:

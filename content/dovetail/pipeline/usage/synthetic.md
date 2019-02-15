@@ -134,12 +134,13 @@ the current CPU switches back to the in-band stage.
 {{% /notice %}}
 
 It is also valid to post a synthetic interrupt to be handled on the
-in-band stage from an in-band context, using `irq_pipeline_inject()`. In
-such a case, the normal rules of interrupt delivery apply, depending
-on the state of the [virtual interrupt disable flag]({{%relref
-"pipeline/optimistic.md#virtual-i-flag" %}}) for the in-band stage: the
-IRQ is immediately delivered, with the call to `irq_pipeline_inject()`
-returning only after the handler has run.
+in-band stage from an in-band context, using
+`irq_pipeline_inject()`. In such a case, the normal rules of interrupt
+delivery apply, depending on the state of the [virtual interrupt
+disable flag]({{%relref
+"dovetail/pipeline/optimistic.md#virtual-i-flag" %}}) for the in-band
+stage: the IRQ is immediately delivered, with the call to
+`irq_pipeline_inject()` returning only after the handler has run.
 
 ## Triggering out-of-band execution of a synthetic interrupt handler
 
@@ -159,7 +160,7 @@ oob stage from an out-of-band context, using
 `irq_pipeline_inject()`. In such a case, the normal rules of interrupt
 delivery apply, depending on the state of the virtual interrupt
 disable flag [for the oob stage]({{%relref
-"pipeline/usage/interrupt_protection.md#head-stall-flag" %}}).
+"dovetail/pipeline/usage/interrupt_protection.md#head-stall-flag" %}}).
 
 {{% notice note %}}
 Calling `irq_post_oob(sirq)` from the in-band stage to trigger an

@@ -117,7 +117,7 @@ helpers are such routines, which serialize in-band and out-of-band
 callers.
 
 For all other cases, the [IRQ work API]({{%relref
-"pipeline/porting/irqflow.md#irq-work" %}}) is available for
+"dovetail/pipeline/porting/irqflow.md#irq-work" %}}) is available for
 scheduling the execution of a routine from the oob stage, which will
 be invoked later from the in-band stage as soon as it gets back in
 control on the current CPU.

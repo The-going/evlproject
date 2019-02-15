@@ -27,10 +27,10 @@ the in-band code which accesses the same data. This is required to
 prevent dirty reads and dirty writes:
 
 - one the same CPU, by [disabling interrupts in the CPU]({{% relref
-  "pipeline/usage/interrupt_protection.md#hard-irq-protection" %}}).
+  "dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection" %}}).
 
 - from different CPUs, by using [hard or mutable spinlocks]({{% relref
-  "pipeline/usage/locking.md#new-spinlocks" %}}).
+  "dovetail/pipeline/usage/locking.md#new-spinlocks" %}}).
 
 ## Check that the pipeline torture tests pass
 
@@ -38,9 +38,9 @@ Before any consideration is made to implement out-of-band code on a
 platform, check that interrupt pipelining is sane there, by enabling
 `CONFIG_IRQ_PIPELINE_TORTURE_TEST` in the configuration. As its name
 suggests, this option enables test code which excercizes the
-[interrupt pipeline core]({{% relref "pipeline/porting/irqflow.md" %}}), and
+[interrupt pipeline core]({{% relref "dovetail/pipeline/porting/irqflow.md" %}}), and
 related features such as the [proxy tick device]({{%
-relref "pipeline/porting/timer.md" %}}).
+relref "dovetail/pipeline/porting/timer.md" %}}).
 
 ## Know how to differentiate safe from unsafe in-band code {#safe-inband-code}
 
@@ -76,7 +76,7 @@ early enough to preserve your mental health.
 ## Careful with disabling interrupts in the CPU
 
 When pipelining is enabled, use [hard interrupt protection]({{% relref
-"pipeline/usage/interrupt_protection.md#hard-irq-protection" %}}) with
+"dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection" %}}) with
 caution, especially from in-band code. Not only this might send
 latency figures over the top, but this might even cause random lockups
 would a rescheduling happen while interrupts are hard disabled.
@@ -101,4 +101,4 @@ involving out-of-band contexts, you might have to resort to basic
 printk-style debugging. If so, do **NOT** rely on the regular
 _printk()_ routine for this, this won't work in most cases.  See how
 to provide for a printk-like [raw debug channel]({{% relref
-"pipeline/porting/rawprintk.md" %}}) over a serial console instead.
+"dovetail/pipeline/porting/rawprintk.md" %}}) over a serial console instead.

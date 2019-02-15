@@ -48,8 +48,8 @@ All output formatted by the generic _raw\_printk()_ routine is passed
 to the raw write handler of the current serial console driver if
 present. Calls to the raw output handler are serialized in
 _raw\_printk()_ by holding a [hard spinlock]({{%relref
-"pipeline/usage/locking.md#new-spinlocks" %}}), which means that
-interrupts are disabled in the CPU when running the handler.
+"dovetail/pipeline/usage/locking.md#new-spinlocks" %}}), which means
+that interrupts are disabled in the CPU when running the handler.
 
 {{% notice tip %}}
 A raw write handler is normally derived from the regular write handler

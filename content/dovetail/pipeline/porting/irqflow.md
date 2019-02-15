@@ -46,16 +46,16 @@ the in-band code - which should be the case for a sane kernel anyway.
 {{% /notice %}}
 
 Once `generic_pipeline_irq()` has returned, if the preempted execution
-context was running over the in-band stage unstalled, the pipeline core
-synchronizes the interrupt state immediately, meaning that all IRQs
-found pending in the in-band stage's log are immediately delivered to
-their respective in-band handlers. In all other situations, the IRQ
-frame is left immediately without running those handlers. The IRQs may
-remain pending until the in-band code resumes from preemption, then
-clears the [virtual interrupt disable flag]({{%relref
-"pipeline/optimistic.md#virtual-i-flag" %}}), which would cause the
-interrupt state to be synchronized, running the in-band handlers
-eventually.
+context was running over the in-band stage unstalled, the pipeline
+core synchronizes the interrupt state immediately, meaning that all
+IRQs found pending in the in-band stage's log are immediately
+delivered to their respective in-band handlers. In all other
+situations, the IRQ frame is left immediately without running those
+handlers. The IRQs may remain pending until the in-band code resumes
+from preemption, then clears the [virtual interrupt disable
+flag]({{%relref "dovetail/pipeline/optimistic.md#virtual-i-flag" %}}),
+which would cause the interrupt state to be synchronized, running the
+in-band handlers eventually.
 
 For delivering an IRQ to the in-band handlers, the interrupt flow
 handler is called again by the pipeline core. When this happens, the
@@ -209,8 +209,8 @@ This change reads as follows:
   can't do more than this, simply because the in-band kernel code
   might expect not to receive any interrupt at this point (i.e. the
   [virtual interrupt disable flag]({{%relref
-  "pipeline/optimistic.md#virtual-i-flag" %}}) might be set for the
-  in-band stage).
+  "dovetail/pipeline/optimistic.md#virtual-i-flag" %}}) might be set
+  for the in-band stage).
 
 - otherwise, keep the interrupt line masked until `handle_level_irq()`
   is called again from a safe context for handling in-band interrupts,
@@ -236,7 +236,7 @@ an out-of-band context safely:
 Such handler is deemed safe to be called from out-of-band context when
 it does not invoke **any** in-band kernel service, which might cause
 an [invalid context re-entry]({{%relref
-"pipeline/optimistic.md#no-inband-reentry" %}}).
+"dovetail/pipeline/optimistic.md#no-inband-reentry" %}}).
 
 The generic IRQ management core serializes calls to `irqchip` handlers
 for a given IRQ by serializing access to its interrupt descriptor,
@@ -244,7 +244,7 @@ acquiring the per-descriptor `irq_desc::lock` spinlock.  Holding
 `irq_desc::lock` when running a handler for any IRQ shared between all
 CPUs ensures that a single CPU handles the event.  This - originally -
 raw spinlock is automatically turned into a [mutable
-spinlock]({{%relref "pipeline/usage/locking.md#new-spinlocks"
+spinlock]({{%relref "dovetail/pipeline/usage/locking.md#new-spinlocks"
 %}}) when pipelining interrupts.
 
 In addition, there might be inner spinlocks defined by some `irqchip`
@@ -252,8 +252,9 @@ drivers for serializing handlers accessing a common interrupt
 controller hardware for _distinct_ IRQs from multiple CPUs
 concurrently. Adapting such spinlocked sections found in `irqchip`
 drivers to support interrupt pipelining may involve [converting the
-related spinlocks]({{%relref "pipeline/rulesofthumb.md#spinlock-rule"
-%}}) to hard spinlocks.
+related spinlocks]({{%relref
+"dovetail/pipeline/rulesofthumb.md#spinlock-rule" %}}) to hard
+spinlocks.
 
 Other section of code which were originally serialized by common
 interrupt disabling may need to be made fully atomic for running
@@ -399,9 +400,9 @@ scheduler core, such as entering with (virtual) interrupts disabled.
 Due to the NMI-type nature of interrupts running out-of-band code,
 such code might preempt in-band activities over the in-band stage in
 the middle of a [critical section]({{%relref
-"pipeline/optimistic.md#no-inband-reentry" %}}). For this reason, it
-would be unsafe to call any in-band routine from an out-of-band
-context.
+"dovetail/pipeline/optimistic.md#no-inband-reentry" %}}). For this
+reason, it would be unsafe to call any in-band routine from an
+out-of-band context.
 
 However, we may schedule execution of in-band work handlers from
 out-of-band code, using the regular `irq_work_queue()` service which

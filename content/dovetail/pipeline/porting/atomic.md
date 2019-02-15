@@ -7,8 +7,8 @@ draft: false
 ---
 
 The effect of [virtualizing interrupt protection]({{%relref
-"pipeline/porting/arch.md" %}}) must be reversed for atomic helpers in
-*asm-generic/atomic.h*, *asm-generic/bitops/atomic.h* and
+"dovetail/pipeline/porting/arch.md" %}}) must be reversed for atomic
+helpers in *asm-generic/atomic.h*, *asm-generic/bitops/atomic.h* and
 *asm-generic/cmpxchg-local.h*, so that no interrupt can preempt their
 execution, regardless of the stage their caller live on.
 

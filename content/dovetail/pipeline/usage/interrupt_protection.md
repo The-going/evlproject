@@ -10,7 +10,7 @@ draft: false
 The `local_irq_save()` and `local_irq_disable()` helpers are no more
 disabling interrupts in the CPU when interrupt pipelining is enabled,
 but only disable interrupt events [virtually for the in-band
-stage]({{%relref "pipeline/optimistic.md#virtual-i-flag" %}}).
+stage]({{%relref "dovetail/pipeline/optimistic.md#virtual-i-flag" %}}).
 
 A set of helpers is provided for manipulating the interrupt disable
 flag in the CPU instead. When CONFIG_IRQ_PIPELINE is disabled, this
@@ -30,11 +30,11 @@ set maps 1:1 over the regular `local_irq_*()` API.
 
 Just like the in-band stage is affected by the state of the [virtual
 interrupt disable flag]({{%relref
-"pipeline/optimistic.md#virtual-i-flag" %}}), the interrupt state of
-the oob stage is controlled by a dedicated _stall bit_ flag in the
-oob stage's status. In combination with the interrupt disable bit in
-the CPU, this software bit controls interrupt delivery to the oob
-stage.
+"dovetail/pipeline/optimistic.md#virtual-i-flag" %}}), the interrupt
+state of the oob stage is controlled by a dedicated _stall bit_ flag
+in the oob stage's status. In combination with the interrupt disable
+bit in the CPU, this software bit controls interrupt delivery to the
+oob stage.
 
 When this _stall bit_ is set, interrupts which might be pending in the
 oob stage's event log of the current CPU are not played. Conversely,

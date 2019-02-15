@@ -14,7 +14,7 @@ should be split between real and virtual interrupt control. The real
 interrupt control operations are inherited from the in-band kernel
 implementation. The virtual ones should be built upon services
 provided by the [interrupt pipeline core]({{%relref
-"pipeline/porting/irqflow.md" %}}).
+"dovetail/pipeline/porting/irqflow.md" %}}).
 
 + firstly, the original *arch\_local_*\* helpers should be renamed as
 *native_*\* helpers, affecting the hardware interrupt state in the
@@ -261,7 +261,7 @@ CONFIG_IRQ_PIPELINE disabled.
 The generic interrupt pipeline implementation requires the arch-level
 support code to provide for a pair of helpers aimed at translating the
 [virtual interrupt disable flag]({{%relref
-"pipeline/optimistic.md#virtual-i-flag" %}}) to the interrupt bit in
+"dovetail/pipeline/optimistic.md#virtual-i-flag" %}}) to the interrupt bit in
 the CPU's status register (e.g. PSR_I_BIT for ARM) and
 conversely. These helpers are used to create combined state words
 merging the virtual and real interrupt states.
@@ -335,7 +335,7 @@ Once all of these changes are in, the generic helpers from
 `local_irq_enable()` actually refer to the **virtual** protection
 scheme when interrupts are pipelined, which eventually allows to
 implement [interrupt deferral]({{%relref
-"pipeline/optimistic.md" %}}) for the protected in-band code running
+"dovetail/pipeline/optimistic.md" %}}) for the protected in-band code running
 over the in-band stage.
 {{% /notice %}}
     
@@ -344,11 +344,11 @@ over the in-band stage.
 ### Interrupt entry {#arch-irq-entry}
 
 As generic IRQ handling [is a requirement]({{%relref
-"pipeline/porting/prerequisites.md" %}}) for supporting Dovetail, the
-low-level interrupt handler living in the assembly portion of the
-architecture code can still deliver all interrupt events to the
-original C handler provided by the _irqchip_ driver. That handler
-should in turn invoke:
+"dovetail/pipeline/porting/prerequisites.md" %}}) for supporting
+Dovetail, the low-level interrupt handler living in the assembly
+portion of the architecture code can still deliver all interrupt
+events to the original C handler provided by the _irqchip_
+driver. That handler should in turn invoke:
 
 - `handle_domain_irq()` for parent device IRQs
 
@@ -360,7 +360,7 @@ head of the pipeline is directly handled from the _genirq_ layer they
 belong to. This means that there is usually not much to do other than
 making a quick check in the implementation of the parent IRQ handler,
 in the relevant *irqchip* driver, applying the [rules of
-thumb]({{%relref "pipeline/rulesofthumb.md" %}}) carefully.
+thumb]({{%relref "dovetail/pipeline/rulesofthumb.md" %}}) carefully.
 
 {{% notice tip %}}
 On some ARM platform equipped with a fairly common GIC controller,
@@ -372,8 +372,8 @@ instance.
   inter-processor interrupts
 
 IPIs must be dealt with by [specific changes]({{%relref
-"pipeline/porting/arch.md#dealing-with-ipis" %}}) introduced by the
-port we will cover later.
+"dovetail/pipeline/porting/arch.md#dealing-with-ipis" %}}) introduced
+by the port we will cover later.
 
 ### Interrupt exit {#arch-irq-exit}
 
@@ -504,7 +504,7 @@ to.
 {{% notice warning %}}
 Taking the fast exit path when applicable is critical to the stability of the
 target system to prevent [invalid re-entry]({{%relref
-"pipeline/optimistic.md#no-inband-reentry" %}}) of the in-band kernel
+"dovetail/pipeline/optimistic.md#no-inband-reentry" %}}) of the in-band kernel
 code.
 {{% /notice %}}
 
@@ -567,7 +567,7 @@ A tricky issue to address when pipelining interrupts is about making
 sure that the logic from the epilogue routine
 (e.g. _do\_work\_pending()_, _do\_notify\_resume()_) actually runs in
 the expected [(virtual) interrupt state]({{%relref
-"pipeline/optimistic.md#virtual-i-flag" %}}) for the in-band stage.
+"dovetail/pipeline/optimistic.md#virtual-i-flag" %}}) for the in-band stage.
 
 Reconciling the virtual interrupt state to the in-band logic dealing
 with interrupts is required because in a pipelined interrupt model,
@@ -586,7 +586,7 @@ routine to interrupt pipelining:
   kernel entry/exit transitions (e.g. arch/arm/kernel/entry-common.S).
   Therefore, this routine may have to reconcile the virtual interrupt
   state with such expectation, since according to the [interrupt exit
-  rules]({{%relref "pipeline/porting/arch.md#arch-irq-exit" %}}) we
+  rules]({{%relref "dovetail/pipeline/porting/arch.md#arch-irq-exit" %}}) we
   discussed earlier, such state has to be originally enabled (i.e. the
   in-band stall bit is clear) for the epilogue code to run in the
   first place.
@@ -608,7 +608,7 @@ routine to interrupt pipelining:
 - generally speaking, while we may need the in-band stage to be stalled
   when the in-band kernel code expects this, we still want most of the
   epilogue code to run with [hard interrupts enabled]({{%relref
-  "pipeline/usage/interrupt_protection.md#hard-irq-protection"%}}) to
+  "dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection"%}}) to
   shorten the interrupt latency for the oob stage, where co-kernels
   live.
 
