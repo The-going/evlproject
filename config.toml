@@ -8,7 +8,7 @@ author = "Philippe Gerum <rpm@xenomai.org>"
 description = "Evenless co-kernel"
 disableSearch = false
 disableInlineCopyToClipBoard = true
-themeVariant = "blue"
+themeVariant = "green"
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
