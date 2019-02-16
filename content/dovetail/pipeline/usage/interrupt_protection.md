@@ -1,8 +1,6 @@
 ---
 title: "Interrupt Protection"
 date: 2018-07-01T17:54:11+02:00
-weight: 6
-draft: false
 ---
 
 ## Disabling interrupts in the CPU {#hard-irq-protection}
@@ -42,7 +40,7 @@ the out-of-band handlers attached to pending IRQs are fired when the
 _stall bit_ is clear. The following table represents the equivalent
 calls affecting the stall bit for each stage:
 
-|     Root stage operation    |       Head stage operation         |
+|   In-band stage operation   |        OOB stage operation         |
 | :-------------------------- |:---------------------------------- |
 |  local_save_flags(flags)    |             -none-                 |
 |  local_irq_disable()	      |        oob_irq_disable()           |

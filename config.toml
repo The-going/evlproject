@@ -1,6 +1,6 @@
 baseURL = "https://evenless.org/"
-languageCode = "en-us"
-title = "Evenless"
+languageCode = "en-US"
+title = "Evenless core documentation"
 theme = "hugo-theme-learn"
 
 [params]
@@ -8,6 +8,7 @@ author = "Philippe Gerum <rpm@xenomai.org>"
 description = "Evenless co-kernel"
 disableSearch = false
 disableInlineCopyToClipBoard = true
+disableBreadcrumb = false
 themeVariant = "green"
 
 [outputs]

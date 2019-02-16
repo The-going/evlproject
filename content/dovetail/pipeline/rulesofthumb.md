@@ -1,8 +1,6 @@
 ---
 title: "Rules Of Thumb"
 date: 2018-06-30T19:02:50+02:00
-weight: 4
-draft: false
 ---
 
 ## Turn on debug options in the kernel configuration!
@@ -52,7 +50,7 @@ never does, directly or indirectly, any of the following:
 
 - attempts to reschedule in-band wise, meaning that `schedule()` would
   end up being called. The rule of thumb is that any section of code
-  traversing the regular `might_sleep()` check cannot be called from
+  traversing the `might_sleep()` check cannot be called from
   out-of-band context.
 
 - takes a spinlock from any regular type like raw_spinlock_t or
@@ -98,7 +96,8 @@ inherit the following requirements:
 
 Unless you are lucky enough to have an ICE for debugging hard issues
 involving out-of-band contexts, you might have to resort to basic
-printk-style debugging. If so, do **NOT** rely on the regular
-_printk()_ routine for this, this won't work in most cases.  See how
-to provide for a printk-like [raw debug channel]({{% relref
-"dovetail/pipeline/porting/rawprintk.md" %}}) over a serial console instead.
+printk-style debugging over a serial line. Although the `printk()`
+machinery can be used from out-of-band context when Dovetail is
+enabled, you should rather use the [`raw_printk()`]({{%relref
+"dovetail/pipeline/porting/rawprintk.md" %}}) interface for
+this.

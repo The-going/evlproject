@@ -2,8 +2,6 @@
 title: "Architecture-specific bits"
 menuTitle: "Architecture bits"
 date: 2018-06-27T17:07:51+02:00
-weight: 3
-draft: false
 ---
 
 ## Interrupt mask virtualization

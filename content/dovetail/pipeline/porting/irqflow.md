@@ -1,8 +1,6 @@
 ---
 title: "Interrupt flow"
 date: 2018-06-27T15:20:04+02:00
-weight: 2
-draft: false
 ---
 
 ## Pipelined interrupt flow
@@ -214,11 +212,11 @@ This change reads as follows:
 
 - otherwise, keep the interrupt line masked until `handle_level_irq()`
   is called again from a safe context for handling in-band interrupts,
-  at which point the event should be delivered to the (regular)
-  in-band interrupt handler. We have to keep the line masked to
-  prevent the IRQ storm which would certainly happen otherwise, since
-  no handler has cleared the cause of the interrupt event in the
-  device yet.
+  at which point the event should be delivered to the in-band
+  interrupt handler of the main kernel. We have to keep the line
+  masked to prevent the IRQ storm which would certainly happen
+  otherwise, since no handler has cleared the cause of the interrupt
+  event in the device yet.
 
 ## IRQ chip drivers {#irqchip-fixup}
 

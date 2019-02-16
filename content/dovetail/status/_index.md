@@ -1,8 +1,7 @@
 ---
 title: "Status"
 date: 2018-07-02T16:47:21+02:00
-weight: 4
-draft: false
+weight: 20
 ---
 
 This page summarizes the status of the ongoing ports of Dovetail.

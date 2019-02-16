@@ -1,8 +1,6 @@
 ---
 title: "Misc"
 date: 2018-06-27T17:40:50+02:00
-weight: 7
-draft: false
 ---
 
 ## `printk()` support

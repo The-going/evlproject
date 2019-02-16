@@ -2,8 +2,7 @@
 title: "Contributing to Dovetail"
 menuTitle: "Contributing"
 date: 2018-07-02T15:54:45+02:00
-weight: 3
-draft: false
+weight: 25
 ---
 
 ## Submitting patches

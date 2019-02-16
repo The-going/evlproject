@@ -1,8 +1,6 @@
 ---
 title: "Synthetic IRQs"
 date: 2018-06-27T09:55:57+02:00
-weight: 3
-draft: false
 ---
 
 The pipeline introduces an additional type of interrupts, which are
@@ -17,7 +15,7 @@ interrupt masking: such IRQs may be deferred until the stage they
 should be handled from is unstalled.
 
 {{% notice note %}}
-Synthetic interrupts and regular softirqs differ in essence: the
+Synthetic interrupts and softirqs differ in essence: the
 latter only exist in the in-band context, and therefore cannot trigger
 out-of-band activities. Synthetic interrupts used to be called
 _virtual_ IRQs (or _virq_ for short) by the legacy I-pipe

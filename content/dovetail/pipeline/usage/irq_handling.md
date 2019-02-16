@@ -1,13 +1,11 @@
 ---
 title: "IRQ handling"
 date: 2018-07-01T14:05:58+02:00
-weight: 2
-draft: false
 ---
 
 The driver API to the IRQ subsystem exposes the new interrupt type
-flag `IRQF_OOB`, denoting an out-of-band handler with the
-following routines:
+flag `IRQF_OOB`, denoting an out-of-band handler to the
+generic interrupt API routines:
 
 - `setup_irq()` for early registration of special interrupts
 - `request_irq()` for device interrupts
@@ -17,11 +15,11 @@ An IRQ action handler bearing this flag will run from out-of-band
 context over the oob stage, [regardless of the current interrupt
 state]({{%relref "dovetail/pipeline/_index.md#two-stage-pipeline" %}})
 of the in-band stage. If no oob stage is present, the flag will be
-ignored, with the interrupt handler running in-band over the in-band
-stage as usual.
+ignored, with the interrupt handler running on the in-band stage as
+usual.
 
-Conversely, out-of-band handlers can be dismissed using the regular
-API, such as:
+Conversely, out-of-band handlers can be dismissed using the generic
+interrupt API, such as:
 
 - `free_irq()` for device interrupts
 - `free_percpu_irq()` for per-CPU interrupts
@@ -34,8 +32,9 @@ Out-of-band IRQ handling has the following constraints:
 
 {{% notice warning %}}
 If meeting real-time requirements is your goal, sharing an IRQ line
-among multiple devices can only be a bad idea. You may want to do
-that in desparate hardware situations **only**.
+among multiple devices operating from different execution stages
+(in-band vs out-of-band) can only be a bad idea design-wise. You
+should resort to this in desparate hardware situations **only**.
 {{% /notice %}}
 
 - Obviously, out-of-band handlers cannot be threaded (`IRQF_NO_THREAD`

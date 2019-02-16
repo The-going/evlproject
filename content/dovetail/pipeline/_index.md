@@ -1,12 +1,11 @@
 ---
 title: "Interrupt pipeline"
 date: 2018-06-27T08:32:51+02:00
-weight: 1
-draft: false
+weight: 10
 ---
 
 The real-time core has to act upon device interrupts with no delay,
-regardless of the regular kernel operations which may be ongoing when
+regardless of the other kernel operations which may be ongoing when
 the interrupt is received by the CPU. Therefore, there is a basic
 requirement for prioritizing interrupt masking and delivery between
 the real-time core and GPOS operations, while maintaining consistent
@@ -24,14 +23,14 @@ range of a few microseconds.
 To address this issue, Dovetail introduces a mechanism called
 *interrupt pipelining* which turns all device IRQs into pseudo-NMIs,
 only to run NMI-safe interrupt handlers from the perspective of the
-regular kernel activities.
+main kernel activities.
 
 ## Two-stage IRQ pipeline {#two-stage-pipeline}
 
 Interrupt pipelining is a lightweight approach based on the
 introduction of a separate, high-priority execution stage for running
 out-of-band interrupt handlers immediately upon IRQ receipt, which
-cannot be delayed by the in-band, regular kernel work. By immediately,
+cannot be delayed by the in-band, main kernel work. By immediately,
 we mean unconditionally, regardless of whether the in-band kernel code
 had disabled interrupts when the event arrived, using the common
 `local_irq_save()`, `local_irq_disable()` helpers or any of their
@@ -59,14 +58,14 @@ pipeline, as opposed to the in-band kernel activities sitting on the
                   ___/  /______________________/  /     .
      [IRQ] -----> _______________________________/      .
                   .           .             .           .
-                  .   Head    .             .   Root    .
-                  .   Stage   .             .   Stage   .
+                  .    OOB    .             .   In-band .
+                  .   Stage   .             .    Stage  .
                _____________________________________________
 ```
 
 A real-time core can base its own activities on the oob stage,
 interposing on specific IRQ events, for delivering real-time
 capabilities to a particular set of applications. Meanwhile, the
-regular kernel operations keep going over the in-band stage
+main kernel operations keep going over the in-band stage
 unaffected, only delayed by short preemption times for running the
 out-of-band work.

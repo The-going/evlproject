@@ -2,8 +2,6 @@
 title: "Atomic operations"
 menuTitle: "Atomic operations"
 date: 2018-06-27T17:17:25+02:00
-weight: 5
-draft: false
 ---
 
 The effect of [virtualizing interrupt protection]({{%relref

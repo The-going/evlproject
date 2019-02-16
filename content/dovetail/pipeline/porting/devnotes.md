@@ -1,8 +1,6 @@
 ---
 title: "Developer's Notes"
 date: 2018-07-03T19:32:57+02:00
-weight: 8
-draft: false
 ---
 
 ## Generic
@@ -51,13 +49,13 @@ set/cleared for the attached action handlers.
 
 ### `stop_machine()` hard disables interrupts
 
-The regular `stop_machine()` services guarantees that all online CPUs
-are spinning non-preemptible in a known code location before a subset
-of them may safely run a stop-context function. This service is
-typically useful for live patching the kernel code, or changing global
-memory mappings, so that no activity could run in parallel until the
-system has returned to a stable state after all stop-context
-operations have completed.
+The `stop_machine()` service guarantees that all online CPUs are
+spinning non-preemptible in a known code location before a subset of
+them may safely run a stop-context function. This service is typically
+useful for live patching the kernel code, or changing global memory
+mappings, so that no activity could run in parallel until the system
+has returned to a stable state after all stop-context operations have
+completed.
     
 When interrupt pipelining is enabled, Dovetail provides the same
 guarantee by restoring hard interrupt disabling where virtualizing the
@@ -178,10 +176,14 @@ maintenance operations must happen from in-band code. Therefore, we
 neither need nor want to convert the spinlock serializing access to
 the cache maintenance operations for L2 to a hard lock.
 
-{{% notice tip %}}
-Conversion to hard lock may have cause latency to skyrocket on some
-i.MX6 hardware, equipped with PL22x cache units, or PL31x with errata
-588369 or 727915 for particular hardware revisions, as each background
-operation was awaited for completion for working around some silicon
-bug, with hard irqs disabled.
+{{% notice note %}}
+This above assumption is unfortunately only partially right, because
+at some point in the future we may want to run DMA transfers from the
+out-of-band context, which could entail cache maintenance operations.
 {{% /notice %}}
+
+Conversion to hard lock may cause latency to skyrocket on some i.MX6
+hardware, equipped with PL22x cache units, or PL31x with errata 588369
+or 727915 for particular hardware revisions, as each background
+operation would be awaited for completion with hard irqs disabled, in
+order to work around some silicon bug.
