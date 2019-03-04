@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
-    <title>Developer&#39;s Notes :: Evenless core documentation</title>
+    <title>Attach a thread :: Evenless core documentation</title>
 
     
     <link href="/css/nucleus.css?1551711348" rel="stylesheet">
@@ -38,7 +38,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/dovetail/pipeline/porting/devnotes/">
+  <body class="" data-url="/core/user-api/thread/evl_attach_self/">
     <nav id="sidebar" class="">
 
 
@@ -79,7 +79,7 @@
   
     
     <li data-nav-id="/core/" title="Real-time core" class="dd-item 
-        
+        parent
         
         
         ">
@@ -106,7 +106,7 @@
   
     
     <li data-nav-id="/core/user-api/" title="User API" class="dd-item 
-        
+        parent
         
         
         ">
@@ -133,7 +133,7 @@
   
     
     <li data-nav-id="/core/user-api/thread/" title="Thread element" class="dd-item 
-        
+        parent
         
         
         ">
@@ -160,8 +160,8 @@
   
     
     <li data-nav-id="/core/user-api/thread/evl_attach_self/" title="Attach a thread" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/core/user-api/thread/evl_attach_self/">
@@ -377,7 +377,7 @@
   
     
     <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item 
-        parent
+        
         
         
         ">
@@ -404,7 +404,7 @@
   
     
     <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item 
-        parent
+        
         
         
         ">
@@ -617,7 +617,7 @@
   
     
     <li data-nav-id="/dovetail/pipeline/porting/" title="Porting" class="dd-item 
-        parent
+        
         
         
         ">
@@ -660,7 +660,7 @@
  
   
     
-      <li data-nav-id="/dovetail/pipeline/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item active">
+      <li data-nav-id="/dovetail/pipeline/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item ">
         <a href="/dovetail/pipeline/porting/devnotes/">
         Developer&#39;s Notes
         
@@ -959,7 +959,7 @@
             
           
           
-            <a href='/'>Evenless</a> > <a href='/dovetail/'>Dovetail interface</a> > <a href='/dovetail/pipeline/'>Interrupt pipeline</a> > <a href='/dovetail/pipeline/porting/'>Porting</a> > Developer's Notes
+            <a href='/'>Evenless</a> > <a href='/core/'>Real-time core</a> > <a href='/core/user-api/'>User API</a> > <a href='/core/user-api/thread/'>Thread element</a> > Attach a thread
           
          
           
@@ -980,17 +980,16 @@
 <ul>
 <li>
 <ul>
-<li><a href="#generic">Generic</a>
+<li>
 <ul>
-<li><a href="#fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</a></li>
-<li><a href="#checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</a></li>
-<li><a href="#stop-machine-hard-disables-interrupts"><code>stop_machine()</code> hard disables interrupts</a></li>
-<li><a href="#virtual-interrupt-disable-state-breakage">Virtual interrupt disable state breakage</a></li>
+<li><a href="#int-evl-attach-self-const-char-fmt">int evl_attach_self(const char *<em>fmt</em>, &hellip;)</a>
+<ul>
+<li><a href="#fmt"><em>fmt</em></a></li>
+<li><a href="#toc_2">&hellip;</a></li>
 </ul></li>
-<li><a href="#losing-the-timer-tick">Losing the timer tick</a></li>
-<li><a href="#arm">ARM</a>
-<ul>
-<li><a href="#context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</a></li>
+<li><a href="#return-value">Return value</a></li>
+<li><a href="#example">Example</a></li>
+<li><a href="#notes">Notes</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1006,7 +1005,7 @@
         
         <div id="body-inner">
           
-            <h1>Developer&#39;s Notes</h1>
+            <h1>Attach a thread</h1>
           
 
         
@@ -1014,195 +1013,138 @@
 
 
 
-<h2 id="generic">Generic</h2>
+<h3 id="int-evl-attach-self-const-char-fmt">int evl_attach_self(const char *<em>fmt</em>, &hellip;)</h3>
 
-<h3 id="fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</h3>
+<p>EVL does not really <em>create</em> threads; instead, it enables a regular
+POSIX thread to invoke its real-time services once this thread has
+attached to the EVL core.  <code>evl_attach_self()</code> is the library call
+which requests such attachment. All you need to provide is a <em>unique</em>
+thread name, which will be the name of the device element representing
+that thread in the file system.</p>
 
-<p>Over a few contexts, we may traverse code using unprotected,
-preemption-sensitive accessors such as <code>percpu()</code> without disabling
-preemption specifically, because either one condition is true;</p>
+<p>There is no requirement as of when <code>evl_attach_self()</code> should be
+called in a thread&rsquo;s execution flow. You just have to call it before
+it starts requesting EVL services.</p>
 
-<ul>
-<li><p>if <code>preempt_count()</code> bears either of the <code>PIPELINE_MASK</code> or
-<code>STAGE_MASK</code> bits, which turns preemption off, therefore CPU
-migration cannot happen (<code>debug_smp_processor_id()</code> and preempt
-checks in <code>percpu</code> accessors would detect such context properly
-too).</p></li>
-
-<li><p>if we are running over the context of the in-band stage&rsquo;s event log
-syncer (<code>sync_current_stage()</code>) playing a deferred interrupt, in
-which case the virtual interrupt disable bit is set, so no CPU
-migration may occur either.</p></li>
-</ul>
-
-<p>For instance, the following contexts qualify:</p>
-
-<ul>
-<li><p><code>clockevents_handle_event()</code>, which should either be called from the
-oob stage - therefore <code>STAGE_MASK</code> is set - when the <a href="/dovetail/pipeline/porting/timer/#proxy-tick-logic">proxy tick
-device is active</a> on the CPU,
-and/or from the in-band stage playing a timer interrupt event from the
-corresponding device.</p></li>
-
-<li><p>any IRQ flow handler <em>from kernel/irq/chip.c</em>. When called from
-<code>generic_pipeline_irq()</code> for pushing an external event to the
-pipeline, <code>on_pipeline_entry()</code> is true, which indicates that
-PIPELINE_MASK is set. When called for playing a deferred interrupt
-on the in-band stage, the virtual interrupt disable bit is set.</p></li>
-</ul>
-
-<h3 id="checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</h3>
-
-<p>The <code>IRQF_OOB</code> action flag should <strong>NOT</strong> be used for testing whether
-an interrupt is out-of-band, because out-of-band handling may be
-turned on/off dynamically on an IRQ descriptor using
-<code>irq_switch_oob()</code>, which would not translate to <code>IRQF_OOB</code> being
-set/cleared for the attached action handlers.</p>
-
-<p><code>irq_is_oob()</code> is the right way to check for out-of-band handling.</p>
-
-<h3 id="stop-machine-hard-disables-interrupts"><code>stop_machine()</code> hard disables interrupts</h3>
-
-<p>The <code>stop_machine()</code> service guarantees that all online CPUs are
-spinning non-preemptible in a known code location before a subset of
-them may safely run a stop-context function. This service is typically
-useful for live patching the kernel code, or changing global memory
-mappings, so that no activity could run in parallel until the system
-has returned to a stable state after all stop-context operations have
-completed.</p>
-
-<p>When interrupt pipelining is enabled, Dovetail provides the same
-guarantee by restoring hard interrupt disabling where virtualizing the
-interrupt disable flag would defeat it.</p>
-
-<p>As those lines are written, all <code>stop_machine()</code> use cases must also
-exclude any oob stage activity (e.g. ftrace live patching the kernel
-code for installing tracepoints), or happen before any such activity
-can ever take place (e.g. KPTI boot mappings). Dovetail makes a basic
-assumption that <code>stop_machine()</code> could not get in the way of
-latency-sensitive processes, simply because the latter could not keep
-running safely until a call to the former has completed anyway.</p>
-
-<p>However, one should keep an eye on <code>stop_machine()</code> usage upstream,
-identifying new callers which might cause unwanted latency spots under
-specific circumstances (maybe even abusing the interface).</p>
-
-<h3 id="virtual-interrupt-disable-state-breakage">Virtual interrupt disable state breakage</h3>
-
-<p>When some WARN_ON() triggers due to a wrong interrupt disable state
-(e.g. entering the softirqs/bh code with IRQs unexpectedly [virtually]
-disabled), this may be due to the CPU and virtual interrupt states
-being out-of-sync when traversing the epilogue code after a syscall,
-IRQ or trap has been handled during the latest kernel entry.</p>
-
-<p>Typically, do_work_pending() or do_notify_resume() should make sure to
-reconcile both states in the work loop, and also to restore the
-virtual state they received on entry before returning to their caller.</p>
-
-<div class="notices tip" ><p>The routines just mentioned always enter from their assembly call site
-with interrupts hard disabled in the CPU. However, they may be entered
-with the virtual interrupt state enabled or disabled, depending on the
-kind of event which led to them eventually. Typically, a system call
-epilogue would always enter with the virtual state enabled, but a
-fault might also occur when the virtual state is disabled though. The
-epilogue routine called for finalizing some IRQ handling must enter with
-the virtual state enabled, since the latter is a pre-requisite for
-running such code.</p>
+<div class="notices note" ><p>The <code>main()</code> thread of a process is no different from any other thread
+to EVL. It may call <code>evl_attach_self()</code> whenever you see fit, or not
+at all if you don&rsquo;t plan to request EVL services from this context.</p>
 </div>
 
 
-<h2 id="losing-the-timer-tick">Losing the timer tick</h2>
+<h4 id="fmt"><em>fmt</em></h4>
 
-<p>The symptom of a common issue in a Dovetail port is losing the timer
-interrupt when the out-of-band (co-)kernel takes control over the
-<a href="/dovetail/pipeline/porting/timer/">tick device</a>,
-causing the in-band kernel to stall. After some time spent hanging,
-the in-band kernel may eventually complain about a RCU stall situation
-with a message like _INFO: rcu<em>preempt detected stalls on CPUs/tasks</em>
-followed by stack dump(s). In other cases, the machine may simply lock
-up due to an interrupt storm.</p>
+<p>A printf-like format string to generate the thread name. A common way
+of generating unique thread names is to add the calling process&rsquo;s
+<em>pid</em> somewhere into the format string as illustrated in the example.</p>
 
-<p>This is typical of timer interrupt events not flowing down normally to
-the in-band kernel anymore because something went wrong as soon as the
-proxy tick device replaced the regular device for serving in-band
-timing requests. When this happens, we should check the following code
-spots for bugs:</p>
+<div class="notices warning" ><p>The generated name is used to form a file path, referring to the new
+thread element&rsquo;s device in the file system. So this name must contain
+only valid characters in this context, excluding slashes.</p>
+</div>
 
-<ul>
-<li><p>the timer acknowledge code is wrong once called from the <a href="/dovetail/pipeline/#two-stage-pipeline">oob
-stage</a>, which is going to be the case as soon as a co-kernel installs
-the <a href="/dovetail/pipeline/porting/timer/">proxy tick device</a> for interposing on the
-timer. Being wrong here means performing actions which are not legit
-from <a href="/dovetail/pipeline/rulesofthumb/#safe-inband-code">such a context</a>.</p></li>
 
-<li><p>the <em>irqchip</em> driver managing the interrupt event for the timer tick
-is wrong somehow, causing such interrupt to stay masked or stuck for
-some reason whenever it is switched to <a href="/dovetail/pipeline/usage/irq_handling/">out-of-band mode</a>. You need to
-double-check the implementation of the <a href="/dovetail/pipeline/porting/irqflow/#irqchip-fixups">chip handlers</a>,
-considering the effects and requirements of interrupt pipelining.</p></li>
+<h4 id="toc_2">&hellip;</h4>
 
-<li><p>power management (CONFIG_CPUIDLE) gets in the way, often due to the
-infamous C3STOP misfeature turning off the original timer hardware
-controlled by the proxy device. A detailed explanation is given in
-Documentation/irq_pipeline.rst when discussing the few changes to
-the scheduler core for supporting the Dovetail interface. If this is
-acceptable from a power saving perspective, having the co-kernel
-prevent the in-band kernel from entering a deeper C-state is enough
-to fix the issue, by overriding the <code>irq_cpuidle_control()</code> routine
-as follows:</p></li>
-</ul>
+<p>The optional variable argument list completing the format.</p>
 
-<pre><code>bool irq_cpuidle_control(struct cpuidle_device *dev,
-			 struct cpuidle_state *state)
+<h3 id="return-value">Return value</h3>
+
+<p><code>evl_attach_self()</code> returns the file descriptor of the newly attached
+thread on success. You may use this <em>fd</em> to submit requests for the
+newly attached thread in other calls from the EVL library which ask
+for a thread file descriptor.</p>
+
+<p>If the call fails, a negated error code is returned:</p>
+
+<p>-EEXIST     The generated name is conflicting with an existing thread&rsquo;s
+        name.</p>
+
+<p>-EINVAL     The generated name is badly formed, likely containing
+        invalid character(s), such as a slash. Keep in mind that
+        it should be usable as a basename of a device element&rsquo;s file path.</p>
+
+<p>-ENAMETOOLONG   The overall length of the device element&rsquo;s file path including
+        the generated name exceeds PATH_MAX.</p>
+
+<p>-EMFILE     The per-process limit on the number of open file descriptors
+        has been reached.</p>
+
+<p>-ENFILE     The system-wide limit on the total number of open files
+        has been reached.</p>
+
+<p>-EPERM      The caller is not allowed to lock memory via a call to
+        <code>mlockall(2)</code>. Since memory locking is a requirement for running
+        EVL threads, no joy.</p>
+
+<p>-ENOMEM     No memory available, whether the kernel could not
+        lock down all of the calling process&rsquo;s virtual address
+        space into RAM, or some other reason related to some
+        process or driver eating way too much virtual or physical
+        memory. You may start panicking.</p>
+
+<p>-ENOSYS     There is no EVL core enabled in the running kernel.</p>
+
+<p>Anything else is likely an EVL bug. Congratulations.</p>
+
+<h3 id="example">Example</h3>
+
+<pre><code>#include &lt;evenless/thread.h&gt;
+
+static void *byte_crunching_thread(void *arg)
 {
-	/*
-	 * Deny entering sleep state if this entails stopping the
-	 * timer (i.e. C3STOP misfeature).
-	 */
-	if (state &amp;&amp; (state-&gt;flags &amp; CPUIDLE_FLAG_TIMER_STOP))
-		return false;
+	int efd;
 
-	return true;
+	/* Attach the current thread to the EVL core. */
+	efd = evl_attach_self(&quot;cruncher-%d&quot;, getpid());
+	...
 }
 </code></pre>
 
-<div class="notices tip" ><p>Printk-debugging such timer iss
-ue <em>requires</em> enabling <a href="/dovetail/pipeline/porting/rawprintk/">raw
-printk()</a> support,
-you won&rsquo;t get away with tracing the kernel behavior using the plain
-<code>printk()</code> routine for this, because most of the output would remain
-stuck into a buffer, never reaching the console driver before the
-board hangs eventually.</p>
-</div>
+<p>As a result of this call, you should see a new device appear into the
+<em>/dev/evenless/thread</em> hierarchy, e.g.:</p>
 
+<pre><code>$ ls -l /dev/evenless/threads
+total 0
+crw-rw----    1 root     root      246,   1 Jan  1  1970 clone
+crw-rw----    1 root     root      246,   1 Jan  1  1970 cruncher-2712
+</code></pre>
 
-<h2 id="arm">ARM</h2>
+<h3 id="notes">Notes</h3>
 
-<h3 id="context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</h3>
+<ol>
+<li><p>You can revert the attachment to EVL at any time by calling
+<a href="/core/user-api/thread/evl_detach_self/"><code>evl_detach_self()</code></a> from the context
+of the thread to detach.</p></li>
 
-<p>There is no reason for the outer cache to be
-invalidated/flushed/cleaned from an out-of-band context, all cache
-maintenance operations must happen from in-band code. Therefore, we
-neither need nor want to convert the spinlock serializing access to
-the cache maintenance operations for L2 to a hard lock.</p>
+<li><p>Closing all the file descriptors referring to an EVL thread is not
+enough to drop its attachment to the EVL core. It merely prevents to
+submit any further request for the original thread via calls taking
+file descriptors. You would still have to call
+<a href="/core/user-api/thread/evl_detach_self/"><code>evl_detach_self()</code></a> from the context
+of this thread to fully detach it.</p></li>
 
-<div class="notices note" ><p>This above assumption is unfortunately only partially right, because
-at some point in the future we may want to run DMA transfers from the
-out-of-band context, which could entail cache maintenance operations.</p>
-</div>
+<li><p>If a valid file descriptor is still referring to a detached thread,
+or after the thread has exited, any request submitted for that thread
+using such <em>fd</em> would receive -ESTALE.</p></li>
 
+<li><p>An EVL thread which exits is automatically detached from the EVL
+core, you don&rsquo;t have to call <a href="/core/user-api/thread/evl_detach_self/"><code>evl_detach_self()</code></a> explicitly
+before exiting your thread.</p></li>
 
-<p>Conversion to hard lock may cause latency to skyrocket on some i.MX6
-hardware, equipped with PL22x cache units, or PL31x with errata 588369
-or 727915 for particular hardware revisions, as each background
-operation would be awaited for completion with hard irqs disabled, in
-order to work around some silicon bug.</p>
+<li><p>The EVL core drops the kernel resources attached to a thread once
+it has detached itself or has exited, and only after all the file
+descriptors referring to that thread have been closed.</p></li>
+
+<li><p>The EVL library sets the O_CLOEXEC flag on the file descriptor
+referring to the newly attached thread before returning from
+<code>evl_attach_self()</code>.</p></li>
+</ol>
 
 
 <footer class=" footline" >
 	
 </footer>
-
 
         
         </div> 
@@ -1235,8 +1177,6 @@ order to work around some silicon bug.</p>
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -1247,6 +1187,179 @@ order to work around some silicon bug.</p>
                     
                     
 
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
                     
                         
             
@@ -1274,6 +1387,19 @@ order to work around some silicon bug.</p>
                     
                     
                         
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
                     
                     
 
@@ -1374,9 +1500,6 @@ order to work around some silicon bug.</p>
             
         
                     
-            
-        
-                    
                         
             
             
@@ -1412,48 +1535,10 @@ order to work around some silicon bug.</p>
             
         
                     
-            
-        
-                    
                         
             
             
                 
-                    
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
                     
                 
                 
@@ -1499,158 +1584,6 @@ order to work around some silicon bug.</p>
             
             
                 
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
                     
                 
                 
@@ -1825,10 +1758,10 @@ order to work around some silicon bug.</p>
 	 
 	 
 		
-			<a class="nav nav-prev" href="/dovetail/pipeline/porting/rawprintk/" title="Raw printk support"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/core/user-api/thread/" title="Thread element"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/dovetail/pipeline/porting/misc/" title="Misc" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/core/user-api/thread/evl_detach_self/" title="Detach a thread" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
@@ -1859,4 +1792,3 @@ order to work around some silicon bug.</p>
 
   </body>
 </html>
-

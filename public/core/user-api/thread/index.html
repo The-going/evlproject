@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
-    <title>Developer&#39;s Notes :: Evenless core documentation</title>
+    <title>Thread element :: Evenless core documentation</title>
 
     
     <link href="/css/nucleus.css?1551711348" rel="stylesheet">
@@ -38,7 +38,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/dovetail/pipeline/porting/devnotes/">
+  <body class="" data-url="/core/user-api/thread/">
     <nav id="sidebar" class="">
 
 
@@ -79,7 +79,7 @@
   
     
     <li data-nav-id="/core/" title="Real-time core" class="dd-item 
-        
+        parent
         
         
         ">
@@ -106,7 +106,7 @@
   
     
     <li data-nav-id="/core/user-api/" title="User API" class="dd-item 
-        
+        parent
         
         
         ">
@@ -133,8 +133,8 @@
   
     
     <li data-nav-id="/core/user-api/thread/" title="Thread element" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/core/user-api/thread/">
@@ -377,7 +377,7 @@
   
     
     <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item 
-        parent
+        
         
         
         ">
@@ -404,7 +404,7 @@
   
     
     <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item 
-        parent
+        
         
         
         ">
@@ -617,7 +617,7 @@
   
     
     <li data-nav-id="/dovetail/pipeline/porting/" title="Porting" class="dd-item 
-        parent
+        
         
         
         ">
@@ -660,7 +660,7 @@
  
   
     
-      <li data-nav-id="/dovetail/pipeline/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item active">
+      <li data-nav-id="/dovetail/pipeline/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item ">
         <a href="/dovetail/pipeline/porting/devnotes/">
         Developer&#39;s Notes
         
@@ -955,13 +955,7 @@
             
           
           
-            
-            
-          
-          
-            <a href='/'>Evenless</a> > <a href='/dovetail/'>Dovetail interface</a> > <a href='/dovetail/pipeline/'>Interrupt pipeline</a> > <a href='/dovetail/pipeline/porting/'>Porting</a> > Developer's Notes
-          
-         
+            <a href='/'>Evenless</a> > <a href='/core/'>Real-time core</a> > <a href='/core/user-api/'>User API</a> > Thread element
           
          
           
@@ -980,18 +974,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#generic">Generic</a>
-<ul>
-<li><a href="#fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</a></li>
-<li><a href="#checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</a></li>
-<li><a href="#stop-machine-hard-disables-interrupts"><code>stop_machine()</code> hard disables interrupts</a></li>
-<li><a href="#virtual-interrupt-disable-state-breakage">Virtual interrupt disable state breakage</a></li>
-</ul></li>
-<li><a href="#losing-the-timer-tick">Losing the timer tick</a></li>
-<li><a href="#arm">ARM</a>
-<ul>
-<li><a href="#context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</a></li>
-</ul></li>
+<li><a href="#what-is-that">What is that?</a></li>
+<li><a href="#can-evl-threads-run-in-kernel-space">Can EVL threads run in kernel space?</a></li>
+<li><a href="#where-do-threads-live">Where do threads live?</a></li>
+<li><a href="#how-to-talk-to-a-remote-evl-thread">How to talk to a remote EVL thread?</a></li>
+<li><a href="#where-to-look-for-thread-information">Where to look for thread information?</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -1006,7 +993,7 @@
         
         <div id="body-inner">
           
-            <h1>Developer&#39;s Notes</h1>
+            <h1>Thread element</h1>
           
 
         
@@ -1014,195 +1001,143 @@
 
 
 
-<h2 id="generic">Generic</h2>
+<h2 id="what-is-that">What is that?</h2>
 
-<h3 id="fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</h3>
-
-<p>Over a few contexts, we may traverse code using unprotected,
-preemption-sensitive accessors such as <code>percpu()</code> without disabling
-preemption specifically, because either one condition is true;</p>
-
-<ul>
-<li><p>if <code>preempt_count()</code> bears either of the <code>PIPELINE_MASK</code> or
-<code>STAGE_MASK</code> bits, which turns preemption off, therefore CPU
-migration cannot happen (<code>debug_smp_processor_id()</code> and preempt
-checks in <code>percpu</code> accessors would detect such context properly
-too).</p></li>
-
-<li><p>if we are running over the context of the in-band stage&rsquo;s event log
-syncer (<code>sync_current_stage()</code>) playing a deferred interrupt, in
-which case the virtual interrupt disable bit is set, so no CPU
-migration may occur either.</p></li>
-</ul>
-
-<p>For instance, the following contexts qualify:</p>
+<p>This is the basic execution unit in EVL, which is the same as the main
+kernel&rsquo;s. The most common kind of EVL threads is a regular POSIX
+thread started by <code>pthread_create(3)</code> which has attached itself to the
+EVL core by a call to <a href="/core/user-api/thread/evl_attach_self/"><code>evl_attach_self()</code></a>. Once a POSIX
+thread attached itself to EVL, it can:</p>
 
 <ul>
-<li><p><code>clockevents_handle_event()</code>, which should either be called from the
-oob stage - therefore <code>STAGE_MASK</code> is set - when the <a href="/dovetail/pipeline/porting/timer/#proxy-tick-logic">proxy tick
-device is active</a> on the CPU,
-and/or from the in-band stage playing a timer interrupt event from the
-corresponding device.</p></li>
-
-<li><p>any IRQ flow handler <em>from kernel/irq/chip.c</em>. When called from
-<code>generic_pipeline_irq()</code> for pushing an external event to the
-pipeline, <code>on_pipeline_entry()</code> is true, which indicates that
-PIPELINE_MASK is set. When called for playing a deferred interrupt
-on the in-band stage, the virtual interrupt disable bit is set.</p></li>
+<li>request real-time services to the core, exclusively by calling
+routines available from the EVL library . In this case, and only in
+this one, you get real-time guarantees for the caller. This is what
+time-critical processing loops are supposed to use. Such request may
+switch the calling thread to the out-of-band <a href="/dovetail/pipeline/#two-stage-pipeline">execution
+stage</a>, for running under EVL&rsquo;s supervision in order to ensure
+real-time behaviour.</li>
 </ul>
 
-<h3 id="checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</h3>
-
-<p>The <code>IRQF_OOB</code> action flag should <strong>NOT</strong> be used for testing whether
-an interrupt is out-of-band, because out-of-band handling may be
-turned on/off dynamically on an IRQ descriptor using
-<code>irq_switch_oob()</code>, which would not translate to <code>IRQF_OOB</code> being
-set/cleared for the attached action handlers.</p>
-
-<p><code>irq_is_oob()</code> is the right way to check for out-of-band handling.</p>
-
-<h3 id="stop-machine-hard-disables-interrupts"><code>stop_machine()</code> hard disables interrupts</h3>
-
-<p>The <code>stop_machine()</code> service guarantees that all online CPUs are
-spinning non-preemptible in a known code location before a subset of
-them may safely run a stop-context function. This service is typically
-useful for live patching the kernel code, or changing global memory
-mappings, so that no activity could run in parallel until the system
-has returned to a stable state after all stop-context operations have
-completed.</p>
-
-<p>When interrupt pipelining is enabled, Dovetail provides the same
-guarantee by restoring hard interrupt disabling where virtualizing the
-interrupt disable flag would defeat it.</p>
-
-<p>As those lines are written, all <code>stop_machine()</code> use cases must also
-exclude any oob stage activity (e.g. ftrace live patching the kernel
-code for installing tracepoints), or happen before any such activity
-can ever take place (e.g. KPTI boot mappings). Dovetail makes a basic
-assumption that <code>stop_machine()</code> could not get in the way of
-latency-sensitive processes, simply because the latter could not keep
-running safely until a call to the former has completed anyway.</p>
-
-<p>However, one should keep an eye on <code>stop_machine()</code> usage upstream,
-identifying new callers which might cause unwanted latency spots under
-specific circumstances (maybe even abusing the interface).</p>
-
-<h3 id="virtual-interrupt-disable-state-breakage">Virtual interrupt disable state breakage</h3>
-
-<p>When some WARN_ON() triggers due to a wrong interrupt disable state
-(e.g. entering the softirqs/bh code with IRQs unexpectedly [virtually]
-disabled), this may be due to the CPU and virtual interrupt states
-being out-of-sync when traversing the epilogue code after a syscall,
-IRQ or trap has been handled during the latest kernel entry.</p>
-
-<p>Typically, do_work_pending() or do_notify_resume() should make sure to
-reconcile both states in the work loop, and also to restore the
-virtual state they received on entry before returning to their caller.</p>
-
-<div class="notices tip" ><p>The routines just mentioned always enter from their assembly call site
-with interrupts hard disabled in the CPU. However, they may be entered
-with the virtual interrupt state enabled or disabled, depending on the
-kind of event which led to them eventually. Typically, a system call
-epilogue would always enter with the virtual state enabled, but a
-fault might also occur when the virtual state is disabled though. The
-epilogue routine called for finalizing some IRQ handling must enter with
-the virtual state enabled, since the latter is a pre-requisite for
-running such code.</p>
+<div class="notices info" ><p>A thread which is being scheduled by EVL instead of the main kernel is
+said to be running <strong>out-of-band</strong>, as defined by <a href="/dovetail/pipeline/">Dovetail</a>. It remains in this mode
+until it asks for a service which the main kernel provides.</p>
 </div>
 
 
-<h2 id="losing-the-timer-tick">Losing the timer tick</h2>
-
-<p>The symptom of a common issue in a Dovetail port is losing the timer
-interrupt when the out-of-band (co-)kernel takes control over the
-<a href="/dovetail/pipeline/porting/timer/">tick device</a>,
-causing the in-band kernel to stall. After some time spent hanging,
-the in-band kernel may eventually complain about a RCU stall situation
-with a message like _INFO: rcu<em>preempt detected stalls on CPUs/tasks</em>
-followed by stack dump(s). In other cases, the machine may simply lock
-up due to an interrupt storm.</p>
-
-<p>This is typical of timer interrupt events not flowing down normally to
-the in-band kernel anymore because something went wrong as soon as the
-proxy tick device replaced the regular device for serving in-band
-timing requests. When this happens, we should check the following code
-spots for bugs:</p>
-
 <ul>
-<li><p>the timer acknowledge code is wrong once called from the <a href="/dovetail/pipeline/#two-stage-pipeline">oob
-stage</a>, which is going to be the case as soon as a co-kernel installs
-the <a href="/dovetail/pipeline/porting/timer/">proxy tick device</a> for interposing on the
-timer. Being wrong here means performing actions which are not legit
-from <a href="/dovetail/pipeline/rulesofthumb/#safe-inband-code">such a context</a>.</p></li>
-
-<li><p>the <em>irqchip</em> driver managing the interrupt event for the timer tick
-is wrong somehow, causing such interrupt to stay masked or stuck for
-some reason whenever it is switched to <a href="/dovetail/pipeline/usage/irq_handling/">out-of-band mode</a>. You need to
-double-check the implementation of the <a href="/dovetail/pipeline/porting/irqflow/#irqchip-fixups">chip handlers</a>,
-considering the effects and requirements of interrupt pipelining.</p></li>
-
-<li><p>power management (CONFIG_CPUIDLE) gets in the way, often due to the
-infamous C3STOP misfeature turning off the original timer hardware
-controlled by the proxy device. A detailed explanation is given in
-Documentation/irq_pipeline.rst when discussing the few changes to
-the scheduler core for supporting the Dovetail interface. If this is
-acceptable from a power saving perspective, having the co-kernel
-prevent the in-band kernel from entering a deeper C-state is enough
-to fix the issue, by overriding the <code>irq_cpuidle_control()</code> routine
-as follows:</p></li>
+<li>invoke services from your favourite C library (<em>glibc</em>, <em>musl</em>,
+<em>uClibc</em> etc.), which may end up issuing system calls to the main
+kernel for carrying out the job. EVL may have to demote the caller
+automatically from the EVL context to a runtime mode which is
+compatible with using the main kernel services. As a result of this,
+you get NO help from EVL for keeping short and bounded latency
+figures anymore, but you do have access to any feature the main
+kernel provides. This mode is normally reserved to initialization
+and cleanup phases of your application. If you end up using them in
+the middle of a would-be time-critical loop, well, something is
+seriously wrong in this code.</li>
 </ul>
 
-<pre><code>bool irq_cpuidle_control(struct cpuidle_device *dev,
-			 struct cpuidle_state *state)
-{
-	/*
-	 * Deny entering sleep state if this entails stopping the
-	 * timer (i.e. C3STOP misfeature).
-	 */
-	if (state &amp;&amp; (state-&gt;flags &amp; CPUIDLE_FLAG_TIMER_STOP))
-		return false;
+<div class="notices info" ><p>A thread which is being scheduled by the main kernel instead of EVL is
+said to be running <strong>in-band</strong>, as defined by <a href="/dovetail/pipeline/">Dovetail</a>. It remains in this mode until it
+asks for a service which EVL can only provide when the caller runs
+out-of-band.</p>
+</div>
 
-	return true;
-}
+
+<h2 id="can-evl-threads-run-in-kernel-space">Can EVL threads run in kernel space?</h2>
+
+<p>Yes. Drivers may create kernel-based EVL threads backed by regular
+<em>kthreads</em>, using EVL&rsquo;s <a href="/core/kernel-api/">kernel API</a>. The attachment phase is hidden
+inside the API call starting the EVL kthread in this case. Most of the
+notions explained in this document apply to them too, except that
+there is no system call interface between the EVL core and the
+kthread. <strong>So nothing can prevent EVL kthreads from calling the main
+kernel services from the wrong context.</strong></p>
+
+<h2 id="where-do-threads-live">Where do threads live?</h2>
+
+<p>Each time a new thread element is created, it appears into the
+<em>/dev/evenless/thread</em> hierarchy, e.g.:</p>
+
+<pre><code>$ ls -l /dev/evenless/threads
+total 0
+crw-rw----    1 root     root      246,   1 Jan  1  1970 clone
+crw-rw----    1 root     root      244,   0 Mar  1 11:26 rtk1@0:1682
+crw-rw----    1 root     root      244,  18 Mar  1 11:26 rtk1@1:1682
+crw-rw----    1 root     root      244,  36 Mar  1 11:26 rtk1@2:1682
+crw-rw----    1 root     root      244,  54 Mar  1 11:26 rtk1@3:1682
+crw-rw----    1 root     root      244,   1 Mar  1 11:26 rtk2@0:1682
+crw-rw----    1 root     root      244,  19 Mar  1 11:26 rtk2@1:1682
+crw-rw----    1 root     root      244,  37 Mar  1 11:26 rtk2@2:1682
+crw-rw----    1 root     root      244,  55 Mar  1 11:26 rtk2@3:1682
+                           (snip)
+crw-rw----    1 root     root      244,   9 Mar  1 11:26 rtus_ufps0-10:1682
+crw-rw----    1 root     root      244,   8 Mar  1 11:26 rtus_ufps0-9:1682
+crw-rw----    1 root     root      244,  27 Mar  1 11:26 rtus_ufps1-10:1682
+crw-rw----    1 root     root      244,  26 Mar  1 11:26 rtus_ufps1-9:1682
+crw-rw----    1 root     root      244,  45 Mar  1 11:26 rtus_ufps2-10:1682
+crw-rw----    1 root     root      244,  44 Mar  1 11:26 rtus_ufps2-9:1682
+crw-rw----    1 root     root      244,  63 Mar  1 11:26 rtus_ufps3-10:1682
+crw-rw----    1 root     root      244,  62 Mar  1 11:26 rtus_ufps3-9:1682
 </code></pre>
 
-<div class="notices tip" ><p>Printk-debugging such timer iss
-ue <em>requires</em> enabling <a href="/dovetail/pipeline/porting/rawprintk/">raw
-printk()</a> support,
-you won&rsquo;t get away with tracing the kernel behavior using the plain
-<code>printk()</code> routine for this, because most of the output would remain
-stuck into a buffer, never reaching the console driver before the
-board hangs eventually.</p>
+<div class="notices info" ><p>The <em>clone</em> file is a special device which allows the EVL library to
+request the creation of a thread element. <em>This is for internal use only</em>.</p>
 </div>
 
 
-<h2 id="arm">ARM</h2>
+<h2 id="how-to-talk-to-a-remote-evl-thread">How to talk to a remote EVL thread?</h2>
 
-<h3 id="context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</h3>
+<p>If you need to submit requests for an EVL thread which belongs to a
+different process, you only need to open the device file representing
+this element in <em>/dev/evenless/threads</em>, then use the file descriptor
+just obtained in the thread-related request you want to send it. For
+instance, we could change the scheduling parameters of an EVL kernel
+thread named rtk1@3:1682 from a companion application in userland as
+follows:</p>
 
-<p>There is no reason for the outer cache to be
-invalidated/flushed/cleaned from an out-of-band context, all cache
-maintenance operations must happen from in-band code. Therefore, we
-neither need nor want to convert the spinlock serializing access to
-the cache maintenance operations for L2 to a hard lock.</p>
+<pre><code>	struct evl_sched_attrs attrs;
+	int efd, ret;
 
-<div class="notices note" ><p>This above assumption is unfortunately only partially right, because
-at some point in the future we may want to run DMA transfers from the
-out-of-band context, which could entail cache maintenance operations.</p>
-</div>
+ 	efd = open(&quot;/dev/evenless/thread/rtk1@3:1682&quot;, O_RDWR);
+	/* skipping checks */
 
+	attrs.sched_policy = SCHED_FIFO;
+	attrs.sched_priority = 90;
+	ret = evl_set_schedattr(efd, &amp;attrs);
+	/* skipping checks */
+</code></pre>
 
-<p>Conversion to hard lock may cause latency to skyrocket on some i.MX6
-hardware, equipped with PL22x cache units, or PL31x with errata 588369
-or 727915 for particular hardware revisions, as each background
-operation would be awaited for completion with hard irqs disabled, in
-order to work around some silicon bug.</p>
+<h2 id="where-to-look-for-thread-information">Where to look for thread information?</h2>
+
+<p>Since every element is backed by a regular character device, the place
+to look for thread attributes is in the /sysfs hierarchy, where such
+device is living. For instance, we can have a look at the attributes
+exported by the sampling thread of EVL&rsquo;s <em>latmus</em> utility like this:</p>
+
+<pre><code>cd /sys/devices/virtual/thread/lat-sampler:2136
+# ls -l
+total 0
+-r--r--r--    1 root     root          4096 Mar  1 12:01 pid
+-r--r--r--    1 root     root          4096 Mar  1 12:01 sched
+-r--r--r--    1 root     root          4096 Mar  1 12:01 state
+-r--r--r--    1 root     root          4096 Mar  1 12:01 stats
+-r--r--r--    1 root     root          4096 Mar  1 12:01 timeout
+
+# cat pid sched state stats timeout
+2140
+0 90 90 rt
+0x8002
+1 311156 311175 46999122352 0
+0
+</code></pre>
 
 
 <footer class=" footline" >
 	
 </footer>
-
 
         
         </div> 
@@ -1235,8 +1170,6 @@ order to work around some silicon bug.</p>
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -1253,20 +1186,6 @@ order to work around some silicon bug.</p>
             
                 
                     
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
                     
                 
                 
@@ -1282,6 +1201,25 @@ order to work around some silicon bug.</p>
             
             
                 
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
                     
                 
                 
@@ -1420,7 +1358,6 @@ order to work around some silicon bug.</p>
             
                 
                     
-                    
                 
                 
 
@@ -1436,7 +1373,6 @@ order to work around some silicon bug.</p>
             
                 
                     
-                    
                 
                 
 
@@ -1451,9 +1387,6 @@ order to work around some silicon bug.</p>
             
             
                 
-                    
-                        
-                        
                     
                 
                 
@@ -1599,7 +1532,6 @@ order to work around some silicon bug.</p>
             
                 
                     
-                    
                 
                 
 
@@ -1612,26 +1544,6 @@ order to work around some silicon bug.</p>
             
             
                 
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
                     
                 
                 
@@ -1649,8 +1561,21 @@ order to work around some silicon bug.</p>
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
                         
-                        
+            
+            
+                
                     
                 
                 
@@ -1825,10 +1750,10 @@ order to work around some silicon bug.</p>
 	 
 	 
 		
-			<a class="nav nav-prev" href="/dovetail/pipeline/porting/rawprintk/" title="Raw printk support"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/core/user-api/" title="User API"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/dovetail/pipeline/porting/misc/" title="Misc" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/core/user-api/thread/evl_attach_self/" title="Attach a thread" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
@@ -1859,4 +1784,3 @@ order to work around some silicon bug.</p>
 
   </body>
 </html>
-

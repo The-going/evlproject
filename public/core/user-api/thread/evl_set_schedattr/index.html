@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
-    <title>Developer&#39;s Notes :: Evenless core documentation</title>
+    <title>Set scheduling attributes :: Evenless core documentation</title>
 
     
     <link href="/css/nucleus.css?1551711348" rel="stylesheet">
@@ -38,7 +38,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/dovetail/pipeline/porting/devnotes/">
+  <body class="" data-url="/core/user-api/thread/evl_set_schedattr/">
     <nav id="sidebar" class="">
 
 
@@ -79,7 +79,7 @@
   
     
     <li data-nav-id="/core/" title="Real-time core" class="dd-item 
-        
+        parent
         
         
         ">
@@ -106,7 +106,7 @@
   
     
     <li data-nav-id="/core/user-api/" title="User API" class="dd-item 
-        
+        parent
         
         
         ">
@@ -133,7 +133,7 @@
   
     
     <li data-nav-id="/core/user-api/thread/" title="Thread element" class="dd-item 
-        
+        parent
         
         
         ">
@@ -280,8 +280,8 @@
   
     
     <li data-nav-id="/core/user-api/thread/evl_set_schedattr/" title="Set scheduling attributes" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/core/user-api/thread/evl_set_schedattr/">
@@ -377,7 +377,7 @@
   
     
     <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item 
-        parent
+        
         
         
         ">
@@ -404,7 +404,7 @@
   
     
     <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item 
-        parent
+        
         
         
         ">
@@ -617,7 +617,7 @@
   
     
     <li data-nav-id="/dovetail/pipeline/porting/" title="Porting" class="dd-item 
-        parent
+        
         
         
         ">
@@ -660,7 +660,7 @@
  
   
     
-      <li data-nav-id="/dovetail/pipeline/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item active">
+      <li data-nav-id="/dovetail/pipeline/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item ">
         <a href="/dovetail/pipeline/porting/devnotes/">
         Developer&#39;s Notes
         
@@ -959,7 +959,7 @@
             
           
           
-            <a href='/'>Evenless</a> > <a href='/dovetail/'>Dovetail interface</a> > <a href='/dovetail/pipeline/'>Interrupt pipeline</a> > <a href='/dovetail/pipeline/porting/'>Porting</a> > Developer's Notes
+            <a href='/'>Evenless</a> > <a href='/core/'>Real-time core</a> > <a href='/core/user-api/'>User API</a> > <a href='/core/user-api/thread/'>Thread element</a> > Set scheduling attributes
           
          
           
@@ -980,17 +980,16 @@
 <ul>
 <li>
 <ul>
-<li><a href="#generic">Generic</a>
+<li>
 <ul>
-<li><a href="#fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</a></li>
-<li><a href="#checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</a></li>
-<li><a href="#stop-machine-hard-disables-interrupts"><code>stop_machine()</code> hard disables interrupts</a></li>
-<li><a href="#virtual-interrupt-disable-state-breakage">Virtual interrupt disable state breakage</a></li>
+<li><a href="#int-evl-set-schedattr-int-efd-const-struct-evl-sched-attrs-attrs">int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)</a>
+<ul>
+<li><a href="#efd"><em>efd</em></a></li>
+<li><a href="#attrs"><em>attrs</em></a></li>
 </ul></li>
-<li><a href="#losing-the-timer-tick">Losing the timer tick</a></li>
-<li><a href="#arm">ARM</a>
-<ul>
-<li><a href="#context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</a></li>
+<li><a href="#return-value">Return value</a></li>
+<li><a href="#example">Example</a></li>
+<li><a href="#notes">Notes</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1006,7 +1005,7 @@
         
         <div id="body-inner">
           
-            <h1>Developer&#39;s Notes</h1>
+            <h1>Set scheduling attributes</h1>
           
 
         
@@ -1014,195 +1013,27 @@
 
 
 
-<h2 id="generic">Generic</h2>
+<h3 id="int-evl-set-schedattr-int-efd-const-struct-evl-sched-attrs-attrs">int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)</h3>
 
-<h3 id="fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</h3>
+<h4 id="efd"><em>efd</em></h4>
 
-<p>Over a few contexts, we may traverse code using unprotected,
-preemption-sensitive accessors such as <code>percpu()</code> without disabling
-preemption specifically, because either one condition is true;</p>
+<h4 id="attrs"><em>attrs</em></h4>
 
-<ul>
-<li><p>if <code>preempt_count()</code> bears either of the <code>PIPELINE_MASK</code> or
-<code>STAGE_MASK</code> bits, which turns preemption off, therefore CPU
-migration cannot happen (<code>debug_smp_processor_id()</code> and preempt
-checks in <code>percpu</code> accessors would detect such context properly
-too).</p></li>
+<h3 id="return-value">Return value</h3>
 
-<li><p>if we are running over the context of the in-band stage&rsquo;s event log
-syncer (<code>sync_current_stage()</code>) playing a deferred interrupt, in
-which case the virtual interrupt disable bit is set, so no CPU
-migration may occur either.</p></li>
-</ul>
+<p><code>evl_sched_attrs()</code> returns zero on success, otherwise a negated error
+code is returned:</p>
 
-<p>For instance, the following contexts qualify:</p>
+<p>Anything else is likely an EVL bug. Congratulations.</p>
 
-<ul>
-<li><p><code>clockevents_handle_event()</code>, which should either be called from the
-oob stage - therefore <code>STAGE_MASK</code> is set - when the <a href="/dovetail/pipeline/porting/timer/#proxy-tick-logic">proxy tick
-device is active</a> on the CPU,
-and/or from the in-band stage playing a timer interrupt event from the
-corresponding device.</p></li>
+<h3 id="example">Example</h3>
 
-<li><p>any IRQ flow handler <em>from kernel/irq/chip.c</em>. When called from
-<code>generic_pipeline_irq()</code> for pushing an external event to the
-pipeline, <code>on_pipeline_entry()</code> is true, which indicates that
-PIPELINE_MASK is set. When called for playing a deferred interrupt
-on the in-band stage, the virtual interrupt disable bit is set.</p></li>
-</ul>
-
-<h3 id="checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</h3>
-
-<p>The <code>IRQF_OOB</code> action flag should <strong>NOT</strong> be used for testing whether
-an interrupt is out-of-band, because out-of-band handling may be
-turned on/off dynamically on an IRQ descriptor using
-<code>irq_switch_oob()</code>, which would not translate to <code>IRQF_OOB</code> being
-set/cleared for the attached action handlers.</p>
-
-<p><code>irq_is_oob()</code> is the right way to check for out-of-band handling.</p>
-
-<h3 id="stop-machine-hard-disables-interrupts"><code>stop_machine()</code> hard disables interrupts</h3>
-
-<p>The <code>stop_machine()</code> service guarantees that all online CPUs are
-spinning non-preemptible in a known code location before a subset of
-them may safely run a stop-context function. This service is typically
-useful for live patching the kernel code, or changing global memory
-mappings, so that no activity could run in parallel until the system
-has returned to a stable state after all stop-context operations have
-completed.</p>
-
-<p>When interrupt pipelining is enabled, Dovetail provides the same
-guarantee by restoring hard interrupt disabling where virtualizing the
-interrupt disable flag would defeat it.</p>
-
-<p>As those lines are written, all <code>stop_machine()</code> use cases must also
-exclude any oob stage activity (e.g. ftrace live patching the kernel
-code for installing tracepoints), or happen before any such activity
-can ever take place (e.g. KPTI boot mappings). Dovetail makes a basic
-assumption that <code>stop_machine()</code> could not get in the way of
-latency-sensitive processes, simply because the latter could not keep
-running safely until a call to the former has completed anyway.</p>
-
-<p>However, one should keep an eye on <code>stop_machine()</code> usage upstream,
-identifying new callers which might cause unwanted latency spots under
-specific circumstances (maybe even abusing the interface).</p>
-
-<h3 id="virtual-interrupt-disable-state-breakage">Virtual interrupt disable state breakage</h3>
-
-<p>When some WARN_ON() triggers due to a wrong interrupt disable state
-(e.g. entering the softirqs/bh code with IRQs unexpectedly [virtually]
-disabled), this may be due to the CPU and virtual interrupt states
-being out-of-sync when traversing the epilogue code after a syscall,
-IRQ or trap has been handled during the latest kernel entry.</p>
-
-<p>Typically, do_work_pending() or do_notify_resume() should make sure to
-reconcile both states in the work loop, and also to restore the
-virtual state they received on entry before returning to their caller.</p>
-
-<div class="notices tip" ><p>The routines just mentioned always enter from their assembly call site
-with interrupts hard disabled in the CPU. However, they may be entered
-with the virtual interrupt state enabled or disabled, depending on the
-kind of event which led to them eventually. Typically, a system call
-epilogue would always enter with the virtual state enabled, but a
-fault might also occur when the virtual state is disabled though. The
-epilogue routine called for finalizing some IRQ handling must enter with
-the virtual state enabled, since the latter is a pre-requisite for
-running such code.</p>
-</div>
-
-
-<h2 id="losing-the-timer-tick">Losing the timer tick</h2>
-
-<p>The symptom of a common issue in a Dovetail port is losing the timer
-interrupt when the out-of-band (co-)kernel takes control over the
-<a href="/dovetail/pipeline/porting/timer/">tick device</a>,
-causing the in-band kernel to stall. After some time spent hanging,
-the in-band kernel may eventually complain about a RCU stall situation
-with a message like _INFO: rcu<em>preempt detected stalls on CPUs/tasks</em>
-followed by stack dump(s). In other cases, the machine may simply lock
-up due to an interrupt storm.</p>
-
-<p>This is typical of timer interrupt events not flowing down normally to
-the in-band kernel anymore because something went wrong as soon as the
-proxy tick device replaced the regular device for serving in-band
-timing requests. When this happens, we should check the following code
-spots for bugs:</p>
-
-<ul>
-<li><p>the timer acknowledge code is wrong once called from the <a href="/dovetail/pipeline/#two-stage-pipeline">oob
-stage</a>, which is going to be the case as soon as a co-kernel installs
-the <a href="/dovetail/pipeline/porting/timer/">proxy tick device</a> for interposing on the
-timer. Being wrong here means performing actions which are not legit
-from <a href="/dovetail/pipeline/rulesofthumb/#safe-inband-code">such a context</a>.</p></li>
-
-<li><p>the <em>irqchip</em> driver managing the interrupt event for the timer tick
-is wrong somehow, causing such interrupt to stay masked or stuck for
-some reason whenever it is switched to <a href="/dovetail/pipeline/usage/irq_handling/">out-of-band mode</a>. You need to
-double-check the implementation of the <a href="/dovetail/pipeline/porting/irqflow/#irqchip-fixups">chip handlers</a>,
-considering the effects and requirements of interrupt pipelining.</p></li>
-
-<li><p>power management (CONFIG_CPUIDLE) gets in the way, often due to the
-infamous C3STOP misfeature turning off the original timer hardware
-controlled by the proxy device. A detailed explanation is given in
-Documentation/irq_pipeline.rst when discussing the few changes to
-the scheduler core for supporting the Dovetail interface. If this is
-acceptable from a power saving perspective, having the co-kernel
-prevent the in-band kernel from entering a deeper C-state is enough
-to fix the issue, by overriding the <code>irq_cpuidle_control()</code> routine
-as follows:</p></li>
-</ul>
-
-<pre><code>bool irq_cpuidle_control(struct cpuidle_device *dev,
-			 struct cpuidle_state *state)
-{
-	/*
-	 * Deny entering sleep state if this entails stopping the
-	 * timer (i.e. C3STOP misfeature).
-	 */
-	if (state &amp;&amp; (state-&gt;flags &amp; CPUIDLE_FLAG_TIMER_STOP))
-		return false;
-
-	return true;
-}
-</code></pre>
-
-<div class="notices tip" ><p>Printk-debugging such timer iss
-ue <em>requires</em> enabling <a href="/dovetail/pipeline/porting/rawprintk/">raw
-printk()</a> support,
-you won&rsquo;t get away with tracing the kernel behavior using the plain
-<code>printk()</code> routine for this, because most of the output would remain
-stuck into a buffer, never reaching the console driver before the
-board hangs eventually.</p>
-</div>
-
-
-<h2 id="arm">ARM</h2>
-
-<h3 id="context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</h3>
-
-<p>There is no reason for the outer cache to be
-invalidated/flushed/cleaned from an out-of-band context, all cache
-maintenance operations must happen from in-band code. Therefore, we
-neither need nor want to convert the spinlock serializing access to
-the cache maintenance operations for L2 to a hard lock.</p>
-
-<div class="notices note" ><p>This above assumption is unfortunately only partially right, because
-at some point in the future we may want to run DMA transfers from the
-out-of-band context, which could entail cache maintenance operations.</p>
-</div>
-
-
-<p>Conversion to hard lock may cause latency to skyrocket on some i.MX6
-hardware, equipped with PL22x cache units, or PL31x with errata 588369
-or 727915 for particular hardware revisions, as each background
-operation would be awaited for completion with hard irqs disabled, in
-order to work around some silicon bug.</p>
+<h3 id="notes">Notes</h3>
 
 
 <footer class=" footline" >
 	
 </footer>
-
 
         
         </div> 
@@ -1235,8 +1066,6 @@ order to work around some silicon bug.</p>
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -1247,6 +1076,182 @@ order to work around some silicon bug.</p>
                     
                     
 
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
                     
                         
             
@@ -1274,6 +1279,19 @@ order to work around some silicon bug.</p>
                     
                     
                         
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
                     
                     
 
@@ -1374,9 +1392,6 @@ order to work around some silicon bug.</p>
             
         
                     
-            
-        
-                    
                         
             
             
@@ -1412,48 +1427,10 @@ order to work around some silicon bug.</p>
             
         
                     
-            
-        
-                    
                         
             
             
                 
-                    
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
                     
                 
                 
@@ -1499,158 +1476,6 @@ order to work around some silicon bug.</p>
             
             
                 
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
                     
                 
                 
@@ -1825,10 +1650,10 @@ order to work around some silicon bug.</p>
 	 
 	 
 		
-			<a class="nav nav-prev" href="/dovetail/pipeline/porting/rawprintk/" title="Raw printk support"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/core/user-api/thread/evl_switch_inband/" title="Switch to in-band context"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/dovetail/pipeline/porting/misc/" title="Misc" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/core/user-api/function_index/" title="Function index" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
@@ -1859,4 +1684,3 @@ order to work around some silicon bug.</p>
 
   </body>
 </html>
-

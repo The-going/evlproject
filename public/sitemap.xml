@@ -3,18 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/usage/stage_push/</loc>
-    <lastmod>2018-07-01T15:47:56+02:00</lastmod>
+    <loc>https://evenless.org/core/</loc>
+    <lastmod>2019-02-16T16:10:44+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/porting/prerequisites/</loc>
-    <lastmod>2018-06-27T11:09:03+02:00</lastmod>
+    <loc>https://evenless.org/core/user-api/thread/</loc>
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/optimistic/</loc>
-    <lastmod>2018-06-27T10:08:28+02:00</lastmod>
+    <loc>https://evenless.org/core/user-api/</loc>
   </url>
   
   <url>
@@ -23,8 +21,8 @@
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/usage/irq_handling/</loc>
-    <lastmod>2018-07-01T14:05:58+02:00</lastmod>
+    <loc>https://evenless.org/dovetail/</loc>
+    <lastmod>2018-06-26T19:28:38+02:00</lastmod>
   </url>
   
   <url>
@@ -33,33 +31,7 @@
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/porting/irqflow/</loc>
-    <lastmod>2018-06-27T15:20:04+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://evenless.org/dovetail/pipeline/porting/</loc>
-    <lastmod>2018-06-27T10:41:53+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://evenless.org/dovetail/contributing/</loc>
-    <lastmod>2018-07-02T15:54:45+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://evenless.org/dovetail/pipeline/usage/</loc>
-    <lastmod>2018-07-01T11:43:25+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://evenless.org/dovetail/pipeline/porting/arch/</loc>
-    <lastmod>2018-06-27T17:07:51+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://evenless.org/dovetail/pipeline/usage/synthetic/</loc>
-    <lastmod>2018-06-27T09:55:57+02:00</lastmod>
+    <loc>https://evenless.org/core/kernel-api/</loc>
   </url>
   
   <url>
@@ -68,33 +40,36 @@
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/usage/pipeline_inject/</loc>
-    <lastmod>2018-07-01T15:38:34+02:00</lastmod>
+    <loc>https://evenless.org/dovetail/contributing/</loc>
+    <lastmod>2018-07-02T15:54:45+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/rulesofthumb/</loc>
-    <lastmod>2018-06-30T19:02:50+02:00</lastmod>
+    <loc>https://evenless.org/core/user-api/thread/evl_attach_self/</loc>
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/porting/timer/</loc>
-    <lastmod>2018-06-27T17:15:23+02:00</lastmod>
+    <loc>https://evenless.org/core/user-api/thread/evl_detach_self/</loc>
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/about/</loc>
-    <lastmod>2018-07-02T19:39:01+02:00</lastmod>
+    <loc>https://evenless.org/core/user-api/thread/evl_get_self/</loc>
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/usage/stage_escalation/</loc>
-    <lastmod>2018-07-01T15:46:04+02:00</lastmod>
+    <loc>https://evenless.org/core/user-api/thread/evl_switch_oob/</loc>
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/porting/atomic/</loc>
-    <lastmod>2018-06-27T17:17:25+02:00</lastmod>
+    <loc>https://evenless.org/core/user-api/thread/evl_switch_inband/</loc>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/core/user-api/thread/evl_set_schedattr/</loc>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/core/user-api/function_index/</loc>
   </url>
   
   <url>
@@ -103,8 +78,43 @@
   </url>
   
   <url>
+    <loc>https://evenless.org/dovetail/pipeline/porting/devnotes/</loc>
+    <lastmod>2018-07-03T19:32:57+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://evenless.org/dovetail/pipeline/usage/interrupt_protection/</loc>
     <lastmod>2018-07-01T17:54:11+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/usage/stage_push/</loc>
+    <lastmod>2018-07-01T15:47:56+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/usage/stage_escalation/</loc>
+    <lastmod>2018-07-01T15:46:04+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/usage/pipeline_inject/</loc>
+    <lastmod>2018-07-01T15:38:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/usage/irq_handling/</loc>
+    <lastmod>2018-07-01T14:05:58+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/usage/</loc>
+    <lastmod>2018-07-01T11:43:25+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/rulesofthumb/</loc>
+    <lastmod>2018-06-30T19:02:50+02:00</lastmod>
   </url>
   
   <url>
@@ -118,13 +128,43 @@
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/pipeline/porting/devnotes/</loc>
-    <lastmod>2018-07-03T19:32:57+02:00</lastmod>
+    <loc>https://evenless.org/dovetail/pipeline/porting/atomic/</loc>
+    <lastmod>2018-06-27T17:17:25+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://evenless.org/dovetail/</loc>
-    <lastmod>2018-06-26T19:28:38+02:00</lastmod>
+    <loc>https://evenless.org/dovetail/pipeline/porting/timer/</loc>
+    <lastmod>2018-06-27T17:15:23+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/porting/arch/</loc>
+    <lastmod>2018-06-27T17:07:51+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/porting/irqflow/</loc>
+    <lastmod>2018-06-27T15:20:04+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/porting/prerequisites/</loc>
+    <lastmod>2018-06-27T11:09:03+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/porting/</loc>
+    <lastmod>2018-06-27T10:41:53+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/optimistic/</loc>
+    <lastmod>2018-06-27T10:08:28+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://evenless.org/dovetail/pipeline/usage/synthetic/</loc>
+    <lastmod>2018-06-27T09:55:57+02:00</lastmod>
   </url>
   
   <url>
@@ -134,7 +174,7 @@
   
   <url>
     <loc>https://evenless.org/</loc>
-    <lastmod>2018-07-01T15:47:56+02:00</lastmod>
+    <lastmod>2018-07-24T16:46:56+02:00</lastmod>
   </url>
   
   <url>
