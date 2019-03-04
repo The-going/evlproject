@@ -47,15 +47,16 @@ need only four elements:
   the core ones defined by the architecture, for which ad hoc drivers
   should be written. The clock element ensures that all clock drivers
   present the same interface to applications in user-space. In
-  addition, the clock element is able to export individual timers
-  to applications.
+  addition, the clock element can export individual timers to
+  applications which comes in handy for running periodic loops or
+  waiting for oneshot events.
 
 - cross-buffer. A cross-buffer (aka _xbuf_) is a communication channel
-  we need to exchange data between the real-time and common
-  contexts. Unlike a file proxy, it is bi-directional and any kind of
-  threads (EVL or regular) should be allowed to wait for input from
-  the other side. This should be an equivalent to Xenomai's _XDDP_
-  socket protocol (aka _message pipes_).
+  we need to exchange data between real-time and common contexts (aka
+  out-of-band vs in-band). A cross-buffer is bi-directional and any
+  kind of threads (EVL or regular) can wait/poll for input from the
+  other side. Cross-buffers serve the same purpose than Xenomai's
+  _message pipes_ implemented by the _XDDP_ socket protocol.
 
 ## Everything is a file
 
@@ -132,9 +133,10 @@ following came to mind:
   loop in this case. The file proxy should help in easing the pain, by
   channeling file output through the _vfs_ in a way that keeps the
   real-time side happy. Although the proxy is technically part of the
-  element framework in EVL, applications could resort to a pure
-  user-space implementation for roughly the same purpose, even if in a
-  much more convoluted way.  So the proxy is more like a utility.
+  element framework in EVL because it is represented by a device in
+  the file system, applications could resort to a pure user-space
+  implementation for roughly the same purpose, even if in a much more
+  convoluted way.  So the file proxy belongs to utilities.
 
 - trace channel. We need a way to emit traces from applications
   through the main kernel's FTRACE mechanism for debugging purpose,
