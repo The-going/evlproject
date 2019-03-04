@@ -2,6 +2,7 @@
 title: "Interrupt pipeline"
 date: 2018-06-27T08:32:51+02:00
 weight: 10
+pre: "&rsaquo; "
 ---
 
 The real-time core has to act upon device interrupts with no delay,

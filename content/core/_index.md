@@ -1,36 +1,36 @@
 ---
-title: "Real-time core"
+title: "The EVL core"
 menuTitle: "Real-time core"
 date: 2019-02-16T16:10:44+01:00
-weight: 5
-pre: "<b>1. </b>"
+weight: 10
+pre: "&#9656; "
 ---
 
-## Make it ordinary
+## Make it ordinary, make it simple
 
-The idea is to build EVL as an ordinary feature of the Linux kernel,
-not as a foreign extension slapped on top of it.  [Dovetail]({{%
-relref "dovetail/_index.md" %}}) plays an important part here, as it
-hides the nitty-gritty details of embedding a companion co-kernel into
-Linux from us.
+The EVL core is an autonomous software core which is hosted by the
+kernel, delivering real-time services to applications having to meet
+stringent timing requirements. This small core is built like any
+ordinary feature of the Linux kernel, not as a foreign extension
+slapped on top of it.  [Dovetail]({{% relref "dovetail/_index.md" %}})
+plays an important part here, as it hides the nitty-gritty details of
+embedding a companion core into the kernel.
 
-## Make it simple
+The user-space interface to this core is the [EVL library]({{% relref
+"core/user-api/_index.md" %}}) (`libevl.so`), which implements the
+basic system call wrappers, along with the fundamental thread
+synchronization services. No bells and whistles, only the basic
+stuff. The intent is to provide simple mechanisms, complex semantics
+and policies can and should be implemented in high level APIs based on
+this library running in userland.
 
-The user-space interface to this core is the EVL library
-(`libevenless.so`), which implements the system call interface, along
-with the fundamental thread synchronization services. No bells and
-whistles, only the basic stuff. The intent is to provide simple
-mechanisms, complex semantics and policies can and should be
-implemented in high level APIs based on this library.
-
-## Elements
+## Elements {#evl-core-elements}
 
 As the name suggests, _elements_ are the basic features we may require
 from the EVL core for supporting real-time applications in this dual
-kernel environment. Also, these features have to implemented as
-kernel-based resources for delivering the service; at the opposite,
-pure user-space code could not deliver it. So far, it looks like we
-need only four elements:
+kernel environment. Also, only the kernel could provide such features
+in an efficient way, pure user-space code could not deliver. So far,
+it looks like we need only four elements:
 
 - thread. As the basic execution unit, we want it to be runnable
   either in real-time mode or regular GPOS mode alternatively, which
@@ -40,32 +40,34 @@ need only four elements:
 - monitor. This element has the same purpose than the main kernel's
   _futex_, which is about providing an integrated - although much
   simpler - set of fundamental thread synchronization features. It is
-  used by the EVL library to implement mutexes, events
-  (i.e. _condition variables_, sort of) and semaphores in user-space.
+  used by the EVL library to implement mutexes, condition variables
+  and semaphores in user-space.
 
 - clock. We may find platform-specific clock devices in addition to
   the core ones defined by the architecture, for which ad hoc drivers
   should be written. The clock element ensures that all clock drivers
   present the same interface to applications in user-space. In
-  addition, the clock element can export individual timers to
+  addition, this element can export individual software timers to
   applications which comes in handy for running periodic loops or
-  waiting for oneshot events.
+  waiting for oneshot events on a specific time base.
 
-- cross-buffer. A cross-buffer (aka _xbuf_) is a communication channel
-  we need to exchange data between real-time and common contexts (aka
-  out-of-band vs in-band). A cross-buffer is bi-directional and any
-  kind of threads (EVL or regular) can wait/poll for input from the
-  other side. Cross-buffers serve the same purpose than Xenomai's
-  _message pipes_ implemented by the _XDDP_ socket protocol.
+- cross-buffer. A cross-buffer (aka _xbuf_) is a bi-directional
+  communication channel for exchanging data between out-of-band and
+  in-band thread contexts, without impacting the real-time performance
+  on the out-of-band side.  Any kind of thread (EVL or regular) can
+  wait/poll for input from the other side. Cross-buffers serve the
+  same purpose than Xenomai's _message pipes_ implemented by the
+  _XDDP_ socket protocol.
 
-## Everything is a file
+## Everything is a file {#everything-is-a-file}
 
-The nice thing about the file semantics is that it may solve several
+The nice thing about the file semantics is that it may solve general
 problems for our embedded co-kernel:
 
-- it can organize resource management for our kernel objects. If every
-  element we create is represented by a file, we can leave the hard
-  work of managing the creation and release process to the
+- it can organize resource management for EVL's kernel objects. If
+  every element we export to the user is represented by a file, we can
+  leave the hard work of managing the creation and release process to
+  the
   [VFS](https://www.kernel.org/doc/Documentation/filesystems/vfs.txt),
   tracking references to every element from file descriptors.
 
@@ -91,7 +93,7 @@ The above translates as follows in EVL:
 
 - Each time an application creates a new element, a character device
   appears in the file system hierarchy under a directory named
-  /dev/evenless/*element_type*/. By opening the device file, the
+  /dev/evl/*element_type*/. By opening the device file, the
   application receives a file descriptor which can be used for
   controlling and/or exchanging data with the underlying element. This
   is definitely a regular file descriptor, on a regular character
@@ -136,7 +138,8 @@ following came to mind:
   element framework in EVL because it is represented by a device in
   the file system, applications could resort to a pure user-space
   implementation for roughly the same purpose, even if in a much more
-  convoluted way.  So the file proxy belongs to utilities.
+  convoluted way.  So the file proxy is considered a utility, not an
+  element per se.
 
 - trace channel. We need a way to emit traces from applications
   through the main kernel's FTRACE mechanism for debugging purpose,
@@ -145,12 +148,13 @@ following came to mind:
   here.
 
 {{% notice note %}}
-We cannot use the file proxy to relay the traces through the
+We could not use the file proxy to relay the traces through the
 `trace_marker` file, because we want the tracepoint to appear in the
 output stream at the exact time the code running [out-of-band]({{%
 relref "dovetail/pipeline/_index.md" %}}) issued it. On the contrary,
 channeling the trace data through the proxy would mean to defer the
-trace output by design, until the main kernel resumes execution.
+trace output, until the main kernel resumes execution, which would
+make the trace data useless.
 {{% /notice %}}
 
 ## EVL device drivers are (almost) common drivers
@@ -160,3 +164,21 @@ dedicated [kernel API]({{%relref "core/kernel-api/_index.md" %}}) for
 implementing real-time I/O operations in common character device
 drivers. In fact, the EVL core is composed of a set of such drivers,
 implementing each class of elements and utilities.
+
+## Developing the EVL core
+
+Just like Dovetail, developing the EVL core is customary Linux kernel
+development, with the addition of dual kernel specific background.
+
+The development tip of the EVL core is maintained in the
+_evl/master_ branch of the following GIT repository which tracks
+the [mainline
+kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
+
+  * git://evenless.org/linux-evl.git
+  * https://evenless.org/linux-evl.git
+
+This branch is routinely rebased over Dovetail's
+[_dovetail/master_]({{% relref
+"contents/dovetail/_index.html#developing-dovetail" %}}) branch from
+the same repository.

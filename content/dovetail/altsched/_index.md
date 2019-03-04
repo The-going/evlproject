@@ -2,6 +2,7 @@
 title: "Alternate Task Control"
 date: 2018-06-27T19:01:42+02:00
 weight: 15
+pre: "&rsaquo; "
 ---
 
 Dovetail promotes the idea that a *dual kernel* system should keep the

@@ -9,7 +9,7 @@ description = "Evenless co-kernel"
 disableSearch = false
 disableInlineCopyToClipBoard = true
 disableBreadcrumb = false
-themeVariant = "green"
+themeVariant = "evl"
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
