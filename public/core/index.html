@@ -12,19 +12,19 @@
     <title>Real-time core :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1551711348" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1551711348" rel="stylesheet">
-    <link href="/css/hybrid.css?1551711348" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1551711348" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1551711348" rel="stylesheet">
-    <link href="/css/auto-complete.css?1551711348" rel="stylesheet">
-    <link href="/css/theme.css?1551711348" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1551711348" rel="stylesheet">
+    <link href="/css/nucleus.css?1551712262" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1551712262" rel="stylesheet">
+    <link href="/css/hybrid.css?1551712262" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1551712262" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1551712262" rel="stylesheet">
+    <link href="/css/auto-complete.css?1551712262" rel="stylesheet">
+    <link href="/css/theme.css?1551712262" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1551712262" rel="stylesheet">
     
-      <link href="/css/theme-green.css?1551711348" rel="stylesheet">
+      <link href="/css/theme-green.css?1551712262" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1551711348"></script>
+    <script src="/js/jquery-2.x.min.js?1551712262"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1551711348"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1551711348"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1551712262"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1551712262"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1551711348"></script>
+<script type="text/javascript" src="/js/search.js?1551712262"></script>
 
     
   </div>
@@ -1030,15 +1030,16 @@ used by the EVL library to implement mutexes, events
 the core ones defined by the architecture, for which ad hoc drivers
 should be written. The clock element ensures that all clock drivers
 present the same interface to applications in user-space. In
-addition, the clock element is able to export individual timers
-to applications.</p></li>
+addition, the clock element can export individual timers to
+applications which comes in handy for running periodic loops or
+waiting for oneshot events.</p></li>
 
 <li><p>cross-buffer. A cross-buffer (aka <em>xbuf</em>) is a communication channel
-we need to exchange data between the real-time and common
-contexts. Unlike a file proxy, it is bi-directional and any kind of
-threads (EVL or regular) should be allowed to wait for input from
-the other side. This should be an equivalent to Xenomai&rsquo;s <em>XDDP</em>
-socket protocol (aka <em>message pipes</em>).</p></li>
+we need to exchange data between real-time and common contexts (aka
+out-of-band vs in-band). A cross-buffer is bi-directional and any
+kind of threads (EVL or regular) can wait/poll for input from the
+other side. Cross-buffers serve the same purpose than Xenomai&rsquo;s
+<em>message pipes</em> implemented by the <em>XDDP</em> socket protocol.</p></li>
 </ul>
 
 <h2 id="everything-is-a-file">Everything is a file</h2>
@@ -1121,9 +1122,10 @@ main kernel.  So much for using <code>printf(3)</code> in some time-sensitive
 loop in this case. The file proxy should help in easing the pain, by
 channeling file output through the <em>vfs</em> in a way that keeps the
 real-time side happy. Although the proxy is technically part of the
-element framework in EVL, applications could resort to a pure
-user-space implementation for roughly the same purpose, even if in a
-much more convoluted way.  So the proxy is more like a utility.</p></li>
+element framework in EVL because it is represented by a device in
+the file system, applications could resort to a pure user-space
+implementation for roughly the same purpose, even if in a much more
+convoluted way.  So the file proxy belongs to utilities.</p></li>
 
 <li><p>trace channel. We need a way to emit traces from applications
 through the main kernel&rsquo;s FTRACE mechanism for debugging purpose,
@@ -1775,20 +1777,20 @@ implementing each class of elements and utilities.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1551711348"></script>
-    <script src="/js/perfect-scrollbar.min.js?1551711348"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1551711348"></script>
-    <script src="/js/jquery.sticky.js?1551711348"></script>
-    <script src="/js/featherlight.min.js?1551711348"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1551711348"></script>
-    <script src="/js/highlight.pack.js?1551711348"></script>
+    <script src="/js/clipboard.min.js?1551712262"></script>
+    <script src="/js/perfect-scrollbar.min.js?1551712262"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1551712262"></script>
+    <script src="/js/jquery.sticky.js?1551712262"></script>
+    <script src="/js/featherlight.min.js?1551712262"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1551712262"></script>
+    <script src="/js/highlight.pack.js?1551712262"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1551711348"></script>
-    <script src="/js/learn.js?1551711348"></script>
-    <script src="/js/hugo-learn.js?1551711348"></script>
+    <script src="/js/modernizr.custom.71422.js?1551712262"></script>
+    <script src="/js/learn.js?1551712262"></script>
+    <script src="/js/hugo-learn.js?1551712262"></script>
 
-    <link href="/mermaid/mermaid.css?1551711348" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1551711348"></script>
+    <link href="/mermaid/mermaid.css?1551712262" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1551712262"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
