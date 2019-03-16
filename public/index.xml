@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Evenless on Evenless core documentation</title>
+    <link>https://evenless.org/</link>
+    <description>Recent content in Evenless on Evenless core documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Tue, 24 Jul 2018 16:46:56 +0200</lastBuildDate>
+    
+	<atom:link href="https://evenless.org/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Raw printk support</title>
+      <link>https://evenless.org/dovetail/pipeline/porting/rawprintk/</link>
+      <pubDate>Tue, 24 Jul 2018 16:46:56 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/porting/rawprintk/</guid>
+      <description>Unless you are lucky enough to have an ICE for debugging hard issues involving out-of-band contexts, you might have to resort to basic printk-style debugging over a serial line. Although the printk() machinery can be used from out-of-band context when Dovetail is enabled, the output is deferred until the in-band stage gets back in control, which means that:
+ you can&amp;rsquo;t reliably trace out-of-band code on the spot, deferred output issued from an out-of-band context, or from a section of code running with interrupts disabled in the CPU may appear after subsequent in-band messages under some circumstances, due to a buffering effect.</description>
+    </item>
+    
+    <item>
+      <title>Developer&#39;s Notes</title>
+      <link>https://evenless.org/dovetail/pipeline/porting/devnotes/</link>
+      <pubDate>Tue, 03 Jul 2018 19:32:57 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/porting/devnotes/</guid>
+      <description>Generic Fundamentally preemption-safe contexts Over a few contexts, we may traverse code using unprotected, preemption-sensitive accessors such as percpu() without disabling preemption specifically, because either one condition is true;
+ if preempt_count() bears either of the PIPELINE_MASK or STAGE_MASK bits, which turns preemption off, therefore CPU migration cannot happen (debug_smp_processor_id() and preempt checks in percpu accessors would detect such context properly too).
+ if we are running over the context of the in-band stage&amp;rsquo;s event log syncer (sync_current_stage()) playing a deferred interrupt, in which case the virtual interrupt disable bit is set, so no CPU migration may occur either.</description>
+    </item>
+    
+    <item>
+      <title>Interrupt Protection</title>
+      <link>https://evenless.org/dovetail/pipeline/usage/interrupt_protection/</link>
+      <pubDate>Sun, 01 Jul 2018 17:54:11 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/usage/interrupt_protection/</guid>
+      <description>Disabling interrupts in the CPU The local_irq_save() and local_irq_disable() helpers are no more disabling interrupts in the CPU when interrupt pipelining is enabled, but only disable interrupt events virtually for the in-band stage.
+A set of helpers is provided for manipulating the interrupt disable flag in the CPU instead. When CONFIG_IRQ_PIPELINE is disabled, this set maps 1:1 over the regular local_irq_*() API.
+   Original/Virtual Non-virtualized call     local_save_flags(flags) flags = hard_local_save_flags()   local_irq_disable() hard_local_irq_disable()   local_irq_enable() hard_local_irq_enable()   local_irq_save(flags) flags = hard_local_irq_save()   local_irq_restore(flags) hard_local_irq_restore(flags)   irqs_disabled() hard_irqs_disabled()   irqs_disabled_flags(flags) hard_irqs_disabled_flags(flags)    Stalling the oob stage Just like the in-band stage is affected by the state of the virtual interrupt disable flag, the interrupt state of the oob stage is controlled by a dedicated stall bit flag in the oob stage&amp;rsquo;s status.</description>
+    </item>
+    
+    <item>
+      <title>Installing the out-of-band stage</title>
+      <link>https://evenless.org/dovetail/pipeline/usage/stage_push/</link>
+      <pubDate>Sun, 01 Jul 2018 15:47:56 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/usage/stage_push/</guid>
+      <description>enable_oob_stage()
+ disable_oob_stage()
+  TBC.</description>
+    </item>
+    
+    <item>
+      <title>Stage escalation</title>
+      <link>https://evenless.org/dovetail/pipeline/usage/stage_escalation/</link>
+      <pubDate>Sun, 01 Jul 2018 15:46:04 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/usage/stage_escalation/</guid>
+      <description>run_oob_call()  TBC.</description>
+    </item>
+    
+    <item>
+      <title>IRQ injection</title>
+      <link>https://evenless.org/dovetail/pipeline/usage/pipeline_inject/</link>
+      <pubDate>Sun, 01 Jul 2018 15:38:34 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/usage/pipeline_inject/</guid>
+      <description>irq_pipeline_inject()
+ irq_post_inband()
+ irq_post_oob()
+ irq_pipeline_send_remote()
+  TBC.</description>
+    </item>
+    
+    <item>
+      <title>IRQ handling</title>
+      <link>https://evenless.org/dovetail/pipeline/usage/irq_handling/</link>
+      <pubDate>Sun, 01 Jul 2018 14:05:58 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/usage/irq_handling/</guid>
+      <description>The driver API to the IRQ subsystem exposes the new interrupt type flag IRQF_OOB, denoting an out-of-band handler to the generic interrupt API routines:
+ setup_irq() for early registration of special interrupts request_irq() for device interrupts __request_percpu_irq() for per-CPU interrupts  An IRQ action handler bearing this flag will run from out-of-band context over the oob stage, regardless of the current interrupt state of the in-band stage. If no oob stage is present, the flag will be ignored, with the interrupt handler running on the in-band stage as usual.</description>
+    </item>
+    
+    <item>
+      <title>Rules Of Thumb</title>
+      <link>https://evenless.org/dovetail/pipeline/rulesofthumb/</link>
+      <pubDate>Sat, 30 Jun 2018 19:02:50 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/rulesofthumb/</guid>
+      <description>Turn on debug options in the kernel configuration! During the development phase, do yourself a favour: turn on CONFIG_DEBUG_IRQ_PIPELINE and CONFIG_DEBUG_DOVETAIL.
+The first one will catch many nasty issues, such as calling unsafe in-band code from out-of-band context. The second one checks the integrity of the alternate task control mechanism, detecting issues in the architecture port.
+The runtime overhead induced by enabling these options is marginal. Just don&amp;rsquo;t port Dovetail or implement out-of-band client code without them enabled in your target kernel, seriously.</description>
+    </item>
+    
+    <item>
+      <title>Misc</title>
+      <link>https://evenless.org/dovetail/pipeline/porting/misc/</link>
+      <pubDate>Wed, 27 Jun 2018 17:40:50 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/porting/misc/</guid>
+      <description>printk() support printk() may be called by out-of-band code safely, without encurring extra latency. The output is conveyed like NMI-originated output, which involves some delay until the in-band code resumes, and the console driver(s) can handle it.
+Tracing Tracepoints can be traversed by out-of-band code safely. Dynamic tracing is available to a kernel running the pipelined interrupt model too.</description>
+    </item>
+    
+    <item>
+      <title>Locking</title>
+      <link>https://evenless.org/dovetail/pipeline/usage/locking/</link>
+      <pubDate>Wed, 27 Jun 2018 17:23:53 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/usage/locking/</guid>
+      <description>Additional spinlock types The pipeline core introduces two spinlock types:
+ hard spinlocks manipulate the CPU interrupt mask, and don&amp;rsquo;t affect the kernel preemption state in locking/unlocking operations.  This type of spinlock is useful for implementing a critical section to serialize concurrent accesses from both in-band and out-of-band contexts, i.e. from in-band and oob stages. Obviously, sleeping into a critical section protected by a hard spinlock would be a very bad idea.</description>
+    </item>
+    
+    <item>
+      <title>Atomic operations</title>
+      <link>https://evenless.org/dovetail/pipeline/porting/atomic/</link>
+      <pubDate>Wed, 27 Jun 2018 17:17:25 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/porting/atomic/</guid>
+      <description>The effect of virtualizing interrupt protection must be reversed for atomic helpers in asm-generic/atomic.h, asm-generic/bitops/atomic.h and asm-generic/cmpxchg-local.h, so that no interrupt can preempt their execution, regardless of the stage their caller live on.
+This is required to keep those helpers usable on data which might be accessed from both stages.
+The usual way to revert such virtualization consists of delimiting the protected section with hard_local_irq_save(), hard_local_irq_restore() calls, in replacement for local_irq_save(), local_irq_restore() respectively.</description>
+    </item>
+    
+    <item>
+      <title>Timer management</title>
+      <link>https://evenless.org/dovetail/pipeline/porting/timer/</link>
+      <pubDate>Wed, 27 Jun 2018 17:15:23 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/porting/timer/</guid>
+      <description>Proxy tick device The proxy tick device is a synthetic clock event device for handing over the control of the hardware tick device to a high-precision, out-of-band timing logic, which cannot be delayed by the in-band kernel code. With this proxy in place, any out-of-band code can gain control over the timer hardware for carrying out its own timing duties. In the same move, it is required to honor the timing requests received from the in-band timer core (i.</description>
+    </item>
+    
+    <item>
+      <title>Architecture-specific bits</title>
+      <link>https://evenless.org/dovetail/pipeline/porting/arch/</link>
+      <pubDate>Wed, 27 Jun 2018 17:07:51 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/porting/arch/</guid>
+      <description>Interrupt mask virtualization The architecture-specific code which manipulates the interrupt flag in the CPU&amp;rsquo;s state register in arch//include/asm/irqflags.h should be split between real and virtual interrupt control. The real interrupt control operations are inherited from the in-band kernel implementation. The virtual ones should be built upon services provided by the interrupt pipeline core.
+ firstly, the original arch_local_* helpers should be renamed as native_* helpers, affecting the hardware interrupt state in the CPU.</description>
+    </item>
+    
+    <item>
+      <title>Interrupt flow</title>
+      <link>https://evenless.org/dovetail/pipeline/porting/irqflow/</link>
+      <pubDate>Wed, 27 Jun 2018 15:20:04 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/porting/irqflow/</guid>
+      <description>Pipelined interrupt flow Interrupt pipelining involves a basic change in controlling the interrupt flow: handle_domain_irq() from the IRQ domain API redirects all parent IRQs to the pipeline entry by calling generic_pipeline_irq().
+ Redirecting the interrupt flow to the pipeline
+ asm_irq_entry -&amp;gt; irqchip_handle_irq() -&amp;gt; handle_domain_irq() -&amp;gt; generic_pipeline_irq() -&amp;gt; irq_flow_handler() -&amp;gt; handle_oob_irq()  IRQ flow handling Generic flow handlers acknowledge the incoming IRQ event in the hardware as usual, by calling the appropriate irqchip routine (e.</description>
+    </item>
+    
+    <item>
+      <title>Prerequisites</title>
+      <link>https://evenless.org/dovetail/pipeline/porting/prerequisites/</link>
+      <pubDate>Wed, 27 Jun 2018 11:09:03 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/porting/prerequisites/</guid>
+      <description>Generic requirements The interrupt pipeline requires the following features to be available from the target Linux kernel:
+ Generic IRQ handling (CONFIG_GENERIC_IRQ), which most architectures should support these days.
+ IRQ domains (CONFIG_IRQ_DOMAIN).
+ Generic clock event abstraction (CONFIG_GENERIC_CLOCKEVENTS).
+  Other assumptions ARM  a target ARM machine port must be allowed to specify its own IRQ handler at run time (CONFIG_MULTI_IRQ_HANDLER).
+ only armv6 CPUs and later are supported, excluding older generations of ARM CPUs.</description>
+    </item>
+    
+    <item>
+      <title>Optimistic Interrupt Protection</title>
+      <link>https://evenless.org/dovetail/pipeline/optimistic/</link>
+      <pubDate>Wed, 27 Jun 2018 10:08:28 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/optimistic/</guid>
+      <description>Predictable response time of out-of-band handlers to IRQ receipts requires the in-band kernel work not to be allowed to delay them by masking interrupts in the CPU.
+However, critical sections delimited this way by the in-band code must still be enforced for the in-band stage, so that system integrity is not at risk. This means that although out-of-band IRQ handlers may run at any time while the oob stage is accepting interrupts, in-band IRQ handlers should be allowed to run only when the in-band stage is accepting interrupts too.</description>
+    </item>
+    
+    <item>
+      <title>Synthetic IRQs</title>
+      <link>https://evenless.org/dovetail/pipeline/usage/synthetic/</link>
+      <pubDate>Wed, 27 Jun 2018 09:55:57 +0200</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/usage/synthetic/</guid>
+      <description>The pipeline introduces an additional type of interrupts, which are purely software-originated, with no hardware involvement. These IRQs can be triggered by any kernel code. Synthetic IRQs are inherently per-CPU events. Because the common pipeline flow applies to synthetic interrupts, it is possible to attach them to out-of-band and/or in-band handlers, just like device interrupts.
+Synthetic interrupts abide by the normal rules with respect to interrupt masking: such IRQs may be deferred until the stage they should be handled from is unstalled.</description>
+    </item>
+    
+  </channel>
+</rss>
