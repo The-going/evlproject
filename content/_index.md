@@ -71,7 +71,7 @@ kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
   * https://git.evenless.org/libevl.git
 
 The build recipe is available [there]({{% relref
-"core/build-steps/_index.md#building-libevl" %}}).
+"core/build-steps/_index.md" %}}).
 
 ## Licensing terms
 
