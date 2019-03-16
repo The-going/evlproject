@@ -180,5 +180,5 @@ kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
 
 This branch is routinely rebased over Dovetail's
 [_dovetail/master_]({{% relref
-"contents/dovetail/_index.html#developing-dovetail" %}}) branch from
-the same repository.
+"contents/dovetail/_index.md#developing-dovetail" %}}) branch from the
+same repository.

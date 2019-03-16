@@ -2,7 +2,7 @@
 title: "Evenless"
 ---
 
-# The Evenless project
+# Evenless - Dual Kernel Rebooted
 
 ## What, Why, and How?
 
@@ -40,8 +40,8 @@ exhibiting:
 - low engineering and maintenance costs, so that common kernel
   knowledge with limited manpower should be enough to maintain
   [Dovetail]({{% relref "dovetail/_index.md" %}}) and the [EVL
-  core]({{%relref "core/_index.md" %}}) over the tip of the mainline
-  kernel.
+  core]({{%relref "core/_index.md" %}}) over the development tip of
+  the mainline kernel.
 
 - low runtime cost, with excellent real-time performances including on
   low-end and mid-range hardware, leaving plenty of cycles for running
