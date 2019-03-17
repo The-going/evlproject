@@ -1,6 +1,7 @@
 ---
 title: "Interrupt flow"
 date: 2018-06-27T15:20:04+02:00
+weight: 10
 ---
 
 ## Pipelined interrupt flow
@@ -68,8 +69,9 @@ interested in it, finally to run the in-band handler(s) accepting that
 event if it was not delivered to any out-of-band handler. You may
 construe the meaning of calling `handle_oob_irq()` as _"let's poll for
 any out-of-band handler which might be interested in this event"_.
-This also means that any interrupt can have either an in-band or an
-out-of-band handler, but not both.
+This also means that any incoming IRQ event is either dispatched to
+one or more out-of-band handlers, or one or more in-band handlers, but
+not to a mix of them.
 {{% /notice %}}
 
 In absence of any out-of-band handler for the event, the device may
@@ -251,7 +253,7 @@ controller hardware for _distinct_ IRQs from multiple CPUs
 concurrently. Adapting such spinlocked sections found in `irqchip`
 drivers to support interrupt pipelining may involve [converting the
 related spinlocks]({{%relref
-"dovetail/pipeline/rulesofthumb.md#spinlock-rule" %}}) to hard
+"dovetail/rulesofthumb.md#spinlock-rule" %}}) to hard
 spinlocks.
 
 Other section of code which were originally serialized by common

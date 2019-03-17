@@ -24,7 +24,15 @@ range of a few microseconds.
 To address this issue, Dovetail introduces a mechanism called
 *interrupt pipelining* which turns all device IRQs into pseudo-NMIs,
 only to run NMI-safe interrupt handlers from the perspective of the
-main kernel activities.
+main kernel activities. This is achieved by substituting real
+interrupt masking in a CPU by a software-based, virtual interrupt
+masking when the in-band stage is active on such CPU. This way, the
+autonomous core can receive IRQs as long as it did not mask interrupts
+in the CPU, regardless of the virtual interrupt state maintained by
+the in-band side. Dovetail monitors the virtual state to decide when
+IRQ events should be allowed to flow down to the in-band stage where
+the main kernel executes. This way, the assumptions the in-band code
+makes about running interrupt-free or not are still valid.
 
 ## Two-stage IRQ pipeline {#two-stage-pipeline}
 
@@ -47,22 +55,7 @@ out-of-band interrupt handlers is known as the *oob stage* of the
 pipeline, as opposed to the in-band kernel activities sitting on the
 *in-band stage*:
 
-> Flow of interrupts through the pipeline
-
-```markdown
-                    Out-of-band                 In-band
-                    IRQ handlers()            IRQ handlers()
-               __________   _______________________   ______
-                  .     /  /  .             .     /  /  .
-                  .    /  /   .             .    /  /   .
-                  .   /  /    .             .   /  /    .
-                  ___/  /______________________/  /     .
-     [IRQ] -----> _______________________________/      .
-                  .           .             .           .
-                  .    OOB    .             .   In-band .
-                  .   Stage   .             .    Stage  .
-               _____________________________________________
-```
+![Alt text](/images/pipeline.png?classes=border,shadow "Interrupt pipeline")
 
 An autonomous core can base its own activities on the oob stage,
 interposing on specific IRQ events, for delivering real-time

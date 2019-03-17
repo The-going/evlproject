@@ -2,6 +2,7 @@
 title: "Architecture-specific bits"
 menuTitle: "Architecture bits"
 date: 2018-06-27T17:07:51+02:00
+weight: 20
 ---
 
 ## Interrupt mask virtualization
@@ -358,7 +359,7 @@ head of the pipeline is directly handled from the _genirq_ layer they
 belong to. This means that there is usually not much to do other than
 making a quick check in the implementation of the parent IRQ handler,
 in the relevant *irqchip* driver, applying the [rules of
-thumb]({{%relref "dovetail/pipeline/rulesofthumb.md" %}}) carefully.
+thumb]({{%relref "dovetail/rulesofthumb.md" %}}) carefully.
 
 {{% notice tip %}}
 On some ARM platform equipped with a fairly common GIC controller,

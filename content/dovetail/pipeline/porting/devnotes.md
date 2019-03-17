@@ -121,7 +121,7 @@ spots for bugs:
   "dovetail/pipeline/porting/timer.md" %}}) for interposing on the
   timer. Being wrong here means performing actions which are not legit
   from [such a context]({{% relref
-  "dovetail/pipeline/rulesofthumb.md#safe-inband-code" %}}).
+  "dovetail/rulesofthumb.md#safe-inband-code" %}}).
 
 - the _irqchip_ driver managing the interrupt event for the timer tick
   is wrong somehow, causing such interrupt to stay masked or stuck for
