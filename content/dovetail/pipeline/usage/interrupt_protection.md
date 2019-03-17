@@ -52,7 +52,7 @@ calls affecting the stall bit for each stage:
 
 {{% notice tip %}}
 Using this set of helpers only makes sense from out-of-band code,
-typically in the real-time core implementation. Calling them from any
+typically in a real-time core implementation. Calling them from any
 other context would be highly suspicious. Adapting in-band code to
 interrupt pipelining might involve using the `hard_local_*()`
 set instead, but only in marginal cases, always with extreme care.

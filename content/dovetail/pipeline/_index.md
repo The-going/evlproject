@@ -5,11 +5,11 @@ weight: 10
 pre: "&rsaquo; "
 ---
 
-The real-time core has to act upon device interrupts with no delay,
+The autonomous core has to act upon device interrupts with no delay,
 regardless of the other kernel operations which may be ongoing when
 the interrupt is received by the CPU. Therefore, there is a basic
 requirement for prioritizing interrupt masking and delivery between
-the real-time core and GPOS operations, while maintaining consistent
+the autonomous core and GPOS operations, while maintaining consistent
 internal serialization for the kernel.
 
 However, to protect from deadlocks and maintain data integrity, Linux
@@ -64,9 +64,8 @@ pipeline, as opposed to the in-band kernel activities sitting on the
                _____________________________________________
 ```
 
-A real-time core can base its own activities on the oob stage,
+An autonomous core can base its own activities on the oob stage,
 interposing on specific IRQ events, for delivering real-time
-capabilities to a particular set of applications. Meanwhile, the
-main kernel operations keep going over the in-band stage
-unaffected, only delayed by short preemption times for running the
-out-of-band work.
+capabilities to a particular set of applications. Meanwhile, the main
+kernel operations keep going over the in-band stage unaffected, only
+delayed by short preemption times for running the out-of-band work.
