@@ -135,9 +135,9 @@ A set of helpers is provided for manipulating the interrupt disable flag in the 
       <pubDate>Sun, 01 Jul 2018 15:47:56 +0200</pubDate>
       
       <guid>https://evenless.org/dovetail/pipeline/usage/stage_push/</guid>
-      <description>enable_oob_stage()
+      <description> enable_oob_stage()
  disable_oob_stage()
-  TBC.</description>
+  </description>
     </item>
     
     <item>
@@ -146,7 +146,7 @@ A set of helpers is provided for manipulating the interrupt disable flag in the 
       <pubDate>Sun, 01 Jul 2018 15:46:04 +0200</pubDate>
       
       <guid>https://evenless.org/dovetail/pipeline/usage/stage_escalation/</guid>
-      <description>run_oob_call()  TBC.</description>
+      <description> run_oob_call()  </description>
     </item>
     
     <item>
@@ -155,11 +155,11 @@ A set of helpers is provided for manipulating the interrupt disable flag in the 
       <pubDate>Sun, 01 Jul 2018 15:38:34 +0200</pubDate>
       
       <guid>https://evenless.org/dovetail/pipeline/usage/pipeline_inject/</guid>
-      <description>irq_pipeline_inject()
+      <description> irq_inject_pipeline()
  irq_post_inband()
  irq_post_oob()
  irq_pipeline_send_remote()
-  TBC.</description>
+  </description>
     </item>
     
     <item>
