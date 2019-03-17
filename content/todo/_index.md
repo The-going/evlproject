@@ -33,7 +33,7 @@ clumsy. _sysfs_ does not formally support sub-classes, so I see no
 obvious way for having all element classes rooted at `/sys/class/evl`
 instead. Any idea would be welcome.
 
-### What the heck runs into the core?
+### What the heck is the core running?
 
 As a matter of fact, we have absolutely no handy tool for inspecting
 the current runtime status of the EVL core. A _ps_-like command is
