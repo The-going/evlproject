@@ -615,4 +615,4 @@ routine to interrupt pipelining:
 
 Support for inter-processor interrupts is architecture-specific code.
 
-TBC.
+![Alt text](/images/wip.png?height=250px&width=420px "Not there yet")

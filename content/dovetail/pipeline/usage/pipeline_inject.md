@@ -3,7 +3,7 @@ title: "IRQ injection"
 date: 2018-07-01T15:38:34+02:00
 ---
 
-- `irq_pipeline_inject()`
+- `irq_inject_pipeline()`
 
 - `irq_post_inband()`
 
@@ -11,4 +11,4 @@ date: 2018-07-01T15:38:34+02:00
 
 - `irq_pipeline_send_remote()`
 
-TBC.
+![Alt text](/images/wip.png?height=250px&width=420px "Not there yet")
