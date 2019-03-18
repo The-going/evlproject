@@ -127,11 +127,10 @@ co-kernel, regardless of the work ongoing for the main kernel.
 the platform, which is a good starting point. So far so good.
 
 <sup>3</sup> When this box is checked, the [EVL core]({{%relref
-"core/_index.md" %}}) survives a massive stress test involving the
+"core/_index.md" %}}) passes a massive stress test involving the
 _hectic_ and _latmus_ applications running in parallel for 24 hrs, all
 glitchlessly. This denotes a reliable state, including flawless
-alternate control of threads between between the main kernel and
-EVL. On the contrary, a problem with sharing the FPU unit properly
-between the in-band and out-of-band execution contexts is most often
-the reason for keeping this box unchecked until the situation is
-fixed.
+alternate control of threads between the main kernel and EVL. On the
+contrary, a problem with sharing the FPU unit properly between the
+in-band and out-of-band execution contexts is most often the reason
+for keeping this box unchecked until the situation is fixed.
