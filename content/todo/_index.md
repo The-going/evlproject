@@ -49,23 +49,6 @@ binaries. Such a script available from the same directory called
 `evl-trace` illustrates the interface logic with the `evl` command.
 {{% /notice %}}
 
-### Houston, we have a problem with the FPSIMD
-
-Over ARM64, the following stress test detects a FPU corruption:
-
-```
-$ hectic -s 200
-```
-
-The bug is most likely in the alternate scheduling support of the
-[Dovetail code]({{% relref "dovetail/altsched/_index.md" %}}) for
-ARM64, in `arch/arm64/kernel/fpsimd.c`.
-
-Some work remains to fully support concurrent FPU usage from kernel
-space via the `kernel_neon_begin/end()` interface, while the EVL core
-is running out-of-band threads. Also, SVE support in this context
-needs testing (no idea if this works, I have no SVE-capable hardware).
-
 ### _poll_ is naive with deep nesting
 
 The file descriptor polling feature is represented by a file

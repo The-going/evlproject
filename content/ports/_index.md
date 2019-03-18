@@ -104,14 +104,14 @@ Linux 5.0
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td><img src="/images/unchecked.png"></td>
+    <td><img src="/images/checked.png"></td>
   </tr>
   <tr>
     <td align="left"><a href="https://www.96boards.org/product/hikey/" target="_blank">Kirin 620 (HiKey LeMaker)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td><img src="/images/unchecked.png"></td>
+    <td><img src="/images/checked.png"></td>
   </tr>
 </table>
 
