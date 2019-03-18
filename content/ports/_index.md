@@ -41,7 +41,7 @@ Linux 5.0
   <col width="15%">
   <col width="15%">
   <tr>
-    <th>Soc (Board)</th>
+    <th>SoC (Board)</th>
     <th>IRQ pipeline <sup>1</sup></th> 
     <th>Alternate task control</th>
     <th>EVL base<sup>2</sup></th>
@@ -86,7 +86,7 @@ Linux 5.0
   <col width="15%">
   <col width="15%">
   <tr>
-    <th>Soc (Board)</th>
+    <th>SoC (Board)</th>
     <th>IRQ pipeline <sup>1</sup></th> 
     <th>Alternate task control</th>
     <th>EVL base<sup>2</sup></th>
