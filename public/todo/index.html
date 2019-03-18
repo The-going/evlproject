@@ -12,19 +12,19 @@
     <title>TODO list :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1552836753" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1552836753" rel="stylesheet">
-    <link href="/css/hybrid.css?1552836753" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1552836753" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1552836753" rel="stylesheet">
-    <link href="/css/auto-complete.css?1552836753" rel="stylesheet">
-    <link href="/css/theme.css?1552836753" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1552836753" rel="stylesheet">
+    <link href="/css/nucleus.css?1552925632" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1552925632" rel="stylesheet">
+    <link href="/css/hybrid.css?1552925632" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1552925632" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1552925632" rel="stylesheet">
+    <link href="/css/auto-complete.css?1552925632" rel="stylesheet">
+    <link href="/css/theme.css?1552925632" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1552925632" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1552836753" rel="stylesheet">
+      <link href="/css/theme-evl.css?1552925632" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1552836753"></script>
+    <script src="/js/jquery-2.x.min.js?1552925632"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1552836753"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1552836753"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1552925632"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1552925632"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1552836753"></script>
+<script type="text/javascript" src="/js/search.js?1552925632"></script>
 
     
   </div>
@@ -1416,12 +1416,11 @@
 <ul>
 <li><a href="#evl-s-sysfs-interface-needs-work">EVL&rsquo;s /sysfs interface needs work</a></li>
 <li><a href="#what-the-heck-is-the-core-running">What the heck is the core running?</a></li>
-<li><a href="#houston-we-have-a-problem-with-the-fpsimd">Houston, we have a problem with the FPSIMD</a></li>
 <li><a href="#poll-is-naive-with-deep-nesting"><em>poll</em> is naive with deep nesting</a></li>
 <li><a href="#libevl-needs-more-tests">libevl needs more tests</a></li>
 <li><a href="#the-big-issue-phase-out-the-ugly-big-lock">THE big issue: phase out the ugly big lock</a></li>
 <li><a href="#improving-the-tracepoints">Improving the tracepoints</a></li>
-<li><a href="#disconnect-dovetail-s-hard-and-mutable-locks-hahahugoshortcode-5hbhb-from-config-lockdep">Disconnect Dovetail&rsquo;s <a href="HAHAHUGOSHORTCODE-5HBHB">hard and mutable locks</a> from CONFIG_LOCKDEP</a></li>
+<li><a href="#disconnect-dovetail-s-hard-and-mutable-locks-hahahugoshortcode-4hbhb-from-config-lockdep">Disconnect Dovetail&rsquo;s <a href="HAHAHUGOSHORTCODE-4HBHB">hard and mutable locks</a> from CONFIG_LOCKDEP</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1489,22 +1488,6 @@ binaries. Such a script available from the same directory called
 </div>
 
 
-<h3 id="houston-we-have-a-problem-with-the-fpsimd">Houston, we have a problem with the FPSIMD</h3>
-
-<p>Over ARM64, the following stress test detects a FPU corruption:</p>
-
-<pre><code>$ hectic -s 200
-</code></pre>
-
-<p>The bug is most likely in the alternate scheduling support of the
-<a href="/dovetail/altsched/">Dovetail code</a> for
-ARM64, in <code>arch/arm64/kernel/fpsimd.c</code>.</p>
-
-<p>Some work remains to fully support concurrent FPU usage from kernel
-space via the <code>kernel_neon_begin/end()</code> interface, while the EVL core
-is running out-of-band threads. Also, SVE support in this context
-needs testing (no idea if this works, I have no SVE-capable hardware).</p>
-
 <h3 id="poll-is-naive-with-deep-nesting"><em>poll</em> is naive with deep nesting</h3>
 
 <p>The file descriptor polling feature is represented by a file
@@ -1560,7 +1543,7 @@ root for improvement in order to better fit the EVL context. In
 addition, the new code represents 2/3rd of the code base, which is not
 instrumented at all.</p>
 
-<h3 id="disconnect-dovetail-s-hard-and-mutable-locks-hahahugoshortcode-5hbhb-from-config-lockdep">Disconnect Dovetail&rsquo;s <a href="/dovetail/pipeline/usage/locking/">hard and mutable locks</a> from CONFIG_LOCKDEP</h3>
+<h3 id="disconnect-dovetail-s-hard-and-mutable-locks-hahahugoshortcode-4hbhb-from-config-lockdep">Disconnect Dovetail&rsquo;s <a href="/dovetail/pipeline/usage/locking/">hard and mutable locks</a> from CONFIG_LOCKDEP</h3>
 
 <p>If we could exclude Dovetail&rsquo;s spinlocks from CONFIG_LOCKDEP using a
 debug option, we could run the lock validator for detecting glitches
@@ -2501,20 +2484,20 @@ spots.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1552836753"></script>
-    <script src="/js/perfect-scrollbar.min.js?1552836753"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1552836753"></script>
-    <script src="/js/jquery.sticky.js?1552836753"></script>
-    <script src="/js/featherlight.min.js?1552836753"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1552836753"></script>
-    <script src="/js/highlight.pack.js?1552836753"></script>
+    <script src="/js/clipboard.min.js?1552925632"></script>
+    <script src="/js/perfect-scrollbar.min.js?1552925632"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1552925632"></script>
+    <script src="/js/jquery.sticky.js?1552925632"></script>
+    <script src="/js/featherlight.min.js?1552925632"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1552925632"></script>
+    <script src="/js/highlight.pack.js?1552925632"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1552836753"></script>
-    <script src="/js/learn.js?1552836753"></script>
-    <script src="/js/hugo-learn.js?1552836753"></script>
+    <script src="/js/modernizr.custom.71422.js?1552925632"></script>
+    <script src="/js/learn.js?1552925632"></script>
+    <script src="/js/hugo-learn.js?1552925632"></script>
 
-    <link href="/mermaid/mermaid.css?1552836753" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1552836753"></script>
+    <link href="/mermaid/mermaid.css?1552925632" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1552925632"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
