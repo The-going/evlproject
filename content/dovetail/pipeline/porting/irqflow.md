@@ -4,25 +4,12 @@ date: 2018-06-27T15:20:04+02:00
 weight: 10
 ---
 
-## Pipelined interrupt flow
+## Adapting the generic interrupt management (genirq)
 
 Interrupt pipelining involves a basic change in controlling the
 interrupt flow: `handle_domain_irq()` from the IRQ domain API
 redirects all parent IRQs to the pipeline entry by calling
-`generic_pipeline_irq()`.
-
-> Redirecting the interrupt flow to the pipeline
-
-```markdown
-    asm_irq_entry
-       -> irqchip_handle_irq()
-          -> handle_domain_irq()
-             -> generic_pipeline_irq()
-                -> irq_flow_handler()
-                   -> handle_oob_irq()
-```
-
-### IRQ flow handling
+`generic_pipeline_irq()`, instead of `generic_handle_irq()`.
 
 Generic flow handlers acknowledge the incoming IRQ event in the
 hardware as usual, by calling the appropriate `irqchip` routine
@@ -37,11 +24,35 @@ execution context to the oob stage if not current yet. Otherwise, the
 event is marked as pending in the in-band stage's log for the current
 CPU.
 
-{{% notice tip %}}
-This is important to notice: _every_ interrupt which is _not_ handled
-by an out-of-band handler will end up into the in-band stage's event
-log. This means that all external interrupts must have a handler in
-the in-band code - which should be the case for a sane kernel anyway.
+The execution flow throughout the kernel code in Dovetail's pipelined
+interrupt model is illustrated by the following figure. Note the
+two-step process: first we try delivering the incoming IRQ to any
+out-of-band handler if present, then we may play any IRQ pending in
+the current per-CPU log, among which non-OOB events may reside.
+
+![Alt text](/images/irqflow.png?classes=border,shadow "Pipelined interrupt handling")
+
+As illustrated above, interrupt flow handlers may run twice for a
+single IRQ in Dovetail's pipelined interrupt model:
+
+- first to submit the event immediately to any out-of-band handler
+which may be interested in it. This is achieved by calling
+`handle_oob_irq()`, whose role is to invoke such handler(s) if
+present, or schedule an in-band handling of the IRQ event if not.
+
+- finally to run the in-band handler(s) accepting the IRQ event if it
+was not delivered to any out-of-band handler. To deliver the event to
+any in-band handler(s), the interrupt flow handler is called again by
+the pipeline core. When this happens, the flow handler processes the
+interrupt as usual, skipping the call to `handle_oob_irq()` though.
+
+{{% notice note %}}
+Any incoming IRQ event is either dispatched to one or more out-of-band
+handlers, or one or more in-band handlers, but never to a mix of
+them. Also, because _every_ interrupt which is _not_ handled by an
+out-of-band handler will end up into the in-band stage's event log
+unconditionally, all external interrupts must have a handler in the
+in-band code - which should be the case for a sane kernel anyway.
 {{% /notice %}}
 
 Once `generic_pipeline_irq()` has returned, if the preempted execution
@@ -56,23 +67,7 @@ flag]({{%relref "dovetail/pipeline/optimistic.md#virtual-i-flag" %}}),
 which would cause the interrupt state to be synchronized, running the
 in-band handlers eventually.
 
-For delivering an IRQ to the in-band handlers, the interrupt flow
-handler is called again by the pipeline core. When this happens, the
-flow handler processes the interrupt as usual, skipping the call to
-`handle_oob_irq()` though.
-
-{{% notice tip %}}
-Yes, you did read it right: interrupt flow handlers may run twice for
-a single IRQ in Dovetail's pipelined interrupt model: firstly to
-submit the event immediately to any out-of-band handler which may be
-interested in it, finally to run the in-band handler(s) accepting that
-event if it was not delivered to any out-of-band handler. You may
-construe the meaning of calling `handle_oob_irq()` as _"let's poll for
-any out-of-band handler which might be interested in this event"_.
-This also means that any incoming IRQ event is either dispatched to
-one or more out-of-band handlers, or one or more in-band handlers, but
-not to a mix of them.
-{{% /notice %}}
+### Deferring level-triggered IRQs
 
 In absence of any out-of-band handler for the event, the device may
 keep asserting the interrupt signal until the cause has been lifted in
@@ -88,14 +83,10 @@ interrupt cause. This typically happens with level-triggered
 interrupts, preventing the device from storming the CPU with a
 continuous interrupt request.
 
-Since all of the IRQ handlers sharing an interrupt line are either
-in-band or out-of-band in a mutually exclusive way, such masking
-cannot delay out-of-band events.
-
-> The pathological case of deferring level-triggered IRQs
-
+> The pathological case
 ```markdown
-    /* in-band stage stalled on entry, no OOB handler */
+    /* no OOB handler, in-band stage stalled on entry
+       leading to deferred dispatch to handler */
     asm_irq_entry
        ...
           -> generic_pipeline_irq()
@@ -114,16 +105,23 @@ cannot delay out-of-band events.
     asm_irq_exit
 ```
 
+Since all of the IRQ handlers sharing an interrupt line are either
+in-band or out-of-band in a mutually exclusive way, such masking
+cannot delay out-of-band events.
+
 {{% notice tip %}}
 The logic behind masking interrupt lines until events are processed at
-some point later - out of the original interrupt context - also
-applies to the threaded interrupt model. In this case, interrupt lines
-may be masked until the IRQ thread is scheduled in, after the
-interrupt handler clears the event cause eventually.
+some point later - out of the original interrupt context - applies
+exactly the same to the threaded interrupt model
+(i.e. `IRQF_THREAD`). In this case, interrupt lines may be masked
+until the IRQ thread is scheduled in, after the interrupt handler
+clears the event cause eventually.
 {{% /notice %}}
 
-The logic for adapting flow handlers dealing with any kind of
-interrupt to pipelining can be decomposed in the following steps:
+### Adapting the interrupt flow handlers to pipelining
+
+The logic for adapting flow handlers dealing with interrupt pipelining
+is composed of the following steps:
 
 + (optionally) enter the critical section protected by the IRQ
   descriptor lock, if the interrupt is shared among processors
@@ -148,19 +146,16 @@ interrupt to pipelining can be decomposed in the following steps:
     flow handler, we need to unmask the line before leaving.
 
   - if no out-of-band handler was called, we should have performed any
-    acknowledge and/or EOI to release the interrupt line, while
-    leaving it masked if required before exiting the flow handler. In
-    case of a level-triggered interrupt, we do want to leave it masked
-    for solving the pathological case with interrupt deferral
-    explained earlier.
+    acknowledge and/or EOI to release the interrupt line in the
+    controller, while leaving it masked if required before exiting the
+    flow handler. In case of a level-triggered interrupt, we do want
+    to leave it masked for solving the pathological case with
+    interrupt deferral explained earlier.
 
 + if not on pipeline entry (i.e. second entry of the flow handler),
   then we must be running over the in-band stage, accepting interrupts,
   therefore we should fire the in-band handler(s) for the incoming
   event.
-
-The original code for handling level-triggered interrupts is adapted
-to interrupt pipelining according to the rules above, as follows:
 
 > Example: adapting the handler dealing with level-triggered IRQs
 
@@ -220,12 +215,10 @@ This change reads as follows:
   otherwise, since no handler has cleared the cause of the interrupt
   event in the device yet.
 
-## IRQ chip drivers {#irqchip-fixup}
+## Fixing up the IRQ chip drivers {#irqchip-fixup}
 
-`irqchip` drivers need to be specifically adapted for supporting the
-pipelined interrupt model. The basic task is to ensure that the
-following `struct irq_chip` handlers - if defined - can be called from
-an out-of-band context safely:
+We must make sure that the following handlers exported by `irqchip`
+drivers can operate over the out-of-band context safely:
 
 - `irq_mask()`
 - `irq_ack()`
@@ -233,39 +226,42 @@ an out-of-band context safely:
 - `irq_eoi()`
 - `irq_unmask()`
 
-Such handler is deemed safe to be called from out-of-band context when
-it does not invoke **any** in-band kernel service, which might cause
-an [invalid context re-entry]({{%relref
+In most cases, no change is required, because _genirq_ ensures that a
+single CPU handles a given IRQ event by holding the per-descriptor
+`irq_desc::lock` spinlock across calls to those `irqchip` handlers,
+and such lock is automatically turned into a [mutable
+spinlock]({{%relref "dovetail/pipeline/usage/locking.md#new-spinlocks"
+%}}) when pipelining interrupts. In other words, those handlers are
+running interrupt-free as their non-pipelined implementation expects
+it.
+
+However, there might other reasons to fix up some of those handlers:
+
+- they must not invoke **any** in-band kernel service, which might
+cause an [invalid context re-entry]({{%relref
 "dovetail/pipeline/optimistic.md#no-inband-reentry" %}}).
 
-The generic IRQ management core serializes calls to `irqchip` handlers
-for a given IRQ by serializing access to its interrupt descriptor,
-acquiring the per-descriptor `irq_desc::lock` spinlock.  Holding
-`irq_desc::lock` when running a handler for any IRQ shared between all
-CPUs ensures that a single CPU handles the event.  This - originally -
-raw spinlock is automatically turned into a [mutable
-spinlock]({{%relref "dovetail/pipeline/usage/locking.md#new-spinlocks"
-%}}) when pipelining interrupts.
-
-In addition, there might be inner spinlocks defined by some `irqchip`
-drivers for serializing handlers accessing a common interrupt
-controller hardware for _distinct_ IRQs from multiple CPUs
+- there may be inner spinlocks locally defined by some `irqchip`
+drivers for serializing access to a common interrupt controller
+hardware for _distinct_ IRQs being handled by multiple CPUs
 concurrently. Adapting such spinlocked sections found in `irqchip`
 drivers to support interrupt pipelining may involve [converting the
-related spinlocks]({{%relref
-"dovetail/rulesofthumb.md#spinlock-rule" %}}) to hard
-spinlocks.
+related spinlocks]({{%relref "dovetail/rulesofthumb.md#spinlock-rule"
+%}}) to hard spinlocks.
 
 Other section of code which were originally serialized by common
 interrupt disabling may need to be made fully atomic for running
 consistenly in pipelined interrupt mode. This can be done by
-introducing hard masking with `hard_local_irq_save()`,
+introducing hard masking, converting `local_irq_save()` calls to
+`hard_local_irq_save()`, conversely `local_irq_restore()` to
 `hard_local_irq_restore()`.
 
-Finally, `IRQCHIP_PIPELINE_SAFE` must be added to `struct
+Finally, `IRQCHIP_PIPELINE_SAFE` must be added to the `struct
 irqchip::flags` member of a pipeline-aware `irqchip` driver, in order
 to notify the kernel that such controller can operate in pipelined
-interrupt mode.
+interrupt mode. Even if you did not introduce any other change to
+support pipelining, this one is required: it tells the kernel that you
+did review the code for that purpose.
 
 > Adapting the ARM GIC driver to interrupt pipelining
 
