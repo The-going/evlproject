@@ -7,24 +7,24 @@
     <meta name="description" content="Evenless co-kernel">
 <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
 
-    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
-<link rel="icon" href="/images/favicon.png" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
     <title>Interrupt flow :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1552926966" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1552926966" rel="stylesheet">
-    <link href="/css/hybrid.css?1552926966" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1552926966" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1552926966" rel="stylesheet">
-    <link href="/css/auto-complete.css?1552926966" rel="stylesheet">
-    <link href="/css/theme.css?1552926966" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1552926966" rel="stylesheet">
+    <link href="/css/nucleus.css?1553179739" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553179739" rel="stylesheet">
+    <link href="/css/hybrid.css?1553179739" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553179739" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553179739" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553179739" rel="stylesheet">
+    <link href="/css/theme.css?1553179739" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553179739" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1552926966" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553179739" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1552926966"></script>
+    <script src="/js/jquery-2.x.min.js?1553179739"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1552926966"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1552926966"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553179739"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553179739"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1552926966"></script>
+<script type="text/javascript" src="/js/search.js?1553179739"></script>
 
     
   </div>
@@ -1362,6 +1362,7 @@
     
     <section id="footer">
       
+
     </section>
   </div>
 </nav>
@@ -1430,11 +1431,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#pipelined-interrupt-flow">Pipelined interrupt flow</a>
+<li><a href="#adapting-the-generic-interrupt-management-genirq">Adapting the generic interrupt management (genirq)</a>
 <ul>
-<li><a href="#irq-flow-handling">IRQ flow handling</a></li>
+<li><a href="#deferring-level-triggered-irqs">Deferring level-triggered IRQs</a></li>
+<li><a href="#adapting-the-interrupt-flow-handlers-to-pipelining">Adapting the interrupt flow handlers to pipelining</a></li>
 </ul></li>
-<li><a href="#irqchip-fixup">IRQ chip drivers</a></li>
+<li><a href="#irqchip-fixup">Fixing up the IRQ chip drivers</a></li>
 <li><a href="#kernel-preemption-control-preempt">Kernel preemption control (PREEMPT)</a></li>
 <li><a href="#irq-work">Extended IRQ work API</a></li>
 </ul></li>
@@ -1459,26 +1461,12 @@
 
 
 
-<h2 id="pipelined-interrupt-flow">Pipelined interrupt flow</h2>
+<h2 id="adapting-the-generic-interrupt-management-genirq">Adapting the generic interrupt management (genirq)</h2>
 
 <p>Interrupt pipelining involves a basic change in controlling the
 interrupt flow: <code>handle_domain_irq()</code> from the IRQ domain API
 redirects all parent IRQs to the pipeline entry by calling
-<code>generic_pipeline_irq()</code>.</p>
-
-<blockquote>
-<p>Redirecting the interrupt flow to the pipeline</p>
-</blockquote>
-
-<pre><code class="language-markdown">    asm_irq_entry
-       -&gt; irqchip_handle_irq()
-          -&gt; handle_domain_irq()
-             -&gt; generic_pipeline_irq()
-                -&gt; irq_flow_handler()
-                   -&gt; handle_oob_irq()
-</code></pre>
-
-<h3 id="irq-flow-handling">IRQ flow handling</h3>
+<code>generic_pipeline_irq()</code>, instead of <code>generic_handle_irq()</code>.</p>
 
 <p>Generic flow handlers acknowledge the incoming IRQ event in the
 hardware as usual, by calling the appropriate <code>irqchip</code> routine
@@ -1493,10 +1481,36 @@ execution context to the oob stage if not current yet. Otherwise, the
 event is marked as pending in the in-band stage&rsquo;s log for the current
 CPU.</p>
 
-<div class="notices tip" ><p>This is important to notice: <em>every</em> interrupt which is <em>not</em> handled
-by an out-of-band handler will end up into the in-band stage&rsquo;s event
-log. This means that all external interrupts must have a handler in
-the in-band code - which should be the case for a sane kernel anyway.</p>
+<p>The execution flow throughout the kernel code in Dovetail&rsquo;s pipelined
+interrupt model is illustrated by the following figure. Note the
+two-step process: first we try delivering the incoming IRQ to any
+out-of-band handler if present, then we may play any IRQ pending in
+the current per-CPU log, among which non-OOB events may reside.</p>
+
+<p><img src="/images/irqflow.png?classes=border,shadow" alt="Alt text" title="Pipelined interrupt handling" /></p>
+
+<p>As illustrated above, interrupt flow handlers may run twice for a
+single IRQ in Dovetail&rsquo;s pipelined interrupt model:</p>
+
+<ul>
+<li><p>first to submit the event immediately to any out-of-band handler
+which may be interested in it. This is achieved by calling
+<code>handle_oob_irq()</code>, whose role is to invoke such handler(s) if
+present, or schedule an in-band handling of the IRQ event if not.</p></li>
+
+<li><p>finally to run the in-band handler(s) accepting the IRQ event if it
+was not delivered to any out-of-band handler. To deliver the event to
+any in-band handler(s), the interrupt flow handler is called again by
+the pipeline core. When this happens, the flow handler processes the
+interrupt as usual, skipping the call to <code>handle_oob_irq()</code> though.</p></li>
+</ul>
+
+<div class="notices note" ><p>Any incoming IRQ event is either dispatched to one or more out-of-band
+handlers, or one or more in-band handlers, but never to a mix of
+them. Also, because <em>every</em> interrupt which is <em>not</em> handled by an
+out-of-band handler will end up into the in-band stage&rsquo;s event log
+unconditionally, all external interrupts must have a handler in the
+in-band code - which should be the case for a sane kernel anyway.</p>
 </div>
 
 
@@ -1512,23 +1526,7 @@ flag</a>,
 which would cause the interrupt state to be synchronized, running the
 in-band handlers eventually.</p>
 
-<p>For delivering an IRQ to the in-band handlers, the interrupt flow
-handler is called again by the pipeline core. When this happens, the
-flow handler processes the interrupt as usual, skipping the call to
-<code>handle_oob_irq()</code> though.</p>
-
-<div class="notices tip" ><p>Yes, you did read it right: interrupt flow handlers may run twice for
-a single IRQ in Dovetail&rsquo;s pipelined interrupt model: firstly to
-submit the event immediately to any out-of-band handler which may be
-interested in it, finally to run the in-band handler(s) accepting that
-event if it was not delivered to any out-of-band handler. You may
-construe the meaning of calling <code>handle_oob_irq()</code> as <em>&ldquo;let&rsquo;s poll for
-any out-of-band handler which might be interested in this event&rdquo;</em>.
-This also means that any incoming IRQ event is either dispatched to
-one or more out-of-band handlers, or one or more in-band handlers, but
-not to a mix of them.</p>
-</div>
-
+<h3 id="deferring-level-triggered-irqs">Deferring level-triggered IRQs</h3>
 
 <p>In absence of any out-of-band handler for the event, the device may
 keep asserting the interrupt signal until the cause has been lifted in
@@ -1544,15 +1542,11 @@ interrupt cause. This typically happens with level-triggered
 interrupts, preventing the device from storming the CPU with a
 continuous interrupt request.</p>
 
-<p>Since all of the IRQ handlers sharing an interrupt line are either
-in-band or out-of-band in a mutually exclusive way, such masking
-cannot delay out-of-band events.</p>
-
 <blockquote>
-<p>The pathological case of deferring level-triggered IRQs</p>
-</blockquote>
+<p>The pathological case</p>
 
-<pre><code class="language-markdown">    /* in-band stage stalled on entry, no OOB handler */
+<pre><code class="language-markdown">    /* no OOB handler, in-band stage stalled on entry
+       leading to deferred dispatch to handler */
     asm_irq_entry
        ...
           -&gt; generic_pipeline_irq()
@@ -1570,17 +1564,25 @@ cannot delay out-of-band events.</p>
        ...
     asm_irq_exit
 </code></pre>
+</blockquote>
+
+<p>Since all of the IRQ handlers sharing an interrupt line are either
+in-band or out-of-band in a mutually exclusive way, such masking
+cannot delay out-of-band events.</p>
 
 <div class="notices tip" ><p>The logic behind masking interrupt lines until events are processed at
-some point later - out of the original interrupt context - also
-applies to the threaded interrupt model. In this case, interrupt lines
-may be masked until the IRQ thread is scheduled in, after the
-interrupt handler clears the event cause eventually.</p>
+some point later - out of the original interrupt context - applies
+exactly the same to the threaded interrupt model
+(i.e. <code>IRQF_THREAD</code>). In this case, interrupt lines may be masked
+until the IRQ thread is scheduled in, after the interrupt handler
+clears the event cause eventually.</p>
 </div>
 
 
-<p>The logic for adapting flow handlers dealing with any kind of
-interrupt to pipelining can be decomposed in the following steps:</p>
+<h3 id="adapting-the-interrupt-flow-handlers-to-pipelining">Adapting the interrupt flow handlers to pipelining</h3>
+
+<p>The logic for adapting flow handlers dealing with interrupt pipelining
+is composed of the following steps:</p>
 
 <ul>
 <li><p>(optionally) enter the critical section protected by the IRQ
@@ -1607,11 +1609,11 @@ level-triggered interrupt which has been masked on entry to the
 flow handler, we need to unmask the line before leaving.</p></li>
 
 <li><p>if no out-of-band handler was called, we should have performed any
-acknowledge and/or EOI to release the interrupt line, while
-leaving it masked if required before exiting the flow handler. In
-case of a level-triggered interrupt, we do want to leave it masked
-for solving the pathological case with interrupt deferral
-explained earlier.</p></li>
+acknowledge and/or EOI to release the interrupt line in the
+controller, while leaving it masked if required before exiting the
+flow handler. In case of a level-triggered interrupt, we do want
+to leave it masked for solving the pathological case with
+interrupt deferral explained earlier.</p></li>
 </ul></li>
 
 <li><p>if not on pipeline entry (i.e. second entry of the flow handler),
@@ -1619,9 +1621,6 @@ then we must be running over the in-band stage, accepting interrupts,
 therefore we should fire the in-band handler(s) for the incoming
 event.</p></li>
 </ul>
-
-<p>The original code for handling level-triggered interrupts is adapted
-to interrupt pipelining according to the rules above, as follows:</p>
 
 <blockquote>
 <p>Example: adapting the handler dealing with level-triggered IRQs</p>
@@ -1683,12 +1682,10 @@ otherwise, since no handler has cleared the cause of the interrupt
 event in the device yet.</p></li>
 </ul>
 
-<h2 id="irqchip-fixup">IRQ chip drivers</h2>
+<h2 id="irqchip-fixup">Fixing up the IRQ chip drivers</h2>
 
-<p><code>irqchip</code> drivers need to be specifically adapted for supporting the
-pipelined interrupt model. The basic task is to ensure that the
-following <code>struct irq_chip</code> handlers - if defined - can be called from
-an out-of-band context safely:</p>
+<p>We must make sure that the following handlers exported by <code>irqchip</code>
+drivers can operate over the out-of-band context safely:</p>
 
 <ul>
 <li><code>irq_mask()</code></li>
@@ -1698,36 +1695,41 @@ an out-of-band context safely:</p>
 <li><code>irq_unmask()</code></li>
 </ul>
 
-<p>Such handler is deemed safe to be called from out-of-band context when
-it does not invoke <strong>any</strong> in-band kernel service, which might cause
-an <a href="/dovetail/pipeline/optimistic/#no-inband-reentry">invalid context re-entry</a>.</p>
+<p>In most cases, no change is required, because <em>genirq</em> ensures that a
+single CPU handles a given IRQ event by holding the per-descriptor
+<code>irq_desc::lock</code> spinlock across calls to those <code>irqchip</code> handlers,
+and such lock is automatically turned into a <a href="/dovetail/pipeline/usage/locking/#new-spinlocks">mutable
+spinlock</a> when pipelining interrupts. In other words, those handlers are
+running interrupt-free as their non-pipelined implementation expects
+it.</p>
 
-<p>The generic IRQ management core serializes calls to <code>irqchip</code> handlers
-for a given IRQ by serializing access to its interrupt descriptor,
-acquiring the per-descriptor <code>irq_desc::lock</code> spinlock.  Holding
-<code>irq_desc::lock</code> when running a handler for any IRQ shared between all
-CPUs ensures that a single CPU handles the event.  This - originally -
-raw spinlock is automatically turned into a <a href="/dovetail/pipeline/usage/locking/#new-spinlocks">mutable
-spinlock</a> when pipelining interrupts.</p>
+<p>However, there might other reasons to fix up some of those handlers:</p>
 
-<p>In addition, there might be inner spinlocks defined by some <code>irqchip</code>
-drivers for serializing handlers accessing a common interrupt
-controller hardware for <em>distinct</em> IRQs from multiple CPUs
+<ul>
+<li><p>they must not invoke <strong>any</strong> in-band kernel service, which might
+cause an <a href="/dovetail/pipeline/optimistic/#no-inband-reentry">invalid context re-entry</a>.</p></li>
+
+<li><p>there may be inner spinlocks locally defined by some <code>irqchip</code>
+drivers for serializing access to a common interrupt controller
+hardware for <em>distinct</em> IRQs being handled by multiple CPUs
 concurrently. Adapting such spinlocked sections found in <code>irqchip</code>
 drivers to support interrupt pipelining may involve <a href="/dovetail/rulesofthumb/#spinlock-rule">converting the
-related spinlocks</a> to hard
-spinlocks.</p>
+related spinlocks</a> to hard spinlocks.</p></li>
+</ul>
 
 <p>Other section of code which were originally serialized by common
 interrupt disabling may need to be made fully atomic for running
 consistenly in pipelined interrupt mode. This can be done by
-introducing hard masking with <code>hard_local_irq_save()</code>,
+introducing hard masking, converting <code>local_irq_save()</code> calls to
+<code>hard_local_irq_save()</code>, conversely <code>local_irq_restore()</code> to
 <code>hard_local_irq_restore()</code>.</p>
 
-<p>Finally, <code>IRQCHIP_PIPELINE_SAFE</code> must be added to <code>struct
+<p>Finally, <code>IRQCHIP_PIPELINE_SAFE</code> must be added to the <code>struct
 irqchip::flags</code> member of a pipeline-aware <code>irqchip</code> driver, in order
 to notify the kernel that such controller can operate in pipelined
-interrupt mode.</p>
+interrupt mode. Even if you did not introduce any other change to
+support pipelining, this one is required: it tells the kernel that you
+did review the code for that purpose.</p>
 
 <blockquote>
 <p>Adapting the ARM GIC driver to interrupt pipelining</p>
@@ -1861,24 +1863,24 @@ scheduler core, such as entering with (virtual) interrupts disabled.</p>
 
 <h2 id="irq-work">Extended IRQ work API</h2>
 
-<p>Due to the NMI-type nature of interrupts running out-of-band code,
-such code might preempt in-band activities over the in-band stage in
-the middle of a <a href="/dovetail/pipeline/optimistic/#no-inband-reentry">critical section</a>. For this
+<p>Due to the NMI-type nature of interrupts running out-of-band code from
+the standpoint of the main kernel, such code might preempt in-band
+activities in the middle of a <a href="/dovetail/pipeline/optimistic/#no-inband-reentry">critical section</a>. For this
 reason, it would be unsafe to call any in-band routine from an
 out-of-band context.</p>
 
 <p>However, we may schedule execution of in-band work handlers from
 out-of-band code, using the regular <code>irq_work_queue()</code> service which
 has been extended by the IRQ pipeline core. Such work request from the
-oob stage is scheduled for running over the in-band stage on the
-issuing CPU as soon as the out-of-band activity quiesces on this
-processor. As its name implies, the work handler runs in (in-band)
-interrupt context.</p>
+oob stage is scheduled for running on the in-band stage on the issuing
+CPU as soon as the out-of-band activity quiesces on this processor. As
+its name implies, the work handler runs in (in-band) interrupt
+context.</p>
 
-<div class="notices note" ><p>The interrupt pipeline forces the use of a synthetic IRQ as a
-notification signal for the IRQ work machinery, instead of a
-hardware-specific interrupt vector. This special IRQ is labeled
-<em>in-band work</em> when reported by <code>/proc/interrupts</code>.</p>
+<div class="notices note" ><p>The interrupt pipeline forces the use of a <a href="/dovetail/pipeline/usage/synthetic/">synthetic IRQ</a> as a notification signal
+for the IRQ work machinery, instead of a hardware-specific interrupt
+vector. This special IRQ is labeled <em>in-band work</em> when reported by
+<code>/proc/interrupts</code>.</p>
 </div>
 
 
@@ -2823,20 +2825,20 @@ hardware-specific interrupt vector. This special IRQ is labeled
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1552926966"></script>
-    <script src="/js/perfect-scrollbar.min.js?1552926966"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1552926966"></script>
-    <script src="/js/jquery.sticky.js?1552926966"></script>
-    <script src="/js/featherlight.min.js?1552926966"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1552926966"></script>
-    <script src="/js/highlight.pack.js?1552926966"></script>
+    <script src="/js/clipboard.min.js?1553179739"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553179739"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553179739"></script>
+    <script src="/js/jquery.sticky.js?1553179739"></script>
+    <script src="/js/featherlight.min.js?1553179739"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553179739"></script>
+    <script src="/js/highlight.pack.js?1553179739"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1552926966"></script>
-    <script src="/js/learn.js?1552926966"></script>
-    <script src="/js/hugo-learn.js?1552926966"></script>
+    <script src="/js/modernizr.custom.71422.js?1553179739"></script>
+    <script src="/js/learn.js?1553179739"></script>
+    <script src="/js/hugo-learn.js?1553179739"></script>
 
-    <link href="/mermaid/mermaid.css?1552926966" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1552926966"></script>
+    <link href="/mermaid/mermaid.css?1553179739" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553179739"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

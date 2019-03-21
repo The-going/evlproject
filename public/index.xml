@@ -41,9 +41,8 @@ However, critical sections delimited this way by the in-band code must still be 
       <pubDate>Wed, 27 Jun 2018 15:20:04 +0200</pubDate>
       
       <guid>https://evenless.org/dovetail/pipeline/porting/irqflow/</guid>
-      <description>Pipelined interrupt flow Interrupt pipelining involves a basic change in controlling the interrupt flow: handle_domain_irq() from the IRQ domain API redirects all parent IRQs to the pipeline entry by calling generic_pipeline_irq().
- Redirecting the interrupt flow to the pipeline
- asm_irq_entry -&amp;gt; irqchip_handle_irq() -&amp;gt; handle_domain_irq() -&amp;gt; generic_pipeline_irq() -&amp;gt; irq_flow_handler() -&amp;gt; handle_oob_irq()  IRQ flow handling Generic flow handlers acknowledge the incoming IRQ event in the hardware as usual, by calling the appropriate irqchip routine (e.</description>
+      <description>Adapting the generic interrupt management (genirq) Interrupt pipelining involves a basic change in controlling the interrupt flow: handle_domain_irq() from the IRQ domain API redirects all parent IRQs to the pipeline entry by calling generic_pipeline_irq(), instead of generic_handle_irq().
+Generic flow handlers acknowledge the incoming IRQ event in the hardware as usual, by calling the appropriate irqchip routine (e.g. irq_ack(), irq_eoi()) according to the interrupt type. However, the flow handlers do not immediately invoke the in-band interrupt handlers.</description>
     </item>
     
     <item>

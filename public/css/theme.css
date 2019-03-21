@@ -627,8 +627,8 @@ code {
     border-radius: 2px;
     white-space: nowrap;
     color: #5e5e5e;
-    background: #FFFFF0;
-    border: 0px;
+    background: #FFF7DD;
+    border: 1px solid #fbf0cb;
     padding: 0px 2px;
 }
 code + .copy-to-clipboard {
@@ -1126,13 +1126,3 @@ pre .copy-to-clipboard:hover {
 #searchResults {
     text-align: left;
 }
-
-table.status {
-    text-align: center;
-}
-
-th, td {
-    text-align: center;
-}
-
-/*# sourceMappingURL=theme.css.map */
