@@ -120,3 +120,11 @@ div.notices.info p {
     border-top: 30px solid #731b26;
     background: #fcfae1;
 }
+
+table.status {
+    text-align: center;
+}
+
+th, td {
+    text-align: center;
+}
