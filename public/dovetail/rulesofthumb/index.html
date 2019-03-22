@@ -12,19 +12,19 @@
     <title>Rules Of Thumb :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1553276223" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553276223" rel="stylesheet">
-    <link href="/css/hybrid.css?1553276223" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553276223" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553276223" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553276223" rel="stylesheet">
-    <link href="/css/theme.css?1553276223" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553276223" rel="stylesheet">
+    <link href="/css/nucleus.css?1553277097" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553277097" rel="stylesheet">
+    <link href="/css/hybrid.css?1553277097" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553277097" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553277097" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553277097" rel="stylesheet">
+    <link href="/css/theme.css?1553277097" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553277097" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553276223" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553277097" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553276223"></script>
+    <script src="/js/jquery-2.x.min.js?1553277097"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553276223"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553276223"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553277097"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553277097"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553276223"></script>
+<script type="text/javascript" src="/js/search.js?1553277097"></script>
 
     
   </div>
@@ -1480,9 +1480,41 @@ prevent dirty reads and dirty writes:</p>
 <p>Before any consideration is made to implement out-of-band code on a
 platform, check that interrupt pipelining is sane there, by enabling
 <code>CONFIG_IRQ_PIPELINE_TORTURE_TEST</code> in the configuration. As its name
-suggests, this option enables test code which excercizes the
-<a href="/dovetail/pipeline/porting/irqflow/">interrupt pipeline core</a>, and
-related features such as the <a href="/dovetail/pipeline/porting/timer/">proxy tick device</a>.</p>
+suggests, this option enables test code which exercizes the <a href="/dovetail/pipeline/porting/irqflow/">interrupt
+pipeline core</a>,
+and related features such as the <a href="/dovetail/pipeline/porting/timer/">proxy tick device</a>.</p>
+
+<div class="notices tip" ><p>Since the torture tests need to enable the out-of-band stage for their
+own purpose, you may have to disable any Dovetail-based autonomous core in
+the kernel configuration for running those tests, like switching off
+_CONFIG<em>EVL</em> if the EVL core is enabled.</p>
+</div>
+
+
+<p>When those tests pass, the following output should appear in the
+kernel log:</p>
+
+<pre><code>Starting IRQ pipeline tests...
+IRQ pipeline: high-priority torture stage added.
+irq_pipeline-torture: CPU0 initiates stop_machine()
+irq_pipeline-torture: CPU3 responds to stop_machine()
+irq_pipeline-torture: CPU1 responds to stop_machine()
+irq_pipeline-torture: CPU2 responds to stop_machine()
+irq_pipeline-torture: CPU1: proxy tick registered (62.50MHz)
+irq_pipeline-torture: CPU2: proxy tick registered (62.50MHz)
+irq_pipeline-torture: CPU3: proxy tick registered (62.50MHz)
+irq_pipeline-torture: CPU0: proxy tick registered (62.50MHz)
+irq_pipeline-torture: CPU0: irq_work handled
+irq_pipeline-torture: CPU0: in-band-&gt;in-band irq_work trigger works
+irq_pipeline-torture: CPU0: stage escalation request works
+irq_pipeline-torture: CPU0: irq_work handled
+irq_pipeline-torture: CPU0: oob-&gt;in-band irq_work trigger works
+IRQ pipeline: torture stage removed.
+IRQ pipeline tests OK.
+</code></pre>
+
+<p>Otherwise, if you observe any issue when running any of those tests,
+then the IRQ pipeline definitely needs fixing.</p>
 
 <h2 id="safe-inband-code">Know how to differentiate safe from unsafe in-band code</h2>
 
@@ -2484,20 +2516,20 @@ this.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553276223"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553276223"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553276223"></script>
-    <script src="/js/jquery.sticky.js?1553276223"></script>
-    <script src="/js/featherlight.min.js?1553276223"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553276223"></script>
-    <script src="/js/highlight.pack.js?1553276223"></script>
+    <script src="/js/clipboard.min.js?1553277097"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553277097"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553277097"></script>
+    <script src="/js/jquery.sticky.js?1553277097"></script>
+    <script src="/js/featherlight.min.js?1553277097"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553277097"></script>
+    <script src="/js/highlight.pack.js?1553277097"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553276223"></script>
-    <script src="/js/learn.js?1553276223"></script>
-    <script src="/js/hugo-learn.js?1553276223"></script>
+    <script src="/js/modernizr.custom.71422.js?1553277097"></script>
+    <script src="/js/learn.js?1553277097"></script>
+    <script src="/js/hugo-learn.js?1553277097"></script>
 
-    <link href="/mermaid/mermaid.css?1553276223" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553276223"></script>
+    <link href="/mermaid/mermaid.css?1553277097" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553277097"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
