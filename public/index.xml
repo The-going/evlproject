@@ -51,9 +51,10 @@ Generic flow handlers acknowledge the incoming IRQ event in the hardware as usua
       <pubDate>Wed, 27 Jun 2018 17:17:25 +0200</pubDate>
       
       <guid>https://evenless.org/dovetail/pipeline/porting/atomic/</guid>
-      <description>The effect of virtualizing interrupt protection must be reversed for atomic helpers in asm-generic/atomic.h, asm-generic/bitops/atomic.h and asm-generic/cmpxchg-local.h, so that no interrupt can preempt their execution, regardless of the stage their caller live on.
-This is required to keep those helpers usable on data which might be accessed from both stages.
-The usual way to revert such virtualization consists of delimiting the protected section with hard_local_irq_save(), hard_local_irq_restore() calls, in replacement for local_irq_save(), local_irq_restore() respectively.</description>
+      <description>The effect of virtualizing interrupt protection must be reversed for atomic helpers everywhere interrupt disabling is needed to serialize callers, regardless of the stage they live on. Typically, the following files are concerned:
+ include/asm-generic/atomic.h include/asm-generic/cmpxchg-local.h include/asm-generic/cmpxchg.h  Likewise in the architecture-specific code:
+arch/arm/include/asm/atomic.h arch/arm/include/asm/bitops.h arch/arm/include/asm/cmpxchg.h
+This is required to keep those helpers usable on data which might be accessed from both stages. A common way to revert such virtualization involves substituting calls to the - virtualized - local_irq_save(), local_irq_restore() API with their hard, non-virtualized counterparts.</description>
     </item>
     
     <item>
@@ -83,7 +84,7 @@ The runtime overhead induced by enabling these options is marginal. Just don&amp
       <pubDate>Wed, 27 Jun 2018 17:15:23 +0200</pubDate>
       
       <guid>https://evenless.org/dovetail/pipeline/porting/timer/</guid>
-      <description>Proxy tick device The proxy tick device is a synthetic clock event device for handing over the control of the hardware tick device to a high-precision, out-of-band timing logic, which cannot be delayed by the in-band kernel code. With this proxy in place, any out-of-band code can gain control over the timer hardware for carrying out its own timing duties. In the same move, it is required to honor the timing requests received from the in-band timer core (i.</description>
+      <description>Proxy tick device The proxy tick device is a synthetic clock event device for handing over the control of the hardware tick device to a high-precision, out-of-band timing logic, which cannot be delayed by the in-band kernel code. With this proxy in place, any out-of-band code can gain control over the timer hardware for carrying out its own timing duties. In the same move, it is required to honor the timing requests received from the in-band timer layer (i.</description>
     </item>
     
     <item>

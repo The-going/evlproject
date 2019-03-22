@@ -12,19 +12,19 @@
     <title>Developer&#39;s Notes :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1553179739" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553179739" rel="stylesheet">
-    <link href="/css/hybrid.css?1553179739" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553179739" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553179739" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553179739" rel="stylesheet">
-    <link href="/css/theme.css?1553179739" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553179739" rel="stylesheet">
+    <link href="/css/nucleus.css?1553276223" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553276223" rel="stylesheet">
+    <link href="/css/hybrid.css?1553276223" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553276223" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553276223" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553276223" rel="stylesheet">
+    <link href="/css/theme.css?1553276223" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553276223" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553179739" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553276223" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553179739"></script>
+    <script src="/js/jquery-2.x.min.js?1553276223"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553179739"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553179739"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553276223"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553276223"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553179739"></script>
+<script type="text/javascript" src="/js/search.js?1553276223"></script>
 
     
   </div>
@@ -1581,8 +1581,8 @@ spots for bugs:</p>
 
 <ul>
 <li><p>the timer acknowledge code is wrong once called from the <a href="/dovetail/pipeline/#two-stage-pipeline">oob
-stage</a>, which is going to be the case as soon as a co-kernel installs
-the <a href="/dovetail/pipeline/porting/timer/">proxy tick device</a> for interposing on the
+stage</a>, which is going to be the case as soon as an autonomous core
+installs the <a href="/dovetail/pipeline/porting/timer/">proxy tick device</a> for interposing on the
 timer. Being wrong here means performing actions which are not legit
 from <a href="/dovetail/rulesofthumb/#safe-inband-code">such a context</a>.</p></li>
 
@@ -1597,10 +1597,10 @@ infamous C3STOP misfeature turning off the original timer hardware
 controlled by the proxy device. A detailed explanation is given in
 Documentation/irq_pipeline.rst when discussing the few changes to
 the scheduler core for supporting the Dovetail interface. If this is
-acceptable from a power saving perspective, having the co-kernel
-prevent the in-band kernel from entering a deeper C-state is enough
-to fix the issue, by overriding the <code>irq_cpuidle_control()</code> routine
-as follows:</p></li>
+acceptable from a power saving perspective, having the autonomous
+core prevent the in-band kernel from entering a deeper C-state is
+enough to fix the issue, by overriding the <code>irq_cpuidle_control()</code>
+routine as follows:</p></li>
 </ul>
 
 <pre><code>bool irq_cpuidle_control(struct cpuidle_device *dev,
@@ -2590,25 +2590,24 @@ order to work around some silicon bug.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553179739"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553179739"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553179739"></script>
-    <script src="/js/jquery.sticky.js?1553179739"></script>
-    <script src="/js/featherlight.min.js?1553179739"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553179739"></script>
-    <script src="/js/highlight.pack.js?1553179739"></script>
+    <script src="/js/clipboard.min.js?1553276223"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553276223"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553276223"></script>
+    <script src="/js/jquery.sticky.js?1553276223"></script>
+    <script src="/js/featherlight.min.js?1553276223"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553276223"></script>
+    <script src="/js/highlight.pack.js?1553276223"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553179739"></script>
-    <script src="/js/learn.js?1553179739"></script>
-    <script src="/js/hugo-learn.js?1553179739"></script>
+    <script src="/js/modernizr.custom.71422.js?1553276223"></script>
+    <script src="/js/learn.js?1553276223"></script>
+    <script src="/js/hugo-learn.js?1553276223"></script>
 
-    <link href="/mermaid/mermaid.css?1553179739" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553179739"></script>
+    <link href="/mermaid/mermaid.css?1553276223" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553276223"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
     
-
   </body>
 </html>
 

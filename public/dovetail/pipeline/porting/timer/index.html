@@ -12,19 +12,19 @@
     <title>Timer management :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1553179739" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553179739" rel="stylesheet">
-    <link href="/css/hybrid.css?1553179739" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553179739" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553179739" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553179739" rel="stylesheet">
-    <link href="/css/theme.css?1553179739" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553179739" rel="stylesheet">
+    <link href="/css/nucleus.css?1553276223" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553276223" rel="stylesheet">
+    <link href="/css/hybrid.css?1553276223" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553276223" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553276223" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553276223" rel="stylesheet">
+    <link href="/css/theme.css?1553276223" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553276223" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553179739" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553276223" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553179739"></script>
+    <script src="/js/jquery-2.x.min.js?1553276223"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553179739"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553179739"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553276223"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553276223"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553179739"></script>
+<script type="text/javascript" src="/js/search.js?1553276223"></script>
 
     
   </div>
@@ -1466,7 +1466,7 @@ out-of-band timing logic, <a href="/#dual-kernel-upsides">which cannot be delaye
 With this proxy in place, any out-of-band code can gain control over
 the timer hardware for carrying out its own timing duties. In the same
 move, it is required to honor the timing requests received from the
-in-band timer core (i.e. hrtimers) since the latter won&rsquo;t be able to
+in-band timer layer (i.e. hrtimers) since the latter won&rsquo;t be able to
 program timer events directly into the hardware while the proxy is
 active.</p>
 
@@ -1628,9 +1628,9 @@ the actual clock event device being substituted for.</p>
 
 <p>Conversely, <code>ops-&gt;unregister_device()</code> is an optional handler called
 by <code>tick_uninstall_proxy()</code> for dismantling a proxy device. NULL may
-be given if the co-kernel has no specific action to take upon such
-event. In any case, <code>tick_uninstall_proxy()</code> ensures that the proxy is
-fully detached and all the related resources are freed before
+be given if the autonomous core has no specific action to take upon
+such event. In any case, <code>tick_uninstall_proxy()</code> ensures that the
+proxy is fully detached and all the related resources are freed before
 returning.</p>
 
 <div class="notices note" ><p>Although this is not strictly required, it is highly expected that
@@ -1677,17 +1677,17 @@ former for the latter.</p>
 <div class="notices tip" ><p>As illustrated above, the <code>set_next_event()</code> or <code>set_next_ktime()</code>
 member should be set in the structure pointed by <code>proxy_ced</code> with the
 address of a handler which receives timer requests from the in-band
-kernel. This handler is normally implemented by the co-kernel which
+kernel. This handler is normally implemented by the autonomous core which
 takes control over the timer hardware via the proxy device. Whenever
-the co-kernel determines that a tick is due for an outstanding request
+that core determines that a tick is due for an outstanding request
 received from such handler, it should call <code>tick_notify_proxy()</code> to
-signal the event to the in-band kernel.</p>
-
-<p>We add <code>CLOCK_EVT_FEAT_KTIME</code> to the proxy device flags because the
-co-kernel managing this device uses nanoseconds internally for
-expressing delays. For this reason, we want the in-band kernel to send
-timer requests to the co-kernel by passing delays as a count of
-nanoseconds to <code>set_next_ktime()</code> directly, without any conversion.</p>
+signal the event to the main kernel.
+We add <code>CLOCK_EVT_FEAT_KTIME</code> to the proxy device flags because the
+autonomous core managing this device uses nanoseconds internally for
+expressing delays. For this reason, we want the main kernel to send
+timer requests to this core by passing delays as a count of
+nanoseconds to <code>set_next_ktime()</code> directly, without any conversion to
+hardware clock ticks.</p>
 </div>
 
 
@@ -1699,7 +1699,7 @@ following events happen in sequence:</p>
 device&rsquo;s (i.e. the <em>real</em> device), the proxy device substitutes for
 the former.</p></li>
 
-<li><p>the real device is detached from the <code>clockevent</code> core. However, it
+<li><p>the real device is detached from the <code>clockevent</code> layer. However, it
 is left in a functional state. The <code>set_next_event()</code> handler of
 this device is redirected to the user-supplied
 <code>ops-&gt;handle_event()</code> handler. This way, every tick received from
@@ -2693,25 +2693,24 @@ in-band kernel, which would honor the pending (hr)timer request.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553179739"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553179739"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553179739"></script>
-    <script src="/js/jquery.sticky.js?1553179739"></script>
-    <script src="/js/featherlight.min.js?1553179739"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553179739"></script>
-    <script src="/js/highlight.pack.js?1553179739"></script>
+    <script src="/js/clipboard.min.js?1553276223"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553276223"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553276223"></script>
+    <script src="/js/jquery.sticky.js?1553276223"></script>
+    <script src="/js/featherlight.min.js?1553276223"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553276223"></script>
+    <script src="/js/highlight.pack.js?1553276223"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553179739"></script>
-    <script src="/js/learn.js?1553179739"></script>
-    <script src="/js/hugo-learn.js?1553179739"></script>
+    <script src="/js/modernizr.custom.71422.js?1553276223"></script>
+    <script src="/js/learn.js?1553276223"></script>
+    <script src="/js/hugo-learn.js?1553276223"></script>
 
-    <link href="/mermaid/mermaid.css?1553179739" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553179739"></script>
+    <link href="/mermaid/mermaid.css?1553276223" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553276223"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
     
-
   </body>
 </html>
 

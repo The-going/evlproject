@@ -12,19 +12,19 @@
     <title>Atomic operations :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1553179739" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553179739" rel="stylesheet">
-    <link href="/css/hybrid.css?1553179739" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553179739" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553179739" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553179739" rel="stylesheet">
-    <link href="/css/theme.css?1553179739" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553179739" rel="stylesheet">
+    <link href="/css/nucleus.css?1553276223" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553276223" rel="stylesheet">
+    <link href="/css/hybrid.css?1553276223" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553276223" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553276223" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553276223" rel="stylesheet">
+    <link href="/css/theme.css?1553276223" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553276223" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553179739" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553276223" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553179739"></script>
+    <script src="/js/jquery-2.x.min.js?1553276223"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553179739"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553179739"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553276223"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553276223"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553179739"></script>
+<script type="text/javascript" src="/js/search.js?1553276223"></script>
 
     
   </div>
@@ -1446,17 +1446,27 @@
 
 
 <p>The effect of <a href="/dovetail/pipeline/porting/arch/">virtualizing interrupt protection</a> must be reversed for atomic
-helpers in <em>asm-generic/atomic.h</em>, <em>asm-generic/bitops/atomic.h</em> and
-<em>asm-generic/cmpxchg-local.h</em>, so that no interrupt can preempt their
-execution, regardless of the stage their caller live on.</p>
+helpers everywhere interrupt disabling is needed to serialize callers,
+regardless of the stage they live on. Typically, the following files
+are concerned:</p>
+
+<ul>
+<li>include/asm-generic/atomic.h</li>
+<li>include/asm-generic/cmpxchg-local.h</li>
+<li>include/asm-generic/cmpxchg.h</li>
+</ul>
+
+<p>Likewise in the architecture-specific code:</p>
+
+<p>arch/arm/include/asm/atomic.h
+ arch/arm/include/asm/bitops.h
+ arch/arm/include/asm/cmpxchg.h</p>
 
 <p>This is required to keep those helpers usable on data which might be
-accessed from both stages.</p>
-
-<p>The usual way to revert such virtualization consists of delimiting the
-protected section with <code>hard_local_irq_save()</code>,
-<code>hard_local_irq_restore()</code> calls, in replacement for
-<code>local_irq_save()</code>, <code>local_irq_restore()</code> respectively.</p>
+accessed from both stages.  A common way to revert such virtualization
+involves substituting calls to the - virtualized - <code>local_irq_save()</code>,
+<code>local_irq_restore()</code> API with their hard, <a href="/dovetail/pipeline/usage/interrupt_protection/#hard-irq-protection">non-virtualized
+counterparts</a>.</p>
 
 <blockquote>
 <p>Restoring strict serialization for operations on generic atomic counters</p>
@@ -2509,25 +2519,24 @@ protection has to be reinstated:</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553179739"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553179739"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553179739"></script>
-    <script src="/js/jquery.sticky.js?1553179739"></script>
-    <script src="/js/featherlight.min.js?1553179739"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553179739"></script>
-    <script src="/js/highlight.pack.js?1553179739"></script>
+    <script src="/js/clipboard.min.js?1553276223"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553276223"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553276223"></script>
+    <script src="/js/jquery.sticky.js?1553276223"></script>
+    <script src="/js/featherlight.min.js?1553276223"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553276223"></script>
+    <script src="/js/highlight.pack.js?1553276223"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553179739"></script>
-    <script src="/js/learn.js?1553179739"></script>
-    <script src="/js/hugo-learn.js?1553179739"></script>
+    <script src="/js/modernizr.custom.71422.js?1553276223"></script>
+    <script src="/js/learn.js?1553276223"></script>
+    <script src="/js/hugo-learn.js?1553276223"></script>
 
-    <link href="/mermaid/mermaid.css?1553179739" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553179739"></script>
+    <link href="/mermaid/mermaid.css?1553276223" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553276223"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
     
-
   </body>
 </html>
 
