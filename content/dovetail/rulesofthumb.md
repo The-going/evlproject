@@ -37,10 +37,42 @@ prevent dirty reads and dirty writes:
 Before any consideration is made to implement out-of-band code on a
 platform, check that interrupt pipelining is sane there, by enabling
 `CONFIG_IRQ_PIPELINE_TORTURE_TEST` in the configuration. As its name
-suggests, this option enables test code which excercizes the
-[interrupt pipeline core]({{% relref "dovetail/pipeline/porting/irqflow.md" %}}), and
-related features such as the [proxy tick device]({{%
-relref "dovetail/pipeline/porting/timer.md" %}}).
+suggests, this option enables test code which exercizes the [interrupt
+pipeline core]({{% relref "dovetail/pipeline/porting/irqflow.md" %}}),
+and related features such as the [proxy tick device]({{% relref
+"dovetail/pipeline/porting/timer.md" %}}).
+
+{{% notice tip %}}
+Since the torture tests need to enable the out-of-band stage for their
+own purpose, you may have to disable any Dovetail-based autonomous core in
+the kernel configuration for running those tests, like switching off
+_CONFIG_EVL_ if the EVL core is enabled.
+{{% /notice %}}
+
+When those tests pass, the following output should appear in the
+kernel log:
+```
+Starting IRQ pipeline tests...
+IRQ pipeline: high-priority torture stage added.
+irq_pipeline-torture: CPU0 initiates stop_machine()
+irq_pipeline-torture: CPU3 responds to stop_machine()
+irq_pipeline-torture: CPU1 responds to stop_machine()
+irq_pipeline-torture: CPU2 responds to stop_machine()
+irq_pipeline-torture: CPU1: proxy tick registered (62.50MHz)
+irq_pipeline-torture: CPU2: proxy tick registered (62.50MHz)
+irq_pipeline-torture: CPU3: proxy tick registered (62.50MHz)
+irq_pipeline-torture: CPU0: proxy tick registered (62.50MHz)
+irq_pipeline-torture: CPU0: irq_work handled
+irq_pipeline-torture: CPU0: in-band->in-band irq_work trigger works
+irq_pipeline-torture: CPU0: stage escalation request works
+irq_pipeline-torture: CPU0: irq_work handled
+irq_pipeline-torture: CPU0: oob->in-band irq_work trigger works
+IRQ pipeline: torture stage removed.
+IRQ pipeline tests OK.
+```
+
+Otherwise, if you observe any issue when running any of those tests,
+then the IRQ pipeline definitely needs fixing.
 
 ## Know how to differentiate safe from unsafe in-band code {#safe-inband-code}
 
