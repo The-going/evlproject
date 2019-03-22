@@ -116,8 +116,8 @@ spots for bugs:
 
 - the timer acknowledge code is wrong once called from the [oob
   stage]({{%relref "dovetail/pipeline/_index.md#two-stage-pipeline"
-  %}}), which is going to be the case as soon as a co-kernel installs
-  the [proxy tick device]({{% relref
+  %}}), which is going to be the case as soon as an autonomous core
+  installs the [proxy tick device]({{% relref
   "dovetail/pipeline/porting/timer.md" %}}) for interposing on the
   timer. Being wrong here means performing actions which are not legit
   from [such a context]({{% relref
@@ -136,10 +136,10 @@ spots for bugs:
   controlled by the proxy device. A detailed explanation is given in
   Documentation/irq_pipeline.rst when discussing the few changes to
   the scheduler core for supporting the Dovetail interface. If this is
-  acceptable from a power saving perspective, having the co-kernel
-  prevent the in-band kernel from entering a deeper C-state is enough
-  to fix the issue, by overriding the `irq_cpuidle_control()` routine
-  as follows:
+  acceptable from a power saving perspective, having the autonomous
+  core prevent the in-band kernel from entering a deeper C-state is
+  enough to fix the issue, by overriding the `irq_cpuidle_control()`
+  routine as follows:
 
 ```
 bool irq_cpuidle_control(struct cpuidle_device *dev,

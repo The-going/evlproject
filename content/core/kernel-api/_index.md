@@ -8,8 +8,8 @@ EVL heavily relies on [Dovetail]({{% relref "dovetail/_index.md" %}})
 for its seamless integration into the main kernel. Among other things,
 the latter extends the set of file operations which can be supported
 by file descriptions, so that they can handle I/O operations from the
-out-of-band stage upon request from a co-kernel such as EVL, while
-retaining the common structure of a character device
+out-of-band stage upon request from an autonomous core such as EVL,
+while retaining the common structure of a character device
 driver. Applications running in user-space can start these I/O
 operations, by issuing specific system calls to EVL.
 

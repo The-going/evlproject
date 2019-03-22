@@ -139,7 +139,7 @@ Linux 5.1-rc1
 <sup>1</sup> Means that the pipeline torture tests pass (see
 `CONFIG_IRQ_PIPELINE_TORTURE_TEST`). This milestone guarantees that we
 can deliver high-priority interrupt events immediately to a guest
-co-kernel, regardless of the work ongoing for the main kernel.
+core, regardless of the work ongoing for the main kernel.
 
 <sup>2</sup> When this box is checked, [EVL]({{%relref
 "core/_index.md" %}})'s basic functional test suite runs properly on

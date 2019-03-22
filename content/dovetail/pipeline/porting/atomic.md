@@ -7,17 +7,27 @@ weight: 15
 
 The effect of [virtualizing interrupt protection]({{%relref
 "dovetail/pipeline/porting/arch.md" %}}) must be reversed for atomic
-helpers in *asm-generic/atomic.h*, *asm-generic/bitops/atomic.h* and
-*asm-generic/cmpxchg-local.h*, so that no interrupt can preempt their
-execution, regardless of the stage their caller live on.
+helpers everywhere interrupt disabling is needed to serialize callers,
+regardless of the stage they live on. Typically, the following files
+are concerned:
+
+- include/asm-generic/atomic.h
+- include/asm-generic/cmpxchg-local.h
+- include/asm-generic/cmpxchg.h
+
+Likewise in the architecture-specific code:
+
+ arch/arm/include/asm/atomic.h
+ arch/arm/include/asm/bitops.h
+ arch/arm/include/asm/cmpxchg.h
 
 This is required to keep those helpers usable on data which might be
-accessed from both stages.
-
-The usual way to revert such virtualization consists of delimiting the
-protected section with `hard_local_irq_save()`,
-`hard_local_irq_restore()` calls, in replacement for
-`local_irq_save()`, `local_irq_restore()` respectively.
+accessed from both stages.  A common way to revert such virtualization
+involves substituting calls to the - virtualized - `local_irq_save()`,
+`local_irq_restore()` API with their hard, [non-virtualized
+counterparts]({{% relref
+"dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection"
+%}}).
 
 > Restoring strict serialization for operations on generic atomic counters
 

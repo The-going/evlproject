@@ -34,8 +34,8 @@ from the GPOS infrastructure:
 
 - when debugging a real-time issue, the functional isolation of the
   real-time infrastructure from the rest of the kernel code restricts
-  bug hunting to the scope of the small co-kernel, excluding most
-  interactions with the very large GPOS kernel base.
+  bug hunting to the scope of the small autonomous core, excluding
+  most interactions with the very large GPOS kernel base.
 
 - with a dedicated infrastructure providing a specific, well-defined
   set of real-time services, applications can unambiguously figure out

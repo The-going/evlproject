@@ -17,7 +17,8 @@ provided by the [interrupt pipeline core]({{%relref
 
 + firstly, the original *arch\_local_*\* helpers should be renamed as
 *native_*\* helpers, affecting the hardware interrupt state in the
-CPU.
+CPU. This naming convention is imposed on the architecture code by the
+generic helpers in _include/asm-generic/irq\_pipeline.h_.
 
 > Example: introducing the *native* interrupt state accessors for the
   ARM architecture
@@ -604,12 +605,13 @@ routine to interrupt pipelining:
   the in-band stage, but the CPU's interrupt state should allow for
   IRQs to be taken in order to minimize latency for the oob stage.
 
-- generally speaking, while we may need the in-band stage to be stalled
-  when the in-band kernel code expects this, we still want most of the
-  epilogue code to run with [hard interrupts enabled]({{%relref
-  "dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection"%}}) to
-  shorten the interrupt latency for the oob stage, where co-kernels
-  live.
+- generally speaking, while we may need the in-band stage to be
+  stalled when the in-band kernel code expects this, we still want
+  most of the epilogue code to run with [hard interrupts
+  enabled]({{%relref
+  "dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection"%}})
+  to shorten the interrupt latency for the oob stage, where autonomous
+  cores live.
 
 ## Dealing with IPIs {#dealing-with-ipis}
 

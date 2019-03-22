@@ -62,7 +62,7 @@ it looks like we need only four elements:
 ## Everything is a file {#everything-is-a-file}
 
 The nice thing about the file semantics is that it may solve general
-problems for our embedded co-kernel:
+problems for our embedded real-time core:
 
 - it can organize resource management for EVL's kernel objects. If
   every element we export to the user is represented by a file, we can
@@ -129,17 +129,18 @@ following came to mind:
 
 - file proxy. Linux-based dual kernel systems are nasty by design: the
   huge set of GPOS features is always visible to applications but they
-  are not allowed to use it when they carry out real-time work with
-  the help of the co-kernel, such as manipulating files created by the
-  main kernel.  So much for using `printf(3)` in some time-sensitive
-  loop in this case. The file proxy should help in easing the pain, by
-  channeling file output through the _vfs_ in a way that keeps the
-  real-time side happy. Although the proxy is technically part of the
-  element framework in EVL because it is represented by a device in
-  the file system, applications could resort to a pure user-space
-  implementation for roughly the same purpose, even if in a much more
-  convoluted way.  So the file proxy is considered a utility, not an
-  element per se.
+  should not to use it when they carry out real-time work with the
+  help of the autonomous core, or risk unbounded response
+  time. Because such exclusion includes manipulating files created by
+  the main kernel: so much for using `printf(3)` in some
+  time-sensitive loop in this case. The file proxy should help in
+  easing the pain, by channeling file output through the _vfs_ in a
+  way that keeps the real-time side happy. Although the proxy is
+  technically part of the element framework in EVL because it is
+  represented by a device in the file system, applications could
+  resort to a pure user-space implementation for roughly the same
+  purpose, even if in a much more convoluted way.  So the file proxy
+  is considered a utility, not an element per se.
 
 - trace channel. We need a way to emit traces from applications
   through the main kernel's FTRACE mechanism for debugging purpose,

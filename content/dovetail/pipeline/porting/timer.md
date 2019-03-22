@@ -13,7 +13,7 @@ out-of-band timing logic, [which cannot be delayed]({{%relref
 With this proxy in place, any out-of-band code can gain control over
 the timer hardware for carrying out its own timing duties. In the same
 move, it is required to honor the timing requests received from the
-in-band timer core (i.e. hrtimers) since the latter won't be able to
+in-band timer layer (i.e. hrtimers) since the latter won't be able to
 program timer events directly into the hardware while the proxy is
 active.
 
@@ -168,9 +168,9 @@ the actual clock event device being substituted for.
 
 Conversely, `ops->unregister_device()` is an optional handler called
 by `tick_uninstall_proxy()` for dismantling a proxy device. NULL may
-be given if the co-kernel has no specific action to take upon such
-event. In any case, `tick_uninstall_proxy()` ensures that the proxy is
-fully detached and all the related resources are freed before
+be given if the autonomous core has no specific action to take upon
+such event. In any case, `tick_uninstall_proxy()` ensures that the
+proxy is fully detached and all the related resources are freed before
 returning.
 
 {{% notice note %}}
@@ -217,17 +217,17 @@ static void proxy_device_register(struct clock_event_device *proxy_ced,
 As illustrated above, the `set_next_event()` or `set_next_ktime()`
 member should be set in the structure pointed by `proxy_ced` with the
 address of a handler which receives timer requests from the in-band
-kernel. This handler is normally implemented by the co-kernel which
+kernel. This handler is normally implemented by the autonomous core which
 takes control over the timer hardware via the proxy device. Whenever
-the co-kernel determines that a tick is due for an outstanding request
+that core determines that a tick is due for an outstanding request
 received from such handler, it should call `tick_notify_proxy()` to
-signal the event to the in-band kernel.
-
+signal the event to the main kernel.
 We add `CLOCK_EVT_FEAT_KTIME` to the proxy device flags because the
-co-kernel managing this device uses nanoseconds internally for
-expressing delays. For this reason, we want the in-band kernel to send
-timer requests to the co-kernel by passing delays as a count of
-nanoseconds to `set_next_ktime()` directly, without any conversion.
+autonomous core managing this device uses nanoseconds internally for
+expressing delays. For this reason, we want the main kernel to send
+timer requests to this core by passing delays as a count of
+nanoseconds to `set_next_ktime()` directly, without any conversion to
+hardware clock ticks.
 {{% /notice %}}
 
 Once the user-supplied `ops->register_device()` handler returns, the
@@ -237,7 +237,7 @@ following events happen in sequence:
    device's (i.e. the _real_ device), the proxy device substitutes for
    the former.
 
-2. the real device is detached from the `clockevent` core. However, it
+2. the real device is detached from the `clockevent` layer. However, it
    is left in a functional state. The `set_next_event()` handler of
    this device is redirected to the user-supplied
    `ops->handle_event()` handler. This way, every tick received from

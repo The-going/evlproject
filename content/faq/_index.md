@@ -23,7 +23,7 @@ will help in improving [Xenomai](https://xenomai.org) which I
 contribute to as well. For instance, substituting the venerable
 [_I-pipe_](https://gitlab.denx.de/Xenomai/xenomai/wikis/Dovetail/)
 with [Dovetail]({{% relref "dovetail/_index.md" %}}) as Xenomai's
-co-kernel interface is a valuable goal.
+dual kernel interface is a valuable goal.
 
 ### Where should the discussion on EVL take place?
 
@@ -65,7 +65,7 @@ time:
 EVL and Xenomai differ in purpose too.  On the one hand,
 [Xenomai](https://xenomai.org) aims at a comprehensive real-time
 framework offering multiple APIs, RTOS emulators and various protocol
-stacks, based on a POSIX-compliant core and the [I-pipe co-kernel
+stacks, based on a POSIX-compliant core and the [I-pipe dual kernel
 interface](https://gitlab.denx.de/Xenomai/xenomai/wikis/Getting_The_I_Pipe_Patch),
 tracking [LTS kernel
 releases](https://www.kernel.org/category/releases.html).  Xenomai

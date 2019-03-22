@@ -22,7 +22,7 @@ kernel logic which would represent high priority, out-of-band
 activities, separated from the common work running in-band.  Doing so
 requires a few kernel subsystems to know intimately about such a
 stage. An architecture-independent interface should enable any flavour
-of autonomous cores to run over the out-of-band stage the main kernel
+of autonomous core to run over the out-of-band stage the main kernel
 defines. This is the goal of the [Dovetail]({{% relref
 "dovetail/_index.md" %}}) interface which is being worked out.
 
