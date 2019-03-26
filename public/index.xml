@@ -64,7 +64,7 @@ This is required to keep those helpers usable on data which might be accessed fr
       
       <guid>https://evenless.org/dovetail/rulesofthumb/</guid>
       <description>Turn on debug options in the kernel configuration! During the development phase, do yourself a favour: turn on CONFIG_DEBUG_IRQ_PIPELINE and CONFIG_DEBUG_DOVETAIL.
-The first one will catch many nasty issues, such as calling unsafe in-band code from out-of-band context. The second one checks the integrity of the alternate task control mechanism, detecting issues in the architecture port.
+The first one will catch many nasty issues, such as calling unsafe in-band code from out-of-band context. The second one checks the integrity of the alternate scheduling support, detecting issues in the architecture port.
 The runtime overhead induced by enabling these options is marginal. Just don&amp;rsquo;t port Dovetail or implement out-of-band client code without them enabled in your target kernel, seriously.</description>
     </item>
     

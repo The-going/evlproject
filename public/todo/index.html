@@ -12,19 +12,19 @@
     <title>TODO list :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1553277097" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553277097" rel="stylesheet">
-    <link href="/css/hybrid.css?1553277097" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553277097" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553277097" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553277097" rel="stylesheet">
-    <link href="/css/theme.css?1553277097" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553277097" rel="stylesheet">
+    <link href="/css/nucleus.css?1553627538" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553627538" rel="stylesheet">
+    <link href="/css/hybrid.css?1553627538" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553627538" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553627538" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553627538" rel="stylesheet">
+    <link href="/css/theme.css?1553627538" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553627538" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553277097" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553627538" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553277097"></script>
+    <script src="/js/jquery-2.x.min.js?1553627538"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553277097"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553277097"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553627538"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553627538"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553277097"></script>
+<script type="text/javascript" src="/js/search.js?1553627538"></script>
 
     
   </div>
@@ -513,13 +513,13 @@
  
   
     
-    <li data-nav-id="/dovetail/altsched/" title="Alternate Task Control" class="dd-item 
+    <li data-nav-id="/dovetail/altsched/" title="Alternate scheduling" class="dd-item 
         
         
         
         ">
       <a href="/dovetail/altsched/">
-          &rsaquo; Alternate Task Control
+          &rsaquo; Alternate scheduling
           
       </a>
       
@@ -1422,6 +1422,7 @@
 <li><a href="#the-big-issue-phase-out-the-ugly-big-lock">THE big issue: phase out the ugly big lock</a></li>
 <li><a href="#improving-the-tracepoints">Improving the tracepoints</a></li>
 <li><a href="#disconnect-dovetail-s-hard-and-mutable-locks-hahahugoshortcode-4hbhb-from-config-lockdep">Disconnect Dovetail&rsquo;s <a href="HAHAHUGOSHORTCODE-4HBHB">hard and mutable locks</a> from CONFIG_LOCKDEP</a></li>
+<li><a href="#enable-a-variant-of-xenomai-s-slackspot-utility-for-evl">Enable a variant of Xenomai&rsquo;s <em>slackspot</em> utility for EVL</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1550,6 +1551,15 @@ instrumented at all.</p>
 debug option, we could run the lock validator for detecting glitches
 with in-band locking exclusively, without causing massive latency
 spots.</p>
+
+<h3 id="enable-a-variant-of-xenomai-s-slackspot-utility-for-evl">Enable a variant of Xenomai&rsquo;s <em>slackspot</em> utility for EVL</h3>
+
+<p>Xenomai 3 introduced a utility called
+<a href="https://gitlab.denx.de/Xenomai/xenomai/wikis/Finding_Spurious_Relaxes"><em>slackspot</em></a>
+for tracing back code which caused the application to <a href="/dovetail/altsched/#inband-switch">switch to the
+in-band stage</a>.</p>
+
+<p>We need an equivalent, passing the trace data back to userland via <em>debugfs</em>.</p>
 
 
 <footer class=" footline" >
@@ -2485,20 +2495,20 @@ spots.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553277097"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553277097"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553277097"></script>
-    <script src="/js/jquery.sticky.js?1553277097"></script>
-    <script src="/js/featherlight.min.js?1553277097"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553277097"></script>
-    <script src="/js/highlight.pack.js?1553277097"></script>
+    <script src="/js/clipboard.min.js?1553627538"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553627538"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553627538"></script>
+    <script src="/js/jquery.sticky.js?1553627538"></script>
+    <script src="/js/featherlight.min.js?1553627538"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553627538"></script>
+    <script src="/js/highlight.pack.js?1553627538"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553277097"></script>
-    <script src="/js/learn.js?1553277097"></script>
-    <script src="/js/hugo-learn.js?1553277097"></script>
+    <script src="/js/modernizr.custom.71422.js?1553627538"></script>
+    <script src="/js/learn.js?1553627538"></script>
+    <script src="/js/hugo-learn.js?1553627538"></script>
 
-    <link href="/mermaid/mermaid.css?1553277097" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553277097"></script>
+    <link href="/mermaid/mermaid.css?1553627538" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553627538"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
