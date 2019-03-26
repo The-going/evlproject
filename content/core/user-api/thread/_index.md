@@ -3,7 +3,7 @@ menuTitle: "Thread"
 weight: 5
 ---
 
-### Thread element
+### Thread element {#thread-element}
 
 The main kernel's thread is the basic execution unit in EVL. The most
 common kind of EVL threads is a regular POSIX thread started by
@@ -275,7 +275,7 @@ relref "core/user-api/thread/routines/_index.md#evl_detach_self" %}}).
 
 ---
 
-#### int evl_switch_oob(void)
+#### int evl_switch_oob(void) {#evl_switch_oob}
 
 Applications are unlikely to ever use this call explicitly: it
 switches the calling thread to the out-of-band [execution
@@ -314,7 +314,7 @@ something went wrong:
 
 ---
 
-#### int evl_switch_inband(void)
+#### int evl_switch_inband(void)  {#evl_switch_inband}
 
 Applications are unlikely to ever use this call explicitly: it
 switches the calling thread to the in-band [execution stage]({{%relref

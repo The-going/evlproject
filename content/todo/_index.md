@@ -106,3 +106,13 @@ If we could exclude Dovetail's spinlocks from CONFIG_LOCKDEP using a
 debug option, we could run the lock validator for detecting glitches
 with in-band locking exclusively, without causing massive latency
 spots.
+
+### Enable a variant of Xenomai's _slackspot_ utility for EVL
+
+Xenomai 3 introduced a utility called
+[_slackspot_](https://gitlab.denx.de/Xenomai/xenomai/wikis/Finding_Spurious_Relaxes)
+for tracing back code which caused the application to [switch to the
+in-band stage]({{% relref "dovetail/altsched/_index.md#inband-switch"
+%}}).
+
+We need an equivalent, passing the trace data back to userland via _debugfs_.

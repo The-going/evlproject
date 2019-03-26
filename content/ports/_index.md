@@ -11,7 +11,7 @@ ported in the following sequence:
 1. the [Dovetail]({{%relref "dovetail/_index.md" %}}) interface. This
    task is composed of two incremental milestones: first getting the
    [interrupt pipeline]({{% relref "dovetail/pipeline/_index.md" %}})
-   to work, then enabling the [alternate task control]({{% relref
+   to work, then enabling the [alternate scheduling]({{% relref
    "dovetail/altsched/_index.md" %}}). Porting [Dovetail]({{%relref
    "dovetail/_index.md" %}}) is where most of the work takes place,
    the other porting tasks are comparatively quite simple.
@@ -30,7 +30,7 @@ The table below summarizes the current status of the existing ports.
 
 > Current target kernel release
 
-Linux 5.1-rc1	 
+Linux 5.1-rc2
 
 > ARM64 SoC
 
@@ -149,7 +149,7 @@ the platform, which is a good starting point. So far so good.
 "core/_index.md" %}}) passes a massive stress test involving the
 _hectic_ and _latmus_ applications running in parallel for 24 hrs, all
 glitchlessly. This denotes a reliable state, including flawless
-alternate control of threads between the main kernel and EVL. On the
-contrary, a problem with sharing the FPU unit properly between the
+alternate scheduling of threads between the main kernel and EVL. On
+the contrary, a problem with sharing the FPU unit properly between the
 in-band and out-of-band execution contexts is most often the reason
 for keeping this box unchecked until the situation is fixed.

@@ -51,13 +51,13 @@ described:
 - first the interrupt pipeline which creates a high-priority execution
 stage for an autonomous software core to run on.
 
-- then, support for [_alternate task control_]({{% relref
+- then, support for [_alternate scheduling_]({{% relref
 "altsched/_index.md" %}}) between the main kernel and the autonomous
 software core, for sharing *kthreads* and *user* tasks.
 
 Although both layers are likely to be needed for implementing some
 autonomous core, only the interrupt pipeline has to be enabled in the
-early stage of porting Dovetail. Support for alternate task control
+early stage of porting Dovetail. Support for alternate scheduling
 builds upon the latter, and may - and should - be postponed until the
 pipeline is fully functional on the target architecture or
 platform. The code base is specifically maintained in a way which

@@ -12,8 +12,8 @@ During the development phase, do yourself a favour: turn on
 
 The first one will catch many nasty issues, such as calling unsafe
 in-band code from out-of-band context. The second one checks the
-integrity of the alternate task control mechanism, detecting issues in
-the architecture port.
+integrity of the alternate scheduling support, detecting issues in the
+architecture port.
 
 The runtime overhead induced by enabling these options is
 marginal. Just don't port Dovetail or implement out-of-band client
