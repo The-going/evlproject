@@ -117,7 +117,7 @@ number of threads may vary between groups. The alloted runtime quota
 for a group is decreased by the execution time of every thread in that
 group. Therefore, a group with no thread does not consume its quota.
 
-![Alt text](/images/quota_scheduling.png?classes=border,shadow "Quota-based scheduling")
+![Alt text](/images/quota_scheduling.png "Quota-based scheduling")
 
 Switching a thread to quota-based scheduling is achieved by calling
 [`evl_set_schedattr()`]({{% relref

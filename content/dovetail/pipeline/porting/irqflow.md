@@ -30,7 +30,7 @@ two-step process: first we try delivering the incoming IRQ to any
 out-of-band handler if present, then we may play any IRQ pending in
 the current per-CPU log, among which non-OOB events may reside.
 
-![Alt text](/images/irqflow.png?classes=border,shadow "Pipelined interrupt handling")
+![Alt text](/images/irqflow.png "Pipelined interrupt handling")
 
 As illustrated above, interrupt flow handlers may run twice for a
 single IRQ in Dovetail's pipelined interrupt model:

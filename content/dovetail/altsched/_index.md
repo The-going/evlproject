@@ -117,7 +117,7 @@ as follows:
   state]({{% relref "dovetail/pipeline/optimistic.md#virtual-i-flag"
   %}}) allows it.
 
-![Alt text](/images/altsched.png?classes=border,shadow "Alternate scheduling")
+![Alt text](/images/altsched.png "Alternate scheduling")
 
 ## What you really need to know at this point
 
@@ -222,7 +222,7 @@ At the end of this process, we should have observed a double context
 switch, with the migrating task offloaded to the out-of-band
 scheduler:
 
-![Alt text](/images/oob_switch.png?classes=border,shadow "Out-of-band switch")
+![Alt text](/images/oob_switch.png "Out-of-band switch")
 
 {{% notice tip %}}
 `evl_switch_oob()` implements the switch to out-of-band context in the
@@ -329,7 +329,7 @@ At the end of this process, the task has transitioned from a running
 state to a blocked state in the autonomous core, and conversely from
 `TASK_INTERRUPTIBLE` to `TASK_RUNNING` in the main scheduler.
 
-![Alt text](/images/inband_switch.png?classes=border,shadow "In-band switch")
+![Alt text](/images/inband_switch.png "In-band switch")
 
 {{% notice tip %}}
 `evl_switch_inband()` implements the switch to in-band context in the

@@ -42,7 +42,7 @@ underlying file channel from the regular in-band context is just
 fine. Therefore, the execution flow upon I/O system calls looks like
 this:
 
-![Alt text](/images/oob_calls.png?classes=border,shadow "Out-of-band I/O handling")
+![Alt text](/images/oob_calls.png "Out-of-band I/O handling")
 
 Which translates as follows:
 

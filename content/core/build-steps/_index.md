@@ -37,7 +37,7 @@ Once your favorite kernel configuration tool is brought up, you should
 see the EVL configuration block somewhere inside the **General setup**
 menu. This configuration block looks like this:
 
-![Alt text](/images/core_xconfig.png?classes=border,shadow "EVL core configuration")
+![Alt text](/images/core_xconfig.png "EVL core configuration")
 
 Enabling `CONFIG_EVL` should be enough to get you started, the default
 values for other EVL settings are safe to use. You should make sure to

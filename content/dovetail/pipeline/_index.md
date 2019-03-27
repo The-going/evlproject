@@ -55,7 +55,7 @@ out-of-band interrupt handlers is known as the *oob stage* of the
 pipeline, as opposed to the in-band kernel activities sitting on the
 *in-band stage*:
 
-![Alt text](/images/pipeline.png?classes=border,shadow "Interrupt pipeline")
+![Alt text](/images/pipeline.png "Interrupt pipeline")
 
 An autonomous core can base its own activities on the oob stage,
 interposing on specific IRQ events, for delivering real-time
