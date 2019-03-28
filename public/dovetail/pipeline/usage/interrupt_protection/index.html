@@ -12,19 +12,19 @@
     <title>Interrupt Protection :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1553627538" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553627538" rel="stylesheet">
-    <link href="/css/hybrid.css?1553627538" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553627538" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553627538" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553627538" rel="stylesheet">
-    <link href="/css/theme.css?1553627538" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553627538" rel="stylesheet">
+    <link href="/css/nucleus.css?1553763591" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553763591" rel="stylesheet">
+    <link href="/css/hybrid.css?1553763591" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553763591" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553763591" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553763591" rel="stylesheet">
+    <link href="/css/theme.css?1553763591" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553763591" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553627538" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553763591" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553627538"></script>
+    <script src="/js/jquery-2.x.min.js?1553763591"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553627538"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553627538"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553763591"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553763591"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553627538"></script>
+<script type="text/javascript" src="/js/search.js?1553763591"></script>
 
     
   </div>
@@ -1432,7 +1432,7 @@
 <li>
 <ul>
 <li><a href="#hard-irq-protection">Disabling interrupts in the CPU</a></li>
-<li><a href="# head-stall-flag">Stalling the oob stage</a></li>
+<li><a href="#oob-stall-flag">Stalling the out-of-band stage</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -1512,7 +1512,7 @@ set maps 1:1 over the regular <code>local_irq_*()</code> API.</p>
 </tbody>
 </table>
 
-<h2 id=" head-stall-flag">Stalling the oob stage</h2>
+<h2 id="oob-stall-flag">Stalling the out-of-band stage</h2>
 
 <p>Just like the in-band stage is affected by the state of the <a href="/dovetail/pipeline/optimistic/#virtual-i-flag">virtual
 interrupt disable flag</a>, the interrupt
@@ -1572,14 +1572,6 @@ calls affecting the stall bit for each stage:</p>
 </tr>
 </tbody>
 </table>
-
-<div class="notices tip" ><p>Using this set of helpers only makes sense from out-of-band code,
-typically in a real-time core implementation. Calling them from any
-other context would be highly suspicious. Adapting in-band code to
-interrupt pipelining might involve using the <code>hard_local_*()</code>
-set instead, but only in marginal cases, always with extreme care.</p>
-</div>
-
 
 
 <footer class=" footline" >
@@ -2519,20 +2511,20 @@ set instead, but only in marginal cases, always with extreme care.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553627538"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553627538"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553627538"></script>
-    <script src="/js/jquery.sticky.js?1553627538"></script>
-    <script src="/js/featherlight.min.js?1553627538"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553627538"></script>
-    <script src="/js/highlight.pack.js?1553627538"></script>
+    <script src="/js/clipboard.min.js?1553763591"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553763591"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553763591"></script>
+    <script src="/js/jquery.sticky.js?1553763591"></script>
+    <script src="/js/featherlight.min.js?1553763591"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553763591"></script>
+    <script src="/js/highlight.pack.js?1553763591"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553627538"></script>
-    <script src="/js/learn.js?1553627538"></script>
-    <script src="/js/hugo-learn.js?1553627538"></script>
+    <script src="/js/modernizr.custom.71422.js?1553763591"></script>
+    <script src="/js/learn.js?1553763591"></script>
+    <script src="/js/hugo-learn.js?1553763591"></script>
 
-    <link href="/mermaid/mermaid.css?1553627538" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553627538"></script>
+    <link href="/mermaid/mermaid.css?1553763591" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553763591"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
