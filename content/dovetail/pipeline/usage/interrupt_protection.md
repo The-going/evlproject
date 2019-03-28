@@ -24,10 +24,10 @@ set maps 1:1 over the regular `local_irq_*()` API.
 |  irqs_disabled()            |   hard_irqs_disabled()             |
 |  irqs_disabled_flags(flags) |   hard_irqs_disabled_flags(flags)  |
 
-## Stalling the oob stage {# head-stall-flag}
+## Stalling the out-of-band stage {#oob-stall-flag}
 
 Just like the in-band stage is affected by the state of the [virtual
-interrupt disable flag]({{%relref
+interrupt disable flag]({{% relref
 "dovetail/pipeline/optimistic.md#virtual-i-flag" %}}), the interrupt
 state of the oob stage is controlled by a dedicated _stall bit_ flag
 in the oob stage's status. In combination with the interrupt disable
@@ -49,11 +49,3 @@ calls affecting the stall bit for each stage:
 |  local_irq_restore(flags)   |    oob_irq_restore(flags)          |
 |  irqs_disabled()            |    oob_irqs_disabled()             |
 |  irqs_disabled_flags(flags) |             -none-                 |
-
-{{% notice tip %}}
-Using this set of helpers only makes sense from out-of-band code,
-typically in a real-time core implementation. Calling them from any
-other context would be highly suspicious. Adapting in-band code to
-interrupt pipelining might involve using the `hard_local_*()`
-set instead, but only in marginal cases, always with extreme care.
-{{% /notice %}}

@@ -1,7 +1,10 @@
 
-- customize a new theme variant?
+- dealing with IPIs
 
-- mention "Evenless" in logo
+- still have HEAD/ROOT in the text, switch to OOB/in-band
+
+- the "under the hood" code for proxy ticks needs to be converted to a
+  mermaid diagram.
 
 - should we add an external link for each C routine present in the
   kernel, picked from some arbitrary kernel release from some LXR

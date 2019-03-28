@@ -158,7 +158,7 @@ oob stage from an out-of-band context, using
 `irq_pipeline_inject()`. In such a case, the normal rules of interrupt
 delivery apply, depending on the state of the virtual interrupt
 disable flag [for the oob stage]({{%relref
-"dovetail/pipeline/usage/interrupt_protection.md#head-stall-flag" %}}).
+"dovetail/pipeline/usage/interrupt_protection.md#oob-stall-flag" %}}).
 
 {{% notice note %}}
 Calling `irq_post_oob(sirq)` from the in-band stage to trigger an
