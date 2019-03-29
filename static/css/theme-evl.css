@@ -128,3 +128,17 @@ table.status {
 th, td {
     text-align: center;
 }
+
+div.boxfun {
+  border: 1px solid #ccc;
+  padding: 25px;
+  margin: 0;
+}
+
+div.proto {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 500;
+    white-space: pre;
+    font-family: "Consolas", menlo, monospace;
+    font-size: 115%;
+}

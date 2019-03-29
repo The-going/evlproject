@@ -151,7 +151,7 @@ and `evl_release_thread()`.
 You may want to keep this in mind when going through the rest of this
 document.
 
-## Migrating between execution stages
+## Migrating between execution stages {#stage-migration}
 
 ### Out-of-band switch  {#oob-switch}
 
@@ -206,15 +206,23 @@ link representing a context switch:
 {{<mermaid align="left">}}
 graph LR;
     S("start transition") --> A
+    style S fill:#99ccff;
     A["dovetail_leave_inband()"] --> B["schedule()"]
+    style A fill:#99ccff;
+    style B fill:#99ccff;
     B -.-> C["inband_switch_tail()"]
     C --> D{task in flight?}
     D -->|Yes| E["resume_oob_task()"]
+    style E fill:#99ccff;
     D -->|No| F{out-of-band?}
     E --> G["core_resume_task()"]
+    style G fill:#99ccff;
     G --> H["core_schedule()"]
+    style H fill:#ff950e;
     F -->|Yes| I(transition complete)
+    style I fill:#ff950e;
     F -->|No| J(regular switch tail)
+    style J fill:#99ccff;
     H -.-> C
 {{< /mermaid >}}
 
@@ -315,14 +323,23 @@ execution stage, as the core has no more out-of-band task to schedule:
 {{<mermaid align="left">}}
 graph LR;
     S("start transition") --> A
+    style S fill:#ff950e;
     A["irq_work(wakeup_req)"] --> B["core_suspend_task()"]
+    style A fill:#ff950e;
+    style B fill:#ff950e;
     B --> C["core_schedule()"]
+    style C fill:#ff950e;
     C -.-> Y((OOB idle))
     Y -.-> D["wake_up_process()"]
+    style D fill:#99ccff;
     D --> E["schedule()"]
+    style E fill:#99ccff;
     E -.-> X["out-of-band switch tail"]
+    style X fill:#99ccff;
     X --> G["dovetail_resume_inband()"]
+    style G fill:#99ccff;
     G --> I("transition complete")
+    style I fill:#99ccff;
 {{< /mermaid >}}
 
 At the end of this process, the task has transitioned from a running
@@ -362,11 +379,17 @@ graph LR;
     B -->|Yes| D["jump out-of-band"]
     D --> A
     B -->|No| C["pick NEXT"]
+    style C fill:#ff950e;
     C --> P{PREV == NEXT?}
+    style P fill:#ff950e;
     P -->|Yes| Q(no change)
+    style Q fill:#ff950e;
     P -->|No| E{PREV == idle?}
+    style E fill:#ff950e;
     E -->|Yes| F["dovetail_resume_oob()"]
+    style F fill:#ff950e;
     E -->|No| H["dovetail_context_switch()"]
+    style H fill:#ff950e;
     F --> H
     H -.-> I(NEXT)
 {{< /mermaid >}}
@@ -473,11 +496,14 @@ request.  In this case, the calling logic is as follows:
 {{<mermaid align="left">}}
 graph LR;
     S("from out-of-band IRQ stage") --> A
+    style S fill:#ff950e;
     A["handle_pipelined_syscall()"] --> B{returned zero?}
     B -->|Yes| C{on in-band stage?}
     B -->|No| R(done)
     C -->|Yes| Q(handle as regular kernel syscall)
+    style Q fill:#99ccff;
     C -->|No| P[switch to in-band IRQ stage]
+    style P fill:#ff950e;
     P --> A
 {{< /mermaid >}}
 
