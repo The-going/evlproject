@@ -12,14 +12,20 @@ task contexts]({{% relref
 "dovetail/altsched/_index.md#context-switching" %}}) with Dovetail's
 support for alternate scheduling.
 
-{{% boxfun %}}
-{{< proto >}}
+---
+
+{{< proto run_oob_call >}}
 int run_oob_call(int (*fn)(void *arg), void *arg)
 {{< /proto >}}
 
-- _fn_    The address of the routine to execute on the out-of-band stage.
 
-- _arg_   The routine argument.
+{{% argument fn %}}
+The address of the routine to execute on the out-of-band stage.
+{{% /argument %}}
+
+{{% argument arg %}}
+The routine argument.
+{{% /argument %}}
 
 run_oob_call() first switches the current execution stage to
 out-of-band - if need be - then calls the routine with hard interrupts
@@ -42,7 +48,6 @@ from _fn()_:
 |  in-band | out-of-band | switch to in-band + sync both stages
 |  out-of-band | in-band | sync both stages
 |  in-band | in-band | sync both stages
-{{% /boxfun %}}
 
 {{% notice note %}}
 run_oob_call() is a lightweight operation that switches the CPU to the

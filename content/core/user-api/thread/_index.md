@@ -9,7 +9,7 @@ The main kernel's thread is the basic execution unit in EVL. The most
 common kind of EVL threads is a regular POSIX thread started by
 `pthread_create(3)` which has attached itself to the EVL core by a
 call to [`evl_attach_self()`]({{% relref
-"core/user-api/thread/routines/_index.md#evl_attach_self" %}}). Once a
+"core/user-api/thread/_index.md#evl_attach_self" %}}). Once a
 POSIX thread attached itself to EVL, it can:
 
 - request real-time services to the core, exclusively by calling
@@ -20,13 +20,6 @@ POSIX thread attached itself to EVL, it can:
   stage]({{%relref "dovetail/pipeline/_index.md#two-stage-pipeline"
   %}}), for running under EVL's supervision in order to ensure
   real-time behaviour.
-
-{{% notice info %}}
-A thread which is being scheduled by EVL instead of the main kernel is
-said to be running **out-of-band**, as defined by [Dovetail]({{%
-relref "dovetail/pipeline/_index.md" %}}). It remains in this mode
-until it asks for a service which the main kernel provides.
-{{% /notice %}}
 
 - invoke services from your favourite C library (_glibc_, _musl_,
   _uClibc_ etc.), which may end up issuing system calls to the main
@@ -41,89 +34,85 @@ until it asks for a service which the main kernel provides.
   seriously wrong in this code.
 
 {{% notice info %}}
-A thread which is being scheduled by the main kernel instead of EVL is
-said to be running **in-band**, as defined by [Dovetail]({{% relref
-"dovetail/pipeline/_index.md" %}}). It remains in this mode until it
-asks for a service which EVL can only provide when the caller runs
-out-of-band.
+A thread which is being scheduled by EVL instead of the main kernel is
+said to be running **out-of-band**, as defined by [Dovetail]({{%
+relref "dovetail/pipeline/_index.md" %}}). It remains in this mode
+until it asks for a service which the main kernel provides.
+Conversely, a thread which is being scheduled by the main kernel
+instead of EVL is said to be running **in-band**, as defined by
+[Dovetail]({{% relref "dovetail/pipeline/_index.md" %}}). It remains
+in this mode until it asks for a service which EVL can only provide
+to the caller when it runs out-of-band.
 {{% /notice %}}
+
+### Thread services {#thread-services}
 
 ---
 
-### Thread services
+{{< proto evl_attach_self >}}
+int evl_attach_self(const char *fmt, ...)
+{{< /proto >}}
 
-#### int evl_attach_self(const char *_fmt_, ...) {#evl_attach_self}
-
-EVL does not really _create_ threads; instead, it enables a regular
+EVL does not actually _create_ threads; instead, it enables a regular
 POSIX thread to invoke its real-time services once this thread has
-attached to the EVL core.  `evl_attach_self()` is the library call
-which requests such attachment. All you need to provide is a _unique_
-thread name, which will be the name of the device element representing
-that thread in the file system.
+attached to the EVL core.  evl_attach_self() is the library call which
+requests such attachment. All you need to provide is a _unique_ thread
+name, which will be the name of the device element representing that
+thread in the file system.
 
-There is no requirement as of when `evl_attach_self()` should be
-called in a thread's execution flow. You just have to call it before
-it starts requesting EVL services.
+There is no requirement as of when evl_attach_self() should be called
+in a thread's execution flow. You just have to call it before it
+starts requesting EVL services. Note that the main thread of a process
+is no different from any other thread to EVL. It may call
+evl_attach_self() whenever you see fit, or not at all if you don't
+plan to request EVL services from this context.
 
-{{% notice note %}}
-The `main()` thread of a process is no different from any other thread
-to EVL. It may call `evl_attach_self()` whenever you see fit, or not
-at all if you don't plan to request EVL services from this context.
-{{% /notice %}}
+{{% argument fmt %}}
+A printf-like format string to generate the thread name. A common way
+of generating unique thread names is to add the calling process's
+_pid_ somewhere into the format string as illustrated in the
+example. The generated name is used to form a file path, referring to
+the new thread element's device in the file system. So this name must
+contain only valid characters in this context, excluding slashes.
+{{% /argument %}}
 
-##### Arguments
+{{% argument "..." %}}
+The optional variable argument list completing the format.
+{{% /argument %}}
 
-_fmt_	A printf-like format string to generate the thread name. A
-common way of generating unique thread names is to add the calling
-process's _pid_ somewhere into the format string as illustrated in the
-example.
-
-{{% notice warning %}}
-The generated name is used to form a file path, referring to the new
-thread element's device in the file system. So this name must contain
-only valid characters in this context, excluding slashes.
-{{% /notice %}}
-
-...	The optional variable argument list completing the format.
-
-##### Return value
-
-`evl_attach_self()` returns the file descriptor of the newly attached
+evl_attach_self() returns the file descriptor of the newly attached
 thread on success. You may use this _fd_ to submit requests for the
 newly attached thread in other calls from the EVL library which ask
-for a thread file descriptor.
+for a thread file descriptor. If the call fails, a negated error code
+is returned instead:
 
-If the call fails, a negated error code is returned:
-
--EEXIST		The generated name is conflicting with an existing thread's
+- -EEXIST	The generated name is conflicting with an existing thread's
 		name.
 
--EINVAL		The generated name is badly formed, likely containing
+- -EINVAL	The generated name is badly formed, likely containing
 		invalid character(s), such as a slash. Keep in mind that
 		it should be usable as a basename of a device element's file path.
 
--ENAMETOOLONG	The overall length of the device element's file path including
+- -ENAMETOOLONG	The overall length of the device element's file path including
 		the generated name exceeds PATH_MAX.
 
--EMFILE		The per-process limit on the number of open file descriptors
+- -EMFILE	The per-process limit on the number of open file descriptors
 		has been reached.
 
--ENFILE		The system-wide limit on the total number of open files
+- -ENFILE	The system-wide limit on the total number of open files
 		has been reached.
 
--EPERM		The caller is not allowed to lock memory via a call to
+- -EPERM	The caller is not allowed to lock memory via a call to
 		`mlockall(2)`. Since memory locking is a requirement for running
 		EVL threads, no joy.
 
--ENOMEM		No memory available, whether the kernel could not
+- -ENOMEM	No memory available, whether the kernel could not
 		lock down all of the calling process's virtual address
 		space into RAM, or some other reason related to some
 		process or driver eating way too much virtual or physical
 		memory.	You may start panicking.
 
--ENOSYS		There is no EVL core enabled in the running kernel.
-
-##### Example
+- -ENOSYS	The EVL core is not enabled in the running kernel.
 
 ```
 #include <evl/thread.h>
@@ -148,11 +137,9 @@ crw-rw----    1 root     root      246,   1 Jan  1  1970 clone
 crw-rw----    1 root     root      246,   1 Jan  1  1970 cruncher-2712
 ```
 
-##### Notes
-
 1. You can revert the attachment to EVL at any time by calling
 [`evl_detach_self()`]({{% relref
-"core/user-api/thread/routines/_index.md#evl_detach_self" %}}) from the context
+"core/user-api/thread/_index.md#evl_detach_self" %}}) from the context
 of the thread to detach.
 
 2. Closing all the file descriptors referring to an EVL thread is not
@@ -160,7 +147,7 @@ enough to drop its attachment to the EVL core. It merely prevents to
 submit any further request for the original thread via calls taking
 file descriptors. You would still have to call
 [`evl_detach_self()`]({{% relref
-"core/user-api/thread/routines/_index.md#evl_detach_self" %}}) from
+"core/user-api/thread/_index.md#evl_detach_self" %}}) from
 the context of this thread to fully detach it.
 
 3. If a valid file descriptor is still referring to a detached thread,
@@ -169,7 +156,7 @@ using such _fd_ would receive -ESTALE.
 
 4. An EVL thread which exits is automatically detached from the EVL
 core, you don't have to call [`evl_detach_self()`]({{% relref
-"core/user-api/thread/routines/_index.md#evl_detach_self" %}})
+"core/user-api/thread/_index.md#evl_detach_self" %}})
 explicitly before exiting your thread.
 
 5. The EVL core drops the kernel resources attached to a thread once
@@ -182,21 +169,18 @@ referring to the newly attached thread before returning from
 
 ---
 
-#### int evl_detach_self(void) {#evl_detach_self}
+{{< proto evl_detach_self >}}
+int evl_detach_self(void)
+{{< /proto >}}
 
 `evl_detach_self()` reverts the action of [`evl_attach_self()`]({{%
-relref "core/user-api/thread/routines/_index.md#evl_attach_self" %}}),
+relref "core/user-api/thread/_index.md#evl_attach_self" %}}),
 detaching the calling thread from the EVL core. Once this operation
-has succeeded, the current thread cannot submit EVL requests anymore.
-
-##### Return value
-
-This call returns zero on success, or a negated error code if something
-went wrong:
+has succeeded, the current thread cannot submit EVL requests
+anymore. This call returns zero on success, or a negated error code if
+something went wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
-
-##### Example
 
 ```
 #include <evl/thread.h>
@@ -214,11 +198,9 @@ static void *byte_crunching_thread(void *arg)
 }
 ```
 
-##### Notes {#detached-thread-notes}
-
 1. You can re-attach the detached thread to EVL at any time by calling
 [`evl_attach_self()`]({{% relref
-"core/user-api/thread/routines/_index.md#evl_attach_self" %}}) again.
+"core/user-api/thread/_index.md#evl_attach_self" %}}) again.
 
 2. If a valid file descriptor is still referring to a detached thread,
 or after the thread has exited, any request submitted for that thread
@@ -234,22 +216,19 @@ descriptors referring to that thread have been closed.
 
 ---
 
-#### int evl_get_self(void)
+{{< proto evl_get_self >}}
+int evl_get_self(void)
+{{< /proto >}}
 
 `evl_get_self()` returns the file descriptor obtained for the current
 thread after a successful call to [`evl_attach_self()`]({{% relref
-"core/user-api/thread/routines/_index.md#evl_attach_self" %}}).  You
-may use this _fd_ to submit requests for the current thread in other
-calls from the EVL library which ask for a thread file descriptor.
-
-##### Return value
-
-This call returns a valid file descriptor referring to the caller on
+"core/user-api/thread/_index.md#evl_attach_self" %}}).  You may use
+this _fd_ to submit requests for the current thread in other calls
+from the EVL library which ask for a thread file descriptor.  This
+call returns a valid file descriptor referring to the caller on
 success, or a negated error code if something went wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
-
-##### Example
 
 ```
 #include <evl/thread.h>
@@ -268,14 +247,14 @@ static void get_caller_info(void)
 }
 ```
 
-##### Note
-
 `evl_get_self()` will fail after a call to [`evl_detach_self()`]({{%
-relref "core/user-api/thread/routines/_index.md#evl_detach_self" %}}).
+relref "core/user-api/thread/_index.md#evl_detach_self" %}}).
 
 ---
 
-#### int evl_switch_oob(void) {#evl_switch_oob}
+{{< proto evl_attach_self >}}
+int evl_switch_oob(void)
+{{< /proto >}}
 
 Applications are unlikely to ever use this call explicitly: it
 switches the calling thread to the out-of-band [execution
@@ -290,7 +269,10 @@ high-level API based on the EVL core library might have to enforce a
 particular execution stage, based on a deep knowledge of how EVL works
 internally. Entering a syscall-free section of code for which the
 out-of-band mode needs to be guaranteed on entry would be the only
-valid reason to call `evl_switch_oob()`.
+valid reason to call `evl_switch_oob()`.  This call returns zero on
+success, or a negated error code if something went wrong:
+
+-EPERM		The current thread is not attached to the EVL core.
 
 {{% notice warning %}}
 Forcing the current execution stage between in-band and out-of-band
@@ -305,16 +287,11 @@ time-critical code would need to switch back to out-of-band mode
 eagerly.
 {{% /notice %}}
 
-##### Return value
-
-This call returns zero on success, or a negated error code if
-something went wrong:
-
--EPERM		The current thread is not attached to the EVL core.
-
 ---
 
-#### int evl_switch_inband(void)  {#evl_switch_inband}
+{{< proto evl_switch_inband >}}
+int evl_switch_inband(void)
+{{< /proto >}}
 
 Applications are unlikely to ever use this call explicitly: it
 switches the calling thread to the in-band [execution stage]({{%relref
@@ -329,7 +306,10 @@ high-level API based on the EVL core library might have to enforce a
 particular execution stage, based on a deep knowledge of how EVL works
 internally. Entering a syscall-free section of code for which the
 in-band mode needs to be guaranteed on entry would be the only valid
-reason to call `evl_switch_inband()`.
+reason to call `evl_switch_inband()`.  This call returns zero on
+success, or a negated error code if something went wrong:
+
+-EPERM		The current thread is not attached to the EVL core.
 
 {{% notice warning %}}
 Forcing the current execution stage between in-band and out-of-band
@@ -342,28 +322,27 @@ to in-band from within a time-critical code is a clear indication that
 something is wrong** in such code.
 {{% /notice %}}
 
-##### Return value
-
-This call returns zero on success, or a negated error code if
-something went wrong:
-
--EPERM		The current thread is not attached to the EVL core.
-
 ---
 
-#### int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs) {#evl_set_schedattr}
+{{< proto evl_set_schedattr >}}
+int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)
+{{< /proto >}}
 
 This call changes the scheduling attributes for the thread referred to
 by _efd_ in the EVL core.
 
-_efd_	A file descriptor referring to the target thread, as returned by
-	`evl_attach_self()`, `evl_get_self()`, or opening a thread
-	element device in _/dev/evl/thread_ using `open(2)`.
+{{% argument efd %}}
+A file descriptor referring to the target thread, as returned by
+`evl_attach_self()`, `evl_get_self()`, or opening a thread
+element device in _/dev/evl/thread_ using `open(2)`.
+{{% /argument %}}
 
-_attrs_ A structure defining the new set of attributes, which depends
-	on the scheduling policy mentioned in
-	`attrs->sched_policy`. EVL currently implement the following
-	policies:
+{{% argument attrs %}}
+A structure defining the new set of attributes, which depends
+on the scheduling policy mentioned in
+`attrs->sched_policy`. EVL currently implement the following
+policies:
+{{% /argument %}}
 
 - [SCHED_FIFO]({{% relref
   "core/user-api/scheduling/_index.md#SCHED_FIFO" %}}), which is the
@@ -388,8 +367,6 @@ _attrs_ A structure defining the new set of attributes, which depends
   the expense of briefly switching to the out-of-band execution stage
   on demand.
 
-##### Return value
-
 `evl_sched_attrs()` returns zero on success, otherwise a negated error
 code is returned:
 
@@ -400,9 +377,7 @@ code is returned:
 		information may EVL expect for more.
 
 -ESTALE _efd_ refers to a stale thread, see these [notes]({{% relref
- "core/user-api/thread/routines/_index.md#detached-thread-notes" %}}).
-
-##### Example
+ "core/user-api/thread/_index.md#detached-thread-notes" %}}).
 
 ```
 #include <evl/thread.h>
@@ -418,20 +393,11 @@ int change_self_schedparams(void)
 }
 ```
 
-##### Note
-
 `evl_set_schedattr()` immediately changes the scheduling attributes
 the EVL core uses for the target thread when it runs in out-of-band
 context. Later on, the next time such thread transitions from
 out-of-band to in-band context, the main kernel will apply an
 extrapolated version of those changes to its own scheduler as well.
-
-{{% notice note %}}
-Calling `pthread_setschedparam()` from the C library does not affect
-the scheduling attributes of an EVL thread. It only affects the
-scheduling parameters of such thread from the standpoint of the main
-kernel.
-{{% /notice %}}
 
 The extrapolation of the out-of-band scheduling attributes passed to
 `evl_set_schedattr()` to the in-band ones applied by the mainline
@@ -445,19 +411,26 @@ kernel works as follows:
 | SCHED_WEAK, prio == 0 |    SCHED_OTHER |
 
 {{% notice warning %}}
-The C library may cache the current scheduling attributes for the
-in-band context of a thread, _glibc_ does so typically. Since EVL
-passes on the changes to the main kernel only, the cached value may
-not reflect the actual scheduling attributes of the thread anymore.
+Calling `pthread_setschedparam()` from the C library does not affect
+the scheduling attributes of an EVL thread. It only affects the
+scheduling parameters of such thread from the standpoint of the main
+kernel. Because the C library may cache the current scheduling
+attributes for the in-band context of a thread - _glibc_ does so
+typically - the cached value may not reflect the actual scheduling
+attributes of the thread after this call.
 {{% /notice %}}
 
 ---
 
-#### int evl_get_schedattr(int efd, struct evl_sched_attrs *attrs)
+{{< proto evl_get_schedattr >}}
+int evl_get_schedattr(int efd, struct evl_sched_attrs *attrs)
+{{< /proto >}}
 
 ---
 
-#### int evl_get_state(int efd, struct evl_thread_state *statebuf)
+{{< proto evl_get_state >}}
+int evl_get_state(int efd, struct evl_thread_state *statebuf)
+{{< /proto >}}
 
 ---
 
