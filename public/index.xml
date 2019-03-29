@@ -146,7 +146,8 @@ A set of helpers is provided for manipulating the interrupt disable flag in the 
       <pubDate>Sun, 01 Jul 2018 15:46:04 +0200</pubDate>
       
       <guid>https://evenless.org/dovetail/pipeline/usage/stage_escalation/</guid>
-      <description> run_oob_call()  </description>
+      <description>Sometimes you may need to escalate the current execution stage from in-band to out-of-band, only for running a particular routine. This can be done using run_oob_call(). For instance, the EVL core is using this service to escalate calls to its rescheduling procedure to the out-of-band stage, as described in the discussion about switching task contexts with Dovetail&amp;rsquo;s support for alternate scheduling.
+ int run_oob_call(int (*fn)(void *arg), void *arg)  fnThe address of the routine to execute on the out-of-band stage.</description>
     </item>
     
     <item>

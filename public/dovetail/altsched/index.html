@@ -12,19 +12,19 @@
     <title>Alternate scheduling :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1553763591" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553763591" rel="stylesheet">
-    <link href="/css/hybrid.css?1553763591" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553763591" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553763591" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553763591" rel="stylesheet">
-    <link href="/css/theme.css?1553763591" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553763591" rel="stylesheet">
+    <link href="/css/nucleus.css?1553872872" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553872872" rel="stylesheet">
+    <link href="/css/hybrid.css?1553872872" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553872872" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553872872" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553872872" rel="stylesheet">
+    <link href="/css/theme.css?1553872872" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553872872" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553763591" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553872872" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553763591"></script>
+    <script src="/js/jquery-2.x.min.js?1553872872"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553763591"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553763591"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553872872"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553872872"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553763591"></script>
+<script type="text/javascript" src="/js/search.js?1553872872"></script>
 
     
   </div>
@@ -1421,7 +1421,7 @@
 <ul>
 <li><a href="#altsched-theory">Theory of operations</a></li>
 <li><a href="#what-you-really-need-to-know-at-this-point">What you really need to know at this point</a></li>
-<li><a href="#migrating-between-execution-stages">Migrating between execution stages</a>
+<li><a href="#stage-migration">Migrating between execution stages</a>
 <ul>
 <li><a href="#oob-switch">Out-of-band switch</a></li>
 <li><a href="#inband-switch">In-band switch</a></li>
@@ -1608,7 +1608,7 @@ and <code>evl_release_thread()</code>.</p>
 <p>You may want to keep this in mind when going through the rest of this
 document.</p>
 
-<h2 id="migrating-between-execution-stages">Migrating between execution stages</h2>
+<h2 id="stage-migration">Migrating between execution stages</h2>
 
 <h3 id="oob-switch">Out-of-band switch</h3>
 
@@ -1667,15 +1667,23 @@ link representing a context switch:</p>
 <div class="mermaid" align="left">
 graph LR;
     S("start transition") --> A
+    style S fill:#99ccff;
     A["dovetail_leave_inband()"] --> B["schedule()"]
+    style A fill:#99ccff;
+    style B fill:#99ccff;
     B -.-> C["inband_switch_tail()"]
     C --> D{task in flight?}
     D -->|Yes| E["resume_oob_task()"]
+    style E fill:#99ccff;
     D -->|No| F{out-of-band?}
     E --> G["core_resume_task()"]
+    style G fill:#99ccff;
     G --> H["core_schedule()"]
+    style H fill:#ff950e;
     F -->|Yes| I(transition complete)
+    style I fill:#ff950e;
     F -->|No| J(regular switch tail)
+    style J fill:#99ccff;
     H -.-> C
 </div>
 
@@ -1782,14 +1790,23 @@ execution stage, as the core has no more out-of-band task to schedule:</p>
 <div class="mermaid" align="left">
 graph LR;
     S("start transition") --> A
+    style S fill:#ff950e;
     A["irq_work(wakeup_req)"] --> B["core_suspend_task()"]
+    style A fill:#ff950e;
+    style B fill:#ff950e;
     B --> C["core_schedule()"]
+    style C fill:#ff950e;
     C -.-> Y((OOB idle))
     Y -.-> D["wake_up_process()"]
+    style D fill:#99ccff;
     D --> E["schedule()"]
+    style E fill:#99ccff;
     E -.-> X["out-of-band switch tail"]
+    style X fill:#99ccff;
     X --> G["dovetail_resume_inband()"]
+    style G fill:#99ccff;
     G --> I("transition complete")
+    style I fill:#99ccff;
 </div>
 
 
@@ -1832,11 +1849,17 @@ graph LR;
     B -->|Yes| D["jump out-of-band"]
     D --> A
     B -->|No| C["pick NEXT"]
+    style C fill:#ff950e;
     C --> P{PREV == NEXT?}
+    style P fill:#ff950e;
     P -->|Yes| Q(no change)
+    style Q fill:#ff950e;
     P -->|No| E{PREV == idle?}
+    style E fill:#ff950e;
     E -->|Yes| F["dovetail_resume_oob()"]
+    style F fill:#ff950e;
     E -->|No| H["dovetail_context_switch()"]
+    style H fill:#ff950e;
     F --> H
     H -.-> I(NEXT)
 </div>
@@ -1950,11 +1973,14 @@ request.  In this case, the calling logic is as follows:</p></li>
 <div class="mermaid" align="left">
 graph LR;
     S("from out-of-band IRQ stage") --> A
+    style S fill:#ff950e;
     A["handle_pipelined_syscall()"] --> B{returned zero?}
     B -->|Yes| C{on in-band stage?}
     B -->|No| R(done)
     C -->|Yes| Q(handle as regular kernel syscall)
+    style Q fill:#99ccff;
     C -->|No| P[switch to in-band IRQ stage]
+    style P fill:#ff950e;
     P --> A
 </div>
 
@@ -2973,20 +2999,20 @@ pointer argument which relates to the event type.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553763591"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553763591"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553763591"></script>
-    <script src="/js/jquery.sticky.js?1553763591"></script>
-    <script src="/js/featherlight.min.js?1553763591"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553763591"></script>
-    <script src="/js/highlight.pack.js?1553763591"></script>
+    <script src="/js/clipboard.min.js?1553872872"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553872872"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553872872"></script>
+    <script src="/js/jquery.sticky.js?1553872872"></script>
+    <script src="/js/featherlight.min.js?1553872872"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553872872"></script>
+    <script src="/js/highlight.pack.js?1553872872"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553763591"></script>
-    <script src="/js/learn.js?1553763591"></script>
-    <script src="/js/hugo-learn.js?1553763591"></script>
+    <script src="/js/modernizr.custom.71422.js?1553872872"></script>
+    <script src="/js/learn.js?1553872872"></script>
+    <script src="/js/hugo-learn.js?1553872872"></script>
 
-    <link href="/mermaid/mermaid.css?1553763591" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553763591"></script>
+    <link href="/mermaid/mermaid.css?1553872872" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553872872"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

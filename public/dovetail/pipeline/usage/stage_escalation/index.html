@@ -12,19 +12,19 @@
     <title>Stage escalation :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1553763591" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553763591" rel="stylesheet">
-    <link href="/css/hybrid.css?1553763591" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553763591" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553763591" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553763591" rel="stylesheet">
-    <link href="/css/theme.css?1553763591" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553763591" rel="stylesheet">
+    <link href="/css/nucleus.css?1553872872" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553872872" rel="stylesheet">
+    <link href="/css/hybrid.css?1553872872" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553872872" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553872872" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553872872" rel="stylesheet">
+    <link href="/css/theme.css?1553872872" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553872872" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553763591" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553872872" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553763591"></script>
+    <script src="/js/jquery-2.x.min.js?1553872872"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553763591"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553763591"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553872872"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553872872"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553763591"></script>
+<script type="text/javascript" src="/js/search.js?1553872872"></script>
 
     
   </div>
@@ -1445,11 +1445,87 @@
         
 
 
-<ul>
-<li><code>run_oob_call()</code></li>
-</ul>
+<p>Sometimes you may need to escalate the current execution stage from
+in-band to out-of-band, only for running a particular routine. This
+can be done using <code>run_oob_call()</code>. For instance, the EVL core is
+using this service to escalate calls to its rescheduling procedure to
+the out-of-band stage, as described in the discussion about <a href="/dovetail/altsched/#context-switching">switching
+task contexts</a> with Dovetail&rsquo;s
+support for alternate scheduling.</p>
 
-<p><img src="/images/wip.png?height=250px&amp;width=420px" alt="Alt text" title="Not there yet" /></p>
+<hr />
+
+<div class="proto"><a name="run_oob_call"></a>
+int run_oob_call(int (*fn)(void *arg), void *arg)
+</div>
+
+
+<p><li><i>fn</i><p>The address of the routine to execute on the out-of-band stage.</p>
+</li></p>
+
+
+<p><li><i>arg</i><p>The routine argument.</p>
+</li></p>
+
+
+<p>run_oob_call() first switches the current execution stage to
+out-of-band - if need be - then calls the routine with hard interrupts
+disabled (i.e. disabled in the CPU). Upon return, the integer value
+returned by <em>fn()</em> is passed back to the caller.</p>
+
+<p>Because the routine may switch the execution stage back to in-band for
+the calling context, run_oob_call() restores the original stage only
+if it did not <a href="/dovetail/altsched/#inband-switch">change in the meantime</a>. In addition, the
+interrupt log of the current CPU is synchronized before returning to
+the caller. The following matrix describes the logic for determining
+which epilogue should be performed before leaving run_oob_call(),
+depending on the active stage on entry to the latter and on return
+from <em>fn()</em>:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">On entry to run_oob_call()</th>
+<th align="left">At exit from <em>fn()</em></th>
+<th>Epilogue</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">out-of-band</td>
+<td align="left">out-of-band</td>
+<td>sync current stage if not stalled</td>
+</tr>
+
+<tr>
+<td align="left">in-band</td>
+<td align="left">out-of-band</td>
+<td>switch to in-band + sync both stages</td>
+</tr>
+
+<tr>
+<td align="left">out-of-band</td>
+<td align="left">in-band</td>
+<td>sync both stages</td>
+</tr>
+
+<tr>
+<td align="left">in-band</td>
+<td align="left">in-band</td>
+<td>sync both stages</td>
+</tr>
+</tbody>
+</table>
+
+<div class="notices note" ><p>run_oob_call() is a lightweight operation that switches the CPU to the
+out-of-band interrupt stage for the duration of the call, whatever the
+underlying context may be. This is different from switching a task
+context to the out-of-band mode <em>indefinitely</em> by offloading it to the
+autonomous core for scheduling. The latter operation would involve <a href="/dovetail/altsched/#oob-switch">a
+more complex procedure</a>.</p>
+</div>
+
 
 
 <footer class=" footline" >
@@ -2392,20 +2468,20 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553763591"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553763591"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553763591"></script>
-    <script src="/js/jquery.sticky.js?1553763591"></script>
-    <script src="/js/featherlight.min.js?1553763591"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553763591"></script>
-    <script src="/js/highlight.pack.js?1553763591"></script>
+    <script src="/js/clipboard.min.js?1553872872"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553872872"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553872872"></script>
+    <script src="/js/jquery.sticky.js?1553872872"></script>
+    <script src="/js/featherlight.min.js?1553872872"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553872872"></script>
+    <script src="/js/highlight.pack.js?1553872872"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553763591"></script>
-    <script src="/js/learn.js?1553763591"></script>
-    <script src="/js/hugo-learn.js?1553763591"></script>
+    <script src="/js/modernizr.custom.71422.js?1553872872"></script>
+    <script src="/js/learn.js?1553872872"></script>
+    <script src="/js/hugo-learn.js?1553872872"></script>
 
-    <link href="/mermaid/mermaid.css?1553763591" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553763591"></script>
+    <link href="/mermaid/mermaid.css?1553872872" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553872872"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

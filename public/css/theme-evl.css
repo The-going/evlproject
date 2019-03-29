@@ -128,3 +128,10 @@ table.status {
 th, td {
     text-align: center;
 }
+
+div.proto {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 500;
+    font-family: "Consolas", menlo, monospace;
+    font-size: 115%;
+}

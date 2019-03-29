@@ -12,19 +12,19 @@
     <title> :: Evenless core documentation</title>
 
     
-    <link href="/css/nucleus.css?1553763591" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553763591" rel="stylesheet">
-    <link href="/css/hybrid.css?1553763591" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553763591" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553763591" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553763591" rel="stylesheet">
-    <link href="/css/theme.css?1553763591" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553763591" rel="stylesheet">
+    <link href="/css/nucleus.css?1553872872" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553872872" rel="stylesheet">
+    <link href="/css/hybrid.css?1553872872" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553872872" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553872872" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553872872" rel="stylesheet">
+    <link href="/css/theme.css?1553872872" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553872872" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553763591" rel="stylesheet">
+      <link href="/css/theme-evl.css?1553872872" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553763591"></script>
+    <script src="/js/jquery-2.x.min.js?1553872872"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553763591"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553763591"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1553872872"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553872872"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553763591"></script>
+<script type="text/javascript" src="/js/search.js?1553872872"></script>
 
     
   </div>
@@ -1428,44 +1428,7 @@
 <li>
 <ul>
 <li><a href="#thread-element">Thread element</a></li>
-<li><a href="#thread-services">Thread services</a>
-<ul>
-<li><a href="#evl_attach_self">int evl_attach_self(const char *<em>fmt</em>, &hellip;)</a>
-<ul>
-<li><a href="#arguments">Arguments</a></li>
-<li><a href="#return-value">Return value</a></li>
-<li><a href="#example">Example</a></li>
-<li><a href="#notes">Notes</a></li>
-</ul></li>
-<li><a href="#evl_detach_self">int evl_detach_self(void)</a>
-<ul>
-<li><a href="#return-value-1">Return value</a></li>
-<li><a href="#example-1">Example</a></li>
-<li><a href="#detached-thread-notes">Notes</a></li>
-</ul></li>
-<li><a href="#int-evl-get-self-void">int evl_get_self(void)</a>
-<ul>
-<li><a href="#return-value-2">Return value</a></li>
-<li><a href="#example-2">Example</a></li>
-<li><a href="#note">Note</a></li>
-</ul></li>
-<li><a href="#evl_switch_oob">int evl_switch_oob(void)</a>
-<ul>
-<li><a href="#return-value-3">Return value</a></li>
-</ul></li>
-<li><a href="#evl_switch_inband">int evl_switch_inband(void)</a>
-<ul>
-<li><a href="#return-value-4">Return value</a></li>
-</ul></li>
-<li><a href="#evl_set_schedattr">int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)</a>
-<ul>
-<li><a href="#return-value-5">Return value</a></li>
-<li><a href="#example-3">Example</a></li>
-<li><a href="#note-1">Note</a></li>
-</ul></li>
-<li><a href="#int-evl-get-schedattr-int-efd-struct-evl-sched-attrs-attrs">int evl_get_schedattr(int efd, struct evl_sched_attrs *attrs)</a></li>
-<li><a href="#int-evl-get-state-int-efd-struct-evl-thread-state-statebuf">int evl_get_state(int efd, struct evl_thread_state *statebuf)</a></li>
-</ul></li>
+<li><a href="#thread-services">Thread services</a></li>
 <li><a href="#can-evl-threads-run-in-kernel-space">Can EVL threads run in kernel space?</a></li>
 <li><a href="#where-do-thread-devices-live">Where do thread devices live?</a></li>
 <li><a href="#how-to-reach-a-remote-evl-thread">How to reach a remote EVL thread?</a></li>
@@ -1498,27 +1461,19 @@
 <p>The main kernel&rsquo;s thread is the basic execution unit in EVL. The most
 common kind of EVL threads is a regular POSIX thread started by
 <code>pthread_create(3)</code> which has attached itself to the EVL core by a
-call to <a href=""><code>evl_attach_self()</code></a>. Once a
+call to <a href="/core/user-api/thread/#evl_attach_self"><code>evl_attach_self()</code></a>. Once a
 POSIX thread attached itself to EVL, it can:</p>
 
 <ul>
-<li>request real-time services to the core, exclusively by calling
+<li><p>request real-time services to the core, exclusively by calling
 routines available from the EVL library . In this case, and only in
 this one, you get real-time guarantees for the caller. This is what
 time-critical processing loops are supposed to use. Such request may
 switch the calling thread to the out-of-band <a href="/dovetail/pipeline/#two-stage-pipeline">execution
 stage</a>, for running under EVL&rsquo;s supervision in order to ensure
-real-time behaviour.</li>
-</ul>
+real-time behaviour.</p></li>
 
-<div class="notices info" ><p>A thread which is being scheduled by EVL instead of the main kernel is
-said to be running <strong>out-of-band</strong>, as defined by <a href="/dovetail/pipeline/">Dovetail</a>. It remains in this mode
-until it asks for a service which the main kernel provides.</p>
-</div>
-
-
-<ul>
-<li>invoke services from your favourite C library (<em>glibc</em>, <em>musl</em>,
+<li><p>invoke services from your favourite C library (<em>glibc</em>, <em>musl</em>,
 <em>uClibc</em> etc.), which may end up issuing system calls to the main
 kernel for carrying out the job. EVL may have to demote the caller
 automatically from the EVL context to a runtime mode which is
@@ -1528,92 +1483,91 @@ figures anymore, but you do have access to any feature the main
 kernel provides. This mode is normally reserved to initialization
 and cleanup phases of your application. If you end up using them in
 the middle of a would-be time-critical loop, well, something is
-seriously wrong in this code.</li>
+seriously wrong in this code.</p></li>
 </ul>
 
-<div class="notices info" ><p>A thread which is being scheduled by the main kernel instead of EVL is
-said to be running <strong>in-band</strong>, as defined by <a href="/dovetail/pipeline/">Dovetail</a>. It remains in this mode until it
-asks for a service which EVL can only provide when the caller runs
-out-of-band.</p>
+<div class="notices info" ><p>A thread which is being scheduled by EVL instead of the main kernel is
+said to be running <strong>out-of-band</strong>, as defined by <a href="/dovetail/pipeline/">Dovetail</a>. It remains in this mode
+until it asks for a service which the main kernel provides.
+Conversely, a thread which is being scheduled by the main kernel
+instead of EVL is said to be running <strong>in-band</strong>, as defined by
+<a href="/dovetail/pipeline/">Dovetail</a>. It remains
+in this mode until it asks for a service which EVL can only provide
+to the caller when it runs out-of-band.</p>
 </div>
 
-
-<hr />
 
 <h3 id="thread-services">Thread services</h3>
 
-<h4 id="evl_attach_self">int evl_attach_self(const char *<em>fmt</em>, &hellip;)</h4>
+<hr />
 
-<p>EVL does not really <em>create</em> threads; instead, it enables a regular
+<div class="proto"><a name="evl_attach_self"></a>
+int evl_attach_self(const char *fmt, ...)
+</div>
+
+
+<p>EVL does not actually <em>create</em> threads; instead, it enables a regular
 POSIX thread to invoke its real-time services once this thread has
-attached to the EVL core.  <code>evl_attach_self()</code> is the library call
-which requests such attachment. All you need to provide is a <em>unique</em>
-thread name, which will be the name of the device element representing
-that thread in the file system.</p>
+attached to the EVL core.  evl_attach_self() is the library call which
+requests such attachment. All you need to provide is a <em>unique</em> thread
+name, which will be the name of the device element representing that
+thread in the file system.</p>
 
-<p>There is no requirement as of when <code>evl_attach_self()</code> should be
-called in a thread&rsquo;s execution flow. You just have to call it before
-it starts requesting EVL services.</p>
+<p>There is no requirement as of when evl_attach_self() should be called
+in a thread&rsquo;s execution flow. You just have to call it before it
+starts requesting EVL services. Note that the main thread of a process
+is no different from any other thread to EVL. It may call
+evl_attach_self() whenever you see fit, or not at all if you don&rsquo;t
+plan to request EVL services from this context.</p>
 
-<div class="notices note" ><p>The <code>main()</code> thread of a process is no different from any other thread
-to EVL. It may call <code>evl_attach_self()</code> whenever you see fit, or not
-at all if you don&rsquo;t plan to request EVL services from this context.</p>
-</div>
-
-
-<h5 id="arguments">Arguments</h5>
-
-<p><em>fmt</em>   A printf-like format string to generate the thread name. A
-common way of generating unique thread names is to add the calling
-process&rsquo;s <em>pid</em> somewhere into the format string as illustrated in the
-example.</p>
-
-<div class="notices warning" ><p>The generated name is used to form a file path, referring to the new
-thread element&rsquo;s device in the file system. So this name must contain
-only valid characters in this context, excluding slashes.</p>
-</div>
+<p><li><i>fmt</i><p>A printf-like format string to generate the thread name. A common way
+of generating unique thread names is to add the calling process&rsquo;s
+<em>pid</em> somewhere into the format string as illustrated in the
+example. The generated name is used to form a file path, referring to
+the new thread element&rsquo;s device in the file system. So this name must
+contain only valid characters in this context, excluding slashes.</p>
+</li></p>
 
 
-<p>&hellip; The optional variable argument list completing the format.</p>
+<p><li><i>...</i><p>The optional variable argument list completing the format.</p>
+</li></p>
 
-<h5 id="return-value">Return value</h5>
 
-<p><code>evl_attach_self()</code> returns the file descriptor of the newly attached
+<p>evl_attach_self() returns the file descriptor of the newly attached
 thread on success. You may use this <em>fd</em> to submit requests for the
 newly attached thread in other calls from the EVL library which ask
-for a thread file descriptor.</p>
+for a thread file descriptor. If the call fails, a negated error code
+is returned instead:</p>
 
-<p>If the call fails, a negated error code is returned:</p>
+<ul>
+<li><p>-EEXIST   The generated name is conflicting with an existing thread&rsquo;s
+    name.</p></li>
 
-<p>-EEXIST     The generated name is conflicting with an existing thread&rsquo;s
-        name.</p>
+<li><p>-EINVAL   The generated name is badly formed, likely containing
+    invalid character(s), such as a slash. Keep in mind that
+    it should be usable as a basename of a device element&rsquo;s file path.</p></li>
 
-<p>-EINVAL     The generated name is badly formed, likely containing
-        invalid character(s), such as a slash. Keep in mind that
-        it should be usable as a basename of a device element&rsquo;s file path.</p>
+<li><p>-ENAMETOOLONG The overall length of the device element&rsquo;s file path including
+    the generated name exceeds PATH_MAX.</p></li>
 
-<p>-ENAMETOOLONG   The overall length of the device element&rsquo;s file path including
-        the generated name exceeds PATH_MAX.</p>
+<li><p>-EMFILE   The per-process limit on the number of open file descriptors
+    has been reached.</p></li>
 
-<p>-EMFILE     The per-process limit on the number of open file descriptors
-        has been reached.</p>
+<li><p>-ENFILE   The system-wide limit on the total number of open files
+    has been reached.</p></li>
 
-<p>-ENFILE     The system-wide limit on the total number of open files
-        has been reached.</p>
+<li><p>-EPERM    The caller is not allowed to lock memory via a call to
+    <code>mlockall(2)</code>. Since memory locking is a requirement for running
+    EVL threads, no joy.</p></li>
 
-<p>-EPERM      The caller is not allowed to lock memory via a call to
-        <code>mlockall(2)</code>. Since memory locking is a requirement for running
-        EVL threads, no joy.</p>
+<li><p>-ENOMEM   No memory available, whether the kernel could not
+    lock down all of the calling process&rsquo;s virtual address
+    space into RAM, or some other reason related to some
+    process or driver eating way too much virtual or physical
+    memory. You may start panicking.</p></li>
 
-<p>-ENOMEM     No memory available, whether the kernel could not
-        lock down all of the calling process&rsquo;s virtual address
-        space into RAM, or some other reason related to some
-        process or driver eating way too much virtual or physical
-        memory. You may start panicking.</p>
-
-<p>-ENOSYS     There is no EVL core enabled in the running kernel.</p>
-
-<h5 id="example">Example</h5>
+<li><p>-ENOSYS   The EVL core is not enabled in the running kernel.</p></li>
+</ul>
 
 <pre><code>#include &lt;evl/thread.h&gt;
 
@@ -1636,18 +1590,16 @@ crw-rw----    1 root     root      246,   1 Jan  1  1970 clone
 crw-rw----    1 root     root      246,   1 Jan  1  1970 cruncher-2712
 </code></pre>
 
-<h5 id="notes">Notes</h5>
-
 <ol>
 <li><p>You can revert the attachment to EVL at any time by calling
-<a href=""><code>evl_detach_self()</code></a> from the context
+<a href="/core/user-api/thread/#evl_detach_self"><code>evl_detach_self()</code></a> from the context
 of the thread to detach.</p></li>
 
 <li><p>Closing all the file descriptors referring to an EVL thread is not
 enough to drop its attachment to the EVL core. It merely prevents to
 submit any further request for the original thread via calls taking
 file descriptors. You would still have to call
-<a href=""><code>evl_detach_self()</code></a> from
+<a href="/core/user-api/thread/#evl_detach_self"><code>evl_detach_self()</code></a> from
 the context of this thread to fully detach it.</p></li>
 
 <li><p>If a valid file descriptor is still referring to a detached thread,
@@ -1655,7 +1607,7 @@ or after the thread has exited, any request submitted for that thread
 using such <em>fd</em> would receive -ESTALE.</p></li>
 
 <li><p>An EVL thread which exits is automatically detached from the EVL
-core, you don&rsquo;t have to call <a href=""><code>evl_detach_self()</code></a>
+core, you don&rsquo;t have to call <a href="/core/user-api/thread/#evl_detach_self"><code>evl_detach_self()</code></a>
 explicitly before exiting your thread.</p></li>
 
 <li><p>The EVL core drops the kernel resources attached to a thread once
@@ -1669,20 +1621,18 @@ referring to the newly attached thread before returning from
 
 <hr />
 
-<h4 id="evl_detach_self">int evl_detach_self(void)</h4>
+<div class="proto"><a name="evl_detach_self"></a>
+int evl_detach_self(void)
+</div>
 
-<p><code>evl_detach_self()</code> reverts the action of <a href=""><code>evl_attach_self()</code></a>,
+
+<p><code>evl_detach_self()</code> reverts the action of <a href="/core/user-api/thread/#evl_attach_self"><code>evl_attach_self()</code></a>,
 detaching the calling thread from the EVL core. Once this operation
-has succeeded, the current thread cannot submit EVL requests anymore.</p>
-
-<h5 id="return-value-1">Return value</h5>
-
-<p>This call returns zero on success, or a negated error code if something
-went wrong:</p>
+has succeeded, the current thread cannot submit EVL requests
+anymore. This call returns zero on success, or a negated error code if
+something went wrong:</p>
 
 <p>-EPERM      The current thread is not attached to the EVL core.</p>
-
-<h5 id="example-1">Example</h5>
 
 <pre><code>#include &lt;evl/thread.h&gt;
 
@@ -1699,11 +1649,9 @@ static void *byte_crunching_thread(void *arg)
 }
 </code></pre>
 
-<h5 id="detached-thread-notes">Notes</h5>
-
 <ol>
 <li><p>You can re-attach the detached thread to EVL at any time by calling
-<a href=""><code>evl_attach_self()</code></a> again.</p></li>
+<a href="/core/user-api/thread/#evl_attach_self"><code>evl_attach_self()</code></a> again.</p></li>
 
 <li><p>If a valid file descriptor is still referring to a detached thread,
 or after the thread has exited, any request submitted for that thread
@@ -1720,21 +1668,19 @@ descriptors referring to that thread have been closed.</p></li>
 
 <hr />
 
-<h4 id="int-evl-get-self-void">int evl_get_self(void)</h4>
+<div class="proto"><a name="evl_get_self"></a>
+int evl_get_self(void)
+</div>
+
 
 <p><code>evl_get_self()</code> returns the file descriptor obtained for the current
-thread after a successful call to <a href=""><code>evl_attach_self()</code></a>.  You
-may use this <em>fd</em> to submit requests for the current thread in other
-calls from the EVL library which ask for a thread file descriptor.</p>
-
-<h5 id="return-value-2">Return value</h5>
-
-<p>This call returns a valid file descriptor referring to the caller on
+thread after a successful call to <a href="/core/user-api/thread/#evl_attach_self"><code>evl_attach_self()</code></a>.  You may use
+this <em>fd</em> to submit requests for the current thread in other calls
+from the EVL library which ask for a thread file descriptor.  This
+call returns a valid file descriptor referring to the caller on
 success, or a negated error code if something went wrong:</p>
 
 <p>-EPERM      The current thread is not attached to the EVL core.</p>
-
-<h5 id="example-2">Example</h5>
 
 <pre><code>#include &lt;evl/thread.h&gt;
 
@@ -1752,13 +1698,14 @@ static void get_caller_info(void)
 }
 </code></pre>
 
-<h5 id="note">Note</h5>
-
-<p><code>evl_get_self()</code> will fail after a call to <a href=""><code>evl_detach_self()</code></a>.</p>
+<p><code>evl_get_self()</code> will fail after a call to <a href="/core/user-api/thread/#evl_detach_self"><code>evl_detach_self()</code></a>.</p>
 
 <hr />
 
-<h4 id="evl_switch_oob">int evl_switch_oob(void)</h4>
+<div class="proto"><a name="evl_attach_self"></a>
+int evl_switch_oob(void)
+</div>
+
 
 <p>Applications are unlikely to ever use this call explicitly: it
 switches the calling thread to the out-of-band <a href="/dovetail/pipeline/#two-stage-pipeline">execution
@@ -1772,7 +1719,10 @@ high-level API based on the EVL core library might have to enforce a
 particular execution stage, based on a deep knowledge of how EVL works
 internally. Entering a syscall-free section of code for which the
 out-of-band mode needs to be guaranteed on entry would be the only
-valid reason to call <code>evl_switch_oob()</code>.</p>
+valid reason to call <code>evl_switch_oob()</code>.  This call returns zero on
+success, or a negated error code if something went wrong:</p>
+
+<p>-EPERM      The current thread is not attached to the EVL core.</p>
 
 <div class="notices warning" ><p>Forcing the current execution stage between in-band and out-of-band
 stages is a heavyweight operation: this entails two thread context
@@ -1787,16 +1737,12 @@ eagerly.</p>
 </div>
 
 
-<h5 id="return-value-3">Return value</h5>
-
-<p>This call returns zero on success, or a negated error code if
-something went wrong:</p>
-
-<p>-EPERM      The current thread is not attached to the EVL core.</p>
-
 <hr />
 
-<h4 id="evl_switch_inband">int evl_switch_inband(void)</h4>
+<div class="proto"><a name="evl_switch_inband"></a>
+int evl_switch_inband(void)
+</div>
+
 
 <p>Applications are unlikely to ever use this call explicitly: it
 switches the calling thread to the in-band <a href="/dovetail/pipeline/#two-stage-pipeline">execution stage</a>, for running
@@ -1810,7 +1756,10 @@ high-level API based on the EVL core library might have to enforce a
 particular execution stage, based on a deep knowledge of how EVL works
 internally. Entering a syscall-free section of code for which the
 in-band mode needs to be guaranteed on entry would be the only valid
-reason to call <code>evl_switch_inband()</code>.</p>
+reason to call <code>evl_switch_inband()</code>.  This call returns zero on
+success, or a negated error code if something went wrong:</p>
+
+<p>-EPERM      The current thread is not attached to the EVL core.</p>
 
 <div class="notices warning" ><p>Forcing the current execution stage between in-band and out-of-band
 stages is a heavyweight operation: this entails two thread context
@@ -1823,28 +1772,28 @@ something is wrong</strong> in such code.</p>
 </div>
 
 
-<h5 id="return-value-4">Return value</h5>
-
-<p>This call returns zero on success, or a negated error code if
-something went wrong:</p>
-
-<p>-EPERM      The current thread is not attached to the EVL core.</p>
-
 <hr />
 
-<h4 id="evl_set_schedattr">int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)</h4>
+<div class="proto"><a name="evl_set_schedattr"></a>
+int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)
+</div>
+
 
 <p>This call changes the scheduling attributes for the thread referred to
 by <em>efd</em> in the EVL core.</p>
 
-<p><em>efd</em>   A file descriptor referring to the target thread, as returned by
-    <code>evl_attach_self()</code>, <code>evl_get_self()</code>, or opening a thread
-    element device in <em>/dev/evl/thread</em> using <code>open(2)</code>.</p>
+<p><li><i>efd</i><p>A file descriptor referring to the target thread, as returned by
+<code>evl_attach_self()</code>, <code>evl_get_self()</code>, or opening a thread
+element device in <em>/dev/evl/thread</em> using <code>open(2)</code>.</p>
+</li></p>
 
-<p><em>attrs</em> A structure defining the new set of attributes, which depends
-    on the scheduling policy mentioned in
-    <code>attrs-&gt;sched_policy</code>. EVL currently implement the following
-    policies:</p>
+
+<p><li><i>attrs</i><p>A structure defining the new set of attributes, which depends
+on the scheduling policy mentioned in
+<code>attrs-&gt;sched_policy</code>. EVL currently implement the following
+policies:</p>
+</li></p>
+
 
 <ul>
 <li><p><a href="/core/user-api/scheduling/#SCHED_FIFO">SCHED_FIFO</a>, which is the
@@ -1867,8 +1816,6 @@ the expense of briefly switching to the out-of-band execution stage
 on demand.</p></li>
 </ul>
 
-<h5 id="return-value-5">Return value</h5>
-
 <p><code>evl_sched_attrs()</code> returns zero on success, otherwise a negated error
 code is returned:</p>
 
@@ -1878,9 +1825,7 @@ code is returned:</p>
         <code>attrs-&gt;sched_policy</code>, and the policy-specific
         information may EVL expect for more.</p>
 
-<p>-ESTALE <em>efd</em> refers to a stale thread, see these <a href="">notes</a>.</p>
-
-<h5 id="example-3">Example</h5>
+<p>-ESTALE <em>efd</em> refers to a stale thread, see these <a href="/core/user-api/thread/#detached-thread-notes">notes</a>.</p>
 
 <pre><code>#include &lt;evl/thread.h&gt;
 
@@ -1895,20 +1840,11 @@ int change_self_schedparams(void)
 }
 </code></pre>
 
-<h5 id="note-1">Note</h5>
-
 <p><code>evl_set_schedattr()</code> immediately changes the scheduling attributes
 the EVL core uses for the target thread when it runs in out-of-band
 context. Later on, the next time such thread transitions from
 out-of-band to in-band context, the main kernel will apply an
 extrapolated version of those changes to its own scheduler as well.</p>
-
-<div class="notices note" ><p>Calling <code>pthread_setschedparam()</code> from the C library does not affect
-the scheduling attributes of an EVL thread. It only affects the
-scheduling parameters of such thread from the standpoint of the main
-kernel.</p>
-</div>
-
 
 <p>The extrapolation of the out-of-band scheduling attributes passed to
 <code>evl_set_schedattr()</code> to the in-band ones applied by the mainline
@@ -1945,20 +1881,29 @@ kernel works as follows:</p>
 </tbody>
 </table>
 
-<div class="notices warning" ><p>The C library may cache the current scheduling attributes for the
-in-band context of a thread, <em>glibc</em> does so typically. Since EVL
-passes on the changes to the main kernel only, the cached value may
-not reflect the actual scheduling attributes of the thread anymore.</p>
+<div class="notices warning" ><p>Calling <code>pthread_setschedparam()</code> from the C library does not affect
+the scheduling attributes of an EVL thread. It only affects the
+scheduling parameters of such thread from the standpoint of the main
+kernel. Because the C library may cache the current scheduling
+attributes for the in-band context of a thread - <em>glibc</em> does so
+typically - the cached value may not reflect the actual scheduling
+attributes of the thread after this call.</p>
 </div>
 
 
 <hr />
 
-<h4 id="int-evl-get-schedattr-int-efd-struct-evl-sched-attrs-attrs">int evl_get_schedattr(int efd, struct evl_sched_attrs *attrs)</h4>
+<div class="proto"><a name="evl_get_schedattr"></a>
+int evl_get_schedattr(int efd, struct evl_sched_attrs *attrs)
+</div>
+
 
 <hr />
 
-<h4 id="int-evl-get-state-int-efd-struct-evl-thread-state-statebuf">int evl_get_state(int efd, struct evl_thread_state *statebuf)</h4>
+<div class="proto"><a name="evl_get_state"></a>
+int evl_get_state(int efd, struct evl_thread_state *statebuf)
+</div>
+
 
 <hr />
 
@@ -2986,20 +2931,20 @@ total 0
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553763591"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553763591"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553763591"></script>
-    <script src="/js/jquery.sticky.js?1553763591"></script>
-    <script src="/js/featherlight.min.js?1553763591"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553763591"></script>
-    <script src="/js/highlight.pack.js?1553763591"></script>
+    <script src="/js/clipboard.min.js?1553872872"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553872872"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553872872"></script>
+    <script src="/js/jquery.sticky.js?1553872872"></script>
+    <script src="/js/featherlight.min.js?1553872872"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553872872"></script>
+    <script src="/js/highlight.pack.js?1553872872"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553763591"></script>
-    <script src="/js/learn.js?1553763591"></script>
-    <script src="/js/hugo-learn.js?1553763591"></script>
+    <script src="/js/modernizr.custom.71422.js?1553872872"></script>
+    <script src="/js/learn.js?1553872872"></script>
+    <script src="/js/hugo-learn.js?1553872872"></script>
 
-    <link href="/mermaid/mermaid.css?1553763591" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553763591"></script>
+    <link href="/mermaid/mermaid.css?1553872872" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553872872"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
