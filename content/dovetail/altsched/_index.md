@@ -119,6 +119,53 @@ as follows:
 
 ![Alt text](/images/altsched.png "Alternate scheduling")
 
+---
+
+{{< proto dovetail_init_altsched >}}
+void dovetail_init_altsched(struct dovetail_altsched_context *p)
+{{< /proto >}}
+
+This call initializes the alternate scheduling context for the current
+task; this should be done once, before the task calls
+`dovetail_start_altsched()`.
+
+{{% argument p %}}
+The alternate scheduling context is kept in a per-task structure of
+type _dovetail_altsched_context_ which should be maintained by the
+autonomous core. This can be done as part of the [per-task context
+management]({{< relref
+"dovetail/altsched/_index.md#dovetail-task-context" >}}) facility
+Dovetail introduces.
+{{% /argument %}}
+
+---
+
+{{< proto dovetail_start_altsched >}}
+void dovetail_start_altsched(void)
+{{< /proto >}}
+
+This call tells the kernel that the current task may request alternate
+scheduling operations any time from now on, such as [switching
+out-of-band]({{< relref "dovetail/altsched/_index.md#oob-switch" >}})
+or back [in-band]({{< relref
+"dovetail/altsched/_index.md#inband-switch" >}}). It also activates
+the [event notifier]({{< relref
+"dovetail/altsched/_index.md#event-notifier" >}}) for the task, which
+allows it to emit out-of-band system calls to the core.
+
+---
+
+{{< proto dovetail_stop_altsched >}}
+void dovetail_stop_altsched(void)
+{{< /proto >}}
+
+This call disables the [event notifier]({{< relref
+"dovetail/altsched/_index.md#event-notifier" >}}) for the current
+task, which must be done before dismantling the alternate scheduling
+support for that task in the autonomous core.
+
+---
+
 ## What you really need to know at this point
 
 There is a not-so-subtle but somewhat confusing distinction between
@@ -428,7 +475,7 @@ in the same move.
    * the switch tail code of `schedule()` if _NEXT_ is completing an
      [out-of-band switch]({{< relref "#oob-switch" >}}).
 
-## The event notifier
+## The event notifier {#event-notifier}
 
 Once `dovetail_start_altsched()` has been called for a Linux task, it
 may receive events of interest with respect to running under the
@@ -573,3 +620,66 @@ The following events are defined (see _include/linux/dovetail.h_):
   sent before *mm* is entirely dropped, before the mappings are
   exited. Per-process resources which might be maintained by the
   core could be released there, as all tasks have exited.
+
+## Alternate task context {#dovetail-task-context}
+
+Your autonomous core will need to keep its own set of per-task data,
+starting with the [alternate scheduling context block]({{< relref
+"dovetail/altsched/_index.md#dovetail_init_altsched" >}}). To help in
+maintaining such information on a per-task, per-architecture basis,
+Dovetail adds the _struct oob\_thread\_state_ member to the
+(stack-based) thread information block (aka _struct thread\_info_)
+each kernel architecture port defines.
+
+You may want to fill that structure reserved to out-of-band support
+with any information your core may need for maintaining a task
+context. The core may then retrieve the address of the structure by
+calling [`dovetail_current_state()`]({{< relref
+"dovetail/altsched/_index.md#dovetail_current_state" >}}). For
+instance, this is the definition the EVL core has for the
+_oob\_thread\_state_ structure, storing a backpointer to its own task
+control block, along with a core-specific preemption count for fast
+stack-based access:
+
+```
+struct evl_thread;
+
+struct oob_thread_state {
+	struct evl_thread *thread;
+	int preempt_count;
+};
+```
+
+Which gives the following chain:
+
+{{<mermaid align="left">}}
+graph LR;
+    T("struct thread_info") --> |includes| t
+    t("struct oob_thread_state") -.-> |refers to| c
+    c("struct evl_thread")
+{{< /mermaid >}}
+
+By having this information defined in a file accessible from the
+architecture-specific code by including _\<dovetail/thread\_info.h\>_,
+the core-specific structure is automatically added to _struct
+thread\_info_ as required. For instance,
+
+> arch/arm/include/dovetail/thread_info.h
+```
+struct oob_thread_state {
+       /* Define your core-specific data here. */
+};
+
+```
+---
+
+{{< proto dovetail_current_state >}}
+struct oob_thread_state *dovetail_current_state(void)
+{{< /proto >}}
+
+This call retrieves the address of the out-of-band data structure for
+the current task, which is always a valid pointer. The content of this
+structure is zeroed when the task is created, and stays so until your
+autonomous core initializes it.
+
+---
