@@ -15,14 +15,16 @@ is a practical work on finding the best possible integration of such a
 dedicated software core into the mainline Linux kernel.
 
 EVL re-imagines the venerable dual kernel design by introducing the
-dual kernel support logic at the heart of the Linux kernel. Because
-Linux should define the set of rules to host a guest core, EVL has
-been designed specifically with this integration in mind.
+dual kernel support logic at the heart of Linux, which defines the set
+of rules to host a guest core.  EVL also comes with a real-time core
+showcasing this integration, which is conceived as a learning tool for
+discovering the dual kernel technology as much as it aims at excellent
+performance and usability.
 
-The key technical issue is about defining a new execution stage in the
-mainline kernel logic which would represent high priority, out-of-band
-activities separated from the common work running in-band.  This
-requires a few kernel subsystems to know intimately about the new
+The key technical issue is about introducing a new execution stage in
+the mainline kernel logic which would represent high priority,
+out-of-band activities separated from the common work running in-band.
+This requires a few kernel subsystems to know intimately about the new
 execution context, which in turn has the following upsides:
 
 - the integration is simpler and cleaner, because we don't need
@@ -55,10 +57,7 @@ composed of:
   aims at delivering reliable low-latency services to applications
   which have to meet real-time requirements. It is developed like any
   ordinary feature of the mainline kernel, making the best of the rich
-  infrastructure we have there for improving the integration. This
-  core is conceived as a learning tool for discovering the dual kernel
-  technology as much as it aims at excellent performance and
-  usability.
+  infrastructure we have there for improving the integration.
 
 - an in-depth documentation which covers both Dovetail and the EVL
   core, with many cross-references between them, so that people can
