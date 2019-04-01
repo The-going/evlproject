@@ -4,27 +4,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Hugo 0.37.1" />
-    <meta name="description" content="Evenless co-kernel">
+    <meta name="description" content="Evenless project">
 <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
 
     <link rel="icon" href="/images/favicon.png" type="image/png">
 
-    <title>Evenless :: Evenless core documentation</title>
+    <title>Evenless :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1553872872" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553872872" rel="stylesheet">
-    <link href="/css/hybrid.css?1553872872" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553872872" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553872872" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553872872" rel="stylesheet">
-    <link href="/css/theme.css?1553872872" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553872872" rel="stylesheet">
+    <link href="/css/nucleus.css?1554128136" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554128136" rel="stylesheet">
+    <link href="/css/hybrid.css?1554128136" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554128136" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554128136" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554128136" rel="stylesheet">
+    <link href="/css/theme.css?1554128136" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554128136" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553872872" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554128136" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553872872"></script>
+    <script src="/js/jquery-2.x.min.js?1554128136"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553872872"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553872872"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554128136"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554128136"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553872872"></script>
+<script type="text/javascript" src="/js/search.js?1554128136"></script>
 
     
   </div>
@@ -1389,9 +1389,9 @@
  
 
 
-<h1 id="evenless-dual-kernel-rebooted">Evenless - Dual Kernel Rebooted</h1>
+<h1 id="evenless">Evenless</h1>
 
-<h2 id="what-why-and-how">What, Why, and How?</h2>
+<h2 id="dual-kernel-rebooted">Dual Kernel Rebooted</h2>
 
 <p>For some classes of application, offloading a particular set of
 time-critical tasks to an autonomous core which is hosted by the main
@@ -1399,25 +1399,59 @@ Linux kernel may deliver better performance for a lesser engineering
 cost, compared to forcing the entire kernel system to meet the most
 stringent requirements only those tasks have. <em>Evenless</em> (EVL for
 short) is a practical work on finding the best possible integration of
-such a dedicated software core into the mainline kernel. It reboots
-the venerable dual kernel design, this time starting from the main
-kernel perspective, not from the foreign code extension one would slap
-on top of it.</p>
+such a dedicated software core into the mainline Linux kernel.</p>
 
-<p>The key issue is about defining a new execution stage in the mainline
-kernel logic which would represent high priority, out-of-band
-activities, separated from the common work running in-band.  Doing so
-requires a few kernel subsystems to know intimately about such a
-stage. An architecture-independent interface should enable any flavour
-of autonomous core to run over the out-of-band stage the main kernel
-defines. This is the goal of the <a href="/dovetail/">Dovetail</a> interface which is being worked out.</p>
+<p>EVL reboots the venerable dual kernel design by introducing the dual
+kernel support logic at the heart of the main kernel. Because Linux
+should define the set of rules for a guest software core to be hosted
+instead of the other way around, this time we start working from the
+perspective of the main kernel, not from a foreign code extension&rsquo;s
+one might want to slap on top of it.</p>
 
-<p>Then, we need a small autonomous core showcasing <a href="/dovetail/">Dovetail</a>. Such core should deliver reliable
-low-latency services to applications which have to meet real-time
-requirements. Last but not least, it should be developed like any
+<p>The key technical issue is about defining a new execution stage in the
+mainline kernel logic which would represent high priority, out-of-band
+activities separated from the common work running in-band.  This
+requires a few kernel subsystems to know intimately about the new
+execution context, which in turn has the following upsides:</p>
+
+<ul>
+<li><p>the integration is simpler and cleaner, because we don&rsquo;t need
+sideways. The point is not about hiding the dual kernel interface
+from the main logic, but on the contrary to make it a customary
+interface of the main kernel.</p></li>
+
+<li><p>compared to the
+<a href="https://git.xenomai.org/xenomai/wikis/Getting_The_I_Pipe_Patch">I-pipe</a>
+which is the interface currently used by several dual kernel systems
+such as <a href="https://xenomai.org/">Xenomai</a>, maintaining the new
+<a href="/dovetail/">Dovetail dual kernel interface</a> out-of-tree proved to be a much easier task already, without
+fundamental conflicts with upstream changes, only marginal
+adjustments so far.</p></li>
+</ul>
+
+<h2 id="dual-kernel-made-easy">Dual kernel made easy</h2>
+
+<p>EVL as a project is about enabling engineers to implement their own
+flavour of software core running symbiotically with Linux, whatever
+the specific purpose of this core may be. This ongoing work is
+composed of:</p>
+
+<ul>
+<li><p>the <a href="/dovetail/">Dovetail</a> interface, which
+introduces a high-priority execution stage for the main kernel,
+enabling an independent software core to run on it.</p></li>
+
+<li><p>the <a href="/core/">EVL core</a>, a compact autonomous
+core showcasing <a href="/dovetail/">Dovetail</a>. It
+aims at delivering reliable low-latency services to applications
+which have to meet real-time requirements. It is developed like any
 ordinary feature of the mainline kernel, making the best of the rich
-infrastructure we have there for improving the integration. This is
-the point of the <a href="/core/">EVL core</a>.</p>
+infrastructure we have there for improving the integration.</p></li>
+
+<li><p>an in-depth documentation which covers both Dovetail and the EVL
+core, with many cross-references between them, so that people can
+implement their software core of choice almost by example.</p></li>
+</ul>
 
 <p>At the end of the day, the success criteria for EVL should be about
 exhibiting:</p>
@@ -1481,8 +1515,8 @@ build time about the ABI details of the system call interface
 implemented by the EVL core.</p></li>
 
 <li><p><a href="https://spdx.org/licenses/MIT.html">MIT</a> for all code from
-<code>libevl</code>, including the system call wrappers, utilities and test
-programs.</p></li>
+<code>libevl</code>, which implements the EVL system call wrappers, a few
+utilities and test programs.</p></li>
 </ul>
 	
   
@@ -2409,20 +2443,20 @@ programs.</p></li>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553872872"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553872872"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553872872"></script>
-    <script src="/js/jquery.sticky.js?1553872872"></script>
-    <script src="/js/featherlight.min.js?1553872872"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553872872"></script>
-    <script src="/js/highlight.pack.js?1553872872"></script>
+    <script src="/js/clipboard.min.js?1554128136"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554128136"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554128136"></script>
+    <script src="/js/jquery.sticky.js?1554128136"></script>
+    <script src="/js/featherlight.min.js?1554128136"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554128136"></script>
+    <script src="/js/highlight.pack.js?1554128136"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553872872"></script>
-    <script src="/js/learn.js?1553872872"></script>
-    <script src="/js/hugo-learn.js?1553872872"></script>
+    <script src="/js/modernizr.custom.71422.js?1554128136"></script>
+    <script src="/js/learn.js?1554128136"></script>
+    <script src="/js/hugo-learn.js?1554128136"></script>
 
-    <link href="/mermaid/mermaid.css?1553872872" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553872872"></script>
+    <link href="/mermaid/mermaid.css?1554128136" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554128136"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

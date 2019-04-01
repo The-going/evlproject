@@ -4,27 +4,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Hugo 0.37.1" />
-    <meta name="description" content="Evenless co-kernel">
+    <meta name="description" content="Evenless project">
 <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
 
     <link rel="icon" href="/images/favicon.png" type="image/png">
 
-    <title>Alternate scheduling :: Evenless core documentation</title>
+    <title>Alternate scheduling :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1553872872" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1553872872" rel="stylesheet">
-    <link href="/css/hybrid.css?1553872872" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1553872872" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1553872872" rel="stylesheet">
-    <link href="/css/auto-complete.css?1553872872" rel="stylesheet">
-    <link href="/css/theme.css?1553872872" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1553872872" rel="stylesheet">
+    <link href="/css/nucleus.css?1554128136" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554128136" rel="stylesheet">
+    <link href="/css/hybrid.css?1554128136" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554128136" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554128136" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554128136" rel="stylesheet">
+    <link href="/css/theme.css?1554128136" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554128136" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1553872872" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554128136" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1553872872"></script>
+    <script src="/js/jquery-2.x.min.js?1554128136"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1553872872"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1553872872"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554128136"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554128136"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1553872872"></script>
+<script type="text/javascript" src="/js/search.js?1554128136"></script>
 
     
   </div>
@@ -1427,12 +1427,13 @@
 <li><a href="#inband-switch">In-band switch</a></li>
 </ul></li>
 <li><a href="#context-switching">Dovetail context switching</a></li>
-<li><a href="#the-event-notifier">The event notifier</a>
+<li><a href="#event-notifier">The event notifier</a>
 <ul>
 <li><a href="#out-of-band-exception-handling">Out-of-band exception handling</a></li>
 <li><a href="#system-calls">System calls</a></li>
 <li><a href="#in-band-events">In-band events</a></li>
 </ul></li>
+<li><a href="#dovetail-task-context">Alternate task context</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -1575,6 +1576,52 @@ state</a> allows it.</p></li>
 </ul>
 
 <p><img src="/images/altsched.png" alt="Alt text" title="Alternate scheduling" /></p>
+
+<hr />
+
+<div class="proto"><a name="dovetail_init_altsched"></a>
+void dovetail_init_altsched(struct dovetail_altsched_context *p)
+</div>
+
+
+<p>This call initializes the alternate scheduling context for the current
+task; this should be done once, before the task calls
+<code>dovetail_start_altsched()</code>.</p>
+
+<p><li><i>p</i><p>The alternate scheduling context is kept in a per-task structure of
+type _dovetail_altsched<em>context</em> which should be maintained by the
+autonomous core. This can be done as part of the <a href="/dovetail/altsched/#dovetail-task-context">per-task context
+management</a> facility
+Dovetail introduces.</p>
+</li></p>
+
+
+<hr />
+
+<div class="proto"><a name="dovetail_start_altsched"></a>
+void dovetail_start_altsched(void)
+</div>
+
+
+<p>This call tells the kernel that the current task may request alternate
+scheduling operations any time from now on, such as <a href="/dovetail/altsched/#oob-switch">switching
+out-of-band</a>
+or back <a href="/dovetail/altsched/#inband-switch">in-band</a>. It also activates
+the <a href="/dovetail/altsched/#event-notifier">event notifier</a> for the task, which
+allows it to emit out-of-band system calls to the core.</p>
+
+<hr />
+
+<div class="proto"><a name="dovetail_stop_altsched"></a>
+void dovetail_stop_altsched(void)
+</div>
+
+
+<p>This call disables the <a href="/dovetail/altsched/#event-notifier">event notifier</a> for the current
+task, which must be done before dismantling the alternate scheduling
+support for that task in the autonomous core.</p>
+
+<hr />
 
 <h2 id="what-you-really-need-to-know-at-this-point">What you really need to know at this point</h2>
 
@@ -1901,7 +1948,7 @@ out-of-band prior to sleeping.</p></li>
 </ul></li>
 </ol>
 
-<h2 id="the-event-notifier">The event notifier</h2>
+<h2 id="event-notifier">The event notifier</h2>
 
 <p>Once <code>dovetail_start_altsched()</code> has been called for a Linux task, it
 may receive events of interest with respect to running under the
@@ -2063,6 +2110,71 @@ pointer argument which relates to the event type.</p>
 <p>sent before <em>mm</em> is entirely dropped, before the mappings are
   exited. Per-process resources which might be maintained by the
   core could be released there, as all tasks have exited.</p>
+
+<h2 id="dovetail-task-context">Alternate task context</h2>
+
+<p>Your autonomous core will need to keep its own set of per-task data,
+starting with the <a href="/dovetail/altsched/#dovetail_init_altsched">alternate scheduling context block</a>. To help in
+maintaining such information on a per-task, per-architecture basis,
+Dovetail adds the <em>struct oob_thread_state</em> member to the
+(stack-based) thread information block (aka <em>struct thread_info</em>)
+each kernel architecture port defines.</p>
+
+<p>You may want to fill that structure reserved to out-of-band support
+with any information your core may need for maintaining a task
+context. The core may then retrieve the address of the structure by
+calling <a href="/dovetail/altsched/#dovetail_current_state"><code>dovetail_current_state()</code></a>. For
+instance, this is the definition the EVL core has for the
+<em>oob_thread_state</em> structure, storing a backpointer to its own task
+control block, along with a core-specific preemption count for fast
+stack-based access:</p>
+
+<pre><code>struct evl_thread;
+
+struct oob_thread_state {
+	struct evl_thread *thread;
+	int preempt_count;
+};
+</code></pre>
+
+<p>Which gives the following chain:</p>
+
+<div class="mermaid" align="left">
+graph LR;
+    T("struct thread_info") --> |includes| t
+    t("struct oob_thread_state") -.-> |refers to| c
+    c("struct evl_thread")
+</div>
+
+
+<p>By having this information defined in a file accessible from the
+architecture-specific code by including <em>&lt;dovetail/thread_info.h&gt;</em>,
+the core-specific structure is automatically added to <em>struct
+thread_info</em> as required. For instance,</p>
+
+<blockquote>
+<p>arch/arm/include/dovetail/thread_info.h</p>
+
+<pre><code>struct oob_thread_state {
+       /* Define your core-specific data here. */
+};
+
+</code></pre>
+
+<hr />
+</blockquote>
+
+<div class="proto"><a name="dovetail_current_state"></a>
+struct oob_thread_state *dovetail_current_state(void)
+</div>
+
+
+<p>This call retrieves the address of the out-of-band data structure for
+the current task, which is always a valid pointer. The content of this
+structure is zeroed when the task is created, and stays so until your
+autonomous core initializes it.</p>
+
+<hr />
 
 
 <footer class=" footline" >
@@ -2999,20 +3111,20 @@ pointer argument which relates to the event type.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1553872872"></script>
-    <script src="/js/perfect-scrollbar.min.js?1553872872"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1553872872"></script>
-    <script src="/js/jquery.sticky.js?1553872872"></script>
-    <script src="/js/featherlight.min.js?1553872872"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1553872872"></script>
-    <script src="/js/highlight.pack.js?1553872872"></script>
+    <script src="/js/clipboard.min.js?1554128136"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554128136"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554128136"></script>
+    <script src="/js/jquery.sticky.js?1554128136"></script>
+    <script src="/js/featherlight.min.js?1554128136"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554128136"></script>
+    <script src="/js/highlight.pack.js?1554128136"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1553872872"></script>
-    <script src="/js/learn.js?1553872872"></script>
-    <script src="/js/hugo-learn.js?1553872872"></script>
+    <script src="/js/modernizr.custom.71422.js?1554128136"></script>
+    <script src="/js/learn.js?1554128136"></script>
+    <script src="/js/hugo-learn.js?1554128136"></script>
 
-    <link href="/mermaid/mermaid.css?1553872872" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1553872872"></script>
+    <link href="/mermaid/mermaid.css?1554128136" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554128136"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
