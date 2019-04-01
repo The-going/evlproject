@@ -6,20 +6,18 @@ title: "Evenless"
 
 ## Dual Kernel Rebooted
 
-For some classes of application, offloading a particular set of
-time-critical tasks to an autonomous core which is hosted by the main
-Linux kernel may deliver better performance for a lesser engineering
-cost, compared to forcing the entire kernel system to meet the most
-stringent requirements only those tasks have. _Evenless_ (EVL for
-short) is a practical work on finding the best possible integration of
-such a dedicated software core into the mainline Linux kernel.
+For certain types of applications, offloading a particular set of
+time-critical tasks to an autonomous core hosted by the Linux kernel
+may deliver the best possible performance when compared to forcing the
+entire Linux kernel to meet the most stringent scheduling latency
+requirements that only those tasks may have. Evenless (EVL for short)
+is a practical work on finding the best possible integration of such a
+dedicated software core into the mainline Linux kernel.
 
-EVL reboots the venerable dual kernel design by introducing the dual
-kernel support logic at the heart of the main kernel. Because Linux
-should define the set of rules for a guest software core to be hosted
-instead of the other way around, this time we start working from the
-perspective of the main kernel, not from a foreign code extension's
-one might want to slap on top of it.
+EVL re-imagines the venerable dual kernel design by introducing the
+dual kernel support logic at the heart of the Linux kernel. Because
+Linux should define the set of rules to host a guest core, EVL has
+been designed specifically with this integration in mind.
 
 The key technical issue is about defining a new execution stage in the
 mainline kernel logic which would represent high priority, out-of-band
