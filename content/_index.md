@@ -57,7 +57,10 @@ composed of:
   aims at delivering reliable low-latency services to applications
   which have to meet real-time requirements. It is developed like any
   ordinary feature of the mainline kernel, making the best of the rich
-  infrastructure we have there for improving the integration.
+  infrastructure we have there for improving the integration. This
+  core is conceived as a learning tool for discovering the dual kernel
+  technology as much as it aims at excellent performance and
+  usability.
 
 - an in-depth documentation which covers both Dovetail and the EVL
   core, with many cross-references between them, so that people can
