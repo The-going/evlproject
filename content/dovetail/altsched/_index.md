@@ -502,6 +502,26 @@ _fpsimd_ management from this handler.
 
 ---
 
+{{< proto dovetail_resume_oob >}}
+void dovetail_resume_oob(struct dovetail_altsched_context *outgoing)
+{{< /proto >}}
+
+{{% argument outgoing %}}
+The [alternate scheduling context block]({{< relref
+"#dovetail_init_altsched" >}}) of the outgoing context, which should
+be the [low priority placeholder task's]({{< relref "#altsched-theory"
+>}}).
+{{% /argument %}}
+
+This routine informs the kernel that we are leaving the in-band
+context, right before resuming an out-of-band task. This allows the
+main kernel logic to save all the information that will be required to
+restore the in-band execution stage later on when the converse switch
+happens.  The only call site of `dovetail_resume_oob()` should be in
+the `core_schedule()` implementation.
+
+---
+
 ## The event notifier {#event-notifier}
 
 Once `dovetail_start_altsched()` has been called for a Linux task, it
