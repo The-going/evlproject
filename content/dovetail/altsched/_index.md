@@ -137,8 +137,7 @@ task; this should be done once, before the task calls
 The alternate scheduling context is kept in a per-task structure of
 type _dovetail_altsched_context_ which should be maintained by the
 autonomous core. This can be done as part of the [per-task context
-management]({{< relref
-"dovetail/altsched/_index.md#dovetail-task-context" >}}) facility
+management]({{< relref "#dovetail-task-context" >}}) facility
 Dovetail introduces.
 {{% /argument %}}
 
@@ -150,12 +149,10 @@ void dovetail_start_altsched(void)
 
 This call tells the kernel that the current task may request alternate
 scheduling operations any time from now on, such as [switching
-out-of-band]({{< relref "dovetail/altsched/_index.md#oob-switch" >}})
-or back [in-band]({{< relref
-"dovetail/altsched/_index.md#inband-switch" >}}). It also activates
-the [event notifier]({{< relref
-"dovetail/altsched/_index.md#event-notifier" >}}) for the task, which
-allows it to emit out-of-band system calls to the core.
+out-of-band]({{< relref "#oob-switch" >}}) or back [in-band]({{<
+relref "#inband-switch" >}}). It also activates the [event
+notifier]({{< relref "#event-notifier" >}}) for the task, which allows
+it to emit out-of-band system calls to the core.
 
 ---
 
@@ -163,10 +160,9 @@ allows it to emit out-of-band system calls to the core.
 void dovetail_stop_altsched(void)
 {{< /proto >}}
 
-This call disables the [event notifier]({{< relref
-"dovetail/altsched/_index.md#event-notifier" >}}) for the current
-task, which must be done before dismantling the alternate scheduling
-support for that task in the autonomous core.
+This call disables the [event notifier]({{< relref "#event-notifier"
+>}}) for the current task, which must be done before dismantling the
+alternate scheduling support for that task in the autonomous core.
 
 ---
 
@@ -480,6 +476,32 @@ in the same move.
    * the switch tail code of `schedule()` if _NEXT_ is completing an
      [out-of-band switch]({{< relref "#oob-switch" >}}).
 
+---
+
+{{< proto dovetail_context_switch >}}
+void dovetail_context_switch(struct dovetail_altsched_context *prev, struct dovetail_altsched_context *next)
+{{< /proto >}}
+
+{{% argument prev %}}
+The [alternate scheduling context block]({{< relref
+"#dovetail_init_altsched" >}}) of the outgoing task.
+{{% /argument %}}
+
+{{% argument next %}}
+The [alternate scheduling context block]({{< relref
+"#dovetail_init_altsched" >}}) of the incoming task.
+{{% /argument %}}
+
+This routine performs an out-of-band context switch. It must be called
+with hard IRQs off. The arch-specific `arch_dovetail_context_resume()`
+handler is called by the resuming task before leaving
+`dovetail_context_switch()`. This _weak_ handler should be overriden
+by a Dovetail port which requires arch-specific tweaks for completing
+the reactivation of _next_. For instance, the arm64 port performs the
+_fpsimd_ management from this handler.
+
+---
+
 ## The event notifier {#event-notifier}
 
 Once `dovetail_start_altsched()` has been called for a Linux task, it
@@ -488,7 +510,7 @@ supervision of an autonomous core. Those events are delivered by
 invoking _\_\_weak_ handlers which should by overriden by this
 core.
 
-### Out-of-band exception handling
+### Out-of-band exception handling {#oob-events}
 
 If a processor exception is raised while the CPU is busy running a
 task on the out-of-band stage (e.g. due to some invalid memory access,
@@ -514,7 +536,7 @@ frame of the faulting context (_struct pt\_regs_).
 
 Interrupts are **disabled** in the CPU when this handler is called.
 
-### System calls
+### System calls {#syscall-events}
 
 The autonomous core is likely to introduce its own set of system calls
 application tasks may invoke. From the standpoint of the main kernel,
@@ -582,11 +604,11 @@ is fine. Dovetail would notice and reconcile its logic according to
 the current stage on return of these handlers.
 {{% /notice %}}
 
-### In-band events
+### In-band events {#inband-events}
 
 The last set of notifications involves pure in-band events which the
 autonomous core may need to know about, as they may affect its own
-task management. Except for INBAND_PROCESS_CLEANUP which is called for
+task management. Except for `INBAND_PROCESS_CLEANUP` which is called for
 *any* exiting user-space task, all other notifications are only issued
 for tasks bound to the core (which may involve kthreads).
 
@@ -623,25 +645,42 @@ The following events are defined (see _include/linux/dovetail.h_):
 - INBAND_PROCESS_CLEANUP(struct mm_struct *mm)
 
   sent before *mm* is entirely dropped, before the mappings are
-  exited. Per-process resources which might be maintained by the
-  core could be released there, as all tasks have exited.
+  exited. Per-process resources which might still be maintained by the
+  core could be released there, as all tasks sharing this memory
+  context have exited. Unlike other events, this one is triggered for
+  *every* user-space task which is being dismantled by the kernel,
+  regardless of whether some of its threads were known from your
+  autonomous core.
 
 ## Alternate task context {#dovetail-task-context}
 
 Your autonomous core will need to keep its own set of per-task data,
 starting with the [alternate scheduling context block]({{< relref
-"dovetail/altsched/_index.md#dovetail_init_altsched" >}}). To help in
-maintaining such information on a per-task, per-architecture basis,
-Dovetail adds the _struct oob\_thread\_state_ member to the
+"#dovetail_init_altsched" >}}). To help in maintaining such
+information on a per-task, per-architecture basis, Dovetail adds the
+_oob\_state_ _member of type struct oob\_thread\_state_ to the
 (stack-based) thread information block (aka _struct thread\_info_)
 each kernel architecture port defines.
 
 You may want to fill that structure reserved to out-of-band support
 with any information your core may need for maintaining a task
-context. The core may then retrieve the address of the structure by
-calling [`dovetail_current_state()`]({{< relref
-"dovetail/altsched/_index.md#dovetail_current_state" >}}). For
-instance, this is the definition the EVL core has for the
+context. By having this information defined in a file accessible from
+the architecture-specific code by including
+_\<dovetail/thread\_info.h\>_, the core-specific structure is
+automatically added to _struct thread\_info_ as required. For
+instance:
+
+> arch/arm/include/dovetail/thread_info.h
+```
+struct oob_thread_state {
+       /* Define your core-specific per-task data here. */
+};
+
+```
+
+The core may then retrieve the address of the structure by calling
+[`dovetail_current_state()`]({{< relref "#dovetail_current_state"
+>}}). For instance, this is the definition the EVL core has for the
 _oob\_thread\_state_ structure, storing a backpointer to its own task
 control block, along with a core-specific preemption count for fast
 stack-based access:
@@ -664,18 +703,13 @@ graph LR;
     c("struct evl_thread")
 {{< /mermaid >}}
 
-By having this information defined in a file accessible from the
-architecture-specific code by including _\<dovetail/thread\_info.h\>_,
-the core-specific structure is automatically added to _struct
-thread\_info_ as required. For instance,
+Note that we should not add all of the out-of-band state data directly
+into the _oob\_thread\_state_ structure, because the latter is present
+in **every** _task\_struct_ descriptor, although only a few tasks may
+actually need it. Hence the backpointer to the _evl\_thread_ structure
+which only consumes a few bytes, so leaving it unused (NULL) for all
+other - in-band only - tasks is no big deal.
 
-> arch/arm/include/dovetail/thread_info.h
-```
-struct oob_thread_state {
-       /* Define your core-specific data here. */
-};
-
-```
 ---
 
 {{< proto dovetail_current_state >}}
@@ -686,5 +720,54 @@ This call retrieves the address of the out-of-band data structure for
 the current task, which is always a valid pointer. The content of this
 structure is zeroed when the task is created, and stays so until your
 autonomous core initializes it.
+
+---
+
+## Extended memory context {#dovetail-mm-context}
+
+Your autonomous core may also need to keep its own set of per-process
+data.  To help in maintaining such information on a per-_mm_ basis,
+Dovetail adds the _oob\_state_ member of type _struct oob\_mm\_state_
+to the generic _mm_ descriptor structure (aka _struct mm\_struct_).
+
+You may want to fill that structure reserved to out-of-band support
+with any information your core may need for maintaining a per-_mm_
+context. By having this information defined in a file accessible from
+the architecture-specific code by including _\<dovetail/mm\_info.h\>_,
+the core-specific structure is automatically added to _struct
+mm\_struct_ as required. For instance:
+
+> arch/arm/include/dovetail/mm_info.h
+```
+struct oob_mm_state {
+       /* Define your core-specific per-mm data here. */
+};
+
+```
+
+The core may then retrieve the address of the structure for the
+current task by calling [`dovetail_mm_state()`]({{< relref
+"#dovetail_mm_state" >}}). The EVL core does not define any extended
+memory context yet, but it could be used to maintain a per-process
+file descriptor table for instance.
+
+{{% notice tip %}}
+Catching the [`INBAND_PROCESS_CLEANUP`]({{< relref "#inband-events" >}})
+event would allow you to drop any resources attached to the extended
+memory context information, since it is called when this data is no
+longer in use by any thread of the exiting process.
+{{% /notice %}}
+
+---
+
+{{< proto dovetail_mm_state >}}
+struct oob_mm_state *dovetail_mm_state(void)
+{{< /proto >}}
+
+This call retrieves the address of the out-of-band data structure
+within the _mm_ descriptor of the current task, which is always a
+valid pointer. The content of this structure is zeroed when the memory
+context is created, and stays so until your autonomous core
+initializes it.
 
 ---
