@@ -12,19 +12,20 @@
     <title>Alternate scheduling :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1554146562" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1554146562" rel="stylesheet">
-    <link href="/css/hybrid.css?1554146562" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1554146562" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1554146562" rel="stylesheet">
-    <link href="/css/auto-complete.css?1554146562" rel="stylesheet">
-    <link href="/css/theme.css?1554146562" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1554146562" rel="stylesheet">
+    <link href="/css/nucleus.css?1554201814" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554201814" rel="stylesheet">
+    <link href="/css/hybrid.css?1554201814" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554201814" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554201814" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554201814" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1554201814" rel="stylesheet">
+    <link href="/css/theme.css?1554201814" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554201814" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1554146562" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554201814" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1554146562"></script>
+    <script src="/js/jquery-3.3.1.min.js?1554201814"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +56,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1554146562"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1554146562"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554201814"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554201814"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1554146562"></script>
+<script type="text/javascript" src="/js/search.js?1554201814"></script>
 
     
   </div>
@@ -1444,17 +1445,24 @@
               </div>
             </div>
             
-
+        <div id="head-tags">
+        
+        </div>
         
         <div id="body-inner">
           
-            <h1>Alternate scheduling</h1>
+            <h1>
+              
+              Alternate scheduling
+            </h1>
           
 
         
 
 
 
+
+	
 
 <p>Dovetail promotes the idea that a <em>dual kernel</em> system should keep the
 functional overlap between the kernel and the autonomous core
@@ -1567,7 +1575,10 @@ is expected to relinquish the CPU to the in-band stage by scheduling
 in the context which was originally preempted. This is commonly done
 by having a task placeholder with the lowest possible priority
 represent the main kernel and its in-band context linked to each
-per-CPU run queue maintained by the autonomous core.</p></li>
+per-CPU run queue maintained by the autonomous core. For instance,
+the EVL core assigns such a placeholder task to its <a href="/core/user-api/scheduling/#SCHED_IDLE">SCHED_IDLE
+policy</a>, which get picked when other policies have no runnable task
+on the CPU.</p></li>
 
 <li><p>once the in-band context resumes, interrupt events which have no
 out-of-band handlers are delivered to the regular in-band IRQ
@@ -1915,14 +1926,15 @@ graph LR;
 <p>Those steps are:</p>
 
 <ol>
-<li><p><code>core_schedule()</code> is called over the <em>PREV</em> context to check for
-the <em>NEXT</em> task to schedule, by priority order. If <em>PREV</em> still has
-the highest priority among runnable tasks, the sequence stops
-there. CAVEAT: the core <em>must make sure to perform context switches
-from the out-of-band interrupt stage</em>, otherwise weird things may
-happen down the road. <a href="/dovetail/pipeline/usage/stage_escalation/"><code>run_oob_call()</code></a> is a routine
-provided by the interrupt pipeline which may help there. See
-<code>evl_schedule()</code> in the EVL core for a typical usage.</p></li>
+<li><p><code>core_schedule()</code> is called over the <em>PREV</em> context for picking the
+<em>NEXT</em> task to schedule, by priority order. If <em>PREV</em> still has the
+highest priority among all runnable tasks on the current CPU, the
+sequence stops there. CAVEAT: the core <em>must make sure to perform
+context switches from the out-of-band interrupt stage</em>, otherwise
+weird things may happen down the road. <a href="/dovetail/pipeline/usage/stage_escalation/"><code>run_oob_call()</code></a> is a routine the
+interrupt pipeline provides which may help there. See the
+implementation of <code>evl_schedule()</code> in the EVL core for a typical
+usage.</p></li>
 
 <li><p>If <em>NEXT</em> <strong>is not</strong> the <a href="#altsched-theory">low priority placeholder task</a> but <em>PREV</em> is, we will be preempting the
 in-band kernel: in this case, we must tell the kernel about such
@@ -2175,6 +2187,9 @@ structure is zeroed when the task is created, and stays so until your
 autonomous core initializes it.</p>
 
 <hr />
+
+
+
 
 
 <footer class=" footline" >
@@ -3111,20 +3126,20 @@ autonomous core initializes it.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1554146562"></script>
-    <script src="/js/perfect-scrollbar.min.js?1554146562"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1554146562"></script>
-    <script src="/js/jquery.sticky.js?1554146562"></script>
-    <script src="/js/featherlight.min.js?1554146562"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1554146562"></script>
-    <script src="/js/highlight.pack.js?1554146562"></script>
+    <script src="/js/clipboard.min.js?1554201814"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554201814"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554201814"></script>
+    <script src="/js/jquery.sticky.js?1554201814"></script>
+    <script src="/js/featherlight.min.js?1554201814"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554201814"></script>
+    <script src="/js/highlight.pack.js?1554201814"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1554146562"></script>
-    <script src="/js/learn.js?1554146562"></script>
-    <script src="/js/hugo-learn.js?1554146562"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1554201814"></script>
+    <script src="/js/learn.js?1554201814"></script>
+    <script src="/js/hugo-learn.js?1554201814"></script>
 
-    <link href="/mermaid/mermaid.css?1554146562" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1554146562"></script>
+    <link href="/mermaid/mermaid.css?1554201814" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554201814"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

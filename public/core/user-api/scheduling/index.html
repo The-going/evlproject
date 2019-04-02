@@ -12,19 +12,20 @@
     <title>Scheduling policies :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1554146562" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1554146562" rel="stylesheet">
-    <link href="/css/hybrid.css?1554146562" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1554146562" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1554146562" rel="stylesheet">
-    <link href="/css/auto-complete.css?1554146562" rel="stylesheet">
-    <link href="/css/theme.css?1554146562" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1554146562" rel="stylesheet">
+    <link href="/css/nucleus.css?1554201814" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554201814" rel="stylesheet">
+    <link href="/css/hybrid.css?1554201814" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554201814" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554201814" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554201814" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1554201814" rel="stylesheet">
+    <link href="/css/theme.css?1554201814" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554201814" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1554146562" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554201814" rel="stylesheet">
     
 
-    <script src="/js/jquery-2.x.min.js?1554146562"></script>
+    <script src="/js/jquery-3.3.1.min.js?1554201814"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +56,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1554146562"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1554146562"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554201814"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554201814"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1554146562"></script>
+<script type="text/javascript" src="/js/search.js?1554201814"></script>
 
     
   </div>
@@ -1437,6 +1438,7 @@
 <li><a href="#remove-quota-group">Removing a quota group</a></li>
 </ul></li>
 <li><a href="#SCHED_WEAK">SCHED_WEAK</a></li>
+<li><a href="#SCHED_IDLE">SCHED_IDLE</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1448,17 +1450,24 @@
               </div>
             </div>
             
-
+        <div id="head-tags">
+        
+        </div>
         
         <div id="body-inner">
           
-            <h1>Scheduling policies</h1>
+            <h1>
+              
+              Scheduling policies
+            </h1>
           
 
         
 
 
 
+
+	
 
 <p>EVL defines four scheduling policies, which are prioritized: this
 means that every time the core needs to pick the next eligible thread
@@ -1478,6 +1487,10 @@ time.</p></li>
 <li><p><a href="#SCHED_WEAK">SCHED_WEAK</a>, which is a <em>non
 real-time</em> policy allowing its members to run in-band most of the
 time, while retaining the ability to request EVL services.</p></li>
+
+<li><p><a href="#SCHED_IDLE">SCHED_IDLE</a>, which is the fallback
+option the EVL core considers only when other policies have no
+runnable task on the CPU.</p></li>
 </ol>
 
 <div class="notices tip" ><p>The SCHED_QUOTA policy is optionally supported by the core, make sure
@@ -1658,6 +1671,21 @@ properly configured system.</p></li>
 <hr />
 
 <h3 id="SCHED_WEAK">SCHED_WEAK</h3>
+
+<hr />
+
+<h3 id="SCHED_IDLE">SCHED_IDLE</h3>
+
+<p>The idle class has a single task on each CPU: the <a href="/dovetail/altsched/#altsched-theory">low priority
+placeholder task</a>.</p>
+
+<p>SCHED_IDLE has the lowest priority among policies, its sole task is
+picked for scheduling only when other policies have no runnable task
+on the CPU. A task member of the SCHED_IDLE class cannot block, it is
+always runnable</p>
+
+
+
 
 
 <footer class=" footline" >
@@ -2598,20 +2626,20 @@ properly configured system.</p></li>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1554146562"></script>
-    <script src="/js/perfect-scrollbar.min.js?1554146562"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1554146562"></script>
-    <script src="/js/jquery.sticky.js?1554146562"></script>
-    <script src="/js/featherlight.min.js?1554146562"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1554146562"></script>
-    <script src="/js/highlight.pack.js?1554146562"></script>
+    <script src="/js/clipboard.min.js?1554201814"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554201814"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554201814"></script>
+    <script src="/js/jquery.sticky.js?1554201814"></script>
+    <script src="/js/featherlight.min.js?1554201814"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554201814"></script>
+    <script src="/js/highlight.pack.js?1554201814"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom.71422.js?1554146562"></script>
-    <script src="/js/learn.js?1554146562"></script>
-    <script src="/js/hugo-learn.js?1554146562"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1554201814"></script>
+    <script src="/js/learn.js?1554201814"></script>
+    <script src="/js/hugo-learn.js?1554201814"></script>
 
-    <link href="/mermaid/mermaid.css?1554146562" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1554146562"></script>
+    <link href="/mermaid/mermaid.css?1554201814" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554201814"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
