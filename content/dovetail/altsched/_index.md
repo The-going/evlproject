@@ -109,7 +109,11 @@ as follows:
   in the context which was originally preempted. This is commonly done
   by having a task placeholder with the lowest possible priority
   represent the main kernel and its in-band context linked to each
-  per-CPU run queue maintained by the autonomous core.
+  per-CPU run queue maintained by the autonomous core. For instance,
+  the EVL core assigns such a placeholder task to its [SCHED_IDLE
+  policy]({{< relref "core/user-api/scheduling/_index.md#SCHED_IDLE"
+  >}}), which get picked when other policies have no runnable task
+  on the CPU.
 
 - once the in-band context resumes, interrupt events which have no
   out-of-band handlers are delivered to the regular in-band IRQ
@@ -443,15 +447,16 @@ graph LR;
 
 Those steps are:
 
-1. `core_schedule()` is called over the _PREV_ context to check for
-the _NEXT_ task to schedule, by priority order. If _PREV_ still has
-the highest priority among runnable tasks, the sequence stops
-there. CAVEAT: the core _must make sure to perform context switches
-from the out-of-band interrupt stage_, otherwise weird things may
-happen down the road. [`run_oob_call()`]({{% relref
-"dovetail/pipeline/usage/stage_escalation.md" %}}) is a routine
-provided by the interrupt pipeline which may help there. See
-`evl_schedule()` in the EVL core for a typical usage.
+1. `core_schedule()` is called over the _PREV_ context for picking the
+_NEXT_ task to schedule, by priority order. If _PREV_ still has the
+highest priority among all runnable tasks on the current CPU, the
+sequence stops there. CAVEAT: the core _must make sure to perform
+context switches from the out-of-band interrupt stage_, otherwise
+weird things may happen down the road. [`run_oob_call()`]({{% relref
+"dovetail/pipeline/usage/stage_escalation.md" %}}) is a routine the
+interrupt pipeline provides which may help there. See the
+implementation of `evl_schedule()` in the EVL core for a typical
+usage.
 
 2. If _NEXT_ **is not** the [low priority placeholder task]({{< relref
 "#altsched-theory" >}}) but _PREV_ is, we will be preempting the

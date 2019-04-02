@@ -407,7 +407,7 @@ kernel works as follows:
 | ------------------    | -------------- |
 | SCHED_FIFO, prio      |    SCHED_FIFO, prio  |
 | SCHED_RR, prio        |    SCHED_FIFO, prio  |
-| SCHED_WEAK, prio > 0  |    SCHED_FIFO  |
+| SCHED_WEAK, prio > 0  |    SCHED_FIFO, prio  |
 | SCHED_WEAK, prio == 0 |    SCHED_OTHER |
 
 {{% notice warning %}}

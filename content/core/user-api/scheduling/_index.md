@@ -21,6 +21,10 @@ runnable thread in the following order:
    real-time* policy allowing its members to run in-band most of the
    time, while retaining the ability to request EVL services.
 
+4. [SCHED_IDLE]({{< relref "#SCHED_IDLE" >}}), which is the fallback
+   option the EVL core considers only when other policies have no
+   runnable task on the CPU.
+
 {{% notice tip %}}
 The SCHED_QUOTA policy is optionally supported by the core, make sure
 to enable `CONFIG_EVL_SCHED_QUOTA` in the kernel configuration if
@@ -209,3 +213,16 @@ regarding the new group:
 ---
 
 ### SCHED_WEAK {#SCHED_WEAK}
+
+---
+
+### SCHED_IDLE {#SCHED_IDLE}
+
+The idle class has a single task on each CPU: the [low priority
+placeholder task]({{< relref
+"dovetail/altsched/_index.md#altsched-theory" >}}).
+
+SCHED_IDLE has the lowest priority among policies, its sole task is
+picked for scheduling only when other policies have no runnable task
+on the CPU. A task member of the SCHED_IDLE class cannot block, it is
+always runnable
