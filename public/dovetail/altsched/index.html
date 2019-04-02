@@ -12,20 +12,20 @@
     <title>Alternate scheduling :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1554201814" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1554201814" rel="stylesheet">
-    <link href="/css/hybrid.css?1554201814" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1554201814" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1554201814" rel="stylesheet">
-    <link href="/css/auto-complete.css?1554201814" rel="stylesheet">
-    <link href="/css/atom-one-dark-reasonable.css?1554201814" rel="stylesheet">
-    <link href="/css/theme.css?1554201814" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1554201814" rel="stylesheet">
+    <link href="/css/nucleus.css?1554215019" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554215019" rel="stylesheet">
+    <link href="/css/hybrid.css?1554215019" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554215019" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554215019" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554215019" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1554215019" rel="stylesheet">
+    <link href="/css/theme.css?1554215019" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554215019" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1554201814" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554215019" rel="stylesheet">
     
 
-    <script src="/js/jquery-3.3.1.min.js?1554201814"></script>
+    <script src="/js/jquery-3.3.1.min.js?1554215019"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -56,14 +56,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1554201814"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1554201814"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554215019"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554215019"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1554201814"></script>
+<script type="text/javascript" src="/js/search.js?1554215019"></script>
 
     
   </div>
@@ -1430,11 +1430,12 @@
 <li><a href="#context-switching">Dovetail context switching</a></li>
 <li><a href="#event-notifier">The event notifier</a>
 <ul>
-<li><a href="#out-of-band-exception-handling">Out-of-band exception handling</a></li>
-<li><a href="#system-calls">System calls</a></li>
-<li><a href="#in-band-events">In-band events</a></li>
+<li><a href="#oob-events">Out-of-band exception handling</a></li>
+<li><a href="#syscall-events">System calls</a></li>
+<li><a href="#inband-events">In-band events</a></li>
 </ul></li>
 <li><a href="#dovetail-task-context">Alternate task context</a></li>
+<li><a href="#dovetail-mm-context">Extended memory context</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -1601,7 +1602,7 @@ task; this should be done once, before the task calls
 
 <p><li><i>p</i><p>The alternate scheduling context is kept in a per-task structure of
 type _dovetail_altsched<em>context</em> which should be maintained by the
-autonomous core. This can be done as part of the <a href="/dovetail/altsched/#dovetail-task-context">per-task context
+autonomous core. This can be done as part of the <a href="#dovetail-task-context">per-task context
 management</a> facility
 Dovetail introduces.</p>
 </li></p>
@@ -1615,11 +1616,10 @@ void dovetail_start_altsched(void)
 
 
 <p>This call tells the kernel that the current task may request alternate
-scheduling operations any time from now on, such as <a href="/dovetail/altsched/#oob-switch">switching
-out-of-band</a>
-or back <a href="/dovetail/altsched/#inband-switch">in-band</a>. It also activates
-the <a href="/dovetail/altsched/#event-notifier">event notifier</a> for the task, which
-allows it to emit out-of-band system calls to the core.</p>
+scheduling operations any time from now on, such as <a href="#oob-switch">switching
+out-of-band</a> or back <a href="#inband-switch">in-band</a>. It also activates the <a href="#event-notifier">event
+notifier</a> for the task, which allows
+it to emit out-of-band system calls to the core.</p>
 
 <hr />
 
@@ -1628,9 +1628,8 @@ void dovetail_stop_altsched(void)
 </div>
 
 
-<p>This call disables the <a href="/dovetail/altsched/#event-notifier">event notifier</a> for the current
-task, which must be done before dismantling the alternate scheduling
-support for that task in the autonomous core.</p>
+<p>This call disables the <a href="#event-notifier">event notifier</a> for the current task, which must be done before dismantling the
+alternate scheduling support for that task in the autonomous core.</p>
 
 <hr />
 
@@ -1960,6 +1959,31 @@ out-of-band prior to sleeping.</p></li>
 </ul></li>
 </ol>
 
+<hr />
+
+<div class="proto"><a name="dovetail_context_switch"></a>
+void dovetail_context_switch(struct dovetail_altsched_context *prev, struct dovetail_altsched_context *next)
+</div>
+
+
+<p><li><i>prev</i><p>The <a href="#dovetail_init_altsched">alternate scheduling context block</a> of the outgoing task.</p>
+</li></p>
+
+
+<p><li><i>next</i><p>The <a href="#dovetail_init_altsched">alternate scheduling context block</a> of the incoming task.</p>
+</li></p>
+
+
+<p>This routine performs an out-of-band context switch. It must be called
+with hard IRQs off. The arch-specific <code>arch_dovetail_context_resume()</code>
+handler is called by the resuming task before leaving
+<code>dovetail_context_switch()</code>. This <em>weak</em> handler should be overriden
+by a Dovetail port which requires arch-specific tweaks for completing
+the reactivation of <em>next</em>. For instance, the arm64 port performs the
+<em>fpsimd</em> management from this handler.</p>
+
+<hr />
+
 <h2 id="event-notifier">The event notifier</h2>
 
 <p>Once <code>dovetail_start_altsched()</code> has been called for a Linux task, it
@@ -1968,7 +1992,7 @@ supervision of an autonomous core. Those events are delivered by
 invoking <em>__weak</em> handlers which should by overriden by this
 core.</p>
 
-<h3 id="out-of-band-exception-handling">Out-of-band exception handling</h3>
+<h3 id="oob-events">Out-of-band exception handling</h3>
 
 <p>If a processor exception is raised while the CPU is busy running a
 task on the out-of-band stage (e.g. due to some invalid memory access,
@@ -1994,7 +2018,7 @@ frame of the faulting context (<em>struct pt_regs</em>).</p>
 
 <p>Interrupts are <strong>disabled</strong> in the CPU when this handler is called.</p>
 
-<h3 id="system-calls">System calls</h3>
+<h3 id="syscall-events">System calls</h3>
 
 <p>The autonomous core is likely to introduce its own set of system calls
 application tasks may invoke. From the standpoint of the main kernel,
@@ -2069,11 +2093,11 @@ the current stage on return of these handlers.</p>
 </div>
 
 
-<h3 id="in-band-events">In-band events</h3>
+<h3 id="inband-events">In-band events</h3>
 
 <p>The last set of notifications involves pure in-band events which the
 autonomous core may need to know about, as they may affect its own
-task management. Except for INBAND_PROCESS_CLEANUP which is called for
+task management. Except for <code>INBAND_PROCESS_CLEANUP</code> which is called for
 <em>any</em> exiting user-space task, all other notifications are only issued
 for tasks bound to the core (which may involve kthreads).</p>
 
@@ -2120,23 +2144,42 @@ pointer argument which relates to the event type.</p>
 </ul>
 
 <p>sent before <em>mm</em> is entirely dropped, before the mappings are
-  exited. Per-process resources which might be maintained by the
-  core could be released there, as all tasks have exited.</p>
+  exited. Per-process resources which might still be maintained by the
+  core could be released there, as all tasks sharing this memory
+  context have exited. Unlike other events, this one is triggered for
+  <em>every</em> user-space task which is being dismantled by the kernel,
+  regardless of whether some of its threads were known from your
+  autonomous core.</p>
 
 <h2 id="dovetail-task-context">Alternate task context</h2>
 
 <p>Your autonomous core will need to keep its own set of per-task data,
-starting with the <a href="/dovetail/altsched/#dovetail_init_altsched">alternate scheduling context block</a>. To help in
-maintaining such information on a per-task, per-architecture basis,
-Dovetail adds the <em>struct oob_thread_state</em> member to the
+starting with the <a href="#dovetail_init_altsched">alternate scheduling context block</a>. To help in maintaining such
+information on a per-task, per-architecture basis, Dovetail adds the
+<em>oob_state</em> <em>member of type struct oob_thread_state</em> to the
 (stack-based) thread information block (aka <em>struct thread_info</em>)
 each kernel architecture port defines.</p>
 
 <p>You may want to fill that structure reserved to out-of-band support
 with any information your core may need for maintaining a task
-context. The core may then retrieve the address of the structure by
-calling <a href="/dovetail/altsched/#dovetail_current_state"><code>dovetail_current_state()</code></a>. For
-instance, this is the definition the EVL core has for the
+context. By having this information defined in a file accessible from
+the architecture-specific code by including
+<em>&lt;dovetail/thread_info.h&gt;</em>, the core-specific structure is
+automatically added to <em>struct thread_info</em> as required. For
+instance:</p>
+
+<blockquote>
+<p>arch/arm/include/dovetail/thread_info.h</p>
+
+<pre><code>struct oob_thread_state {
+       /* Define your core-specific per-task data here. */
+};
+
+</code></pre>
+</blockquote>
+
+<p>The core may then retrieve the address of the structure by calling
+<a href="#dovetail_current_state"><code>dovetail_current_state()</code></a>. For instance, this is the definition the EVL core has for the
 <em>oob_thread_state</em> structure, storing a backpointer to its own task
 control block, along with a core-specific preemption count for fast
 stack-based access:</p>
@@ -2159,22 +2202,14 @@ graph LR;
 </div>
 
 
-<p>By having this information defined in a file accessible from the
-architecture-specific code by including <em>&lt;dovetail/thread_info.h&gt;</em>,
-the core-specific structure is automatically added to <em>struct
-thread_info</em> as required. For instance,</p>
-
-<blockquote>
-<p>arch/arm/include/dovetail/thread_info.h</p>
-
-<pre><code>struct oob_thread_state {
-       /* Define your core-specific data here. */
-};
-
-</code></pre>
+<p>Note that we should not add all of the out-of-band state data directly
+into the <em>oob_thread_state</em> structure, because the latter is present
+in <strong>every</strong> <em>task_struct</em> descriptor, although only a few tasks may
+actually need it. Hence the backpointer to the <em>evl_thread</em> structure
+which only consumes a few bytes, so leaving it unused (NULL) for all
+other - in-band only - tasks is no big deal.</p>
 
 <hr />
-</blockquote>
 
 <div class="proto"><a name="dovetail_current_state"></a>
 struct oob_thread_state *dovetail_current_state(void)
@@ -2185,6 +2220,57 @@ struct oob_thread_state *dovetail_current_state(void)
 the current task, which is always a valid pointer. The content of this
 structure is zeroed when the task is created, and stays so until your
 autonomous core initializes it.</p>
+
+<hr />
+
+<h2 id="dovetail-mm-context">Extended memory context</h2>
+
+<p>Your autonomous core may also need to keep its own set of per-process
+data.  To help in maintaining such information on a per-<em>mm</em> basis,
+Dovetail adds the <em>oob_state</em> member of type <em>struct oob_mm_state</em>
+to the generic <em>mm</em> descriptor structure (aka <em>struct mm_struct</em>).</p>
+
+<p>You may want to fill that structure reserved to out-of-band support
+with any information your core may need for maintaining a per-<em>mm</em>
+context. By having this information defined in a file accessible from
+the architecture-specific code by including <em>&lt;dovetail/mm_info.h&gt;</em>,
+the core-specific structure is automatically added to <em>struct
+mm_struct</em> as required. For instance:</p>
+
+<blockquote>
+<p>arch/arm/include/dovetail/mm_info.h</p>
+
+<pre><code>struct oob_mm_state {
+       /* Define your core-specific per-mm data here. */
+};
+
+</code></pre>
+</blockquote>
+
+<p>The core may then retrieve the address of the structure for the
+current task by calling <a href="#dovetail_mm_state"><code>dovetail_mm_state()</code></a>. The EVL core does not define any extended
+memory context yet, but it could be used to maintain a per-process
+file descriptor table for instance.</p>
+
+<div class="notices tip" ><p>Catching the <a href="#inband-events"><code>INBAND_PROCESS_CLEANUP</code></a>
+event would allow you to drop any resources attached to the extended
+memory context information, since it is called when this data is no
+longer in use by any thread of the exiting process.</p>
+</div>
+
+
+<hr />
+
+<div class="proto"><a name="dovetail_mm_state"></a>
+struct oob_mm_state *dovetail_mm_state(void)
+</div>
+
+
+<p>This call retrieves the address of the out-of-band data structure
+within the <em>mm</em> descriptor of the current task, which is always a
+valid pointer. The content of this structure is zeroed when the memory
+context is created, and stays so until your autonomous core
+initializes it.</p>
 
 <hr />
 
@@ -3126,20 +3212,20 @@ autonomous core initializes it.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1554201814"></script>
-    <script src="/js/perfect-scrollbar.min.js?1554201814"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1554201814"></script>
-    <script src="/js/jquery.sticky.js?1554201814"></script>
-    <script src="/js/featherlight.min.js?1554201814"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1554201814"></script>
-    <script src="/js/highlight.pack.js?1554201814"></script>
+    <script src="/js/clipboard.min.js?1554215019"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554215019"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554215019"></script>
+    <script src="/js/jquery.sticky.js?1554215019"></script>
+    <script src="/js/featherlight.min.js?1554215019"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554215019"></script>
+    <script src="/js/highlight.pack.js?1554215019"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1554201814"></script>
-    <script src="/js/learn.js?1554201814"></script>
-    <script src="/js/hugo-learn.js?1554201814"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1554215019"></script>
+    <script src="/js/learn.js?1554215019"></script>
+    <script src="/js/hugo-learn.js?1554215019"></script>
 
-    <link href="/mermaid/mermaid.css?1554201814" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1554201814"></script>
+    <link href="/mermaid/mermaid.css?1554215019" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554215019"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
