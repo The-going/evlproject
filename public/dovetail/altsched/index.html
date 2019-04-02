@@ -12,20 +12,20 @@
     <title>Alternate scheduling :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1554218965" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1554218965" rel="stylesheet">
-    <link href="/css/hybrid.css?1554218965" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1554218965" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1554218965" rel="stylesheet">
-    <link href="/css/auto-complete.css?1554218965" rel="stylesheet">
-    <link href="/css/atom-one-dark-reasonable.css?1554218965" rel="stylesheet">
-    <link href="/css/theme.css?1554218965" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1554218965" rel="stylesheet">
+    <link href="/css/nucleus.css?1554223252" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554223252" rel="stylesheet">
+    <link href="/css/hybrid.css?1554223252" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554223252" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554223252" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554223252" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1554223252" rel="stylesheet">
+    <link href="/css/theme.css?1554223252" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554223252" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1554218965" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554223252" rel="stylesheet">
     
 
-    <script src="/js/jquery-3.3.1.min.js?1554218965"></script>
+    <script src="/js/jquery-3.3.1.min.js?1554223252"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -56,14 +56,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1554218965"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1554218965"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554223252"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554223252"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1554218965"></script>
+<script type="text/javascript" src="/js/search.js?1554223252"></script>
 
     
   </div>
@@ -1984,6 +1984,25 @@ the reactivation of <em>next</em>. For instance, the arm64 port performs the
 
 <hr />
 
+<div class="proto"><a name="dovetail_resume_oob"></a>
+void dovetail_resume_oob(struct dovetail_altsched_context *outgoing)
+</div>
+
+
+<p><li><i>outgoing</i><p>The <a href="#dovetail_init_altsched">alternate scheduling context block</a> of the outgoing context, which should
+be the <a href="#altsched-theory">low priority placeholder task&rsquo;s</a>.</p>
+</li></p>
+
+
+<p>This routine informs the kernel that we are leaving the in-band
+context, right before resuming an out-of-band task. This allows the
+main kernel logic to save all the information that will be required to
+restore the in-band execution stage later on when the converse switch
+happens.  The only call site of <code>dovetail_resume_oob()</code> should be in
+the <code>core_schedule()</code> implementation.</p>
+
+<hr />
+
 <h2 id="event-notifier">The event notifier</h2>
 
 <p>Once <code>dovetail_start_altsched()</code> has been called for a Linux task, it
@@ -3212,20 +3231,20 @@ initializes it.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1554218965"></script>
-    <script src="/js/perfect-scrollbar.min.js?1554218965"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1554218965"></script>
-    <script src="/js/jquery.sticky.js?1554218965"></script>
-    <script src="/js/featherlight.min.js?1554218965"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1554218965"></script>
-    <script src="/js/highlight.pack.js?1554218965"></script>
+    <script src="/js/clipboard.min.js?1554223252"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554223252"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554223252"></script>
+    <script src="/js/jquery.sticky.js?1554223252"></script>
+    <script src="/js/featherlight.min.js?1554223252"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554223252"></script>
+    <script src="/js/highlight.pack.js?1554223252"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1554218965"></script>
-    <script src="/js/learn.js?1554218965"></script>
-    <script src="/js/hugo-learn.js?1554218965"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1554223252"></script>
+    <script src="/js/learn.js?1554223252"></script>
+    <script src="/js/hugo-learn.js?1554223252"></script>
 
-    <link href="/mermaid/mermaid.css?1554218965" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1554218965"></script>
+    <link href="/mermaid/mermaid.css?1554223252" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554223252"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
