@@ -67,6 +67,16 @@ is no different from any other thread to EVL. It may call
 evl_attach_self() whenever you see fit, or not at all if you don't
 plan to request EVL services from this context.
 
+As part of the attachment process, the calling thread is also pinned
+on its current CPU. You may change this default affinity by calling
+`sched_setaffinity(2)` as you see fit any time after
+`evl_attach_self()` has returned, but keep in mind that such _libc_
+service will trigger a regular Linux system call, which will cause
+your thread to switch to [in-band context]({{< relref
+"dovetail/altsched/_index.md#inband-switch" >}}) automatically when
+doing so. So you may want to avoid calling `sched_setaffinity(2)` from
+your time-critical loop, which would not make much sense anyway.
+
 {{% argument fmt %}}
 A printf-like format string to generate the thread name. A common way
 of generating unique thread names is to add the calling process's
@@ -297,7 +307,8 @@ Applications are unlikely to ever use this call explicitly: it
 switches the calling thread to the in-band [execution stage]({{%relref
 "dovetail/pipeline/_index.md#two-stage-pipeline" %}}), for running
 under the main kernel supervision. Any EVL thread which issues a
-system call to the main kernel will be switched to the in-band context
+system call to the main kernel will be switched to the [in-band
+context]({{< relref "dovetail/altsched/_index.md#inband-switch" >}})
 automatically, so in most cases there should be no point in dealing
 with this manually in applications.
 
