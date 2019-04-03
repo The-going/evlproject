@@ -12,20 +12,20 @@
     <title>IRQ injection :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1554223252" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1554223252" rel="stylesheet">
-    <link href="/css/hybrid.css?1554223252" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1554223252" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1554223252" rel="stylesheet">
-    <link href="/css/auto-complete.css?1554223252" rel="stylesheet">
-    <link href="/css/atom-one-dark-reasonable.css?1554223252" rel="stylesheet">
-    <link href="/css/theme.css?1554223252" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1554223252" rel="stylesheet">
+    <link href="/css/nucleus.css?1554310698" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554310698" rel="stylesheet">
+    <link href="/css/hybrid.css?1554310698" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554310698" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554310698" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554310698" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1554310698" rel="stylesheet">
+    <link href="/css/theme.css?1554310698" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554310698" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1554223252" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554310698" rel="stylesheet">
     
 
-    <script src="/js/jquery-3.3.1.min.js?1554223252"></script>
+    <script src="/js/jquery-3.3.1.min.js?1554310698"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -56,14 +56,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1554223252"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1554223252"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554310698"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554310698"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1554223252"></script>
+<script type="text/javascript" src="/js/search.js?1554310698"></script>
 
     
   </div>
@@ -1182,7 +1182,7 @@
  
   
     
-    <li data-nav-id="/core/kernel-api/interrupts/" title="" class="dd-item 
+    <li data-nav-id="/core/kernel-api/interrupts/" title="Managing IRQs" class="dd-item 
         
         
         
@@ -1428,7 +1428,16 @@
                 
                     <div class="progress">
     <div class="wrapper">
-
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#sending-out-of-band-ipis-to-remote-cpus">Sending out-of-band IPIs to remote CPUs</a></li>
+<li><a href="#injecting-an-irq-event-for-the-current-cpu">Injecting an IRQ event for the current CPU</a></li>
+<li><a href="#direct-logging-of-an-irq-event">Direct logging of an IRQ event</a></li>
+</ul></li>
+</ul>
+</nav>
     </div>
 </div>
 
@@ -1452,17 +1461,186 @@
 
 
 
+
+
+<h2 id="sending-out-of-band-ipis-to-remote-cpus">Sending out-of-band IPIs to remote CPUs</h2>
+
+<p>Although the pipeline does not directly use IPIs internally, it
+exposes two generic IPI vectors which autonomous cores may use in SMP
+configuration for signaling the following events across CPUs:</p>
+
 <ul>
-<li><p><code>irq_inject_pipeline()</code></p></li>
+<li><p><code>RESCHEDULE_OOB_IPI</code>, the cross-CPU task reschedule request. This is
+available to the core&rsquo;s scheduler for kicking the task rescheduling
+procedure on remote CPUs, when the state of their respective
+runqueue has changed. For instance, a task sleeping on CPU #1 may be
+unblocked by a system call issued from CPU #0: in this case, the
+scheduler code running on CPU #0 is supposed to tell CPU #1 that it
+should reschedule. Typically, the EVL core does so from its
+<code>test_resched()</code> routine.</p></li>
 
-<li><p><code>irq_post_inband()</code></p></li>
-
-<li><p><code>irq_post_oob()</code></p></li>
-
-<li><p><code>irq_pipeline_send_remote()</code></p></li>
+<li><p><code>TIMER_OOB_IPI</code>, the cross-CPU timer reschedule request. Because
+software timers are in essence per-CPU beasts, this IPI is available
+to the core&rsquo;s timer management code for kicking the hardware timer
+programming procedure on remote CPUs, when the state of some
+software timer has changed. Typically, stopping a timer from a
+remote CPU, or migrating a timer from a CPU to another should
+trigger such signal. The EVL core does so from its
+<code>evl_program_remote_tick()</code> routine, which is called whenever the
+timer with the earliest timeout date enqueued on a remote CPU, may
+have changed.</p></li>
 </ul>
 
-<p><img src="/images/wip.png?height=250px&amp;width=420px" alt="Alt text" title="Not there yet" /></p>
+<p>As their respective name suggests, those two IPIs can be sent from
+out-of-band context (as well as in-band), by calling the
+<code>irq_pipeline_send_remote()</code> service.</p>
+
+<hr />
+
+<div class="proto"><a name="irq_pipeline_send_remote"></a>
+void irq_pipeline_send_remote(unsigned int ipi, const struct cpumask *cpumask)
+</div>
+
+
+<p><li><i>ipi</i><p>The IPI number to send. There are only two legit values for this
+argument: either RESCHEDULE_OOB_IPI, or TIMER_OOB_IPI. This is a
+low-level service with not much parameter checking, so any other value
+is likely to cause havoc.</p>
+</li></p>
+
+
+<p><li><i>cpumask</i><p>A CPU bitmask defining the target CPUs for the signal. The current CPU
+is allowed to send a signal to itself, although this may not be the
+faster path to running a local handler.</p>
+</li></p>
+
+
+<p>In order to receive these IPIs, an out-of-band handler must have been
+set for them, mentioning the <a href="{{ &lt; relref
+&quot;dovetail/pipeline/usage/irq_handling.md&quot; &gt;}}">IRQF_OOB flag</a>.</p>
+
+<p><code>irq_pipeline_send_remote()</code> serializes callers internally so that it
+may be used from either stages: in-band or out-of-band.</p>
+
+<hr />
+
+<h2 id="injecting-an-irq-event-for-the-current-cpu">Injecting an IRQ event for the current CPU</h2>
+
+<p>In some very specific cases, we may need to inject an IRQ into the
+pipeline by software as if such hardware event had happened on the
+current CPU. <code>irq_inject_pipeline()</code> does exactly this.</p>
+
+<hr />
+
+<div class="proto"><a name="irq_inject_pipeline"></a>
+int irq_inject_pipeline(unsigned int irq)
+</div>
+
+
+<p><li><i>irq</i><p>The IRQ number to inject. A valid interrupt descriptor must exist
+for this interrupt.</p>
+</li></p>
+
+
+<p><code>irq_inject_pipeline()</code> fully emulates the receipt of a hardware
+event, which means that the common <a href="/dovetail/pipeline/porting/irqflow/#genirq-flow">interrupt pipelining logic</a> applies
+to the new event:</p>
+
+<ul>
+<li><p>first, any <a href="/dovetail/pipeline/usage/irq_handling/">out-of-band handler</a> is considered for
+delivery,</p></li>
+
+<li><p>then such event may be passed down the pipeline to the common
+in-band handler(s) in absence of out-of-band handler(s).</p></li>
+</ul>
+
+<p>The pipeline priority rules apply accordingly:</p>
+
+<ul>
+<li><p>if the caller is in-band, <em>and</em> an out-of-band handler is registered
+for the IRQ event, <em>and</em> the out-of-band stage is <a href="/dovetail/pipeline/optimistic/">unstalled</a>, the execution stage
+is immediately switched to out-of-band for running the later, then
+restored to in-band before <code>irq_inject_pipeline()</code> returns.</p></li>
+
+<li><p>if the caller is out-of-band and there is no out-of-band handler,
+the IRQ event is deferred until the in-band stage resumes execution
+on the current CPU, at which point it is delivered to any in-band
+handler(s).</p></li>
+
+<li><p>in any case, should the current stage receive the IRQ event, the
+<a href="/dovetail/pipeline/optimistic/#virtual-i-flag">virtual interrupt state</a> of that stage
+is always considered before deciding whether this event should be
+delivered immediately to its handler by <code>irq_inject_pipeline()</code>
+(<em>unstalled</em> case), or deferred until the stage is unstalled
+(<em>stalled</em> case).</p></li>
+</ul>
+
+<p>This call returns zero on successful injection, or -EINVAL if the IRQ
+has no valid descriptor.</p>
+
+<hr />
+
+<h2 id="direct-logging-of-an-irq-event">Direct logging of an IRQ event</h2>
+
+<p>Sometimes, running the full interrupt delivery logic
+<a href="#irq_inject_pipeline"><code>irq_inject_pipeline()</code></a>
+implements for feeding an interrupt into the pipeline may be overkill,
+because we can make assumptions about the current execution context,
+and which stage should handle the event. The following fast helpers
+can be used instead in this case:</p>
+
+<hr />
+
+<div class="proto"><a name="irq_post_inband"></a>
+void irq_post_inband(unsigned int irq)
+</div>
+
+
+<p><li><i>irq</i><p>The IRQ number to inject into the in-band stage. A valid interrupt
+descriptor must exist for this interrupt.</p>
+</li></p>
+
+
+<p>This routine may be used to mark an interrupt as pending directly into
+the current CPU&rsquo;s log for the in-band stage. This is useful in either
+of these cases:</p>
+
+<ul>
+<li><p>you know that the out-of-band stage is current, therefore this event
+has to be deferred until the in-band stage resumes on the current
+CPU later on. This means that you can simply post it to the in-band
+stage directly.</p></li>
+
+<li><p>you know that the in-band stage is current but <a href="/dovetail/pipeline/optimistic/#virtual-i-flag">stalled</a>, therefore
+this event can&rsquo;t be immediately delivered, so marking it as pending
+into the in-band stage is enough.</p></li>
+</ul>
+
+<p>Interrupts must be <a href="/dovetail/pipeline/usage/interrupt_protection/##hard-irq-protection">hard disabled</a> in the CPU before calling this routine.</p>
+
+<hr />
+
+<div class="proto"><a name="irq_post_oob"></a>
+void irq_post_oob(unsigned int irq)
+</div>
+
+
+<p><li><i>irq</i><p>The IRQ number to inject into the out-of-band stage. A valid interrupt
+descriptor must exist for this interrupt.</p>
+</li></p>
+
+
+<p>This routine may be used to mark an interrupt as pending directly into
+the current CPU&rsquo;s log for the out-of-band stage. This is useful in
+only one situation: you know that the out-of-band stage is current but
+<a href="/dovetail/pipeline/optimistic/#virtual-i-flag">stalled</a>, therefore this event can&rsquo;t be immediately delivered, so marking
+it as pending into the out-of-band stage is enough.</p>
+
+<p>Interrupts must be <a href="/dovetail/pipeline/usage/interrupt_protection/##hard-irq-protection">hard disabled</a> in the CPU before calling this routine. If the out-of-band stage
+is stalled as expected on entry to this helper, then interrupts must
+be hard disabled in the CPU as well anyway.</p>
+
+<hr />
 
 
 <footer class=" footline" >
@@ -2405,20 +2583,20 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1554223252"></script>
-    <script src="/js/perfect-scrollbar.min.js?1554223252"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1554223252"></script>
-    <script src="/js/jquery.sticky.js?1554223252"></script>
-    <script src="/js/featherlight.min.js?1554223252"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1554223252"></script>
-    <script src="/js/highlight.pack.js?1554223252"></script>
+    <script src="/js/clipboard.min.js?1554310698"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554310698"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554310698"></script>
+    <script src="/js/jquery.sticky.js?1554310698"></script>
+    <script src="/js/featherlight.min.js?1554310698"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554310698"></script>
+    <script src="/js/highlight.pack.js?1554310698"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1554223252"></script>
-    <script src="/js/learn.js?1554223252"></script>
-    <script src="/js/hugo-learn.js?1554223252"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1554310698"></script>
+    <script src="/js/learn.js?1554310698"></script>
+    <script src="/js/hugo-learn.js?1554310698"></script>
 
-    <link href="/mermaid/mermaid.css?1554223252" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1554223252"></script>
+    <link href="/mermaid/mermaid.css?1554310698" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554310698"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

@@ -12,20 +12,20 @@
     <title>Interrupt flow :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1554223252" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1554223252" rel="stylesheet">
-    <link href="/css/hybrid.css?1554223252" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1554223252" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1554223252" rel="stylesheet">
-    <link href="/css/auto-complete.css?1554223252" rel="stylesheet">
-    <link href="/css/atom-one-dark-reasonable.css?1554223252" rel="stylesheet">
-    <link href="/css/theme.css?1554223252" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1554223252" rel="stylesheet">
+    <link href="/css/nucleus.css?1554310698" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554310698" rel="stylesheet">
+    <link href="/css/hybrid.css?1554310698" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554310698" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554310698" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554310698" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1554310698" rel="stylesheet">
+    <link href="/css/theme.css?1554310698" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554310698" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1554223252" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554310698" rel="stylesheet">
     
 
-    <script src="/js/jquery-3.3.1.min.js?1554223252"></script>
+    <script src="/js/jquery-3.3.1.min.js?1554310698"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -56,14 +56,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1554223252"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1554223252"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554310698"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554310698"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1554223252"></script>
+<script type="text/javascript" src="/js/search.js?1554310698"></script>
 
     
   </div>
@@ -1182,7 +1182,7 @@
  
   
     
-    <li data-nav-id="/core/kernel-api/interrupts/" title="" class="dd-item 
+    <li data-nav-id="/core/kernel-api/interrupts/" title="Managing IRQs" class="dd-item 
         
         
         
@@ -1432,7 +1432,7 @@
 <ul>
 <li>
 <ul>
-<li><a href="#adapting-the-generic-interrupt-management-genirq">Adapting the generic interrupt management (genirq)</a>
+<li><a href="#genirq-flow">Adapting the generic interrupt management (genirq)</a>
 <ul>
 <li><a href="#deferring-level-triggered-irqs">Deferring level-triggered IRQs</a></li>
 <li><a href="#adapting-the-interrupt-flow-handlers-to-pipelining">Adapting the interrupt flow handlers to pipelining</a></li>
@@ -1468,7 +1468,7 @@
 
 
 
-<h2 id="adapting-the-generic-interrupt-management-genirq">Adapting the generic interrupt management (genirq)</h2>
+<h2 id="genirq-flow">Adapting the generic interrupt management (genirq)</h2>
 
 <p>Interrupt pipelining involves a basic change in controlling the
 interrupt flow: <code>handle_domain_irq()</code> from the IRQ domain API
@@ -2832,20 +2832,20 @@ vector. This special IRQ is labeled <em>in-band work</em> when reported by
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1554223252"></script>
-    <script src="/js/perfect-scrollbar.min.js?1554223252"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1554223252"></script>
-    <script src="/js/jquery.sticky.js?1554223252"></script>
-    <script src="/js/featherlight.min.js?1554223252"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1554223252"></script>
-    <script src="/js/highlight.pack.js?1554223252"></script>
+    <script src="/js/clipboard.min.js?1554310698"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554310698"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554310698"></script>
+    <script src="/js/jquery.sticky.js?1554310698"></script>
+    <script src="/js/featherlight.min.js?1554310698"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554310698"></script>
+    <script src="/js/highlight.pack.js?1554310698"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1554223252"></script>
-    <script src="/js/learn.js?1554223252"></script>
-    <script src="/js/hugo-learn.js?1554223252"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1554310698"></script>
+    <script src="/js/learn.js?1554310698"></script>
+    <script src="/js/hugo-learn.js?1554310698"></script>
 
-    <link href="/mermaid/mermaid.css?1554223252" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1554223252"></script>
+    <link href="/mermaid/mermaid.css?1554310698" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554310698"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

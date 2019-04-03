@@ -156,11 +156,8 @@ A set of helpers is provided for manipulating the interrupt disable flag in the 
       <pubDate>Sun, 01 Jul 2018 15:38:34 +0200</pubDate>
       
       <guid>https://evenless.org/dovetail/pipeline/usage/pipeline_inject/</guid>
-      <description> irq_inject_pipeline()
- irq_post_inband()
- irq_post_oob()
- irq_pipeline_send_remote()
-  </description>
+      <description>Sending out-of-band IPIs to remote CPUs Although the pipeline does not directly use IPIs internally, it exposes two generic IPI vectors which autonomous cores may use in SMP configuration for signaling the following events across CPUs:
+ RESCHEDULE_OOB_IPI, the cross-CPU task reschedule request. This is available to the core&amp;rsquo;s scheduler for kicking the task rescheduling procedure on remote CPUs, when the state of their respective runqueue has changed. For instance, a task sleeping on CPU #1 may be unblocked by a system call issued from CPU #0: in this case, the scheduler code running on CPU #0 is supposed to tell CPU #1 that it should reschedule.</description>
     </item>
     
     <item>
