@@ -4,7 +4,7 @@ date: 2018-06-27T15:20:04+02:00
 weight: 10
 ---
 
-## Adapting the generic interrupt management (genirq)
+## Adapting the generic interrupt management (genirq) {#genirq-flow}
 
 Interrupt pipelining involves a basic change in controlling the
 interrupt flow: `handle_domain_irq()` from the IRQ domain API

@@ -615,6 +615,5 @@ routine to interrupt pipelining:
 
 ## Dealing with IPIs {#dealing-with-ipis}
 
-Support for inter-processor interrupts is architecture-specific code.
-
-![Alt text](/images/wip.png?height=250px&width=420px "Not there yet")
+Support for inter-processor interrupts is architecture-specific
+code.
