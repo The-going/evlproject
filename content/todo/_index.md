@@ -116,3 +116,12 @@ in-band stage]({{% relref "dovetail/altsched/_index.md#inband-switch"
 %}}).
 
 We need an equivalent, passing the trace data back to userland via _debugfs_.
+
+### Sanity check for OOB-accessible clock_gettime() via vDSO
+
+The latmus test should do a quick check about not receiving a stage
+migration signal as a result of calling clock_gettime(). We have to
+make sure that we go through the vDSO for reading timestamps, without
+incurring any in-band syscall. In the ARM case, switching in-band when
+calling clock_gettime() would denote a system clocksource which was
+not enabled for user MMIO access, which is bad.

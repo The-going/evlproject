@@ -132,6 +132,14 @@ Linux 5.1-rc2
     <td><img src="/images/checked.png"></td>
     <td>5.0</td>
   </tr>
+  <tr>
+    <td><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">BeagleBone Black (AM335x)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.1-rc2</td>
+  </tr>
 </table>
 
 <br>

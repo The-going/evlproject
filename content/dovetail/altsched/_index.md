@@ -290,7 +290,11 @@ EVL core, with support from `evl_release_thread()` and
 Switching in-band is the operation by which a Linux task moves under
 the control of the main scheduler, coming from the out-of-band
 execution stage. From that point, the scheduling decisions are made by
-the main kernel regarding that task.
+the main kernel regarding that task, and it may be subject to
+preemption by in-band interrupts as well. In other words, _a task
+switching in-band looses all guarantees regarding bounded response
+time_; however, it regains access to the entire set of GPOS services
+in the same move.
 
 There are several reasons a Linux task which was running out-of-band
 so far may have to switch in-band:
