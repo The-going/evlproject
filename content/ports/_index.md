@@ -137,7 +137,7 @@ Linux 5.1-rc2
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td><img src="/images/unchecked.png"></td>
+    <td><img src="/images/checked.png"></td>
     <td>5.1-rc2</td>
   </tr>
 </table>
