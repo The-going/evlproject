@@ -134,6 +134,10 @@
   </url>
   
   <url>
+    <loc>https://evenless.org/dovetail/pipeline/porting/clocksource/</loc>
+  </url>
+  
+  <url>
     <loc>https://evenless.org/dovetail/pipeline/porting/rawprintk/</loc>
     <lastmod>2018-07-24T16:46:56+02:00</lastmod>
   </url>

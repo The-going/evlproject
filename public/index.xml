@@ -88,6 +88,15 @@ The runtime overhead induced by enabling these options is marginal. Just don&amp
     </item>
     
     <item>
+      <title>Reading clock sources</title>
+      <link>https://evenless.org/dovetail/pipeline/porting/clocksource/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://evenless.org/dovetail/pipeline/porting/clocksource/</guid>
+      <description>Your autonomous core is most likely to need a fast access to the current clock source from out-of-band context, for reading precise timestamps. The best way to achieve this is by enabling the fast clock_gettime() helper in the vDSO support for the target CPU architecture. At least, you will want user-space tasks controlled by the core to have access to the POSIX-defined CLOCK_MONOTONIC and CLOCK_REALTIME clocks from the out-of-band context, with no execution time penalty due to invoking an in-band syscall.</description>
+    </item>
+    
+    <item>
       <title>Raw printk support</title>
       <link>https://evenless.org/dovetail/pipeline/porting/rawprintk/</link>
       <pubDate>Tue, 24 Jul 2018 16:46:56 +0200</pubDate>
