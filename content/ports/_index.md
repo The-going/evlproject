@@ -133,12 +133,20 @@ Linux 5.1-rc3
     <td>5.0</td>
   </tr>
   <tr>
-    <td><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">AM335x-GP (BeagleBone Black)</a></td>
+    <td><a href="https://beagleboard.org/black/" target="_blank">AM335x-GP (BeagleBone Black)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.1-rc2</td>
+    <td>5.1-rc3</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">BCM2636 (Rapberry PI 2 Model B)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.1-rc3</td>
   </tr>
 </table>
 
