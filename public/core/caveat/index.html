@@ -12,20 +12,20 @@
     <title>Caveat :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1554460940" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1554460940" rel="stylesheet">
-    <link href="/css/hybrid.css?1554460940" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1554460940" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1554460940" rel="stylesheet">
-    <link href="/css/auto-complete.css?1554460940" rel="stylesheet">
-    <link href="/css/atom-one-dark-reasonable.css?1554460940" rel="stylesheet">
-    <link href="/css/theme.css?1554460940" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1554460940" rel="stylesheet">
+    <link href="/css/nucleus.css?1554477021" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554477021" rel="stylesheet">
+    <link href="/css/hybrid.css?1554477021" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554477021" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554477021" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554477021" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1554477021" rel="stylesheet">
+    <link href="/css/theme.css?1554477021" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554477021" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1554460940" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554477021" rel="stylesheet">
     
 
-    <script src="/js/jquery-3.3.1.min.js?1554460940"></script>
+    <script src="/js/jquery-3.3.1.min.js?1554477021"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -56,14 +56,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1554460940"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1554460940"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554477021"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554477021"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1554460940"></script>
+<script type="text/javascript" src="/js/search.js?1554477021"></script>
 
     
   </div>
@@ -1443,6 +1443,7 @@
 <ul>
 <li><a href="#config-lockdep-is-cool-but-ruins-real-time-guarantees"><strong>CONFIG_LOCKDEP</strong> is cool but ruins real-time guarantees</a></li>
 <li><a href="#isolcpus-is-our-friend-too"><strong>isolcpus</strong> is our friend too</a></li>
+<li><a href="#disable-config-smp-for-best-latency-on-single-core-systems">Disable CONFIG_SMP for best latency on single-core systems</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1518,6 +1519,18 @@ latency numbers you can get. Even if EVL&rsquo;s small footprint core has a
 limited exposure to such kind of disturbance, saving a handful of
 microseconds is worth it when the worst case figure is already within
 tenths of microseconds.</p>
+
+<h3 id="disable-config-smp-for-best-latency-on-single-core-systems">Disable CONFIG_SMP for best latency on single-core systems</h3>
+
+<p>On single-core hardware, some out-of-line code may still be executed
+for dealing with various types of spinlock with a SMP build, which
+translates into additional CPU branches and cache misses. On low end
+hardware, this overhead may be noticeable.</p>
+
+<p>Therefore, if you neither need SMP support nor kernel debug options
+which depend on instrumenting the spinlock constructs (e.g.
+CONFIG_DEBUG_PREEMPT), you may want to disable all the related kernel
+options, starting with CONFIG_SMP.</p>
 
 
 
@@ -2476,20 +2489,20 @@ tenths of microseconds.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1554460940"></script>
-    <script src="/js/perfect-scrollbar.min.js?1554460940"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1554460940"></script>
-    <script src="/js/jquery.sticky.js?1554460940"></script>
-    <script src="/js/featherlight.min.js?1554460940"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1554460940"></script>
-    <script src="/js/highlight.pack.js?1554460940"></script>
+    <script src="/js/clipboard.min.js?1554477021"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554477021"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554477021"></script>
+    <script src="/js/jquery.sticky.js?1554477021"></script>
+    <script src="/js/featherlight.min.js?1554477021"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554477021"></script>
+    <script src="/js/highlight.pack.js?1554477021"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1554460940"></script>
-    <script src="/js/learn.js?1554460940"></script>
-    <script src="/js/hugo-learn.js?1554460940"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1554477021"></script>
+    <script src="/js/learn.js?1554477021"></script>
+    <script src="/js/hugo-learn.js?1554477021"></script>
 
-    <link href="/mermaid/mermaid.css?1554460940" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1554460940"></script>
+    <link href="/mermaid/mermaid.css?1554477021" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554477021"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
