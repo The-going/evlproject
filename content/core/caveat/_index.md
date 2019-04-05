@@ -48,3 +48,15 @@ latency numbers you can get. Even if EVL's small footprint core has a
 limited exposure to such kind of disturbance, saving a handful of
 microseconds is worth it when the worst case figure is already within
 tenths of microseconds.
+
+### Disable CONFIG_SMP for best latency on single-core systems
+
+On single-core hardware, some out-of-line code may still be executed
+for dealing with various types of spinlock with a SMP build, which
+translates into additional CPU branches and cache misses. On low end
+hardware, this overhead may be noticeable.
+
+Therefore, if you neither need SMP support nor kernel debug options
+which depend on instrumenting the spinlock constructs (e.g.
+CONFIG_DEBUG_PREEMPT), you may want to disable all the related kernel
+options, starting with CONFIG_SMP.
