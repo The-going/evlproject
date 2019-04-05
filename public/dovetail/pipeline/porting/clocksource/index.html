@@ -9,7 +9,7 @@
 
     <link rel="icon" href="/images/favicon.png" type="image/png">
 
-    <title>TODO list :: Evenless project</title>
+    <title>Reading clock sources :: Evenless project</title>
 
     
     <link href="/css/nucleus.css?1554460940" rel="stylesheet">
@@ -39,7 +39,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/todo/">
+  <body class="" data-url="/dovetail/pipeline/porting/clocksource/">
     <nav id="sidebar" class="">
 
 
@@ -80,7 +80,7 @@
   
     
     <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item 
-        
+        parent
         
         
         ">
@@ -107,7 +107,7 @@
   
     
     <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item 
-        
+        parent
         
         
         ">
@@ -153,7 +153,7 @@
   
     
     <li data-nav-id="/dovetail/pipeline/porting/" title="Porting" class="dd-item 
-        
+        parent
         
         
         ">
@@ -272,7 +272,7 @@
  
   
     
-      <li data-nav-id="/dovetail/pipeline/porting/clocksource/" title="Reading clock sources" class="dd-item ">
+      <li data-nav-id="/dovetail/pipeline/porting/clocksource/" title="Reading clock sources" class="dd-item active">
         <a href="/dovetail/pipeline/porting/clocksource/">
         Clock sources
         
@@ -1314,8 +1314,8 @@
   
     
     <li data-nav-id="/todo/" title="TODO list" class="dd-item 
-        parent
-        active
+        
+        
         
         ">
       <a href="/todo/">
@@ -1418,7 +1418,25 @@
             
           
           
-            <a href='/'>Evenless</a> > TODO list
+            
+            
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/'>Evenless</a> > <a href='/dovetail/'>Dovetail interface</a> > <a href='/dovetail/pipeline/'>Interrupt pipeline</a> > <a href='/dovetail/pipeline/porting/'>Porting</a> > Reading clock sources
+          
+         
+          
+         
+          
+         
           
          
           
@@ -1429,25 +1447,7 @@
                 
                     <div class="progress">
     <div class="wrapper">
-<nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#evl-s-sysfs-interface-needs-work">EVL&rsquo;s /sysfs interface needs work</a></li>
-<li><a href="#what-the-heck-is-the-core-running">What the heck is the core running?</a></li>
-<li><a href="#poll-is-naive-with-deep-nesting"><em>poll</em> is naive with deep nesting</a></li>
-<li><a href="#libevl-needs-more-tests">libevl needs more tests</a></li>
-<li><a href="#the-big-issue-phase-out-the-ugly-big-lock">THE big issue: phase out the ugly big lock</a></li>
-<li><a href="#improving-the-tracepoints">Improving the tracepoints</a></li>
-<li><a href="#disconnect-dovetail-s-hard-and-mutable-locks-hahahugoshortcode-4hbhb-from-config-lockdep">Disconnect Dovetail&rsquo;s <a href="HAHAHUGOSHORTCODE-4HBHB">hard and mutable locks</a> from CONFIG_LOCKDEP</a></li>
-<li><a href="#enable-a-variant-of-xenomai-s-slackspot-utility-for-evl">Enable a variant of Xenomai&rsquo;s <em>slackspot</em> utility for EVL</a></li>
-<li><a href="#sanity-check-for-oob-accessible-clock-gettime-via-vdso">Sanity check for OOB-accessible clock_gettime() via vDSO</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav>
+
     </div>
 </div>
 
@@ -1463,7 +1463,7 @@
           
             <h1>
               
-              TODO list
+              Reading clock sources
             </h1>
           
 
@@ -1471,140 +1471,28 @@
 
 
 
+<p>Your autonomous core is most likely to need a fast access to the
+current clock source from out-of-band context, for reading precise
+timestamps. The best way to achieve this is by enabling the fast
+<code>clock_gettime()</code> helper in the <a href="https://lwn.net/Articles/615809/">vDSO
+support</a> for the target CPU
+architecture. At least, you will want user-space tasks controlled by
+the core to have access to the POSIX-defined <code>CLOCK_MONOTONIC</code> and
+<code>CLOCK_REALTIME</code> clocks from the out-of-band context, with no
+execution time penalty due to invoking an <a href="/dovetail/altsched/#inband-switch">in-band syscall</a>.</p>
 
-	
+<p>In most cases, the support for reading the current time base used by
+the kernel from the vDSO is already available, and may be called from
+any task context, including from tasks <a href="/dovetail/altsched/#altsched-theory">running out-of-band</a> without
+incurring any <a href="/dovetail/altsched/#stage-migration">execution stage switch</a>.</p>
 
-<h3 id="evl-s-sysfs-interface-needs-work">EVL&rsquo;s /sysfs interface needs work</h3>
-
-<p>A choice was made for the EVL core to rely exclusively on /sysfs for
-exporting the core state information, excluding /procfs
-entirely. After all, we have only a handful of <a href="/core/#evl-core-elements">element types</a> there, each instance is
-backed by a regular kernel <a href="/core/#everything-is-a-file">device</a>, so using /sysfs attributes
-to export information about them to user-space is just the obvious
-thing to do.</p>
-
-<p>This said, some work remains to review the attributes already defined
-by the EVL core, improve and possibly add more of them. This work is
-most likely to be paired with the following task about writing <code>evl</code>
-status commands.</p>
-
-<p>Missing attributes which come to mind:</p>
-
-<ul>
-<li><code>thread/&lt;pid&gt;/wchan</code>, which would dump the stack backtrace of the
-corresponding thread if it currently sleeps on an EVL wait channel
-(<code>struct evl_wait_channel</code>).</li>
-</ul>
-
-<p>Also, the <em>sysfs</em> element nodes EVL creates appear directly at the top
-of the /sys/class hierarchy (e.g. <code>/sys/class/thread</code>), which is
-clumsy. <em>sysfs</em> does not formally support sub-classes, so I see no
-obvious way for having all element classes rooted at <code>/sys/class/evl</code>
-instead. Any idea would be welcome.</p>
-
-<h3 id="what-the-heck-is-the-core-running">What the heck is the core running?</h3>
-
-<p>As a matter of fact, we have absolutely no handy tool for inspecting
-the current runtime status of the EVL core. A <em>ps</em>-like command is
-direly needed for instance, that would read the /sysfs attributes
-exported by the currently running threads to send out some useful
-information.</p>
-
-<div class="notices tip" ><p>The code for an umbrella command named <code>evl</code> is already there in
-<code>libevl/commands/evl.c</code>, which like its <code>git</code> counterpart, serves as a
-centralized command router for executing ancillary scripts or
-binaries. Such a script available from the same directory called
-<code>evl-trace</code> illustrates the interface logic with the <code>evl</code> command.</p>
-</div>
-
-
-<h3 id="poll-is-naive-with-deep-nesting"><em>poll</em> is naive with deep nesting</h3>
-
-<p>The file descriptor polling feature is represented by a file
-descriptor in userland too, so a polling object may be used to poll
-other polling objects and so on. The core should make sure not to
-accept too deeply nested monitoring requests. The case of cyclic
-graphs is detected ok, but non-cyclic deep nesting is definitely not
-as the algorithm there is pretty naive. <code>linux-evl/kernel/evl/poll.c</code>
-is where to look for this.</p>
-
-<h3 id="libevl-needs-more-tests">libevl needs more tests</h3>
-
-<p>There are some unit tests exercising the EVL core in the library, but
-we need many more:</p>
-
-<ul>
-<li><p>error injection is mostly absent from those tests.</p></li>
-
-<li><p>there is no test verifying the sanity of the condition variable
-implementation.</p></li>
-
-<li><p>the file descriptor polling feature is only lightly tested, so is
-the cross-buffer element.</p></li>
-</ul>
-
-<h3 id="the-big-issue-phase-out-the-ugly-big-lock">THE big issue: phase out the ugly big lock</h3>
-
-<p>This lock was inherited from the Xenomai code base (aka <em>nklock</em>
-there). This is a massive bottleneck on the road to efficient SMP
-scalability with more than 6 CPU cores running real-time load.</p>
-
-<p>Some significant preparatory work has taken place in the EVL core for
-taking this lock out:</p>
-
-<ul>
-<li><p>we don&rsquo;t synchronize the timer events on it anymore, every CPU now
-has its own time base lock, which improves serialization.</p></li>
-
-<li><p>the scheduler core has been simplified significantly, reducing the
-scope of the code which still requires to be covered by the ugly big
-lock.</p></li>
-</ul>
-
-<p>However, we are not there yet. Some complex stuff remains to be sorted
-out for eliminating this lock entirely, specifically in the
-thread-to-scheduler interface points.</p>
-
-<h3 id="improving-the-tracepoints">Improving the tracepoints</h3>
-
-<p>The EVL core defines a number of FTRACE-based tracepoints, which for
-the most part have been inherited from Xenomai&rsquo;s Cobalt core, there is
-root for improvement in order to better fit the EVL context. In
-addition, the new code represents 2/3rd of the code base, which is not
-instrumented at all.</p>
-
-<h3 id="disconnect-dovetail-s-hard-and-mutable-locks-hahahugoshortcode-4hbhb-from-config-lockdep">Disconnect Dovetail&rsquo;s <a href="/dovetail/pipeline/usage/locking/">hard and mutable locks</a> from CONFIG_LOCKDEP</h3>
-
-<p>If we could exclude Dovetail&rsquo;s spinlocks from CONFIG_LOCKDEP using a
-debug option, we could run the lock validator for detecting glitches
-with in-band locking exclusively, without causing massive latency
-spots.</p>
-
-<h3 id="enable-a-variant-of-xenomai-s-slackspot-utility-for-evl">Enable a variant of Xenomai&rsquo;s <em>slackspot</em> utility for EVL</h3>
-
-<p>Xenomai 3 introduced a utility called
-<a href="https://gitlab.denx.de/Xenomai/xenomai/wikis/Finding_Spurious_Relaxes"><em>slackspot</em></a>
-for tracing back code which caused the application to <a href="/dovetail/altsched/#inband-switch">switch to the
-in-band stage</a>.</p>
-
-<p>We need an equivalent, passing the trace data back to userland via <em>debugfs</em>.</p>
-
-<h3 id="sanity-check-for-oob-accessible-clock-gettime-via-vdso">Sanity check for OOB-accessible clock_gettime() via vDSO</h3>
-
-<p>The latmus test should do a quick check about not receiving a stage
-migration signal as a result of calling clock_gettime(). We have to
-make sure that we go through the vDSO for reading timestamps, without
-incurring any in-band syscall. In the ARM case, switching in-band when
-calling clock_gettime() would denote a system clocksource which was
-not enabled for user MMIO access, which is bad.</p>
-
-
-
+<p><img src="/images/wip.png?height=250px&amp;width=420px" alt="Alt text" title="Not there yet" /></p>
 
 
 <footer class=" footline" >
 	
 </footer>
+
 
         
         </div> 
@@ -1637,8 +1525,6 @@ not enabled for user MMIO access, which is bad.</p>
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -1655,6 +1541,7 @@ not enabled for user MMIO access, which is bad.</p>
             
                 
                     
+                    
                 
                 
 
@@ -1669,6 +1556,9 @@ not enabled for user MMIO access, which is bad.</p>
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -1686,6 +1576,7 @@ not enabled for user MMIO access, which is bad.</p>
             
                 
                     
+                    
                 
                 
 
@@ -1699,37 +1590,8 @@ not enabled for user MMIO access, which is bad.</p>
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
                     
                 
                 
@@ -1811,53 +1673,6 @@ not enabled for user MMIO access, which is bad.</p>
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
                     
                 
                 
@@ -1875,37 +1690,8 @@ not enabled for user MMIO access, which is bad.</p>
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
                     
                 
                 
@@ -1914,60 +1700,6 @@ not enabled for user MMIO access, which is bad.</p>
                     
                     
 
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
                     
             
         
@@ -2016,23 +1748,6 @@ not enabled for user MMIO access, which is bad.</p>
                 
 
                     
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                        
                     
                     
 
@@ -2149,66 +1864,8 @@ not enabled for user MMIO access, which is bad.</p>
             
         
                     
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
             
         
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
                     
             
         
@@ -2247,6 +1904,21 @@ not enabled for user MMIO access, which is bad.</p>
                     
             
         
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
                     
                         
             
@@ -2439,6 +2111,232 @@ not enabled for user MMIO access, which is bad.</p>
             
         
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
             
         
                     
@@ -2482,7 +2380,6 @@ not enabled for user MMIO access, which is bad.</p>
             
                 
                     
-                    
                 
                 
 
@@ -2498,9 +2395,6 @@ not enabled for user MMIO access, which is bad.</p>
             
             
                 
-                    
-                        
-                        
                     
                 
                 
@@ -2538,10 +2432,10 @@ not enabled for user MMIO access, which is bad.</p>
 	 
 	 
 		
-			<a class="nav nav-prev" href="/core/caveat/" title="Caveat"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/dovetail/pipeline/porting/timer/" title="Timer management"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/ports/" title="Status of EVL ports" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/dovetail/pipeline/porting/rawprintk/" title="Raw printk support" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
@@ -2571,3 +2465,4 @@ not enabled for user MMIO access, which is bad.</p>
     
   </body>
 </html>
+
