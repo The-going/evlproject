@@ -16,10 +16,10 @@ execution time penalty due to invoking an [in-band syscall] ({{<
 relref "dovetail/altsched/_index.md#inband-switch" >}}).
 
 In most cases, the support for reading the current time base used by
-the kernel from the vDSO is already available, and may called from any
-task context, including from tasks [running out-of-band]({{< relref
-"dovetail/altsched/_index.md#altsched-theory" >}}) without incurring
-any [execution stage switch]({{< relref
+the kernel from the vDSO is already available, and may be called from
+any task context, including from tasks [running out-of-band]({{<
+relref "dovetail/altsched/_index.md#altsched-theory" >}}) without
+incurring any [execution stage switch]({{< relref
 "dovetail/altsched/_index.md#stage-migration" >}}).
 
 ![Alt text](/images/wip.png?height=250px&width=420px "Not there yet")

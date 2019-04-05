@@ -30,7 +30,7 @@ The table below summarizes the current status of the existing ports.
 
 > Current target kernel release
 
-Linux 5.1-rc2
+Linux 5.1-rc3
 
 > ARM64 SoC
 
@@ -79,7 +79,7 @@ Linux 5.1-rc2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.1-rc2</td>
+    <td>5.1-rc3</td>
   </tr>
 </table>
 
