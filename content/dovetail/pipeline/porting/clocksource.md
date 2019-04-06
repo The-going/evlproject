@@ -60,8 +60,8 @@ truckload of different hardware chips may be used for that purpose
 instead, which the vDSO implementation does not provide any support
 for. In these cases, a plain in-band system call may be issued
 whenever the vDSO-based `clock_gettime()` is called from an
-application, which would be a showstopper for keeping response time
-short and bounded.
+application, which would be a showstopper for keeping the response
+time short and bounded.
 
 {{% notice tip %}}
 On ARM, if you receive the following message from the _latmus_ utility
@@ -88,7 +88,7 @@ In essence, a _clocksource\_user\_mmio_ object is a MMIO-based clock
 source which a vDSO code may map into the calling application's
 address space, so that it can read the hardware counter directly. More
 precisely, the MMIO space covering the hardware counter register(s)
-are mapped into the caller's address space.
+is mapped into the caller's address space.
 
 {{% notice note %}}
 The mapping operation happens once in a process lifetime, during the
