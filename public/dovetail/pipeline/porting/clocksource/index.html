@@ -12,20 +12,20 @@
     <title>Reading clock sources :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1554572055" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1554572055" rel="stylesheet">
-    <link href="/css/hybrid.css?1554572055" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1554572055" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1554572055" rel="stylesheet">
-    <link href="/css/auto-complete.css?1554572055" rel="stylesheet">
-    <link href="/css/atom-one-dark-reasonable.css?1554572055" rel="stylesheet">
-    <link href="/css/theme.css?1554572055" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1554572055" rel="stylesheet">
+    <link href="/css/nucleus.css?1554572424" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554572424" rel="stylesheet">
+    <link href="/css/hybrid.css?1554572424" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554572424" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554572424" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554572424" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1554572424" rel="stylesheet">
+    <link href="/css/theme.css?1554572424" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554572424" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1554572055" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554572424" rel="stylesheet">
     
 
-    <script src="/js/jquery-3.3.1.min.js?1554572055"></script>
+    <script src="/js/jquery-3.3.1.min.js?1554572424"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -56,14 +56,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1554572055"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1554572055"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554572424"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554572424"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1554572055"></script>
+<script type="text/javascript" src="/js/search.js?1554572424"></script>
 
     
   </div>
@@ -1541,8 +1541,8 @@ truckload of different hardware chips may be used for that purpose
 instead, which the vDSO implementation does not provide any support
 for. In these cases, a plain in-band system call may be issued
 whenever the vDSO-based <code>clock_gettime()</code> is called from an
-application, which would be a showstopper for keeping response time
-short and bounded.</p>
+application, which would be a showstopper for keeping the response
+time short and bounded.</p>
 
 <div class="notices tip" ><p>On ARM, if you receive the following message from the <em>latmus</em> utility
 when exiting a latency test, chances are that the vDSO helper for
@@ -1569,7 +1569,7 @@ In essence, a <em>clocksource_user_mmio</em> object is a MMIO-based clock
 source which a vDSO code may map into the calling application&rsquo;s
 address space, so that it can read the hardware counter directly. More
 precisely, the MMIO space covering the hardware counter register(s)
-are mapped into the caller&rsquo;s address space.</p>
+is mapped into the caller&rsquo;s address space.</p>
 
 <div class="notices note" ><p>The mapping operation happens once in a process lifetime, during the
 very first call to <code>clock_gettime()</code> issued by the application. Since
@@ -2754,20 +2754,20 @@ index 69c3a6d94933..bc7d177759c3 100644
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1554572055"></script>
-    <script src="/js/perfect-scrollbar.min.js?1554572055"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1554572055"></script>
-    <script src="/js/jquery.sticky.js?1554572055"></script>
-    <script src="/js/featherlight.min.js?1554572055"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1554572055"></script>
-    <script src="/js/highlight.pack.js?1554572055"></script>
+    <script src="/js/clipboard.min.js?1554572424"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554572424"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554572424"></script>
+    <script src="/js/jquery.sticky.js?1554572424"></script>
+    <script src="/js/featherlight.min.js?1554572424"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554572424"></script>
+    <script src="/js/highlight.pack.js?1554572424"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1554572055"></script>
-    <script src="/js/learn.js?1554572055"></script>
-    <script src="/js/hugo-learn.js?1554572055"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1554572424"></script>
+    <script src="/js/learn.js?1554572424"></script>
+    <script src="/js/hugo-learn.js?1554572424"></script>
 
-    <link href="/mermaid/mermaid.css?1554572055" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1554572055"></script>
+    <link href="/mermaid/mermaid.css?1554572424" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554572424"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
