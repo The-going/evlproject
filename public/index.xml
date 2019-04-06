@@ -93,7 +93,7 @@ The runtime overhead induced by enabling these options is marginal. Just don&amp
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://evenless.org/dovetail/pipeline/porting/clocksource/</guid>
-      <description>Your autonomous core is most likely to need a fast access to the current clock source from out-of-band context, for reading precise timestamps. The best way to achieve this is by enabling the fast clock_gettime() helper in the vDSO support for the target CPU architecture. At least, you will want user-space tasks controlled by the core to have access to the POSIX-defined CLOCK_MONOTONIC and CLOCK_REALTIME clocks from the out-of-band context, with no execution time penalty due to invoking an in-band syscall.</description>
+      <description>Your autonomous core most likely needs a fast access to the current clock source from the out-of-band context, for reading precise timestamps which are in sync with the kernel&amp;rsquo;s idea of time. The best way to achieve this is by enabling the fast clock_gettime() helper in the vDSO support for the target CPU architecture. At least, you may want user-space tasks controlled by the core to have access to the POSIX-defined CLOCK_MONOTONIC and CLOCK_REALTIME clocks from the out-of-band context, using a vDSO call, with no execution and response time penalty involved in invoking an in-band syscall.</description>
     </item>
     
     <item>
