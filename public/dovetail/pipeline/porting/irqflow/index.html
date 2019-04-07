@@ -12,20 +12,20 @@
     <title>Interrupt flow :: Evenless project</title>
 
     
-    <link href="/css/nucleus.css?1554572424" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1554572424" rel="stylesheet">
-    <link href="/css/hybrid.css?1554572424" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1554572424" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1554572424" rel="stylesheet">
-    <link href="/css/auto-complete.css?1554572424" rel="stylesheet">
-    <link href="/css/atom-one-dark-reasonable.css?1554572424" rel="stylesheet">
-    <link href="/css/theme.css?1554572424" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1554572424" rel="stylesheet">
+    <link href="/css/nucleus.css?1554648520" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1554648520" rel="stylesheet">
+    <link href="/css/hybrid.css?1554648520" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1554648520" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1554648520" rel="stylesheet">
+    <link href="/css/auto-complete.css?1554648520" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1554648520" rel="stylesheet">
+    <link href="/css/theme.css?1554648520" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1554648520" rel="stylesheet">
     
-      <link href="/css/theme-evl.css?1554572424" rel="stylesheet">
+      <link href="/css/theme-evl.css?1554648520" rel="stylesheet">
     
 
-    <script src="/js/jquery-3.3.1.min.js?1554572424"></script>
+    <script src="/js/jquery-3.3.1.min.js?1554648520"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -56,14 +56,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1554572424"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1554572424"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1554648520"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1554648520"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/evenless.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1554572424"></script>
+<script type="text/javascript" src="/js/search.js?1554648520"></script>
 
     
   </div>
@@ -1453,11 +1453,12 @@
 <ul>
 <li><a href="#genirq-flow">Adapting the generic interrupt management (genirq)</a>
 <ul>
+<li><a href="#arch-do-irq">In-band IRQ delivery glue code</a></li>
 <li><a href="#deferring-level-triggered-irqs">Deferring level-triggered IRQs</a></li>
 <li><a href="#adapting-the-interrupt-flow-handlers-to-pipelining">Adapting the interrupt flow handlers to pipelining</a></li>
 </ul></li>
 <li><a href="#irqchip-fixup">Fixing up the IRQ chip drivers</a></li>
-<li><a href="#kernel-preemption-control-preempt">Kernel preemption control (PREEMPT)</a></li>
+<li><a href="#kernel-preemption-control-config-preempt">Kernel preemption control (CONFIG_PREEMPT)</a></li>
 <li><a href="#irq-work">Extended IRQ work API</a></li>
 </ul></li>
 </ul>
@@ -1551,6 +1552,77 @@ from preemption, then clears the <a href="/dovetail/pipeline/optimistic/#virtual
 flag</a>,
 which would cause the interrupt state to be synchronized, running the
 in-band handlers eventually.</p>
+
+<h3 id="arch-do-irq">In-band IRQ delivery glue code</h3>
+
+<p>For delivering pending interrupts to the in-band stage, the generic
+Dovetail core synchronizing the IRQ stage calls a routine named
+<code>arch_do_IRQ_pipelined()</code>, which <em>you must provide as part of the
+pipeline&rsquo;s arch-specific support code</em>. This function is passed both
+device IRQs and IPIs, it should dispatch the event accordingly
+according to the following logic:</p>
+
+<div class="mermaid" align="left">
+graph LR;
+      S(IRQ stage sync) --> E["arch_do_IRQ_pipelined()"]
+      style E fill:#99ccff;
+      E --> A{Is IPI?}
+      style A fill:#99ccff;
+      A -->|Yes| B[call IPI handler]
+      style B fill:#99ccff;
+      A -->|No| C["do_domain_irq()"]
+      style C fill:#99ccff;
+</div>
+
+
+<p>For ARM and ARM64, the corresponding code looks like this:</p>
+
+<pre><code>void arch_do_IRQ_pipelined(struct irq_desc *desc)
+{
+	struct pt_regs *regs = raw_cpu_ptr(&amp;irq_pipeline.tick_regs);
+	unsigned int irq = irq_desc_get_irq(desc);
+
+#ifdef CONFIG_SMP
+	/*
+	 * Check for IPIs, handing them over to the specific dispatch
+	 * code.
+	 */
+	if (irq &gt;= OOB_IPI_BASE &amp;&amp;
+	    irq &lt; OOB_IPI_BASE + NR_IPI + OOB_NR_IPI) {
+		__handle_IPI(irq - OOB_IPI_BASE, regs);
+		return;
+	}
+#endif
+
+	do_domain_irq(irq, regs);
+}
+</code></pre>
+
+<p>A couple of notes reading this code:</p>
+
+<ul>
+<li><p><code>do_domain_irq()</code> is a routine the generic Dovetail core implements,
+which fires the in-band handler for a device IRQ.</p></li>
+
+<li><p>How IPIs differentiate from other IRQs, which handler should be
+called for them is an <a href="/dovetail/pipeline/porting/arch/#dealing-with-ipis">arch-specific implementation</a> you
+should provide in porting Dovetail. In the code example above, the
+IPI handling routine is named <code>__handle_IPI()</code>.</p></li>
+
+<li><p>Since the interrupt delivery is deferred for the in-band stage until
+the latter is synchronized eventually, we don&rsquo;t have access to the
+preempted register frame for a delayed interrupt event. Said
+differently, the interrupt context has already returned, only
+logging the interrupt event but not dispatching it yet, and the
+stack-based register frame of the preempted context is long
+gone. Fortunately, the kernel is normally only interested in
+analyzing frames attached to timer events (e.g. for profiling), so
+Dovetail only needs to save the register frame corresponding to the
+last tick event received to the per-CPU <code>irq_pipeline.tick_regs</code>
+variable. A pointer to such frame for the current CPU can be passed
+by your implementation of <code>arch_do_IRQ_pipelined()</code> to the interrupt
+handler.</p></li>
+</ul>
 
 <h3 id="deferring-level-triggered-irqs">Deferring level-triggered IRQs</h3>
 
@@ -1784,93 +1856,35 @@ did review the code for that purpose.</p>
  void __init gic_cascade_irq(unsigned int gic_nr, unsigned int irq)
 </code></pre>
 
-<p>In some (rare) cases, we might have a bit more work for adapting an
-interrupt chip driver. For instance, we might have to convert a
-sleeping spinlock to a raw spinlock first, so that we can convert the
-latter to a hard spinlock eventually. Hard spinlocks like raw ones
-should be manipulated via the raw_spin_lock() API, unlike sleeping
-spinlocks. This change makes even more sense as sleeping is not
-allowed while running in the pipeline entry context anyway.</p>
-
 <blockquote>
 <p>Adapting the BCM2835 pin control driver to interrupt pipelining</p>
 </blockquote>
 
 <pre><code>--- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
 +++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
-@@ -90,7 +90,7 @@ struct bcm2835_pinctrl {
+@@ -79,7 +79,7 @@ struct bcm2835_pinctrl {
  	struct gpio_chip gpio_chip;
  	struct pinctrl_gpio_range gpio_range;
  
--	spinlock_t irq_lock[BCM2835_NUM_BANKS];
+-	raw_spinlock_t irq_lock[BCM2835_NUM_BANKS];
 +	hard_spinlock_t irq_lock[BCM2835_NUM_BANKS];
  };
  
  /* pins are just named GPIO0..GPIO53 */
-@@ -461,10 +461,10 @@ static void bcm2835_gpio_irq_enable(struct irq_data *data)
- 	unsigned bank = GPIO_REG_OFFSET(gpio);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
-+	raw_spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
- 	set_bit(offset, &amp;pc-&gt;enabled_irq_map[bank]);
- 	bcm2835_gpio_irq_config(pc, gpio, true);
--	spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
-+	raw_spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
- }
- 
- static void bcm2835_gpio_irq_disable(struct irq_data *data)
-@@ -476,12 +476,12 @@ static void bcm2835_gpio_irq_disable(struct irq_data *data)
- 	unsigned bank = GPIO_REG_OFFSET(gpio);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
-+	raw_spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
- 	bcm2835_gpio_irq_config(pc, gpio, false);
- 	/* Clear events that were latched prior to clearing event sources */
- 	bcm2835_gpio_set_bit(pc, GPEDS0, gpio);
- 	clear_bit(offset, &amp;pc-&gt;enabled_irq_map[bank]);
--	spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
-+	raw_spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
- }
- 
- static int __bcm2835_gpio_irq_set_type_disabled(struct bcm2835_pinctrl *pc,
-@@ -584,7 +584,7 @@ static int bcm2835_gpio_irq_set_type(struct irq_data *data, unsigned int type)
- 	unsigned long flags;
- 	int ret;
- 
--	spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
-+	raw_spin_lock_irqsave(&amp;pc-&gt;irq_lock[bank], flags);
- 
- 	if (test_bit(offset, &amp;pc-&gt;enabled_irq_map[bank]))
- 		ret = __bcm2835_gpio_irq_set_type_enabled(pc, gpio, type);
-@@ -596,7 +596,7 @@ static int bcm2835_gpio_irq_set_type(struct irq_data *data, unsigned int type)
- 	else
- 		irq_set_handler_locked(data, handle_level_irq);
- 
--	spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
-+	raw_spin_unlock_irqrestore(&amp;pc-&gt;irq_lock[bank], flags);
- 
- 	return ret;
- }
-@@ -618,6 +618,7 @@ static struct irq_chip bcm2835_gpio_irq_chip = {
+@@ -608,6 +608,7 @@ static struct irq_chip bcm2835_gpio_irq_chip = {
  	.irq_ack = bcm2835_gpio_irq_ack,
  	.irq_mask = bcm2835_gpio_irq_disable,
  	.irq_unmask = bcm2835_gpio_irq_enable,
 +	.flags = IRQCHIP_PIPELINE_SAFE,
  };
- 
- static int bcm2835_pctl_get_groups_count(struct pinctrl_dev *pctldev)
-@@ -1047,7 +1048,7 @@ static int bcm2835_pinctrl_probe(struct platform_device *pdev)
- 		for_each_set_bit(offset, &amp;events, 32)
- 			bcm2835_gpio_wr(pc, GPEDS0 + i * 4, BIT(offset));
- 
--		spin_lock_init(&amp;pc-&gt;irq_lock[i]);
-+		raw_spin_lock_init(&amp;pc-&gt;irq_lock[i]);
- 	}
- 
- 	err = gpiochip_add_data(&amp;pc-&gt;gpio_chip, pc);
 </code></pre>
+
+<p>In some (rare) cases, we might have a bit more work for adapting an
+interrupt chip driver. For instance, we might have to convert a
+sleeping spinlock to a raw spinlock first, so that we can convert the
+latter to a hard spinlock eventually. Hard spinlocks like raw ones
+should be manipulated via the <code>raw_spin_lock()</code> API, unlike sleeping
+spinlocks.</p>
 
 <div class="notices note" ><p><code>irq_set_chip()</code> will complain loudly with a kernel warning whenever
 the <code>irqchip</code> descriptor passed does not bear the
@@ -1880,12 +1894,14 @@ target system is incomplete.</p>
 </div>
 
 
-<h2 id="kernel-preemption-control-preempt">Kernel preemption control (PREEMPT)</h2>
+<h2 id="kernel-preemption-control-config-preempt">Kernel preemption control (CONFIG_PREEMPT)</h2>
 
-<p>When pipelining is enabled, <code>preempt_schedule_irq()</code> reconciles the
-virtual interrupt state - which has not been touched by the assembly
-level code upon kernel entry - with basic assumptions made by the
-scheduler core, such as entering with (virtual) interrupts disabled.</p>
+<p>When pipelining is enabled, Dovetail ensures that
+<code>preempt_schedule_irq()</code> reconciles the virtual interrupt state -
+which has not been touched by the assembly level code upon kernel
+entry - with basic assumptions made by the scheduler core, such as
+entering with interrupts virtually disabled (i.e. the in-band stage
+should be stalled).</p>
 
 <h2 id="irq-work">Extended IRQ work API</h2>
 
@@ -2867,20 +2883,20 @@ vector. This special IRQ is labeled <em>in-band work</em> when reported by
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1554572424"></script>
-    <script src="/js/perfect-scrollbar.min.js?1554572424"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1554572424"></script>
-    <script src="/js/jquery.sticky.js?1554572424"></script>
-    <script src="/js/featherlight.min.js?1554572424"></script>
-    <script src="/js/html5shiv-printshiv.min.js?1554572424"></script>
-    <script src="/js/highlight.pack.js?1554572424"></script>
+    <script src="/js/clipboard.min.js?1554648520"></script>
+    <script src="/js/perfect-scrollbar.min.js?1554648520"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1554648520"></script>
+    <script src="/js/jquery.sticky.js?1554648520"></script>
+    <script src="/js/featherlight.min.js?1554648520"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1554648520"></script>
+    <script src="/js/highlight.pack.js?1554648520"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1554572424"></script>
-    <script src="/js/learn.js?1554572424"></script>
-    <script src="/js/hugo-learn.js?1554572424"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1554648520"></script>
+    <script src="/js/learn.js?1554648520"></script>
+    <script src="/js/hugo-learn.js?1554648520"></script>
 
-    <link href="/mermaid/mermaid.css?1554572424" type="text/css" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1554572424"></script>
+    <link href="/mermaid/mermaid.css?1554648520" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1554648520"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
