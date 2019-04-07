@@ -3,7 +3,7 @@ title: "IRQ injection"
 date: 2018-07-01T15:38:34+02:00
 ---
 
-## Sending out-of-band IPIs to remote CPUs
+## Sending out-of-band IPIs to remote CPUs {#oob-ipi}
 
 Although the pipeline does not directly use IPIs internally, it
 exposes two generic IPI vectors which autonomous cores may use in SMP

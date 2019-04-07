@@ -67,6 +67,76 @@ flag]({{%relref "dovetail/pipeline/optimistic.md#virtual-i-flag" %}}),
 which would cause the interrupt state to be synchronized, running the
 in-band handlers eventually.
 
+### In-band IRQ delivery glue code {#arch-do-irq}
+
+For delivering pending interrupts to the in-band stage, the generic
+Dovetail core synchronizing the IRQ stage calls a routine named
+`arch_do_IRQ_pipelined()`, which _you must provide as part of the
+pipeline's arch-specific support code_. This function is passed both
+device IRQs and IPIs, it should dispatch the event accordingly
+according to the following logic:
+
+{{<mermaid align="left">}}
+graph LR;
+      S(IRQ stage sync) --> E["arch_do_IRQ_pipelined()"]
+      style E fill:#99ccff;
+      E --> A{Is IPI?}
+      style A fill:#99ccff;
+      A -->|Yes| B[call IPI handler]
+      style B fill:#99ccff;
+      A -->|No| C["do_domain_irq()"]
+      style C fill:#99ccff;
+{{< /mermaid >}}
+
+For ARM and ARM64, the corresponding code looks like this:
+
+```
+void arch_do_IRQ_pipelined(struct irq_desc *desc)
+{
+	struct pt_regs *regs = raw_cpu_ptr(&irq_pipeline.tick_regs);
+	unsigned int irq = irq_desc_get_irq(desc);
+
+#ifdef CONFIG_SMP
+	/*
+	 * Check for IPIs, handing them over to the specific dispatch
+	 * code.
+	 */
+	if (irq >= OOB_IPI_BASE &&
+	    irq < OOB_IPI_BASE + NR_IPI + OOB_NR_IPI) {
+		__handle_IPI(irq - OOB_IPI_BASE, regs);
+		return;
+	}
+#endif
+
+	do_domain_irq(irq, regs);
+}
+```
+
+A couple of notes reading this code:
+
+- `do_domain_irq()` is a routine the generic Dovetail core implements,
+  which fires the in-band handler for a device IRQ.
+
+- How IPIs differentiate from other IRQs, which handler should be
+  called for them is an [arch-specific implementation]({{< relref
+  "dovetail/pipeline/porting/arch.md#dealing-with-ipis" >}}) you
+  should provide in porting Dovetail. In the code example above, the
+  IPI handling routine is named `__handle_IPI()`.
+
+- Since the interrupt delivery is deferred for the in-band stage until
+  the latter is synchronized eventually, we don't have access to the
+  preempted register frame for a delayed interrupt event. Said
+  differently, the interrupt context has already returned, only
+  logging the interrupt event but not dispatching it yet, and the
+  stack-based register frame of the preempted context is long
+  gone. Fortunately, the kernel is normally only interested in
+  analyzing frames attached to timer events (e.g. for profiling), so
+  Dovetail only needs to save the register frame corresponding to the
+  last tick event received to the per-CPU `irq_pipeline.tick_regs`
+  variable. A pointer to such frame for the current CPU can be passed
+  by your implementation of `arch_do_IRQ_pipelined()` to the interrupt
+  handler.
+
 ### Deferring level-triggered IRQs
 
 In absence of any out-of-band handler for the event, the device may
@@ -289,92 +359,34 @@ did review the code for that purpose.
  void __init gic_cascade_irq(unsigned int gic_nr, unsigned int irq)
 ```
 
-In some (rare) cases, we might have a bit more work for adapting an
-interrupt chip driver. For instance, we might have to convert a
-sleeping spinlock to a raw spinlock first, so that we can convert the
-latter to a hard spinlock eventually. Hard spinlocks like raw ones
-should be manipulated via the raw_spin_lock() API, unlike sleeping
-spinlocks. This change makes even more sense as sleeping is not
-allowed while running in the pipeline entry context anyway.
-
 > Adapting the BCM2835 pin control driver to interrupt pipelining
 
 ```
 --- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
 +++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
-@@ -90,7 +90,7 @@ struct bcm2835_pinctrl {
+@@ -79,7 +79,7 @@ struct bcm2835_pinctrl {
  	struct gpio_chip gpio_chip;
  	struct pinctrl_gpio_range gpio_range;
  
--	spinlock_t irq_lock[BCM2835_NUM_BANKS];
+-	raw_spinlock_t irq_lock[BCM2835_NUM_BANKS];
 +	hard_spinlock_t irq_lock[BCM2835_NUM_BANKS];
  };
  
  /* pins are just named GPIO0..GPIO53 */
-@@ -461,10 +461,10 @@ static void bcm2835_gpio_irq_enable(struct irq_data *data)
- 	unsigned bank = GPIO_REG_OFFSET(gpio);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&pc->irq_lock[bank], flags);
-+	raw_spin_lock_irqsave(&pc->irq_lock[bank], flags);
- 	set_bit(offset, &pc->enabled_irq_map[bank]);
- 	bcm2835_gpio_irq_config(pc, gpio, true);
--	spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
-+	raw_spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
- }
- 
- static void bcm2835_gpio_irq_disable(struct irq_data *data)
-@@ -476,12 +476,12 @@ static void bcm2835_gpio_irq_disable(struct irq_data *data)
- 	unsigned bank = GPIO_REG_OFFSET(gpio);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&pc->irq_lock[bank], flags);
-+	raw_spin_lock_irqsave(&pc->irq_lock[bank], flags);
- 	bcm2835_gpio_irq_config(pc, gpio, false);
- 	/* Clear events that were latched prior to clearing event sources */
- 	bcm2835_gpio_set_bit(pc, GPEDS0, gpio);
- 	clear_bit(offset, &pc->enabled_irq_map[bank]);
--	spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
-+	raw_spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
- }
- 
- static int __bcm2835_gpio_irq_set_type_disabled(struct bcm2835_pinctrl *pc,
-@@ -584,7 +584,7 @@ static int bcm2835_gpio_irq_set_type(struct irq_data *data, unsigned int type)
- 	unsigned long flags;
- 	int ret;
- 
--	spin_lock_irqsave(&pc->irq_lock[bank], flags);
-+	raw_spin_lock_irqsave(&pc->irq_lock[bank], flags);
- 
- 	if (test_bit(offset, &pc->enabled_irq_map[bank]))
- 		ret = __bcm2835_gpio_irq_set_type_enabled(pc, gpio, type);
-@@ -596,7 +596,7 @@ static int bcm2835_gpio_irq_set_type(struct irq_data *data, unsigned int type)
- 	else
- 		irq_set_handler_locked(data, handle_level_irq);
- 
--	spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
-+	raw_spin_unlock_irqrestore(&pc->irq_lock[bank], flags);
- 
- 	return ret;
- }
-@@ -618,6 +618,7 @@ static struct irq_chip bcm2835_gpio_irq_chip = {
+@@ -608,6 +608,7 @@ static struct irq_chip bcm2835_gpio_irq_chip = {
  	.irq_ack = bcm2835_gpio_irq_ack,
  	.irq_mask = bcm2835_gpio_irq_disable,
  	.irq_unmask = bcm2835_gpio_irq_enable,
 +	.flags = IRQCHIP_PIPELINE_SAFE,
  };
- 
- static int bcm2835_pctl_get_groups_count(struct pinctrl_dev *pctldev)
-@@ -1047,7 +1048,7 @@ static int bcm2835_pinctrl_probe(struct platform_device *pdev)
- 		for_each_set_bit(offset, &events, 32)
- 			bcm2835_gpio_wr(pc, GPEDS0 + i * 4, BIT(offset));
- 
--		spin_lock_init(&pc->irq_lock[i]);
-+		raw_spin_lock_init(&pc->irq_lock[i]);
- 	}
- 
- 	err = gpiochip_add_data(&pc->gpio_chip, pc);
-```
+  ```
+
+In some (rare) cases, we might have a bit more work for adapting an
+interrupt chip driver. For instance, we might have to convert a
+sleeping spinlock to a raw spinlock first, so that we can convert the
+latter to a hard spinlock eventually. Hard spinlocks like raw ones
+should be manipulated via the `raw_spin_lock()` API, unlike sleeping
+spinlocks.
 
 {{% notice note %}}
 `irq_set_chip()` will complain loudly with a kernel warning whenever
@@ -384,12 +396,14 @@ this warning as a sure sign that your port of the IRQ pipeline to the
 target system is incomplete.
 {{% /notice %}}
 
-## Kernel preemption control (PREEMPT)
+## Kernel preemption control (CONFIG_PREEMPT)
 
-When pipelining is enabled, `preempt_schedule_irq()` reconciles the
-virtual interrupt state - which has not been touched by the assembly
-level code upon kernel entry - with basic assumptions made by the
-scheduler core, such as entering with (virtual) interrupts disabled.
+When pipelining is enabled, Dovetail ensures that
+`preempt_schedule_irq()` reconciles the virtual interrupt state -
+which has not been touched by the assembly level code upon kernel
+entry - with basic assumptions made by the scheduler core, such as
+entering with interrupts virtually disabled (i.e. the in-band stage
+should be stalled).
 
 ## Extended IRQ work API {#irq-work}
 
