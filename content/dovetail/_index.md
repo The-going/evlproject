@@ -44,7 +44,7 @@ from the GPOS infrastructure:
   respect to response time.
 
 This documentation presents _Dovetail_, an interface for integrating
-any short of autonomous software core into the kernel, such as a
+any sort of autonomous software core into the kernel, such as a
 real-time core. The two main software layers forming Dovetail are
 described:
 
