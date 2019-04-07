@@ -829,7 +829,7 @@ void handle_IPI_pipelined(int sgi, struct pt_regs *regs)
 As illustrated in the example of [in-band delivery glue code]({{<
 relref "dovetail/pipeline/porting/irqflow.md#arch-do-irq" >}}), the
 ARM ports distinguishes between device IRQs and IPIs based on the
-logical IPI number, with anything in the range
+pipelined IRQ number, with anything in the range
 [OOB_IPI_BASE..OOB_IPI_BASE + 10] being dispatched as an IPI to the
 `__handle_IPI()` routine.
 
