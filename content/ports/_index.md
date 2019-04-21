@@ -107,7 +107,7 @@ Linux 5.1-rc5
   <tr>
     <th>SoC (Board)</th>
     <th>IRQ pipeline<sup>1</sup></th> 
-    <th>Alternate task control</th>
+    <th>Alternate scheduling</th>
     <th>EVL base<sup>2</sup></th>
     <th>EVL stress<sup>3</sup></th>
     <th>Test kernel</th>
