@@ -23,14 +23,13 @@ ported in the following sequence:
 3. the [EVL library]({{%relref "core/user-api/_index.md"
    %}}). Likewise, this code has very little dependencies on the
    underlying CPU architecture and platform. A port boils down to
-   resolving the address of the `clock_gettime()` helper in the vDSO
-   basically.
+   resolving the address of the `clock_gettime()` helper in the vDSO.
 
 The table below summarizes the current status of the existing ports.
 
 > Current target kernel release
 
-Linux 5.1-rc3
+Linux 5.1-rc5
 
 > ARM64 SoC
 
@@ -44,42 +43,50 @@ Linux 5.1-rc3
   <tr>
     <th>SoC (Board)</th>
     <th>IRQ pipeline <sup>1</sup></th> 
-    <th>Alternate task control</th>
+    <th>Alternate scheduling</th>
     <th>EVL base<sup>2</sup></th>
     <th>EVL stress<sup>3</sup></th>
     <th>Test kernel</th>
   </tr>
   <tr>
-    <td><a href="https://developer.qualcomm.com/hardware/dragonboard-410c" target="_blank">DragonBoard 410c</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>5.0</td>
-  </tr>
-  <tr>
-    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">BCM2837 (Raspberry 3 Model B)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>5.0</td>
-  </tr>
-  <tr>
-    <td><a href="https://www.96boards.org/product/hikey/" target="_blank">Kirin 620 (HiKey LeMaker)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>5.0</td>
-  </tr>
-  <tr>
-    <td><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">virt (QEMU)</a></td>
+    <td><a href="https://www.qualcomm.com/products/qcs404/" target="_blank">Qualcomm QCS404</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td>5.1-rc3</td>
+  </tr>
+  <tr>
+    <td><a href="https://developer.qualcomm.com/hardware/dragonboard-410c" target="_blank">Qualcomm DragonBoard 410c</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.0</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">Broadcom BCM2837 (Raspberry 3 Model B)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.1-rc5</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.0</td>
+  </tr>
+  <tr>
+    <td><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">QEMU virt</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.1-rc5</td>
   </tr>
 </table>
 
@@ -101,7 +108,7 @@ Linux 5.1-rc3
     <th>Test kernel</th>
   </tr>
   <tr>
-    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">i.MX6qp (SabreSD)</a></td>
+    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-7dual-applications-processors:MCIMX7SABRE" target="_blank">NXP i.MX7D (SabreSD)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
@@ -109,7 +116,7 @@ Linux 5.1-rc3
     <td>5.0</td>
   </tr>
   <tr>
-    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-7dual-applications-processors:MCIMX7SABRE" target="_blank">i.MX7D (SabreSD)</a></td>
+    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">NXP i.MX6qp (SabreSD)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
@@ -117,23 +124,7 @@ Linux 5.1-rc3
     <td>5.0</td>
   </tr>
   <tr>
-    <td><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">Cannes2-STiH410 (B2260)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>5.0</td>
-  </tr>
-  <tr>
-    <td><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">Cyclone V SoC FPGA (DevKit)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>5.0</td>
-  </tr>
-  <tr>
-    <td><a href="https://beagleboard.org/black/" target="_blank">AM335x-GP (BeagleBone Black)</a></td>
+    <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
@@ -141,7 +132,23 @@ Linux 5.1-rc3
     <td>5.1-rc3</td>
   </tr>
   <tr>
-    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">BCM2636 (Rapberry PI 2 Model B)</a></td>
+    <td><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">Altera Cyclone V SoC FPGA (DevKit)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.0</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">STMicro Cannes2-STiH410 (B2260)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.0</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">Broadcom BCM2636 (Raspberry PI 2 Model B)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
