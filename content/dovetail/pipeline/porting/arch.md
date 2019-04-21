@@ -358,7 +358,7 @@ driver. That handler should in turn invoke:
 For those routines, the initial task of inserting an interrupt at the
 head of the pipeline is directly handled from the _genirq_ layer they
 belong to. This means that there is usually not much to do other than
-making a quick check in the implementation of the parent IRQ handler,
+making a quick check in the implementation of the parent IRQ handler
 in the relevant *irqchip* driver, applying the [rules of
 thumb]({{%relref "dovetail/rulesofthumb.md" %}}) carefully.
 
@@ -613,6 +613,71 @@ routine to interrupt pipelining:
   to shorten the interrupt latency for the oob stage, where autonomous
   cores live.
 
+> Reconciling the interrupt state on ARM64 epilogue
+```
+ #include <linux/errno.h>
+ #include <linux/kernel.h>
+ #include <linux/signal.h>
++#include <linux/irq_pipeline.h>
+ #include <linux/personality.h>
+ #include <linux/freezer.h>
+ #include <linux/stddef.h>
+@@ -915,24 +916,34 @@ static void do_signal(struct pt_regs *regs)
+ asmlinkage void do_notify_resume(struct pt_regs *regs,
+ 				 unsigned long thread_flags)
+ {
++	WARN_ON_ONCE(irq_pipeline_debug() &&
++		(irqs_disabled() || running_oob()));
++
+ 	/*
+ 	 * The assembly code enters us with IRQs off, but it hasn't
+ 	 * informed the tracing code of that for efficiency reasons.
+ 	 * Update the trace code with the current status.
+ 	 */
+-	trace_hardirqs_off();
++	if (!irqs_pipelined())
++		trace_hardirqs_off();
+ 
+ 	do {
++		if (irqs_pipelined())
++			local_irq_disable();
++
+ 		/* Check valid user FS if needed */
+ 		addr_limit_user_check();
+ 
+ 		if (thread_flags & _TIF_NEED_RESCHED) {
+ 			/* Unmask Debug and SError for the next task */
+-			local_daif_restore(DAIF_PROCCTX_NOIRQ);
++			local_daif_restore(irqs_pipelined() ?
++					DAIF_PROCCTX : DAIF_PROCCTX_NOIRQ);
+ 
+ 			schedule();
+ 		} else {
+ 			local_daif_restore(DAIF_PROCCTX);
++			if (irqs_pipelined())
++				local_irq_enable();
+ 
+ 			if (thread_flags & _TIF_UPROBE)
+ 				uprobe_notify_resume(regs);
+@@ -950,9 +961,17 @@ asmlinkage void do_notify_resume(struct pt_regs *regs,
+ 				fpsimd_restore_current_state();
+ 		}
+ 
++		/*
++		 * CAUTION: we may have restored the fpsimd state for
++		 * current with no other opportunity to check for
++		 * _TIF_FOREIGN_FPSTATE until we are back running on
++		 * el0, so we must not take any interrupt until then,
++		 * otherwise we may end up resuming with some OOB
++		 * thread's fpsimd state.
++		 */
+ 		local_daif_mask();
+ 		thread_flags = READ_ONCE(current_thread_info()->flags);
+-	} while (thread_flags & _TIF_WORK_MASK);
++	} while (inband_irq_pending() || (thread_flags & _TIF_WORK_MASK));
+ }
+```
+
 ## Dealing with IPIs {#dealing-with-ipis}
 
 Although the pipeline does not directly use inter-processor interrupts
@@ -649,10 +714,15 @@ domain for IPIs, which are in essence per-CPU events. Interrupts from
 this domain need no [generic flow handling code]({{< relref
 "dovetail/pipeline/porting/irqflow.md#irqchip-fixup" >}}) since this
 part is directly handled from the arch-specific code, therefore a
-dummy interrupt chip controller can be associated to this domain. The
-ARM implementation installs all IPIs in such a domain, from IRQ2048
-(`OOB_IPI_BASE`) and on:
+dummy interrupt chip controller can be associated to this domain. For
+instance, the ARM implementation installs all IPIs in such a domain,
+from IRQ2048 (`OOB_IPI_BASE`) and on. Since the arch-specific
+implementation of `handle_IPI()` in a Dovetail-enabled kernel should
+generate a interrupt from the IPI domain by software each time we
+receive an IPI event from the hardware, `handle_synthetic_irq()` is
+the proper flow handler for IPI interrupts.
 
+> IPI domain for ARM
 ```
 static struct irq_domain *sipic_domain;
 
@@ -725,9 +795,9 @@ _GIC_) available with the Cortex CPU series provides 16 distinct IPIs,
 half of which should be reserved to the firmware, which leaves only 8
 IPIs available to the kernel. Since all of them are already in use for
 in-band work in the mainline implementation, we are short of available
-IPI vectors for adding the two more signals we need.  For this reason,
-the Dovetail ports for ARM and ARM64 have reshuffled the way IPI
-signaling is implemented.
+IPI vectors for adding the two additional signals we need.  For this
+reason, the Dovetail ports for ARM and ARM64 have reshuffled the way
+IPI signaling is implemented.
 
 Before this rework, a 1:1 mapping exists between the logical IPI
 numbers used by the kernel to refer to inter-processor messages, and
