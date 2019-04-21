@@ -25,7 +25,12 @@ ported in the following sequence:
    underlying CPU architecture and platform. A port boils down to
    resolving the address of the `clock_gettime()` helper in the vDSO.
 
-The table below summarizes the current status of the existing ports.
+The table below summarizes the current status of the existing
+ports. If you are interested in porting your own autonomous core to a
+particular kernel release Dovetail supports, you certainly need the
+_IRQ pipeline_ column matching the target platform to be checked, and
+likely the _Alternate scheduling_ column as well. EVL requires both
+features to be available.
 
 > Current target kernel release
 
@@ -42,7 +47,7 @@ Linux 5.1-rc5
   <col width="12%">
   <tr>
     <th>SoC (Board)</th>
-    <th>IRQ pipeline <sup>1</sup></th> 
+    <th>IRQ pipeline<sup>1</sup></th> 
     <th>Alternate scheduling</th>
     <th>EVL base<sup>2</sup></th>
     <th>EVL stress<sup>3</sup></th>
@@ -101,7 +106,7 @@ Linux 5.1-rc5
   <col width="12%">
   <tr>
     <th>SoC (Board)</th>
-    <th>IRQ pipeline <sup>1</sup></th> 
+    <th>IRQ pipeline<sup>1</sup></th> 
     <th>Alternate task control</th>
     <th>EVL base<sup>2</sup></th>
     <th>EVL stress<sup>3</sup></th>
