@@ -148,15 +148,13 @@ following came to mind:
   tracing from the out-of-band stage, so all we need is an interface
   here.
 
-{{% notice note %}}
-We could not use the file proxy to relay the traces through the
-`trace_marker` file, because we want the tracepoint to appear in the
-output stream at the exact time the code running [out-of-band]({{%
-relref "dovetail/pipeline/_index.md" %}}) issued it. On the contrary,
-channeling the trace data through the proxy would mean to defer the
-trace output, until the main kernel resumes execution, which would
-make the trace data useless.
-{{% /notice %}}
+	We could not use the file proxy to relay the traces through
+  the `trace_marker` file, because we want the tracepoint to appear in
+  the output stream at the exact time the code running
+  [out-of-band]({{% relref "dovetail/pipeline/_index.md" %}}) issued
+  it. On the contrary, channeling the trace data through the proxy
+  would mean to defer the trace output, until the main kernel resumes
+  execution, which would make the trace data useless.
 
 ## EVL device drivers are (almost) common drivers
 

@@ -1,12 +1,31 @@
 
-- dealing with IPIs
+- the porting doc is right in the sense that a port can mean:
+  1) porting to a different kernel release, so we want to know about
+     the generic stuff as well
+  2) porting to a different arch, so we specifically want to know
+     about the arch-specific bits.
 
-- still have HEAD/ROOT in the text, switch to OOB/in-band
+  What about replacing "porting" by "implementation" detailing each
+  sections as currently, then have "arch ports" as a single page
+  detailing the general porting process to a new arch exclusively (not
+  the generic stuff), with links to the "implementation" sections?
+
+- porting->developers notes are obsolete, they should refer to altsched in some
+  cases. Altsched should also document the behavior with CPU_IDLE.
+
+- in Dovetail->porting->interrupt flow: use a different
+  color/shape/convention in the mermaid chart for what needs to be
+  ported vs what is generic code.
+
+- all mermaid chart should mention the meaning of colors via some
+  caption.
 
 - the "under the hood" code for proxy ticks needs to be converted to a
   mermaid diagram.
 
 - should we add an external link for each C routine present in the
   kernel, picked from some arbitrary kernel release from some LXR
-  site?
+  site? Could we just use a link to git.evenless.org/file+line of some
+  sort?
+  
  

@@ -1,5 +1,5 @@
 ---
-title: "Timer management"
+title: "Tick devices"
 date: 2018-06-27T17:15:23+02:00
 weight: 25
 ---
@@ -120,16 +120,19 @@ serving out-of-band timing requests, with a subtle change in the way
 we should test for the current state of the clock device in the
 interrupt handler:
 
-- a real/original device (such as the ARM global timer in this
-  example) is switched to _detached_ mode when it is controlled by the
-  proxy tick driver. Therefore, testing the original device state for
-  `clockevent_state_oneshot()` always leads to _false_.
+- A real/original device (such as the ARM global timer in this
+  example) is switched to _detached_ mode when the proxy tick driver
+  hands it over to the autonomous core. Therefore, the ARM global
+  timer state is always _detached_ from the standpoint of the kernel
+  when proxied, never _oneshot_. For this reason,
+  `clockevent_state_oneshot()` would always lead to _false_ in this
+  case.
 
-- since a real device controlled by the proxy for receiving
+- However, since a real device controlled by the proxy for receiving
   out-of-band events has to be driven in one-shot mode under the hood,
-  one should always check for `clockevent_state_oob()` in addition to
-  `clockevent_state_oneshot()`, so that we do apply the work-around as
-  expected.
+  testing for `clockevent_state_oob()` in addition to
+  `clockevent_state_oneshot()` guarantees that we do take the branch,
+  setting the comparator register to ULONG_MAX when proxied too.
 
 {{% notice warning %}}
 Failing to fix up the way we test for the clock device state would

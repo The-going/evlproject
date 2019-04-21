@@ -100,18 +100,18 @@ running such code.
 ## Losing the timer tick
 
 The symptom of a common issue in a Dovetail port is losing the timer
-interrupt when the out-of-band (co-)kernel takes control over the
-[tick device]({{% relref "dovetail/pipeline/porting/timer.md" %}}),
-causing the in-band kernel to stall. After some time spent hanging,
-the in-band kernel may eventually complain about a RCU stall situation
-with a message like _INFO: rcu_preempt detected stalls on CPUs/tasks_
+interrupt when the autonomous core takes control over the [tick
+device]({{% relref "dovetail/pipeline/porting/timer.md" %}}), causing
+the in-band kernel to stall. After some time spent hanging, the
+in-band kernel may eventually complain about a RCU stall situation
+with a message like `INFO: rcu_preempt detected stalls on CPUs/tasks`
 followed by stack dump(s). In other cases, the machine may simply lock
 up due to an interrupt storm.
 
 This is typical of timer interrupt events not flowing down normally to
 the in-band kernel anymore because something went wrong as soon as the
 proxy tick device replaced the regular device for serving in-band
-timing requests. When this happens, we should check the following code
+timing requests. When this happens, you should check the following code
 spots for bugs:
 
 - the timer acknowledge code is wrong once called from the [oob
@@ -157,8 +157,7 @@ bool irq_cpuidle_control(struct cpuidle_device *dev,
 ```
 
 {{% notice tip %}}
-Printk-debugging such timer iss
-ue *requires* enabling [raw
+Printk-debugging such timer issue *requires* enabling [raw
 printk()]({{% relref "dovetail/pipeline/porting/rawprintk.md" %}}) support,
 you won't get away with tracing the kernel behavior using the plain
 `printk()` routine for this, because most of the output would remain

@@ -32,15 +32,14 @@ is no such thing as an _EVL driver model_, because EVL fits into the
 regular Linux driver model.
 
 Dovetail is in charge of routing the system calls received from
-applications to the proper recipient kernel, either EVL or the main
-one.  As mentioned earlier when describing the
+applications to the proper recipient, either the EVL core or the host
+kernel.  As mentioned earlier when describing the
 [everything-is-a-file]({{% relref
-"core/_index.md#everything-is-a-file" %}}) mantra EVL implements, only
-I/O transfer and control requests have to run from the out-of-band
-context (i.e. EVL's real-time mode), establishing and managing the
-underlying file channel from the regular in-band context is just
-fine. Therefore, the execution flow upon I/O system calls looks like
-this:
+"core/_index.md#everything-is-a-file" %}}) mantra, only I/O transfer
+and control requests have to run from the out-of-band context
+(i.e. EVL's real-time mode), creating and dismantling the underlying
+file from the regular in-band context is just fine. Therefore, the
+execution flow upon I/O system calls looks like this:
 
 ![Alt text](/images/oob_calls.png "Out-of-band I/O handling")
 
@@ -67,10 +66,11 @@ Which translates as follows:
 
 {{% notice tip %}}
 Now, you may wonder: _"what if an out-of-band operation is ongoing in
-the driver on a particular file, while I'm closing the last reference
-to that file?"_ Well, the `close(2)` call will block until the
-out-of-band operation finishes, at which point the `.release()`
-handler may proceed to dismantling the file. A [simple rule]
-({{% relref "core/kernel-api/file/_index.md#evl_release_file" %}}) for
-writing EVL drivers ensures this.
+the driver on a particular file, while I'm closing the last
+VFS-maintained reference to that file?"_ Well, the `close(2)` call
+will block until the out-of-band operation finishes, at which point
+the `.release()` handler may proceed with dismantling the file. A
+[simple rule] ({{% relref
+"core/kernel-api/file/_index.md#evl_release_file" %}}) for writing EVL
+drivers ensures this.
 {{% /notice %}}

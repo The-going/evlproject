@@ -296,14 +296,19 @@ drivers can operate over the out-of-band context safely:
 - `irq_eoi()`
 - `irq_unmask()`
 
-In most cases, no change is required, because _genirq_ ensures that a
-single CPU handles a given IRQ event by holding the per-descriptor
-`irq_desc::lock` spinlock across calls to those `irqchip` handlers,
-and such lock is automatically turned into a [mutable
-spinlock]({{%relref "dovetail/pipeline/usage/locking.md#new-spinlocks"
-%}}) when pipelining interrupts. In other words, those handlers are
-running interrupt-free as their non-pipelined implementation expects
-it.
+For so-called _device interrupts_, no change is required, because the
+_genirq_ layer ensures that a single CPU at most handles a given IRQ
+event by holding the per-descriptor `irq_desc::lock` spinlock across
+calls to those `irqchip` handlers, and such lock is automatically
+turned into a [mutable spinlock]({{%relref
+"dovetail/pipeline/usage/locking.md#new-spinlocks" %}}) when
+pipelining interrupts. In other words, those handlers are properly
+serialized, running with interrupts disabled in the CPU as their
+non-pipelined implementation expects it.
+
+Unlike for device interrupts, per-CPU interrupt handling does not need
+to be serialized this way, since by definition, there cannot be
+multiple CPUs racing for access with such type of events.
 
 However, there might other reasons to fix up some of those handlers:
 
