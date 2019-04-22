@@ -613,7 +613,7 @@ routine to interrupt pipelining:
   to shorten the interrupt latency for the oob stage, where autonomous
   cores live.
 
-> Reconciling the interrupt state on ARM64 epilogue
+> Reconciling the interrupt state in ARM64 epilogue
 ```
  #include <linux/errno.h>
  #include <linux/kernel.h>
