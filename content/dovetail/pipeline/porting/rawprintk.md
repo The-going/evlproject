@@ -1,7 +1,6 @@
 ---
 title: "Raw printk support"
 menuTitle: "Serial debugging"
-date: 2018-07-24T16:46:56+02:00
 weight: 30
 ---
 

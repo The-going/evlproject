@@ -1,8 +1,6 @@
 ---
 title: "Rules Of Thumb"
-date: 2018-06-30T19:02:50+02:00
-weight: 20
-pre: "&rsaquo; "
+weight: 80
 ---
 
 ## Turn on debug options in the kernel configuration!

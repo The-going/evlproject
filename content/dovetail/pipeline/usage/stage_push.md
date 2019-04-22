@@ -1,6 +1,7 @@
 ---
 title: "Installing the out-of-band stage"
 menuTitle: "OOB stage installation"
+weight: 52
 ---
 
 Before you can direct the incoming interrupt flow to out-of-band

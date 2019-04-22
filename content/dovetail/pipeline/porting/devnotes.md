@@ -1,6 +1,6 @@
 ---
 title: "Developer's Notes"
-date: 2018-07-03T19:32:57+02:00
+weight: 37
 ---
 
 ## Generic

@@ -1,6 +1,6 @@
 ---
 title: "IRQ handling"
-date: 2018-07-01T14:05:58+02:00
+weight: 42
 ---
 
 The driver API to the IRQ subsystem exposes the new interrupt type

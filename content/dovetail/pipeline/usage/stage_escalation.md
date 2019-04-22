@@ -1,6 +1,6 @@
 ---
 title: "Stage escalation"
-date: 2018-07-01T15:46:04+02:00
+weight: 60
 ---
 
 Sometimes you may need to escalate the current execution stage from
@@ -58,3 +58,5 @@ autonomous core for scheduling. The latter operation would involve [a
 more complex procedure]({{% relref
 "dovetail/altsched/_index.md#oob-switch" %}}).
 {{% /notice %}}
+
+---

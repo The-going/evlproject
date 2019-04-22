@@ -1,6 +1,6 @@
 ---
 title: "IRQ injection"
-date: 2018-07-01T15:38:34+02:00
+weight: 47
 ---
 
 ## Sending out-of-band IPIs to remote CPUs {#oob-ipi}
@@ -120,10 +120,10 @@ has no valid descriptor.
 
 Sometimes, running the full interrupt delivery logic
 [`irq_inject_pipeline()`]({{< relref "#irq_inject_pipeline" >}})
-implements for feeding an interrupt into the pipeline may be overkill,
-because we can make assumptions about the current execution context,
-and which stage should handle the event. The following fast helpers
-can be used instead in this case:
+implements for feeding an interrupt into the pipeline may be overkill
+when we may make assumptions about the current execution context, and
+which stage should handle the event. The following fast helpers can be
+used instead in this case:
 
 ---
 

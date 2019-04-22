@@ -1,6 +1,7 @@
 ---
 title: "Interrupt Protection"
 date: 2018-07-01T17:54:11+02:00
+weight: 45
 ---
 
 ## Disabling interrupts in the CPU {#hard-irq-protection}

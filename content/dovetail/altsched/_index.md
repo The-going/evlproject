@@ -1,8 +1,6 @@
 ---
 title: "Alternate scheduling"
-date: 2018-06-27T19:01:42+02:00
-weight: 15
-pre: "&rsaquo; "
+weight: 70
 ---
 
 Dovetail promotes the idea that a *dual kernel* system should keep the

@@ -1,6 +1,6 @@
 ---
 title: "Synthetic IRQs"
-date: 2018-06-27T09:55:57+02:00
+weight: 50
 ---
 
 The pipeline introduces an additional type of interrupts, which are

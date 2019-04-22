@@ -2,7 +2,6 @@
 title: "Optimistic Interrupt Protection"
 menuTitle: "Optimistic protection"
 weight: 3
-pre: "&rsaquo; "
 ---
 
 Predictable response time of out-of-band handlers to IRQ receipts
