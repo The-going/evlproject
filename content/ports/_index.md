@@ -34,7 +34,7 @@ features to be available.
 
 > Current target kernel release
 
-Linux 5.1-rc5
+Linux 5.1-rc6
 
 > ARM64 SoC
 
@@ -91,7 +91,7 @@ Linux 5.1-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.1-rc5</td>
+    <td>5.1-rc6</td>
   </tr>
 </table>
 
@@ -126,7 +126,7 @@ Linux 5.1-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.0</td>
+    <td>5.1-rc6</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
