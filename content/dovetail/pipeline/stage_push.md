@@ -27,7 +27,7 @@ core installs the "EVL" stage.
 This call enables the out-of-band stage context in the interrupt
 pipeline, which in turn allows an autonomous core to [install
 out-of-band handlers]({{< relref
-"dovetail/pipeline/usage/irq_handling.md" >}}) for interrupts.  It
+"dovetail/pipeline/irq_handling.md" >}}) for interrupts.  It
 returns zero on success, or a negated error code if something went
 wrong:
 

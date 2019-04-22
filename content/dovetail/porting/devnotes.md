@@ -1,6 +1,6 @@
 ---
 title: "Developer's Notes"
-weight: 37
+weight: 101
 ---
 
 ## Generic
@@ -27,7 +27,7 @@ For instance, the following contexts qualify:
 - `clockevents_handle_event()`, which should either be called from the
   oob stage - therefore `STAGE_MASK` is set - when the [proxy tick
   device is active] ({{% relref
-  "dovetail/pipeline/porting/timer.md#proxy-tick-logic" %}}) on the CPU,
+  "dovetail/porting/timer.md#proxy-tick-logic" %}}) on the CPU,
   and/or from the in-band stage playing a timer interrupt event from the
   corresponding device.
 
@@ -101,7 +101,7 @@ running such code.
 
 The symptom of a common issue in a Dovetail port is losing the timer
 interrupt when the autonomous core takes control over the [tick
-device]({{% relref "dovetail/pipeline/porting/timer.md" %}}), causing
+device]({{% relref "dovetail/porting/timer.md" %}}), causing
 the in-band kernel to stall. After some time spent hanging, the
 in-band kernel may eventually complain about a RCU stall situation
 with a message like `INFO: rcu_preempt detected stalls on CPUs/tasks`
@@ -118,7 +118,7 @@ spots for bugs:
   stage]({{%relref "dovetail/pipeline/_index.md#two-stage-pipeline"
   %}}), which is going to be the case as soon as an autonomous core
   installs the [proxy tick device]({{% relref
-  "dovetail/pipeline/porting/timer.md" %}}) for interposing on the
+  "dovetail/porting/timer.md" %}}) for interposing on the
   timer. Being wrong here means performing actions which are not legit
   from [such a context]({{% relref
   "dovetail/rulesofthumb.md#safe-inband-code" %}}).
@@ -126,9 +126,9 @@ spots for bugs:
 - the _irqchip_ driver managing the interrupt event for the timer tick
   is wrong somehow, causing such interrupt to stay masked or stuck for
   some reason whenever it is switched to [out-of-band mode]({{% relref
-  "dovetail/pipeline/usage/irq_handling.md" %}}). You need to
+  "dovetail/pipeline/irq_handling.md" %}}). You need to
   double-check the implementation of the [chip handlers]({{% relref
-  "dovetail/pipeline/porting/irqflow.md#irqchip-fixups" %}}),
+  "dovetail/porting/irqflow.md#irqchip-fixups" %}}),
   considering the effects and requirements of interrupt pipelining.
 
 - power management (CONFIG_CPUIDLE) gets in the way, often due to the
@@ -158,7 +158,7 @@ bool irq_cpuidle_control(struct cpuidle_device *dev,
 
 {{% notice tip %}}
 Printk-debugging such timer issue *requires* enabling [raw
-printk()]({{% relref "dovetail/pipeline/porting/rawprintk.md" %}}) support,
+printk()]({{% relref "dovetail/porting/rawprintk.md" %}}) support,
 you won't get away with tracing the kernel behavior using the plain
 `printk()` routine for this, because most of the output would remain
 stuck into a buffer, never reaching the console driver before the

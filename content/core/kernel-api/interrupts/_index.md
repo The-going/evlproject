@@ -5,5 +5,5 @@ weight: 50
 
 EVL has no specific API for managing out-of-band interrupts. You can
 use the regular [kernel API]({{< relref
-"dovetail/pipeline/usage/irq_handling" >}}) as updated by Dovetail for
+"dovetail/pipeline/irq_handling" >}}) as updated by Dovetail for
 this purpose.

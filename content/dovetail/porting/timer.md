@@ -1,7 +1,7 @@
 ---
 title: "Tick devices"
 date: 2018-06-27T17:15:23+02:00
-weight: 25
+weight: 93
 ---
 
 ## Proxy tick device

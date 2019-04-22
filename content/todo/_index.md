@@ -100,7 +100,7 @@ root for improvement in order to better fit the EVL context. In
 addition, the new code represents 2/3rd of the code base, which is not
 instrumented at all.
 
-### Disconnect Dovetail's [hard and mutable locks]({{% relref "dovetail/pipeline/usage/locking.md" %}}) from CONFIG_LOCKDEP
+### Disconnect Dovetail's [hard and mutable locks]({{% relref "dovetail/pipeline/locking.md" %}}) from CONFIG_LOCKDEP
 
 If we could exclude Dovetail's spinlocks from CONFIG_LOCKDEP using a
 debug option, we could run the lock validator for detecting glitches

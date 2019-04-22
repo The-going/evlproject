@@ -1,6 +1,6 @@
 ---
 title: "Rules Of Thumb"
-weight: 80
+weight: 120
 ---
 
 ## Turn on debug options in the kernel configuration!
@@ -25,10 +25,10 @@ the in-band code which accesses the same data. This is required to
 prevent dirty reads and dirty writes:
 
 - one the same CPU, by [disabling interrupts in the CPU]({{% relref
-  "dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection" %}}).
+  "dovetail/pipeline/interrupt_protection.md#hard-irq-protection" %}}).
 
 - from different CPUs, by using [hard or mutable spinlocks]({{% relref
-  "dovetail/pipeline/usage/locking.md#new-spinlocks" %}}).
+  "dovetail/pipeline/locking.md#new-spinlocks" %}}).
 
 ## Check that the pipeline torture tests pass
 
@@ -36,9 +36,9 @@ Before any consideration is made to implement out-of-band code on a
 platform, check that interrupt pipelining is sane there, by enabling
 `CONFIG_IRQ_PIPELINE_TORTURE_TEST` in the configuration. As its name
 suggests, this option enables test code which exercizes the [interrupt
-pipeline core]({{% relref "dovetail/pipeline/porting/irqflow.md" %}}),
+pipeline core]({{% relref "dovetail/porting/irqflow.md" %}}),
 and related features such as the [proxy tick device]({{% relref
-"dovetail/pipeline/porting/timer.md" %}}).
+"dovetail/porting/timer.md" %}}).
 
 {{% notice tip %}}
 Since the torture tests need to enable the out-of-band stage for their
@@ -106,7 +106,7 @@ early enough to preserve your mental health.
 ## Careful with disabling interrupts in the CPU
 
 When pipelining is enabled, use [hard interrupt protection]({{% relref
-"dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection" %}}) with
+"dovetail/pipeline/interrupt_protection.md#hard-irq-protection" %}}) with
 caution, especially from in-band code. Not only this might send
 latency figures over the top, but this might even cause random lockups
 would a rescheduling happen while interrupts are hard disabled.
@@ -131,5 +131,5 @@ involving out-of-band contexts, you might have to resort to basic
 printk-style debugging over a serial line. Although the `printk()`
 machinery can be used from out-of-band context when Dovetail is
 enabled, you should rather use the [`raw_printk()`]({{%relref
-"dovetail/pipeline/porting/rawprintk.md" %}}) interface for
+"dovetail/porting/rawprintk.md" %}}) interface for
 this.

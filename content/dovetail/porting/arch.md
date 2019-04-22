@@ -2,7 +2,7 @@
 title: "Architecture-specific bits"
 menuTitle: "Architecture bits"
 date: 2018-06-27T17:07:51+02:00
-weight: 20
+weight: 91
 ---
 
 ## Interrupt mask virtualization
@@ -13,7 +13,7 @@ should be split between real and virtual interrupt control. The real
 interrupt control operations are inherited from the in-band kernel
 implementation. The virtual ones should be built upon services
 provided by the [interrupt pipeline core]({{%relref
-"dovetail/pipeline/porting/irqflow.md" %}}).
+"dovetail/porting/irqflow.md" %}}).
 
 + firstly, the original *arch\_local_*\* helpers should be renamed as
 *native_*\* helpers, affecting the hardware interrupt state in the
@@ -344,7 +344,7 @@ in-band code running over the in-band stage.
 ### Interrupt entry {#arch-irq-entry}
 
 As generic IRQ handling [is a requirement]({{%relref
-"dovetail/pipeline/porting/prerequisites.md" %}}) for supporting
+"dovetail/porting/prerequisites.md" %}}) for supporting
 Dovetail, the low-level interrupt handler living in the assembly
 portion of the architecture code can still deliver all interrupt
 events to the original C handler provided by the _irqchip_
@@ -372,7 +372,7 @@ instance.
   inter-processor interrupts
 
 IPIs must be dealt with by [specific changes]({{%relref
-"dovetail/pipeline/porting/arch.md#dealing-with-ipis" %}}) introduced
+"dovetail/porting/arch.md#dealing-with-ipis" %}}) introduced
 by the port we will cover later.
 
 ### Interrupt exit {#arch-irq-exit}
@@ -586,7 +586,7 @@ routine to interrupt pipelining:
   kernel entry/exit transitions (e.g. arch/arm/kernel/entry-common.S).
   Therefore, this routine may have to reconcile the virtual interrupt
   state with such expectation, since according to the [interrupt exit
-  rules]({{%relref "dovetail/pipeline/porting/arch.md#arch-irq-exit" %}}) we
+  rules]({{%relref "dovetail/porting/arch.md#arch-irq-exit" %}}) we
   discussed earlier, such state has to be originally enabled (i.e. the
   in-band stall bit is clear) for the epilogue code to run in the
   first place.
@@ -609,7 +609,7 @@ routine to interrupt pipelining:
   stalled when the in-band kernel code expects this, we still want
   most of the epilogue code to run with [hard interrupts
   enabled]({{%relref
-  "dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection"%}})
+  "dovetail/pipeline/interrupt_protection.md#hard-irq-protection"%}})
   to shorten the interrupt latency for the oob stage, where autonomous
   cores live.
 
@@ -683,18 +683,18 @@ routine to interrupt pipelining:
 Although the pipeline does not directly use inter-processor interrupts
 internally, it provides a simple API to autonomous cores for
 implementing [IPI-based messaging]({{< relref
-"dovetail/pipeline/usage/pipeline_inject.md#oob-ipi" >}}) between
+"dovetail/pipeline/pipeline_inject.md#oob-ipi" >}}) between
 CPUs.  This feature requires the Dovetail port to implement a few bits
 of architecture-specific code. The arch-specific Dovetail
 implementation must provide support for two operations:
 
 - sending the additional IPI signals defined by the [Dovetail API]({{<
-  relref "dovetail/pipeline/usage/pipeline_inject.md#oob-ipi" >}})
+  relref "dovetail/pipeline/pipeline_inject.md#oob-ipi" >}})
   using the mechanism available from your hardware for inter-processor
   messaging, upon request from `irq_pipeline_send_remote()`.
 
 - [dispatching deferred IPIs]({{< relref
-  "dovetail/pipeline/porting/irqflow.md#arch-do-irq" >}}) to their
+  "dovetail/porting/irqflow.md#arch-do-irq" >}}) to their
   respective in-band handler upon request from the Dovetail core.
 
 ### Mapping IPI numbers to pipelined IRQ numbers
@@ -706,13 +706,13 @@ channeled through the common generic IRQ layer but rather immediately
 handled by arch-specific code. With Dovetail, we do generally need
 IPIs to have a valid interrupt descriptor, so that we can request the
 out-of-band IPIs using the [generic IRQ API]({{< relref
-"dovetail/pipeline/usage/irq_handling.md" >}}), exactly as we can
+"dovetail/pipeline/irq_handling.md" >}}), exactly as we can
 request device interrupts.
 
 The easiest way to achieve this mapping is to create a new interrupt
 domain for IPIs, which are in essence per-CPU events. Interrupts from
 this domain need no [generic flow handling code]({{< relref
-"dovetail/pipeline/porting/irqflow.md#irqchip-fixup" >}}) since this
+"dovetail/porting/irqflow.md#irqchip-fixup" >}}) since this
 part is directly handled from the arch-specific code, therefore a
 dummy interrupt chip controller can be associated to this domain. For
 instance, the ARM implementation installs all IPIs in such a domain,
@@ -897,7 +897,7 @@ void handle_IPI_pipelined(int sgi, struct pt_regs *regs)
 ```
 
 As illustrated in the example of [in-band delivery glue code]({{<
-relref "dovetail/pipeline/porting/irqflow.md#arch-do-irq" >}}), the
+relref "dovetail/porting/irqflow.md#arch-do-irq" >}}), the
 ARM ports distinguishes between device IRQs and IPIs based on the
 pipelined IRQ number, with anything in the range
 [OOB_IPI_BASE..OOB_IPI_BASE + 10] being dispatched as an IPI to the
@@ -905,7 +905,7 @@ pipelined IRQ number, with anything in the range
 
 Since out-of-band IPI messages are supposed to be exclusively handled
 by [out-of-band handlers]({{< relref
-"dovetail/pipeline/usage/irq_handling.md" >}}), `__handle_IPI()` is
+"dovetail/pipeline/irq_handling.md" >}}), `__handle_IPI()` is
 not required to handle them specifically. However, this is good
 practice to detect them, at least for debugging purpose during the
 early stage of the Dovetail port.

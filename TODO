@@ -1,14 +1,4 @@
-
-- the porting doc is right in the sense that a port can mean:
-  1) porting to a different kernel release, so we want to know about
-     the generic stuff as well
-  2) porting to a different arch, so we specifically want to know
-     about the arch-specific bits.
-
-  What about replacing "porting" by "implementation" detailing each
-  sections as currently, then have "arch ports" as a single page
-  detailing the general porting process to a new arch exclusively (not
-  the generic stuff), with links to the "implementation" sections?
+- irq_work should be documented in the kernel API
 
 - porting->developers notes are obsolete, they should refer to altsched in some
   cases. Altsched should also document the behavior with CPU_IDLE.

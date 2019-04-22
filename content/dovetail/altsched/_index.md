@@ -180,7 +180,7 @@ _out-of-band interrupt stage_.
   interrupt pipeline machinery has switched the CPU to out-of-band
   mode, which means that only interrupts bearing the IRQF_OOB flag are
   delivered. Typically, [`run_oob_call()`]({{% relref
-  "dovetail/pipeline/usage/stage_escalation.md" %}}) is a service
+  "dovetail/pipeline/stage_escalation.md" %}}) is a service
   provided by the interrupt pipeline which executes a function call
   over this context, without requiring the calling task to be
   scheduled by the autonomous core.
@@ -333,7 +333,7 @@ in-band following this sequence of actions:
    the standpoint of the main kernel scheduler, since it is sleeping
    in `TASK_INTERRUPTIBLE` state there. Typically, the
    [_irq\_work_]({{% relref
-   "dovetail/pipeline/porting/irqflow.md#irq-work" %}}) mechanism can
+   "dovetail/pipeline/pipeline_inject.md#irq-work" %}}) mechanism can
    be used for this, because:
 
    * as extended by the interrupt pipeline support, this interface can
@@ -451,7 +451,7 @@ highest priority among all runnable tasks on the current CPU, the
 sequence stops there. CAVEAT: the core _must make sure to perform
 context switches from the out-of-band interrupt stage_, otherwise
 weird things may happen down the road. [`run_oob_call()`]({{% relref
-"dovetail/pipeline/usage/stage_escalation.md" %}}) is a routine the
+"dovetail/pipeline/stage_escalation.md" %}}) is a routine the
 interrupt pipeline provides which may help there. See the
 implementation of `evl_schedule()` in the EVL core for a typical
 usage.

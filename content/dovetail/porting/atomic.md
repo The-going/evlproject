@@ -2,11 +2,11 @@
 title: "Atomic operations"
 menuTitle: "Atomic operations"
 date: 2018-06-27T17:17:25+02:00
-weight: 15
+weight: 89
 ---
 
 The effect of [virtualizing interrupt protection]({{%relref
-"dovetail/pipeline/porting/arch.md" %}}) must be reversed for atomic
+"dovetail/porting/arch.md" %}}) must be reversed for atomic
 helpers everywhere interrupt disabling is needed to serialize callers,
 regardless of the stage they live on. Typically, the following files
 are concerned:
@@ -26,7 +26,7 @@ accessed from both stages.  A common way to revert such virtualization
 involves substituting calls to the - virtualized - `local_irq_save()`,
 `local_irq_restore()` API with their hard, [non-virtualized
 counterparts]({{% relref
-"dovetail/pipeline/usage/interrupt_protection.md#hard-irq-protection"
+"dovetail/pipeline/interrupt_protection.md#hard-irq-protection"
 %}}).
 
 > Restoring strict serialization for operations on generic atomic counters

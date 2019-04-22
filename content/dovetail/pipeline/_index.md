@@ -1,6 +1,5 @@
 ---
 title: "Interrupt pipeline"
-date: 2018-06-27T08:32:51+02:00
 weight: 10
 pre: "&rsaquo; "
 ---
@@ -177,7 +176,7 @@ helpers are such routines, which serialize in-band and out-of-band
 callers.
 
 For all other cases, the [IRQ work API]({{%relref
-"dovetail/pipeline/porting/irqflow.md#irq-work" %}}) is available for
+"dovetail/pipeline/pipeline_inject.md#irq-work" %}}) is available for
 scheduling the execution of a routine from the out-of-band stage, which will
 be invoked later from the in-band stage as soon as it gets back in
 control on the current CPU.

@@ -1,6 +1,6 @@
 ---
 title: "Misc"
-weight: 35
+weight: 99
 ---
 
 ## `printk()` support

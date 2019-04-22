@@ -54,7 +54,7 @@ faster path to running a local handler.
 
 In order to receive these IPIs, an out-of-band handler must have been
 set for them, mentioning the [IRQF_OOB flag]({{ < relref
-"dovetail/pipeline/usage/irq_handling.md" >}}).
+"dovetail/pipeline/irq_handling.md" >}}).
 
 `irq_pipeline_send_remote()` serializes callers internally so that it
 may be used from either stages: in-band or out-of-band.
@@ -80,11 +80,11 @@ for this interrupt.
 
 `irq_inject_pipeline()` fully emulates the receipt of a hardware
 event, which means that the common [interrupt pipelining logic]({{<
-relref "dovetail/pipeline/porting/irqflow.md#genirq-flow" >}}) applies
+relref "dovetail/porting/irqflow.md#genirq-flow" >}}) applies
 to the new event:
 
 - first, any [out-of-band handler]({{< relref
-  "dovetail/pipeline/usage/irq_handling.md" >}}) is considered for
+  "dovetail/pipeline/irq_handling.md" >}}) is considered for
   delivery,
 
 - then such event may be passed down the pipeline to the common
@@ -114,6 +114,13 @@ The pipeline priority rules apply accordingly:
 
 This call returns zero on successful injection, or -EINVAL if the IRQ
 has no valid descriptor.
+
+{{% notice note %}}
+If you look for a way to schedule the execution of a routine in the
+in-band interrupt context from the out-of-band stage, you may want to
+consider the [extended irq_work API]({{< relref "#irq-work" >}}) which
+provides a high level interface to this feature.
+{{% /notice %}}
 
 ---
 
@@ -152,7 +159,7 @@ of these cases:
   into the in-band stage is enough.
 
 Interrupts must be [hard disabled]({{< relref
-"dovetail/pipeline/usage/interrupt_protection##hard-irq-protection"
+"dovetail/pipeline/interrupt_protection##hard-irq-protection"
 >}}) in the CPU before calling this routine.
 
 ---
@@ -174,9 +181,34 @@ only one situation: you know that the out-of-band stage is current but
 it as pending into the out-of-band stage is enough.
 
 Interrupts must be [hard disabled]({{< relref
-"dovetail/pipeline/usage/interrupt_protection#hard-irq-protection"
+"dovetail/pipeline/interrupt_protection#hard-irq-protection"
 >}}) in the CPU before calling this routine. If the out-of-band stage
 is stalled as expected on entry to this helper, then interrupts must
 be hard disabled in the CPU as well anyway.
 
 ---
+
+## Extended IRQ work API {#irq-work}
+
+Due to the NMI-type nature of interrupts running out-of-band code from
+the standpoint of the main kernel, such code might preempt in-band
+activities in the middle of a [critical section]({{%relref
+"dovetail/pipeline/_index.md#no-inband-reentry" %}}). For this
+reason, it would be unsafe to call any in-band routine from an
+out-of-band context.
+
+However, we may schedule execution of in-band work handlers from
+out-of-band code, using the regular `irq_work_queue()` service which
+has been extended by the IRQ pipeline core. Such work request from the
+out-of-band stage is scheduled for running on the in-band stage on the
+issuing CPU as soon as the out-of-band activity quiesces on this
+processor. As its name implies, the work handler runs in (in-band)
+interrupt context.
+
+{{% notice note %}}
+The interrupt pipeline forces the use of a [synthetic IRQ]({{% relref
+"dovetail/pipeline/synthetic.md" %}}) as a notification signal
+for the IRQ work machinery, instead of a hardware-specific interrupt
+vector. This special IRQ is labeled _in-band work_ when reported by
+`/proc/interrupts`.
+{{% /notice %}}

@@ -1,7 +1,7 @@
 ---
 title: "Interrupt flow"
 date: 2018-06-27T15:20:04+02:00
-weight: 10
+weight: 87
 ---
 
 ## Adapting the generic interrupt management (genirq) {#genirq-flow}
@@ -119,7 +119,7 @@ A couple of notes reading this code:
 
 - How IPIs differentiate from other IRQs, which handler should be
   called for them is an [arch-specific implementation]({{< relref
-  "dovetail/pipeline/porting/arch.md#dealing-with-ipis" >}}) you
+  "dovetail/porting/arch.md#dealing-with-ipis" >}}) you
   should provide in porting Dovetail. In the code example above, the
   IPI handling routine is named `__handle_IPI()`.
 
@@ -301,7 +301,7 @@ _genirq_ layer ensures that a single CPU at most handles a given IRQ
 event by holding the per-descriptor `irq_desc::lock` spinlock across
 calls to those `irqchip` handlers, and such lock is automatically
 turned into a [mutable spinlock]({{%relref
-"dovetail/pipeline/usage/locking.md#new-spinlocks" %}}) when
+"dovetail/pipeline/locking.md#new-spinlocks" %}}) when
 pipelining interrupts. In other words, those handlers are properly
 serialized, running with interrupts disabled in the CPU as their
 non-pipelined implementation expects it.
@@ -409,28 +409,3 @@ which has not been touched by the assembly level code upon kernel
 entry - with basic assumptions made by the scheduler core, such as
 entering with interrupts virtually disabled (i.e. the in-band stage
 should be stalled).
-
-## Extended IRQ work API {#irq-work}
-
-Due to the NMI-type nature of interrupts running out-of-band code from
-the standpoint of the main kernel, such code might preempt in-band
-activities in the middle of a [critical section]({{%relref
-"dovetail/pipeline/_index.md#no-inband-reentry" %}}). For this
-reason, it would be unsafe to call any in-band routine from an
-out-of-band context.
-
-However, we may schedule execution of in-band work handlers from
-out-of-band code, using the regular `irq_work_queue()` service which
-has been extended by the IRQ pipeline core. Such work request from the
-oob stage is scheduled for running on the in-band stage on the issuing
-CPU as soon as the out-of-band activity quiesces on this processor. As
-its name implies, the work handler runs in (in-band) interrupt
-context.
-
-{{% notice note %}}
-The interrupt pipeline forces the use of a [synthetic IRQ]({{% relref
-"dovetail/pipeline/usage/synthetic.md" %}}) as a notification signal
-for the IRQ work machinery, instead of a hardware-specific interrupt
-vector. This special IRQ is labeled _in-band work_ when reported by
-`/proc/interrupts`.
-{{% /notice %}}

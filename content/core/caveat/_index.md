@@ -9,7 +9,7 @@ weight: 25
 
 The lock dependency engine which helps in tracking down deadlocks and
 other locking-related issues is available to Dovetail's [hard
-locks]({{% relref "dovetail/pipeline/usage/locking.md#new-spinlocks"
+locks]({{% relref "dovetail/pipeline/locking.md#new-spinlocks"
 %}}), which underpins most of the serialization mechanisms the EVL
 core uses.
 

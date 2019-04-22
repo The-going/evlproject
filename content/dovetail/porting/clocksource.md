@@ -1,7 +1,7 @@
 ---
 menuTitle: "Clock sources"
 title: "Reading clock sources"
-weight: 27
+weight: 95
 ---
 
 Your autonomous core most likely needs a fast access to the current
