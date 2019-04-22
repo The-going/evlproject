@@ -116,7 +116,7 @@ as follows:
 - once the in-band context resumes, interrupt events which have no
   out-of-band handlers are delivered to the regular in-band IRQ
   handlers installed by the main kernel, if the [virtual masking
-  state]({{% relref "dovetail/pipeline/optimistic.md#virtual-i-flag"
+  state]({{% relref "dovetail/pipeline/_index.md#virtual-i-flag"
   %}}) allows it.
 
 ![Alt text](/images/altsched.png "Alternate scheduling")

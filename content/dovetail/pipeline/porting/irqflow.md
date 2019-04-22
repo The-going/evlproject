@@ -63,7 +63,7 @@ delivered to their respective in-band handlers. In all other
 situations, the IRQ frame is left immediately without running those
 handlers. The IRQs may remain pending until the in-band code resumes
 from preemption, then clears the [virtual interrupt disable
-flag]({{%relref "dovetail/pipeline/optimistic.md#virtual-i-flag" %}}),
+flag]({{%relref "dovetail/pipeline/_index.md#virtual-i-flag" %}}),
 which would cause the interrupt state to be synchronized, running the
 in-band handlers eventually.
 
@@ -274,7 +274,7 @@ This change reads as follows:
   can't do more than this, simply because the in-band kernel code
   might expect not to receive any interrupt at this point (i.e. the
   [virtual interrupt disable flag]({{%relref
-  "dovetail/pipeline/optimistic.md#virtual-i-flag" %}}) might be set
+  "dovetail/pipeline/_index.md#virtual-i-flag" %}}) might be set
   for the in-band stage).
 
 - otherwise, keep the interrupt line masked until `handle_level_irq()`
@@ -314,7 +314,7 @@ However, there might other reasons to fix up some of those handlers:
 
 - they must not invoke **any** in-band kernel service, which might
 cause an [invalid context re-entry]({{%relref
-"dovetail/pipeline/optimistic.md#no-inband-reentry" %}}).
+"dovetail/pipeline/_index.md#no-inband-reentry" %}}).
 
 - there may be inner spinlocks locally defined by some `irqchip`
 drivers for serializing access to a common interrupt controller
@@ -415,7 +415,7 @@ should be stalled).
 Due to the NMI-type nature of interrupts running out-of-band code from
 the standpoint of the main kernel, such code might preempt in-band
 activities in the middle of a [critical section]({{%relref
-"dovetail/pipeline/optimistic.md#no-inband-reentry" %}}). For this
+"dovetail/pipeline/_index.md#no-inband-reentry" %}}). For this
 reason, it would be unsafe to call any in-band routine from an
 out-of-band context.
 

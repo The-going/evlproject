@@ -261,7 +261,7 @@ CONFIG_IRQ_PIPELINE disabled.
 The generic interrupt pipeline implementation requires the arch-level
 support code to provide for a pair of helpers aimed at translating the
 [virtual interrupt disable flag]({{%relref
-"dovetail/pipeline/optimistic.md#virtual-i-flag" %}}) to the interrupt bit in
+"dovetail/pipeline/_index.md#virtual-i-flag" %}}) to the interrupt bit in
 the CPU's status register (e.g. PSR_I_BIT for ARM) and
 conversely. These helpers are used to create combined state words
 merging the virtual and real interrupt states.
@@ -335,8 +335,8 @@ Once all of these changes are in, the generic helpers from
 `local_irq_enable()` actually refer to the **virtual** protection
 scheme when interrupts are pipelined, which eventually allows to
 implement [interrupt deferral]({{%relref
-"dovetail/pipeline/optimistic.md" %}}) for the protected in-band code running
-over the in-band stage.
+"dovetail/pipeline/_index.md#irq-deferral" %}}) for the protected
+in-band code running over the in-band stage.
 {{% /notice %}}
     
 ## Adapting the assembly code to IRQ pipelining {#arch-irq-handling}
@@ -504,7 +504,7 @@ to.
 {{% notice warning %}}
 Taking the fast exit path when applicable is critical to the stability of the
 target system to prevent [invalid re-entry]({{%relref
-"dovetail/pipeline/optimistic.md#no-inband-reentry" %}}) of the in-band kernel
+"dovetail/pipeline/_index.md#no-inband-reentry" %}}) of the in-band kernel
 code.
 {{% /notice %}}
 
@@ -567,7 +567,7 @@ A tricky issue to address when pipelining interrupts is about making
 sure that the logic from the epilogue routine
 (e.g. _do\_work\_pending()_, _do\_notify\_resume()_) actually runs in
 the expected [(virtual) interrupt state]({{%relref
-"dovetail/pipeline/optimistic.md#virtual-i-flag" %}}) for the in-band stage.
+"dovetail/pipeline/_index.md#virtual-i-flag" %}}) for the in-band stage.
 
 Reconciling the virtual interrupt state to the in-band logic dealing
 with interrupts is required because in a pipelined interrupt model,

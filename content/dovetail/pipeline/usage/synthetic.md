@@ -136,7 +136,7 @@ in-band stage from an in-band context, using
 `irq_pipeline_inject()`. In such a case, the normal rules of interrupt
 delivery apply, depending on the state of the [virtual interrupt
 disable flag]({{%relref
-"dovetail/pipeline/optimistic.md#virtual-i-flag" %}}) for the in-band
+"dovetail/pipeline/_index.md#virtual-i-flag" %}}) for the in-band
 stage: the IRQ is immediately delivered, with the call to
 `irq_pipeline_inject()` returning only after the handler has run.
 

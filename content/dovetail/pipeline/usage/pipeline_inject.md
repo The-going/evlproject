@@ -94,9 +94,10 @@ The pipeline priority rules apply accordingly:
 
 - if the caller is in-band, _and_ an out-of-band handler is registered
   for the IRQ event, _and_ the out-of-band stage is [unstalled]({{<
-  relref "dovetail/pipeline/optimistic.md" >}}), the execution stage
-  is immediately switched to out-of-band for running the later, then
-  restored to in-band before `irq_inject_pipeline()` returns.
+  relref "dovetail/pipeline/_index.md#optimistic-irq-protect" >}}),
+  the execution stage is immediately switched to out-of-band for
+  running the later, then restored to in-band before
+  `irq_inject_pipeline()` returns.
 
 - if the caller is out-of-band and there is no out-of-band handler,
   the IRQ event is deferred until the in-band stage resumes execution
@@ -105,7 +106,7 @@ The pipeline priority rules apply accordingly:
 
 - in any case, should the current stage receive the IRQ event, the
   [virtual interrupt state]({{< relref
-  "dovetail/pipeline/optimistic.md#virtual-i-flag" >}}) of that stage
+  "dovetail/pipeline/_index.md#virtual-i-flag" >}}) of that stage
   is always considered before deciding whether this event should be
   delivered immediately to its handler by `irq_inject_pipeline()`
   (_unstalled_ case), or deferred until the stage is unstalled
@@ -146,7 +147,7 @@ of these cases:
   stage directly.
 
 - you know that the in-band stage is current but [stalled]({{< relref
-  "dovetail/pipeline/optimistic.md#virtual-i-flag" >}}), therefore
+  "dovetail/pipeline/_index.md#virtual-i-flag" >}}), therefore
   this event can't be immediately delivered, so marking it as pending
   into the in-band stage is enough.
 
@@ -168,12 +169,12 @@ descriptor must exist for this interrupt.
 This routine may be used to mark an interrupt as pending directly into
 the current CPU's log for the out-of-band stage. This is useful in
 only one situation: you know that the out-of-band stage is current but
-[stalled]({{< relref "dovetail/pipeline/optimistic.md#virtual-i-flag"
+[stalled]({{< relref "dovetail/pipeline/_index.md#virtual-i-flag"
 >}}), therefore this event can't be immediately delivered, so marking
 it as pending into the out-of-band stage is enough.
 
 Interrupts must be [hard disabled]({{< relref
-"dovetail/pipeline/usage/interrupt_protection##hard-irq-protection"
+"dovetail/pipeline/usage/interrupt_protection#hard-irq-protection"
 >}}) in the CPU before calling this routine. If the out-of-band stage
 is stalled as expected on entry to this helper, then interrupts must
 be hard disabled in the CPU as well anyway.
