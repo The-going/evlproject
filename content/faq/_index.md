@@ -27,10 +27,9 @@ dual kernel interface is a valuable goal.
 
 ### Where should the discussion on EVL take place?
 
-You can e-mail me at <rpm@xenomai.org> to discuss EVL for now. If at
-some point more than a handful of folks find this work interesting, we
-will get a mailing list. To set high expectations, I'm not counting
-myself in this handful.
+You can register at the [EVL mailing
+list](https://evenless.org/mailman/listinfo/evl/) to discuss
+EVL-related topics including Dovetail and the real-time EVL core.
 
 ### How do EVL and Xenomai differ?
 
