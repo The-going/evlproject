@@ -1,6 +1,5 @@
 ---
 title: "Prerequisites"
-date: 2018-06-27T11:09:03+02:00
 weight: 85
 ---
 
@@ -15,6 +14,8 @@ from the target Linux kernel:
 - IRQ domains (CONFIG_IRQ_DOMAIN).
 
 - Generic clock event abstraction (CONFIG_GENERIC_CLOCKEVENTS).
+
+- Generic clock source abstraction (!CONFIG_ARCH_USES_GETTIMEOFFSET).
 
 ## Other assumptions
 
