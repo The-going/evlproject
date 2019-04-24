@@ -131,7 +131,9 @@ use this program to [calibrate the EVL core timer]({{< relref
 {{% notice note %}}
 To get this test running, you will need `CONFIG_EVL_LATMUS` to be
 enabled in the kernel configuration, and loaded into the kernel under
-test if you built it as a dynamic module.
+test if you built it as a dynamic module. For those familiar with
+Xenomai 3, this program combines the features of the `latency` and
+`autotune` utilities available there into a single executable.
 {{% /notice %}}
 
 `latmus` accepts the following arguments, given as short or long
