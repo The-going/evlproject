@@ -10,8 +10,10 @@ regular task with additional scheduling capabilities guaranteeing very
 low and bounded response times. To support such idea, Dovetail enables
 kthreads and regular user tasks to run alternatively in the
 out-of-band execution context introduced by the interrupt pipeline
-(aka *oob* stage), or the common in-band kernel context for GPOS
-operations (aka *in-band* stage).
+(aka *out-of-band* stage), or the common in-band kernel context for
+GPOS operations (aka *in-band* stage). These new capabilities are
+built on the [interrupt pipeline]({{< relref
+"dovetail/pipeline/_index.md" >}}) machinery.
 
 As a result, autonomous core applications in user-space benefit from
 the common Linux programming model - including virtual memory
