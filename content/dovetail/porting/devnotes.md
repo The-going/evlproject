@@ -165,6 +165,32 @@ stuck into a buffer, never reaching the console driver before the
 board hangs eventually.
 {{% /notice %}}
 
+### Make no assumption in virtualizing arch_local_irq_restore()
+
+Do not make any assumption with respect to the current interrupt state
+when arch_local_irq_restore() is called, specifically don't expect the
+inband stage to be stalled. Some archs use constructs like follows,
+which breaks such assumption:
+
+```
+	local_save_flags(flags);
+	local_irq_enable();
+	...
+	local_irq_restore(flags);
+```
+
+In that case, we do want the stall bit to be restored unconditionally
+from _flags_. A correct implementation would be:
+
+```
+static inline notrace void arch_local_irq_restore(unsigned long flags)
+{
+	inband_irq_restore(arch_irqs_disabled_flags(flags));
+	barrier();
+}
+
+```
+
 ## ARM
 
 ### Context assumption with outer L2 cache
