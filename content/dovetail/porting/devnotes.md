@@ -168,9 +168,9 @@ board hangs eventually.
 ### Make no assumption in virtualizing arch_local_irq_restore()
 
 Do not make any assumption with respect to the current interrupt state
-when arch_local_irq_restore() is called, specifically don't expect the
-inband stage to be stalled. Some archs use constructs like follows,
-which breaks such assumption:
+when `arch_local_irq_restore()` is called, specifically don't expect
+the inband stage to be stalled on entry. Some archs use constructs
+like follows, which breaks such assumption:
 
 ```
 	local_save_flags(flags);
