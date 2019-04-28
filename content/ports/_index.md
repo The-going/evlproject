@@ -162,6 +162,32 @@ Linux 5.1-rc6
   </tr>
 </table>
 
+> X86_64
+<table class="status" style="width:50%">
+  <col width="40%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <tr>
+    <th>Chipset (Board)</th>
+    <th>IRQ pipeline<sup>1</sup></th> 
+    <th>Alternate scheduling</th>
+    <th>EVL base<sup>2</sup></th>
+    <th>EVL stress<sup>3</sup></th>
+    <th>Test kernel</th>
+  </tr>
+  <tr>
+    <td><a href="https://www.linux-kvm.org/page/Main_Page" target="_blank">QEMU KVM</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/unchecked.png"></td>
+    <td><img src="/images/unchecked.png"></td>
+    <td><img src="/images/unchecked.png"></td>
+    <td>5.1-rc6</td>
+  </tr>
+</table>
+
 <br>
 
 <sup>1</sup> Means that the pipeline torture tests pass (see
