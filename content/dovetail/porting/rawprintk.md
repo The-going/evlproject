@@ -47,11 +47,21 @@ present. Calls to the raw output handler are serialized in
 "dovetail/pipeline/locking.md#new-spinlocks" %}}), which means
 that interrupts are disabled in the CPU when running the handler.
 
-{{% notice tip %}}
 A raw write handler is normally derived from the regular write handler
 for the same serial console device, skipping any in-band locking
 construct, only waiting for the bare minimum time for the output to
 drain in the UART since we want to keep interrupt latency low.
+
+{{% notice warning %}}
+You cannot expect mixed output sent via `printk()` then `raw_printk()`
+to appear in the same sequence as their respective calls: normal
+`printk()` output may be deferred for an undefined amount of time
+until some console driver sends it to the terminal device, which may
+involve a task rescheduling. On the other hand, `raw_printk()`
+immediately writes the output to the hardware device, bypassing any
+buffering from `printk()`. So the output from a sequence of `printk()`
+followed by `raw_printk()` may appear in the opposite order on the
+terminal device. The converse never happen though.
 {{% /notice %}}
 
 > Adding RAW_PRINTK support to the AMBA PL011 serial driver
