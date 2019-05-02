@@ -181,13 +181,17 @@ nanoseconds instead of clock ticks directly, CLOCK_EVT_FEAT_KTIME
 should be present in `proxy_device.features` as returned by
 `get_percpu_device()`.
 
-`real_device` is a pointer to the actual clock device which the proxy
-is about to control on the current CPU, which comes in handy if you
-want to pull some information from this device to configure the proxy.
+The only argument to `get_percpu_device()` is a pointer to the actual
+clock device which the proxy is about to control on the current CPU,
+which comes in handy if you want to pull some information from this
+device to configure the proxy. `get_percpu_device()` should return a
+pointer to the proxy device descriptor for the current CPU (`struct
+clock_proxy_device`), or an error code formed with `ERR_PTR()` on
+failure.
 
 `tick_install_proxy()` can configure the proxy with sensible default
-values in `.proxy_device`, but requires a valid out-of-band handler to
-be set for `.handle_oob_event()`.
+values in `.proxy_device`, but requires at least a valid address of an
+out-of-band handler to be set in `.handle_oob_event()`.
 
 > A `get_percpu_device()` routine preparing a proxy device
 
