@@ -144,123 +144,120 @@ suffering erratum 740657, quickly locking up the board.
 
 Calling `tick_install_proxy()` creates an instance of the proxy tick
 device on each CPU mentioned in the `cpumask` it receives.  This
-routine is also passed a pointer to a `struct proxy_tick_ops`
-operation descriptor (`ops`), defining a few handlers the caller
-should provide for installing and managing the proxy device.
+routine is also passed the address of a routine which should return a
+pre-initialized `struct clock_proxy_device` descriptor for the current
+CPU. This routine is called indirectly by `tick_install_proxy()`, for
+each CPU marked in `cpumask`.
 
-> The proxy operation descriptor
+> Initializing the proxy descriptor
+
+`tick_install_proxy()` first `get_percpu_device()`, allowing the user
+to allocate a new synthetic device for the current CPU, then doing the
+prep work like chosing some of its settings. The descriptor is defined
+as follows:
 
 ```
-struct proxy_tick_ops {
-	void (*register_device)(struct clock_event_device *proxy_ced,
-				struct clock_event_device *real_ced);
-	void (*unregister_device)(struct clock_event_device *proxy_ced,
-				  struct clock_event_device *real_ced);
-	void (*handle_event)(struct clock_event_device *real_ced);
+struct clock_proxy_device {
+	struct clock_event_device proxy_device;
+	struct clock_event_device *real_device;
+	void (*handle_inband_event)(struct clock_event_device *dev);
+	void (*handle_oob_event)(struct clock_event_device *dev);
 };
 ```
 
-`tick_install_proxy()` first invokes `ops->register_device()` for
-doing the prep work for the synthetic device, allowing the client code
-to chose its settings before registering it, typically by a call to
-`clockevents_config_and_register()`. This device registration handler
-should fill the clock event device structure pointed by `proxy_ced`,
-defining the proxy device characteristics from the standpoint of the
-in-band kernel, just like a clock chip driver would do. `real_ced` is
-the actual clock event device being substituted for.
+Setting the `.handle_oob_event` handler is required: this is the
+address of the routine which should be called each time an out-of-band
+tick is received from the underlying timer hardware the proxy
+controls.
 
-Conversely, `ops->unregister_device()` is an optional handler called
-by `tick_uninstall_proxy()` for dismantling a proxy device. NULL may
-be given if the autonomous core has no specific action to take upon
-such event. In any case, `tick_uninstall_proxy()` ensures that the
-proxy is fully detached and all the related resources are freed before
-returning.
+Handlers from the `.proxy_device` field representing the proxy device
+into the clock event framework may be set to valid (non-NULL) values
+too, if the user code wants to interpose on the corresponding
+events. A default value is set by the `tick_install_proxy()` for each
+of them if left NULL by `get_percpu_device()`.
 
-{{% notice note %}}
-Although this is not strictly required, it is highly expected that
-`register_device()` gives a better rating to the proxy device than the
-original tick device's, so that the in-band kernel would substitute the
-former for the latter.
-{{% /notice %}}
+If the user code proxying the tick device prefers dealing with
+nanoseconds instead of clock ticks directly, CLOCK_EVT_FEAT_KTIME
+should be present in `proxy_device.features` as returned by
+`get_percpu_device()`.
 
-> A `register_device()` handler preparing a proxy device
+`real_device` is a pointer to the actual clock device which the proxy
+is about to control on the current CPU, which comes in handy if you
+want to pull some information from this device to configure the proxy.
+
+`tick_install_proxy()` can configure the proxy with sensible default
+values in `.proxy_device`, but requires a valid out-of-band handler to
+be set for `.handle_oob_event()`.
+
+> A `get_percpu_device()` routine preparing a proxy device
 
 ```
-static void proxy_device_register(struct clock_event_device *proxy_ced,
-				  struct clock_event_device *real_ced)
+static DEFINE_PER_CPU(struct clock_proxy_device, tick_device);
+
+static void oob_event_handler(struct clock_event_device *dev)
 {
 	/*
-	 * We know how to deal with delays expressed as counts of
-	 * nanosecs directly for programming events (i.e. no need
-	 * to translate into cycles).
+	 * We are running on the out-of-band stage, in NMI-like mode.
+	 * Schedule a tick on the proxy device to satisfy the
+	 * corresponding timing request asap.
 	 */
-	proxy_ced->features |= CLOCK_EVT_FEAT_KTIME;
-	/*
-	 * The handler which would receive in-band timing
-	 * requests.
-	 */
-	proxy_ced->set_next_ktime = proxy_set_next_ktime;
-	proxy_ced->set_next_event = NULL;
-	/*
-	 * Make sure we substitute for the real device:
-	 * advertise a better rating.
-	 */
-	proxy_ced->rating = real_ced->rating + 1;
-	proxy_ced->min_delta_ns = 1;
-	proxy_ced->max_delta_ns = KTIME_MAX;
-	proxy_ced->min_delta_ticks = 1;
-	proxy_ced->max_delta_ticks = ULONG_MAX;
+	tick_notify_proxy();
+}
 
-	/* All set, register now. */
-	clockevents_register_device(proxy_ced);
+static struct clock_proxy_device *get_percpu_device(void)
+{
+	struct clock_proxy_device *dev = raw_cpu_ptr(&tick_device);
+
+	/* If called multiple times, we need to zero the structure. */
+	memset(dev, 0, sizeof(*dev));
+
+	/*
+	 * Create a proxy which acts as a transparent device, simply
+	 * relaying the timing requests to the inband code, without
+	 * any additional out-of-band processing.
+	 */
+	dev->handle_oob_event = oob_event_handler;
+
+	return dev;
 }
 ```
 
 {{% notice tip %}}
-As illustrated above, the `set_next_event()` or `set_next_ktime()`
-member should be set in the structure pointed by `proxy_ced` with the
-address of a handler which receives timer requests from the in-band
-kernel. This handler is normally implemented by the autonomous core which
-takes control over the timer hardware via the proxy device. Whenever
-that core determines that a tick is due for an outstanding request
-received from such handler, it should call `tick_notify_proxy()` to
-signal the event to the main kernel.
-We add `CLOCK_EVT_FEAT_KTIME` to the proxy device flags because the
-autonomous core managing this device uses nanoseconds internally for
-expressing delays. For this reason, we want the main kernel to send
-timer requests to this core by passing delays as a count of
-nanoseconds to `set_next_ktime()` directly, without any conversion to
-hardware clock ticks.
+The `set_next_event()` or `set_next_ktime()` member can be set in
+`dev->proxy_device` with the address of a handler which receives timer
+requests from the in-band kernel. This handler is normally implemented
+by the autonomous core which takes control over the timer hardware via
+the proxy device. Whenever that core determines that a tick is due for
+an outstanding request received from such handler, it should call
+`tick_notify_proxy()` to signal the event to the main kernel.
 {{% /notice %}}
 
-Once the user-supplied `ops->register_device()` handler returns, the
+Once the user-supplied `get_percpu_device()` routine returns, the
 following events happen in sequence:
 
-1. with a rating most likely set to be higher than the current tick
-   device's (i.e. the _real_ device), the proxy device substitutes for
-   the former.
+1. the proxy device is registered, substituting for the real device.
 
-2. the real device is detached from the `clockevent` layer. However, it
-   is left in a functional state. The `set_next_event()` handler of
-   this device is redirected to the user-supplied
-   `ops->handle_event()` handler. This way, every tick received from
-   the real device would be passed on to the latter.
+2. the real device is detached from the `clockevent` layer, switched
+   to the CLOCK_EVT_STATE_RESERVED state, which makes it non-eligible
+   for any regular operation from the clock event framework. However,
+   it is left in a functional state.
 
 3. the proxy device starts controlling the real device under the hood
    to carry out timing requests from the in-band kernel. When the
    `hrtimer` layer from the in-band kernel wants to program the next
    shot of the current tick device, it invokes the `set_next_event()`
-   handler of the proxy device, which was defined by the caller. This
+   handler of the proxy device, which was defined by the caller (which
+   defaults to the real device's `set_next_event()` handler). This
    handler should be scheduling in-band ticks at the requested time
    based on its own timer management.
 
 4. the timer interrupt triggered by the real device is switched to
-   out-of-band handling. As a result, `ops->handle_event()` receives
-   tick events sent by the real device hardware directly from the oob
-   stage of the interrupt pipeline, over the out-of-band context. This
-   ensures high-precision timing. From that point, the out-of-band
-   code can carry out its own timing duties, in addition to honoring
-   the in-band kernel requests for timing.
+   out-of-band handling. As a result, `handle_oob_event()` receives
+   tick events sent by the real device hardware directly from the
+   out-of-band stage of the interrupt pipeline. This ensures
+   high-precision timing. From that point, the out-of-band code can
+   carry out its own timing duties, in addition to honoring the
+   in-band kernel requests for timing.
 
 Step 3. involves emulating ticks scheduled by the in-band kernel by a
 software logic controlled by some out-of-band timer management, paced
@@ -272,21 +269,19 @@ in-band kernel, which would honor the pending (hr)timer request.
 > Under the hood
 
 ```
-clockevents_program_event() [ROOT STAGE]
-   proxy_dev->set_next_event(proxy_dev)
-      proxy_set_next_ktime(proxy_dev)
-         (out-of-band timing logic)
-            real_dev->set_next_event(real_dev)
-...
-<hardware tick event>
-      oob_timer_handler() [HEAD STAGE]
-         clockevents_handle_event(real_dev)
-            ops->handle_event(proxy_dev)
-               (out-of-band timing logic)
-	          tick_notify_proxy()  /* schedules hrtimer tick */
-...
-<synthetic tick event>
-      proxy_irq_handler(proxy_dev) [ROOT stage]
-         clockevents_handle_event(proxy_dev)
-            hrtimer_interrupt(proxy_dev)
+	     [inband timing request]
+	         proxy_dev->set_next_event(proxy_dev)
+	             oob_program_event(proxy_dev)
+	                 real_dev->set_next_event(real_dev)
+	         ...
+	         <tick event>
+	         handle_inband_event() [out-of-band stage]
+	             clockevents_handle_event(real_dev)
+	                 handle_oob_event(proxy_dev)
+	                     ...(inband tick emulation)...
+	                          tick_notify_proxy()
+	         ...
+	         proxy_irq_handler(proxy_dev) [in-band stage]
+	             clockevents_handle_event(proxy_dev)
+	                 handle_inband_event(proxy_dev)
 ```
