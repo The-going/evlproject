@@ -27,7 +27,7 @@ dual kernel interface is a valuable goal.
 
 ### Where should the discussion on EVL take place?
 
-You can register at the [EVL mailing
+You can register on the [EVL mailing
 list](https://evenless.org/mailman/listinfo/evl/) to discuss
 EVL-related topics including Dovetail and the real-time EVL core.
 
