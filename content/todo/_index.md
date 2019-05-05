@@ -5,7 +5,20 @@ weight: 15
 pre: "&#9656; "
 ---
 
-### EVL's /sysfs interface needs work
+|     Feature summary         |       Status                       |
+| :-------------------------- |:---------------------------------- |
+|  Export additional core information via [sysfs]({{< relref "#todo-sysfs" >}}) | ![sysfs](/images/unchecked.png?height=30px&width=30px) |
+|  Implement [evl ps command]({{< relref "#todo-ps" >}}) | ![ps](/images/unchecked.png?height=30px&width=30px) |
+|  Fix [poll element]({{< relref "#todo-poll-nesting" >}}) for deep nesting | ![poll](/images/unchecked.png?height=30px&width=30px) |
+|  Write [unit tests]({{< relref "#todo-libevl-tests" >}}) for libevl | ![tests](/images/unchecked.png?height=30px&width=30px) |
+|  Improve [tracepoints]({{< relref "#todo-tracepoints" >}}) in EVL core | ![tracepoints](/images/unchecked.png?height=30px&width=30px) |
+|  Kill the [ugly big lock]({{< relref "#todo-kill-biglock" >}}) in EVL core| ![biglock](/images/unchecked.png?height=30px&width=30px) |
+|  Implement [Slackspot equivalent]({{< relref "#todo-slackspot" >}}) | ![slackspot](/images/unchecked.png?height=30px&width=30px) |
+|  Sanity check for [vDSO-based clock source]({{< relref "#todo-vdso-cs" >}}) | ![vdso-cs](/images/unchecked.png?height=30px&width=30px) |
+
+---
+
+### EVL's /sysfs interface needs work {#todo-sysfs}
 
 A choice was made for the EVL core to rely exclusively on /sysfs for
 exporting the core state information, excluding /procfs
@@ -33,7 +46,7 @@ clumsy. _sysfs_ does not formally support sub-classes, so I see no
 obvious way for having all element classes rooted at `/sys/class/evl`
 instead. Any idea would be welcome.
 
-### What the heck is the core running?
+### What the heck is the core running? {#todo-ps}
 
 As a matter of fact, we have absolutely no handy tool for inspecting
 the current runtime status of the EVL core. A _ps_-like command is
@@ -49,7 +62,7 @@ binaries. Such a script available from the same directory called
 `evl-trace` illustrates the interface logic with the `evl` command.
 {{% /notice %}}
 
-### _poll_ is naive with deep nesting
+### _poll_ is naive with deep nesting {#todo-poll-nesting}
 
 The file descriptor polling feature is represented by a file
 descriptor in userland too, so a polling object may be used to poll
@@ -59,7 +72,7 @@ graphs is detected ok, but non-cyclic deep nesting is definitely not
 as the algorithm there is pretty naive. `linux-evl/kernel/evl/poll.c`
 is where to look for this.
 
-### libevl needs more tests
+### libevl needs more tests {#todo-libevl-tests}
 
 There are some unit tests exercising the EVL core in the library, but
 we need many more:
@@ -72,7 +85,7 @@ we need many more:
 - the file descriptor polling feature is only lightly tested, so is
   the cross-buffer element.
 
-### THE big issue: phase out the ugly big lock
+### THE big issue: phase out the ugly big lock {#todo-kill-biglock}
 
 This lock was inherited from the Xenomai code base (aka _nklock_
 there). This is a massive bottleneck on the road to efficient SMP
@@ -92,7 +105,7 @@ However, we are not there yet. Some complex stuff remains to be sorted
 out for eliminating this lock entirely, specifically in the
 thread-to-scheduler interface points.
 
-### Improving the tracepoints
+### Improving the tracepoints {#todo-tracepoints}
 
 The EVL core defines a number of FTRACE-based tracepoints, which for
 the most part have been inherited from Xenomai's Cobalt core, there is
@@ -100,14 +113,7 @@ root for improvement in order to better fit the EVL context. In
 addition, the new code represents 2/3rd of the code base, which is not
 instrumented at all.
 
-### Disconnect Dovetail's [hard and mutable locks]({{% relref "dovetail/pipeline/locking.md" %}}) from CONFIG_LOCKDEP
-
-If we could exclude Dovetail's spinlocks from CONFIG_LOCKDEP using a
-debug option, we could run the lock validator for detecting glitches
-with in-band locking exclusively, without causing massive latency
-spots.
-
-### Enable a variant of Xenomai's _slackspot_ utility for EVL
+### Enable a variant of Xenomai's _slackspot_ utility for EVL {#todo-slackspot}
 
 Xenomai 3 introduced a utility called
 [_slackspot_](https://gitlab.denx.de/Xenomai/xenomai/wikis/Finding_Spurious_Relaxes)
@@ -117,7 +123,7 @@ in-band stage]({{% relref "dovetail/altsched/_index.md#inband-switch"
 
 We need an equivalent, passing the trace data back to userland via _debugfs_.
 
-### Sanity check for OOB-accessible clock_gettime() via vDSO
+### Sanity check for OOB-accessible clock_gettime() via vDSO {#todo-vdso-cs}
 
 The latmus test should do a quick check about not receiving a stage
 migration signal as a result of calling clock_gettime(). We have to
