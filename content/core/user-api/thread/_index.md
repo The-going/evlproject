@@ -371,6 +371,11 @@ policies:
   this policy are pooled in groups, with each group being given a
   share of the period.
 
+- [SCHED_TP]({{% relref
+  "core/user-api/scheduling/_index.md#SCHED_TP" %}}), which enforces
+  temporal partitioning of multiple sets of threads based on a
+  cycle-based scheduling.
+
 - [SCHED_WEAK]({{% relref
   "core/user-api/scheduling/_index.md#SCHED_WEAK" %}}), which is a
   *non real-time* policy allowing its members to run in-band most of
