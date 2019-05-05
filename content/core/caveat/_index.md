@@ -5,32 +5,25 @@ weight: 25
 
 ## Things you definitely want to know
 
-### **CONFIG_LOCKDEP** is cool but ruins real-time guarantees
+### **CONFIG_DEBUG_HARD_LOCKS** is cool but ruins real-time guarantees
 
-The lock dependency engine which helps in tracking down deadlocks and
-other locking-related issues is available to Dovetail's [hard
-locks]({{% relref "dovetail/pipeline/locking.md#new-spinlocks"
-%}}), which underpins most of the serialization mechanisms the EVL
-core uses.
+When CONFIG_DEBUG_HARD_LOCKS is enabled, the lock dependency engine
+(CONFIG_LOCKDEP) which helps in tracking down deadlocks and other
+locking-related issues is also enabled for Dovetail's [hard
+locks]({{% relref "dovetail/pipeline/locking.md#new-spinlocks" %}}),
+which underpins most of the serialization mechanisms the EVL core
+uses.
 
-This is nice as it has the regular lock validator monitor the hard
-spinlocks EVL uses too. However, this comes with a high price
-latency-wise: seeing hundreds of microseconds spent in the validator
-with hard interrupts off from time to time is not uncommon. Running
-the latency monitoring utility (aka `latmus`) which is part of
-`libevl` in this configuration should give you pretty ugly numbers.
+This is nice as it has the lock validator monitor the hard spinlocks
+EVL uses too. However, this comes with a high price latency-wise:
+seeing hundreds of microseconds spent in the validator with hard
+interrupts off from time to time is not uncommon. Running the latency
+monitoring utility (aka `latmus`) which is part of `libevl` in this
+configuration should give you pretty ugly numbers.
 
-By enabling any of the following switches in the kernel configuration,
-you would implicitly cause CONFIG_LOCKDEP to be enabled too:
-
-- CONFIG_PROVE_LOCKING
-- CONFIG_LOCK_STAT
-- CONFIG_DEBUG_WW_MUTEX_SLOWPATH
-- CONFIG_DEBUG_LOCK_ALLOC
-
-In short, it is fine enabling them for debugging some locking pattern,
-but you won't be able to meet real-time requirements at the same time
-in such configuration.
+In short, it is fine enabling CONFIG_DEBUG_HARD_LOCKS for debugging
+some locking pattern in EVL, but you won't be able to meet real-time
+requirements at the same time in such configuration.
 
 ### **isolcpus** is our friend too
 
