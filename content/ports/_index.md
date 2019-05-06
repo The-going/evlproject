@@ -184,7 +184,7 @@ Linux 5.1
     <td><img src="/images/unchecked.png"></td>
     <td><img src="/images/unchecked.png"></td>
     <td><img src="/images/unchecked.png"></td>
-    <td>5.1-rc6</td>
+    <td>5.1</td>
   </tr>
 </table>
 
