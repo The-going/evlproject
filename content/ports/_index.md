@@ -34,7 +34,7 @@ features to be available.
 
 > Current target kernel release
 
-Linux 5.1-rc6
+Linux 5.1
 
 > ARM64 SoC
 
@@ -75,7 +75,7 @@ Linux 5.1-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.1-rc6</td>
+    <td>5.1</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
@@ -91,7 +91,7 @@ Linux 5.1-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.1-rc6</td>
+    <td>5.1</td>
   </tr>
 </table>
 
