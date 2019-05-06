@@ -3,7 +3,7 @@ title: "Scheduling policies"
 weight: 52
 ---
 
-EVL defines four scheduling policies, which are prioritized: this
+EVL defines five scheduling policies, which are prioritized: this
 means that every time the core needs to pick the next eligible thread
 to run on the current CPU, it queries each policy module for a
 runnable thread in the following order:
@@ -13,20 +13,20 @@ runnable thread in the following order:
    [SCHED_RR]({{< relref "#SCHED_RR" >}}) round-robin policy
    internally.
 
-2. [SCHED_QUOTA]({{< relref "#SCHED_QUOTA" >}}), which enforces a
-   limitation on the CPU consumption of threads over a fixed period of
-   time.
-
 2. [SCHED_TP]({{< relref "#SCHED_TP" >}}), which enforces temporal
    partitioning of multiple sets of threads in a way which prevents
    those sets from overlapping time-wise on the CPU which runs such
    policy.
 
-3. [SCHED_WEAK]({{< relref "#SCHED_WEAK" >}}), which is a *non
+3. [SCHED_QUOTA]({{< relref "#SCHED_QUOTA" >}}), which enforces a
+   limitation on the CPU consumption of threads over a fixed period of
+   time.
+
+4. [SCHED_WEAK]({{< relref "#SCHED_WEAK" >}}), which is a *non
    real-time* policy allowing its members to run in-band most of the
    time, while retaining the ability to request EVL services.
 
-4. [SCHED_IDLE]({{< relref "#SCHED_IDLE" >}}), which is the fallback
+5. [SCHED_IDLE]({{< relref "#SCHED_IDLE" >}}), which is the fallback
    option the EVL core considers only when other policies have no
    runnable task on the CPU.
 

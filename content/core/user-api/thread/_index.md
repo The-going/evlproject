@@ -364,17 +364,17 @@ policies:
   of the class is allotted an individual time quantum before the CPU
   is given to the next thread.
 
+- [SCHED_TP]({{% relref
+  "core/user-api/scheduling/_index.md#SCHED_TP" %}}), which enforces
+  temporal partitioning of multiple sets of threads based on a
+  cycle-based scheduling.
+
 - [SCHED_QUOTA]({{% relref
   "core/user-api/scheduling/_index.md#SCHED_QUOTA" %}}), which
   enforces a limitation on the CPU consumption of threads over a fixed
   period of time, known as the global quota period. Threads undergoing
   this policy are pooled in groups, with each group being given a
   share of the period.
-
-- [SCHED_TP]({{% relref
-  "core/user-api/scheduling/_index.md#SCHED_TP" %}}), which enforces
-  temporal partitioning of multiple sets of threads based on a
-  cycle-based scheduling.
 
 - [SCHED_WEAK]({{% relref
   "core/user-api/scheduling/_index.md#SCHED_WEAK" %}}), which is a
