@@ -435,13 +435,8 @@ graph LR;
     style P fill:#ff950e;
     P -->|Yes| Q(no change)
     style Q fill:#ff950e;
-    P -->|No| E{PREV == idle?}
-    style E fill:#ff950e;
-    E -->|Yes| F["dovetail_resume_oob()"]
-    style F fill:#ff950e;
-    E -->|No| H["dovetail_context_switch()"]
+    P -->|No| H["dovetail_context_switch()"]
     style H fill:#ff950e;
-    F --> H
     H -.-> I(NEXT)
 {{< /mermaid >}}
 
@@ -458,32 +453,28 @@ interrupt pipeline provides which may help there. See the
 implementation of `evl_schedule()` in the EVL core for a typical
 usage.
 
-2. If _NEXT_ **is not** the [low priority placeholder task]({{< relref
-"#altsched-theory" >}}) but _PREV_ is, we will be preempting the
-in-band kernel: in this case, we must tell the kernel about such
-preemption by a call to `dovetail_resume_oob()`. This routine saves
-all context deemed necessary to restore it later on when the core
-switches back to the in-band execution stage. Otherwise, if _NEXT_ is
-the placeholder task, there is no out-of-band task waiting for the
-CPU, and we will branch back to the last preemption point that led
-to calling `dovetail_resume_oob()` during the converse transition.
-
-3. `dovetail_context_switch()` is called, switching the memory context
+2. `dovetail_context_switch()` is called, switching the memory context
 as/if required, and the CPU register file to _NEXT_'s, saving _PREV_'s
-in the same move.
+in the same move.  If _NEXT_ **is not** the [low priority placeholder
+task]({{< relref "#altsched-theory" >}}) but _PREV_ is, we will be
+preempting the in-band kernel: in this case, we must tell the kernel
+about such preemption by passing _leave\_inband=true_ to
+`dovetail_context_switch()`.
 
-4. _NEXT_ resumes from its latest switching point, which may be:
+3. _NEXT_ resumes from its latest switching point, which may be:
 
    * the switch tail code in `core_schedule()`, if _NEXT_ was running
-     out-of-band prior to sleeping.
+     out-of-band prior to sleeping, in which case
+     `dovetail_context_switch()` returns _false_.
 
    * the switch tail code of `schedule()` if _NEXT_ is completing an
-     [out-of-band switch]({{< relref "#oob-switch" >}}).
+     [in-band switch]({{< relref "#inband-switch" >}}), in which case
+     `dovetail_context_switch()` returns _true_.
 
 ---
 
 {{< proto dovetail_context_switch >}}
-void dovetail_context_switch(struct dovetail_altsched_context *prev, struct dovetail_altsched_context *next)
+bool dovetail_context_switch(struct dovetail_altsched_context *prev, struct dovetail_altsched_context *next, bool leave_inband)
 {{< /proto >}}
 
 {{% argument prev %}}
@@ -496,6 +487,13 @@ The [alternate scheduling context block]({{< relref
 "#dovetail_init_altsched" >}}) of the incoming task.
 {{% /argument %}}
 
+{{% argument leave_inband %}}
+A boolean indicating whether we are leaving the inband tasking mode,
+which happens when _prev_ is the autonomous core's [low priority
+placeholder task]({{< relref "#altsched-theory" >}}) standing for the
+inband kernel context as a whole.
+{{% /argument %}}
+
 This routine performs an out-of-band context switch. It must be called
 with hard IRQs off. The arch-specific `arch_dovetail_context_resume()`
 handler is called by the resuming task before leaving
@@ -504,25 +502,9 @@ by a Dovetail port which requires arch-specific tweaks for completing
 the reactivation of _next_. For instance, the arm64 port performs the
 _fpsimd_ management from this handler.
 
----
-
-{{< proto dovetail_resume_oob >}}
-void dovetail_resume_oob(struct dovetail_altsched_context *outgoing)
-{{< /proto >}}
-
-{{% argument outgoing %}}
-The [alternate scheduling context block]({{< relref
-"#dovetail_init_altsched" >}}) of the outgoing context, which should
-be the [low priority placeholder task's]({{< relref "#altsched-theory"
->}}).
-{{% /argument %}}
-
-This routine informs the kernel that we are leaving the in-band
-context, right before resuming an out-of-band task. This allows the
-main kernel logic to save all the information that will be required to
-restore the in-band execution stage later on when the converse switch
-happens.  The only call site of `dovetail_resume_oob()` should be in
-the `core_schedule()` implementation.
+`dovetail_context_switch()` returns a boolean value telling the caller
+whether the current task just returned from a [transition from
+out-of-band to inband context]({{< relref "#inband-switch" >}}).
 
 ---
 
