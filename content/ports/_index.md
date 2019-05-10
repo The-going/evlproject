@@ -181,8 +181,8 @@ Linux 5.1
   <tr>
     <td><a href="https://www.linux-kvm.org/page/Main_Page" target="_blank">QEMU KVM</a></td>
     <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/unchecked.png"></td>
-    <td><img src="/images/unchecked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
     <td><img src="/images/unchecked.png"></td>
     <td>5.1</td>
   </tr>
