@@ -195,7 +195,7 @@ Linux 5.1
     <td>5.1</td>
   </tr>
   <tr>
-    <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 (DFI SD631)</a></td>
+    <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 core i7 quad (DFI SD631)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
