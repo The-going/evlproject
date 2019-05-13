@@ -13,7 +13,6 @@ pre: "&#9656; "
 |  Write [unit tests]({{< relref "#todo-libevl-tests" >}}) for libevl | ![tests](/images/unchecked.png?height=30px&width=30px) |
 |  Improve [tracepoints]({{< relref "#todo-tracepoints" >}}) in EVL core | ![tracepoints](/images/unchecked.png?height=30px&width=30px) |
 |  Kill the [ugly big lock]({{< relref "#todo-kill-biglock" >}}) in EVL core| ![biglock](/images/unchecked.png?height=30px&width=30px) |
-|  Implement [Slackspot equivalent]({{< relref "#todo-slackspot" >}}) | ![slackspot](/images/unchecked.png?height=30px&width=30px) |
 |  Sanity check for [vDSO-based clock source]({{< relref "#todo-vdso-cs" >}}) | ![vdso-cs](/images/unchecked.png?height=30px&width=30px) |
 
 ---
@@ -112,16 +111,6 @@ the most part have been inherited from Xenomai's Cobalt core, there is
 root for improvement in order to better fit the EVL context. In
 addition, the new code represents 2/3rd of the code base, which is not
 instrumented at all.
-
-### Enable a variant of Xenomai's _slackspot_ utility for EVL {#todo-slackspot}
-
-Xenomai 3 introduced a utility called
-[_slackspot_](https://gitlab.denx.de/Xenomai/xenomai/wikis/Finding_Spurious_Relaxes)
-for tracing back code which caused the application to [switch to the
-in-band stage]({{% relref "dovetail/altsched/_index.md#inband-switch"
-%}}).
-
-We need an equivalent, passing the trace data back to userland via _debugfs_.
 
 ### Sanity check for OOB-accessible clock_gettime() via vDSO {#todo-vdso-cs}
 
