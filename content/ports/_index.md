@@ -150,7 +150,7 @@ Linux 5.1
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.1-rc6</td>
+    <td>5.1</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">Broadcom BCM2636 (Raspberry PI 2 Model B)</a></td>
@@ -171,7 +171,7 @@ Linux 5.1
   <col width="12%">
   <col width="12%">
   <tr>
-    <th>Chipset (Board)</th>
+    <th>Chipset (Module)</th>
     <th>IRQ pipeline<sup>1</sup></th> 
     <th>Alternate scheduling</th>
     <th>EVL base<sup>2</sup></th>
@@ -180,6 +180,22 @@ Linux 5.1
   </tr>
   <tr>
     <td><a href="https://www.linux-kvm.org/page/Main_Page" target="_blank">QEMU KVM</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.1</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.1</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 (DFI SD631)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
