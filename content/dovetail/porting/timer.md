@@ -218,15 +218,16 @@ an outstanding request received from such handler, it should call
 Once the user-supplied `setup_proxy()` routine returns, the following
 events happen in sequence:
 
-1. the proxy device is registered, substituting for the real device.
+1. the proxy device is registered on the clock event framework.
 
-2. the real device is detached from the `clockevent` layer, switched
-   to the CLOCK_EVT_STATE_RESERVED state, which makes it non-eligible
-   for any regular operation from the clock event framework. However,
-   it is left in a functional state. In the same move, the proxy
-   device is registered on the framework. From that point, requests to
-   the proxy device may be indirectly channeled to the real device via
-   the proxy when operations on the hardware should be carried out.
+2. the real device is detached from the `clockevent` framework,
+   switched to the CLOCK_EVT_STATE_RESERVED state, which makes it
+   non-eligible for any regular operation from the framework. However,
+   its hardware is left in a functional state. In the same move, the
+   proxy device is picked as the new tick device by the
+   framework. From that point, requests to the proxy device may be
+   indirectly channeled to the real device via the proxy when
+   operations on the hardware should be carried out.
 
 3. the proxy device now controls the real device under the hood to
    carry out timing requests from the in-band kernel. When the
@@ -242,9 +243,10 @@ events happen in sequence:
    out-of-band handling. As a result, `handle_oob_event()` receives
    tick events sent by the real device hardware directly from the
    out-of-band stage of the interrupt pipeline. This ensures
-   high-precision timing. From that point, the out-of-band code can
-   carry out its own timing duties, in addition to honoring the
-   in-band kernel requests for timing.
+   high-precision timing, which the inband stage cannot delay via
+   interrupt masking. From that point, the out-of-band code can carry
+   out its own timing duties, in addition to honoring the in-band
+   kernel requests for timing.
 
 Step 3. involves emulating ticks scheduled by the in-band kernel by a
 software logic controlled by some out-of-band timer management, paced
