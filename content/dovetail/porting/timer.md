@@ -121,12 +121,12 @@ we should test for the current state of the clock device in the
 interrupt handler:
 
 - A real/original device (such as the ARM global timer in this
-  example) is switched to _detached_ mode when the proxy tick driver
-  hands it over to the autonomous core. Therefore, the ARM global
-  timer state is always _detached_ from the standpoint of the kernel
-  when proxied, never _oneshot_. For this reason,
-  `clockevent_state_oneshot()` would always lead to _false_ in this
-  case.
+  example) is switched to _reserved_ mode when the proxy tick driver
+  hands it over to the autonomous core, which is similar to the
+  _detached_ mode in effect. Therefore, the ARM global timer state is
+  always _reserved_ from the standpoint of the kernel when proxied,
+  never _oneshot_. For this reason, `clockevent_state_oneshot()` would
+  always lead to _false_ in this case.
 
 - However, since a real device controlled by the proxy for receiving
   out-of-band events has to be driven in one-shot mode under the hood,
