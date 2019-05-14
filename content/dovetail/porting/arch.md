@@ -598,7 +598,7 @@ routine to interrupt pipelining:
 
 - calling _schedule()_ should be done with IRQs enabled in the CPU, in
   order to minimize latency for the out-of-band stage
-  (i.e. `hard_irqs_enabled()` should return _true_ before the call).
+  (i.e. `hard_irqs_disabled()` should return _false_ before the call).
 
 - generally speaking, while we may need the in-band stage to be
   stalled when the in-band kernel code expects this, we still want
