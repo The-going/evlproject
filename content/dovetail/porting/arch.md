@@ -5,7 +5,7 @@ date: 2018-06-27T17:07:51+02:00
 weight: 91
 ---
 
-## Interrupt mask virtualization
+## Interrupt mask virtualization {#irq-state-virtualization}
 
 The architecture-specific code which manipulates the interrupt flag in
 the CPU's state register in *arch/<your-arch>/include/asm/irqflags.h*
@@ -558,8 +558,8 @@ over an out-of-band context:
 ```
 
 `_TLF_OOB` is a local `thread_info` flag denoting a current task
-running out-of-band code over the oob stage. If set, the epilogue must
-be skipped.
+running out-of-band code over the out-of-band stage. If set, the
+epilogue must be skipped.
 
 ## Reconciling the virtual interrupt state to the epilogue logic
 
@@ -596,22 +596,17 @@ routine to interrupt pipelining:
   entry. Typically, hard interrupts must be disabled before leaving
   this code if we entered it that way.
 
-- likewise, we must also keep the virtual interrupt state consistent
-  upon return of the epilogue code with the one received on entry. In
-  other words, the stall bit of the in-band stage must be restored to its
-  original state on entry before leaving this code.
-
-- _schedule()_ must be called with interrupts virtually disabled for
-  the in-band stage, but the CPU's interrupt state should allow for
-  IRQs to be taken in order to minimize latency for the oob stage.
+- calling _schedule()_ should be done with IRQs enabled in the CPU, in
+  order to minimize latency for the out-of-band stage
+  (i.e. `hard_irqs_enabled()` should return _true_ before the call).
 
 - generally speaking, while we may need the in-band stage to be
   stalled when the in-band kernel code expects this, we still want
   most of the epilogue code to run with [hard interrupts
   enabled]({{%relref
   "dovetail/pipeline/interrupt_protection.md#hard-irq-protection"%}})
-  to shorten the interrupt latency for the oob stage, where autonomous
-  cores live.
+  to shorten the interrupt latency for the out-of-band stage, where
+  the autonomous core lives.
 
 > Reconciling the interrupt state in ARM64 epilogue
 ```
