@@ -199,7 +199,7 @@ Linux 5.1
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td><img src="/images/unchecked.png"></td>
+    <td><img src="/images/checked.png"></td>
     <td>5.1</td>
   </tr>
 </table>
