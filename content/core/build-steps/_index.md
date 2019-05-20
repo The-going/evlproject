@@ -359,3 +359,4 @@ file proxy has efd=5
 
 ## Calibrating the core timer {#timer-tuning}
 
+![Alt text](/images/wip.png "To be continued")
