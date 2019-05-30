@@ -8,7 +8,7 @@ pre: "&#9656; "
 |     Feature summary         |       Status                       |
 | :-------------------------- |:---------------------------------- |
 |  Export additional core information via [sysfs]({{< relref "#todo-sysfs" >}}) | ![sysfs](/images/unchecked.png?height=30px&width=30px) |
-|  Implement [evl ps command]({{< relref "#todo-ps" >}}) | ![ps](/images/unchecked.png?height=30px&width=30px) |
+|  Implement [evl ps command]({{< relref "#todo-ps" >}}) | ![ps](/images/checked.png?height=30px&width=30px) |
 |  Fix [poll element]({{< relref "#todo-poll-nesting" >}}) for deep nesting | ![poll](/images/unchecked.png?height=30px&width=30px) |
 |  Write [unit tests]({{< relref "#todo-libevl-tests" >}}) for libevl | ![tests](/images/unchecked.png?height=30px&width=30px) |
 |  Improve [tracepoints]({{< relref "#todo-tracepoints" >}}) in EVL core | ![tracepoints](/images/unchecked.png?height=30px&width=30px) |
@@ -46,6 +46,8 @@ obvious way for having all element classes rooted at `/sys/class/evl`
 instead. Any idea would be welcome.
 
 ### What the heck is the core running? {#todo-ps}
+
+TASK CLOSED.
 
 As a matter of fact, we have absolutely no handy tool for inspecting
 the current runtime status of the EVL core. A _ps_-like command is
