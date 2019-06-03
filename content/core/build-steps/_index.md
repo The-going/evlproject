@@ -87,22 +87,34 @@ $ make [-C $SRCDIR] [ARCH=$cpu_arch] [CROSS_COMPILE=$toolchain] UAPI=$uapi_dir [
 
 ### Examples
 
+#### Cross-compiling EVL
+
 Let's say the library source code is located at ~/git/libevl, and the
 kernel sources featuring the EVL core is located at
-~/git/linux-evl. Building and installing the EVL library and utilities
-directly to a staging directory at /nfsroot/\<machine\>/usr/evl would
-amount to:
+~/git/linux-evl.
 
-> Building from a (temporary) build directory
+{{% notice note %}}
+This is good practice to always generate the build output files to a
+separate build directory using the O= directive on the _make_ command
+line, not to clutter your source tree with those.
+{{% /notice %}}
+
+Cross-compiling EVL and installing the resulting library and utilities
+to a staging directory located at /nfsroot/\<machine\>/usr/evl would
+amount to this:
+
+> Cross-compiling from a separate build directory
 
 ```
+# First create a build directory the where output files should go
 $ mkdir /tmp/build-imx6q && cd /tmp/build-imx6q
+# Then start the build+install process
 $ make -C ~/git/libevl O=$PWD ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- UAPI=~/git/linux-evl DESTDIR=/nfsroot/imx6q/usr/evl install
 ```
 
 or,
 
-> Building directly into the EVL library source tree
+> Cross-compiling from the EVL library source tree
 
 ```
 $ mkdir /tmp/build-hikey
@@ -110,9 +122,33 @@ $ cd ~/git/libevl
 $ make O=/tmp/build-hikey ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- UAPI=~/git/linux-evl DESTDIR=/nfsroot/hikey/usr/evl install
 ```
 
+#### Native EVL build
+
+Conversely, you may want to build EVL natively on the target system.
+Installing the resulting library and utilities directly to their final
+home located at e.g. /usr/evl can be done as follows:
+
+> Building natively from a build directory
+
+```
+$ mkdir /tmp/build-native && cd /tmp/build-native
+$ make -C ~/git/libevl O=$PWD UAPI=~/git/linux-evl DESTDIR=/usr/evl install
+```
+
+or,
+
+> Building natively from the EVL library source tree
+
+```
+$ mkdir /tmp/build-native
+$ cd ~/git/libevl
+$ make O=/tmp/build-native UAPI=~/git/linux-evl DESTDIR=/usr/evl install
+```
+
 ## Testing the installation
 
-EVL comes with a series of tests you can run to make sure the core is performing correctly on your target system.
+EVL comes with a series of tests you can run to make sure the core is
+performing correctly on your target system.
 
 ### latmus: the litmus test for latency
 
@@ -199,8 +235,9 @@ the default mode, in absence of the _-t_ option on the command line.
 
 {{% argument "-t --tune" %}}
 Run a core timer calibration procedure, as opposed to measuring the
-latency. _-i_, _-k_ and _-u_ can be used to select a specific
-tuning context, all of them are applied in sequence otherwise.
+latency. _-i_, _-k_ and _-u_ can be used to select a specific tuning
+context, all of them are applied in sequence otherwise. See
+[below]({{< relref "#timer-tuning" >}}).
 {{% /argument %}}
 
 {{% argument "-p --period=<µsecs>" %}}
@@ -259,6 +296,75 @@ Set the CPU affinity of the sampling thread.  This option only makes
 sense when collecting latency figures or tuning the EVL core timer
 from an EVL thread context (i.e. _-u_ or _-k_).  Defaults to 0.
 {{% /argument %}}
+
+#### Calibrating the core timer {#timer-tuning}
+
+The time spent traversing the kernel code from the interrupt entry
+code until the interrupt handler is invoked, is shorter than the time
+that would be required to schedule in a kernel thread instead. It
+would take even more time to switch in a user-space thread, which
+entails changing the current memory address space, performing
+potentially time-consuming MMU-related operations affecting the CPU
+caches.
+
+For this reason, EVL differentiates timers on the target context they
+activate, between IRQ(handler), kernel and user threads, anticipating
+the next timer shot accordingly, so that such context is activated as
+close as possible to the ideal time. This anticipation is called the
+_gravity_ of the clock serving the timer, which is actually a triplet
+representing the three possible types of contexts the timer can
+activate.
+
+Therefore, the gravity is a static adjustment value to account for the
+basic latency of the target system for responding to timer events, as
+perceived by the client code waiting for the wake up events. Such
+latency is increased by additional factors, such as:
+
+- bus or CPU cache latency,
+- delay required to program the timer chip for the next shot,
+- code running with interrupts disabled on the CPU to receive the IRQ,
+- inter-processor serialization (_spinlocks_).
+
+When started with the _-t_ option, `latmus` runs a series of tests for
+determining those best calibration values (aka _gravity triplet_) for
+the EVL core timer, then tells the core to use them.
+
+A typical output of this command looks like this:
+
+> Complete core timer calibration
+```
+# latmus -t
+== latmus started for core tuning, period=1000 us (may take a while)
+irq gravity...2000 ns
+kernel gravity...5000 ns
+user gravity...6500 ns
+== tuning completed after 34s
+```
+
+You might want to restrict the calibration process to specific
+context(s), in which case you should pass the corresponding context
+modifiers to the `latmus` command, such as _-u_ for user-space and
+_-i_ for IRQ latency respectively:
+
+> Context-specific calibration
+```
+# latmus -tui
+== latmus started for core tuning, period=1000 us (may take a while)
+irq gravity...1000 ns
+user gravity...6000 ns
+== tuning completed after 21s
+```
+
+{{% notice note %}}
+You might get two sets of differing values between two consecutive
+runs of the calibration process: this is normal, and nothing to worry
+about provided those values look close enough compared to the expected
+average jitter on the target hardware. The reason for such
+discrepancies is that although _latmus_ does run the same tests time
+and again, the conditions on the target hardware may be different
+between runs, leading to varying results (e.g. variations in CPU cache
+performance for the calibration loop).
+{{% /notice %}}
 
 ### hectic: hammering the EVL context switching machinery
 
@@ -340,23 +446,26 @@ inband[2] => 45
 /usr/evl/tests/clock-timer-periodic
 /usr/evl/tests/clone-fork-exec
 thread has efd=7
-exec() ok for pid 1653
+exec() ok for pid 6855
 /usr/evl/tests/detach-self
 thread efd=7
 detach ret=0
 thread efd=7
 detach ret=0
 /usr/evl/tests/duplicate-element
-/usr/evl/tests/logger-stdout
-efd=7
-logfd=8
-stdout relay!
-oob_write=14, errno=0
+/usr/evl/tests/fault
+/usr/evl/tests/fpu-preload
 /usr/evl/tests/mapfd
 file proxy has efd=5
+mapfd child reading: mapfd-test
+/usr/evl/tests/monitor-pi
+/usr/evl/tests/monitor-pp-dynamic
+/usr/evl/tests/monitor-pp-lower
+/usr/evl/tests/monitor-pp-nested
+/usr/evl/tests/monitor-pp-pi
+/usr/evl/tests/monitor-pp-raise
+/usr/evl/tests/monitor-pp-tryenter
+/usr/evl/tests/monitor-pp-weak
+/usr/evl/tests/monitor-steal
 ...
 ```
-
-## Calibrating the core timer {#timer-tuning}
-
-![Alt text](/images/wip.png "To be continued")
