@@ -96,7 +96,11 @@ kernel sources featuring the EVL core is located at
 {{% notice note %}}
 This is good practice to always generate the build output files to a
 separate build directory using the O= directive on the _make_ command
-line, not to clutter your source tree with those.
+line, not to clutter your source tree with those. Generating output to
+a separate directory also creates convenience Makefiles on the fly in
+the output tree, which you can use to run subsequent builds, without
+having to mention the whole series of settings on the _make_ command
+line again.
 {{% /notice %}}
 
 Cross-compiling EVL and installing the resulting library and utilities
