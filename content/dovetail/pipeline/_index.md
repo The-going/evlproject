@@ -78,6 +78,13 @@ interrupt masking and delivery logic which applies to the out-of-band
 stage from the one in effect on the in-band stage, by implementing a
 dual interrupt control.
 
+In the pipelined interrupt model, the CPU can receive interrupts most
+of the time, but the delivery logic of those events may be deferred by
+a software mechanism until the kernel actually accepts them. This
+approach is said to be _optimistic_ because it is assumed that the
+overhead of maintaining such mechanism should be small as the in-band
+code seldom receives an interrupt while masking them.
+
 ## Virtual interrupt disabling {#virtual-i-flag}
 
 To this end, a software logic managing a virtual interrupt disable
