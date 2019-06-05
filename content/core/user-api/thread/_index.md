@@ -392,8 +392,8 @@ code is returned:
 		`attrs->sched_policy`, and the policy-specific
 		information may EVL expect for more.
 
--ESTALE _efd_ refers to a stale thread, see these [notes]({{% relref
- "core/user-api/thread/_index.md#detached-thread-notes" %}}).
+-ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
+		"#evl_detach_self" >}}).
 
 ```
 #include <evl/thread.h>
@@ -519,13 +519,33 @@ follows:
 
 ### Where to look for thread information?
 
-Since every element is backed by a regular character device, the place
-to look for thread attributes is in the /sysfs hierarchy, where such
-device is living. For instance, we can have a look at the attributes
-exported by the sampling thread of EVL's _latmus_ utility like this:
+#### Using the 'evl ps' command
+
+Running the following command from the shell will report the current
+EVL thread activity on your system:
 
 ```
-cd /sys/devices/virtual/thread/lat-sampler:2136
+# evl ps
+CPU   PID   SCHED   PRIO  NAME
+  0   398      rt    90   [latmus-klat:394]
+  0   399    weak     0   lat-measure:394
+```
+
+There are display options you can pass to 'evl ps' to get more
+information about each EVL thread, sorting the result list according
+to various criteria.
+
+#### Looking at the /sysfs data
+
+Since every EVL element is backed by a regular character device, so
+are threads. Therefore, what to look for is the set of thread device
+attributes available from the /sysfs hierarchy. The 'evl ps' command
+actually parses this raw information before rendering it in a
+human-readable format. Let's have a look at the attributes exported by
+the sampling thread of some random run of EVL's _latmus_ utility:
+
+```
+# cd /sys/devices/virtual/thread/lat-sampler:2136
 # ls -l
 total 0
 -r--r--r--    1 root     root          4096 Mar  1 12:01 pid
@@ -541,3 +561,80 @@ total 0
 1 311156 311175 46999122352 0
 0
 ```
+
+The format of these fields is as follows:
+
+- _pid_ is the thread identifier (kernel TID); this is a positive
+  integer of type pid_t.
+
+- _sched_ contains the scheduling attributes of the thread, with by
+  order of appearance:
+
+  - the CPU the thread is running on.
+ 
+  - the current priority level of the thread within its scheduling
+    class. With SCHED_FIFO for instance, that would be a figure in the
+    [1..99] range. This value may reflect an ongoing priority boost
+    due to enforcing the priority inheritance protocol with some EVL
+    mutex(es) that thread contends for.
+
+  - the base priority level of the thread within its scheduling class,
+    *not* reflecting any priority boost. This is the value that you last
+    set with [evl_set_schedattr]({{< relref
+    "core/user-api/scheduling/_index.md#evl_set_schedattr" >}}) when
+    assigning the thread its scheduling class.
+
+  - the name of the scheduling class the thread is assigned to. This
+    is an ASCII string (unquoted), like _rt_ for the SCHED_FIFO class.
+
+  - depending on the scheduling class, you may see optional
+    information after the class name which gives some class-specific
+    details about the thread. Currently, only SCHED_TP and SCHED_QUOTA
+    define such information:
+
+    * SCHED_QUOTA appends the [quota group identifier]({{< relref
+    "core/user-api/scheduling/_index.md#create-quota-group" >}}) for
+    that thread.
+
+    * SCHED_TP appends the [identifier of the partition]({{< relref
+    "core/user-api/scheduling/_index.md#SCHED_TP" >}}) the thread is
+    attached to.
+
+- _state_ is the hexadecimal value of the thread's internal state
+  word. This information is very ABI dependent, each bit is tersely
+  documented in _uapi/evl/thread.h_ from the linux-evl kernel
+  tree. This is intended at being food for geek brain.
+ 
+- _stats_ gives statistical information about the CPU consumption of
+  the thread, in the following order:
+
+  * the number of (forced) switches to inband mode, which happens when
+    a thread issues an in-band system call from an out-of-band
+    context. This figure should not increase once a real-time EVL
+    thread has entered its time-critical work loop, otherwise this
+    would mean that such thread is actually leaving the out-of-band
+    execution stage while it should not, getting latency hits in the
+    process.
+   
+  * the number of EVL context switches the thread was subject to,
+    meaning the number of times the thread was given back the CPU
+    after a blocked state. This value _exclusively_ reflects the
+    number of switches performed by EVL for resuming the thread in
+    out-of-band mode, which excludes any context switch of the same
+    thread due to in-band activity.
+
+  * the number of EVL system calls the thread has issued to the
+    core. Here again, only the EVL system calls are counted, in-band
+    system calls from the same threads are tracked by this counter.
+
+  * the cumulated CPU usage of the thread since its creation,
+    expressed as a count of nanoseconds.
+
+  * the percentage of the CPU bandwidth consumed by the thread, from
+    the last time this counter was read until the current readout.
+
+- _timeout_ is a count of nanoseconds representing the ongoing delay
+  until the thread wakes up from its current timed wait. Zero means no
+  timeout. EVL starts a timer when a thread enters a timed wait on
+  some kernel resource; _timeout_ reports the time to go until this
+  timer fires.
