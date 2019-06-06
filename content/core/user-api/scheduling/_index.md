@@ -403,7 +403,7 @@ including blocking ones for waiting for out-of-band notifications
 out-of-band execution stage. Before returning from the EVL system
 call, the thread will be automatically switched back to the in-band
 execution stage by the core. This means that _each and every EVL
-system call_ issued by a thread assigned to the _SCHED_WEAK class_ is
+system call_ issued by a thread assigned to the SCHED_WEAK class is
 going to trigger _two execution stage switches_ back and forth, which
 is definitely _costly_. So make sure not to use this feature in any
 high frequency loop.
