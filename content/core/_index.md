@@ -35,7 +35,7 @@ it looks like we need only four elements:
 - thread. As the basic execution unit, we want it to be runnable
   either in real-time mode or regular GPOS mode alternatively, which
   exactly maps to [Dovetail's]({{% relref
-  "dovetail/pipeline/_index.md" %}}) out-of-band and inband contexts.
+  "dovetail/pipeline/_index.md" %}}) out-of-band and in-band contexts.
 
 - monitor. This element has the same purpose than the main kernel's
   _futex_, which is about providing an integrated - although much

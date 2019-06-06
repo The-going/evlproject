@@ -488,10 +488,10 @@ The [alternate scheduling context block]({{< relref
 {{% /argument %}}
 
 {{% argument leave_inband %}}
-A boolean indicating whether we are leaving the inband tasking mode,
+A boolean indicating whether we are leaving the in-band tasking mode,
 which happens when _prev_ is the autonomous core's [low priority
 placeholder task]({{< relref "#altsched-theory" >}}) standing for the
-inband kernel context as a whole.
+in-band kernel context as a whole.
 {{% /argument %}}
 
 This routine performs an out-of-band context switch. It must be called
@@ -504,7 +504,7 @@ _fpsimd_ management from this handler.
 
 `dovetail_context_switch()` returns a boolean value telling the caller
 whether the current task just returned from a [transition from
-out-of-band to inband context]({{< relref "#inband-switch" >}}).
+out-of-band to in-band context]({{< relref "#inband-switch" >}}).
 
 ---
 

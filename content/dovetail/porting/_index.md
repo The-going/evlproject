@@ -40,7 +40,7 @@ This is the most basic change to introduce into the kernel, in order
 to turn the architecture-specific API manipulating the CPU's interrupt
 flag into the equivalent virtualized calls the interrupt pipeline
 provides. By virtualizing these operations, Dovetail keeps the
-hardware interrupt events flowing in while still preserving the inband
+hardware interrupt events flowing in while still preserving the in-band
 kernel code from undue interrupt delivery as explained in [this
 document]({{< relref "dovetail/pipeline/_index.md" >}}). You need to
 follow [this procedure]({{< relref "dovetail/porting/arch.md" >}}) for
@@ -51,7 +51,7 @@ implementing such virtualization.
 Once the IRQFLAGS have been adapted to interrupt pipelining, the
 original atomic operations which rely on explicitly disabling the
 hardware interrupts to guarantee atomicity cannot longer work, unless
-the call sites are restricted to inband context, which is not an
+the call sites are restricted to in-band context, which is not an
 option as we will certainly need them for carrying out atomic
 operations from out-of-band context too. So we need to iron them in a
 way that adds back serialization between callers during updates,
@@ -79,10 +79,10 @@ need the following set of changes:
 
 - first, we want to [channel IRQ events to the interrupt pipeline]({{<
   relref "dovetail/porting/arch.md#arch-irq-entry" >}}), instead of
-  delivering IRQs directly to the original low-level inband handler
+  delivering IRQs directly to the original low-level in-band handler
   (e.g. `handle_arch_irq()` for ARM). With this change in, the
   pipeline can dispatch events immediately to out-of-band handlers if
-  any, then conditionally dispatch them to the inband code too if it
+  any, then conditionally dispatch them to the in-band code too if it
   accepts interrupts, or defer them until it does. This change is a
   prerequisite for enabling the interrupt pipeline.
 
@@ -90,7 +90,7 @@ need the following set of changes:
   stage (e.g. some task running out-of-band blunders, causing a memory
   access violation), returning from a fault handling must [skip the
   epilogue code]({{< relref "dovetail/porting/arch.md#fault-exit" >}})
-  which checks for inband-specific conditions, such as opportunities
+  which checks for in-band-specific conditions, such as opportunities
   for userr task rescheduling or/and kernel preemption.
 
 ![Alt text](/images/wip.png "To be continued")

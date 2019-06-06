@@ -608,7 +608,7 @@ The format of these fields is as follows:
 - _stats_ gives statistical information about the CPU consumption of
   the thread, in the following order:
 
-  * the number of (forced) switches to inband mode, which happens when
+  * the number of (forced) switches to in-band mode, which happens when
     a thread issues an in-band system call from an out-of-band
     context. This figure should not increase once a real-time EVL
     thread has entered its time-critical work loop, otherwise this

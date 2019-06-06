@@ -198,7 +198,7 @@ static void oob_event_handler(struct clock_event_device *dev)
 static void setup_proxy(struct clock_proxy_device *dev)
 {
 	 * Create a proxy which acts as a transparent device, simply
-	 * relaying the timing requests to the inband code, without
+	 * relaying the timing requests to the in-band code, without
 	 * any additional out-of-band processing.
 	 */
 	dev->handle_oob_event = oob_event_handler;
@@ -243,7 +243,7 @@ events happen in sequence:
    out-of-band handling. As a result, `handle_oob_event()` receives
    tick events sent by the real device hardware directly from the
    out-of-band stage of the interrupt pipeline. This ensures
-   high-precision timing, which the inband stage cannot delay via
+   high-precision timing, which the in-band stage cannot delay via
    interrupt masking. From that point, the out-of-band code can carry
    out its own timing duties, in addition to honoring the in-band
    kernel requests for timing.
@@ -258,7 +258,7 @@ in-band kernel, which would honor the pending (hr)timer request.
 > Under the hood
 
 ```
-	     [inband timing request]
+	     [in-band timing request]
 	         proxy_dev->set_next_event(proxy_dev)
 	             oob_program_event(proxy_dev)
 	                 real_dev->set_next_event(real_dev)
@@ -267,7 +267,7 @@ in-band kernel, which would honor the pending (hr)timer request.
 	         inband_event_handler() [out-of-band stage]
 	             clockevents_handle_event(real_dev)
 	                 handle_oob_event(proxy_dev)
-	                     ...(inband tick emulation)...
+	                     ...(in-band tick emulation)...
 	                          tick_notify_proxy()
 	         ...
 	         proxy_irq_handler(proxy_dev) [in-band stage]
