@@ -30,11 +30,15 @@ runnable thread in the following order:
    option the EVL core considers only when other policies have no
    runnable task on the CPU.
 
-{{% notice tip %}}
 The SCHED_QUOTA and SCHED_TP policies are optionally supported by the
 core, make sure to enable `CONFIG_EVL_SCHED_QUOTA` or
 `CONFIG_EVL_SCHED_TP` respectively in the kernel configuration if you
 need it.
+
+{{% notice tip %}}
+Before a thread can be assigned to any EVL class, its has to attach
+itself to the core by a call to [evl_attach_self]({{% relref
+"core/user-api/thread/_index.md#evl_attach_self" %}}).
 {{% /notice %}}
 
 ---
@@ -378,6 +382,74 @@ prior to uninstalling.
 
 ### SCHED_WEAK {#SCHED_WEAK}
 
+You may want to run some POSIX threads in-band most of the time,
+except when they need to call some EVL services
+occasionally. Occasionally here means either non-repeatedly, or at any
+rate _not_ from a high frequency loop.
+
+Members of this class are picked second last in the hierarchy of EVL
+scheduling classes, right before the sole member of the
+[SCHED_IDLE]({{< relref "#SCHED_IDLE" >}}) class which stands for the
+in-band execution stage of the kernel. The intent is to preserve the
+priority such threads have in the in-band context when they (normally
+briefly) run on the out-of-band execution stage. For this reason,
+SCHED_WEAK threads have a fixed priority ranging from 0 to 99
+included, which maps to in-band SCHED_OTHER (0), SCHED_FIFO and
+SCHED_RR (1-99) priority ranges.
+
+A thread scheduled in the SCHED_WEAK class may invoke any EVL service,
+including blocking ones for waiting for out-of-band notifications
+(e.g. depleting a semaphore), which will certainly switch it to the
+out-of-band execution stage. Before returning from the EVL system
+call, the thread will be automatically switched back to the in-band
+execution stage by the core. This means that _each and every EVL
+system call_ issued by a thread assigned to the _SCHED_WEAK class_ is
+going to trigger _two execution stage switches_ back and forth, which
+is definitely _costly_. So make sure not to use this feature in any
+high frequency loop.
+
+{{% notice warning %}}
+In a specific case the EVL core will keep the thread running on the
+out-of-band execution stage though: whenever this thread has returned
+from a successful call to [`evl_lock()`]({{% relref
+"core/user-api/mutex/_index.md#evl_lock" %}}), holding an EVL
+mutex. This ensures that no in-band activity on the same CPU can
+preempt the lock owner, which would certainly lead to a priority
+inversion would that lock be contended later on by another EVL
+thread. The lock owner is eventually switched back to in-band mode by
+the core as a result of [releasing]({{% relref
+"core/user-api/mutex/_index.md#evl_unlock" %}}) the last EVL mutex it
+was holding.
+{{% /notice %}}
+
+There are only a few legitimate use cases for assigning an EVL thread
+to the SCHED_WEAK scheduling class:
+
+- as part of some initialization, cleanup or any non real-time phase
+  of your application, a thread needs to synchronize with another EVL
+  thread which belongs to a real-time class like [SCHED_FIFO]({{<
+  relref "#SCHED_FIFO" >}}).
+
+- some in-band thread which purpose is to handle _fairly exceptional_
+  events needs to be notified by a real-time thread to do so.
+
+In all other cases where an in-band thread might need to be driven by
+out-of-band events which may occur at a moderate or higher rate, using
+a message-based mechanism such as a [cross-buffer]({{% relref
+"core/user-api/thread/_index.md" %}}) is the best way to go.
+
+Switching a thread to SCHED_WEAK is achieved by calling
+[`evl_set_schedattr()`]({{% relref
+"core/user-api/thread/_index.md#evl_set_schedattr" %}}). The
+`evl_sched_attrs` attribute structure should be filled in as follows:
+
+```
+	struct evl_sched_attrs attrs;
+
+	attrs.sched_policy = SCHED_WEAK;
+	attrs.sched_priority = <priority>; /* [0-99] */
+
+```
 ---
 
 ### SCHED_IDLE {#SCHED_IDLE}
