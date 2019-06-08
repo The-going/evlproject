@@ -102,6 +102,12 @@ kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
 The build recipe is available [there]({{% relref
 "core/build-steps/_index.md" %}}).
 
+## Mailing list
+
+You can register on the [EVL mailing
+list](https://evlproject.org/mailman/listinfo/evl/) to discuss
+EVL-related topics including Dovetail and the real-time EVL core.
+
 ## Licensing terms
 
 SPDX license identifiers are used throughout the code to state the
