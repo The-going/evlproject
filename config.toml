@@ -1,11 +1,11 @@
-baseURL = "https://evenless.org/"
+baseURL = "https://evlproject.org/"
 languageCode = "en-US"
-title = "Evenless project"
+title = "EVL project"
 theme = "hugo-theme-learn"
 
 [params]
 author = "Philippe Gerum <rpm@xenomai.org>"
-description = "Evenless project"
+description = "EVL project"
 disableSearch = false
 disableInlineCopyToClipBoard = true
 disableBreadcrumb = false

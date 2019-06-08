@@ -1,8 +1,8 @@
 ---
-title: "Evenless"
+title: "EVL project"
 ---
 
-# Evenless
+# The EVL Project
 
 ## Dual Kernel Rebooted
 
@@ -10,9 +10,9 @@ For certain types of applications, offloading a particular set of
 time-critical tasks to an autonomous core hosted by the Linux kernel
 may deliver the best possible performance when compared to forcing the
 entire Linux kernel to meet the most stringent scheduling latency
-requirements that only those tasks may have. Evenless (EVL for short)
-is a practical work on finding the best possible integration of such a
-dedicated software core into the mainline Linux kernel.
+requirements that only those tasks may have. EVL is a practical work
+on finding the best possible integration of such a dedicated software
+core into the mainline Linux kernel.
 
 EVL re-imagines the venerable dual kernel design by introducing the
 dual kernel support logic at the heart of Linux, which defines the set
@@ -89,15 +89,15 @@ core]({{% relref "core/_index.md" %}}) are maintained in separate
 branches of the same GIT repository, tracking the [mainline
 kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
 
-  * git://git.evenless.org/linux-evl.git
-  * https://git.evenless.org/linux-evl.git
+  * git://git.evlproject.org/linux-evl.git
+  * https://git.evlproject.org/linux-evl.git
 
 - the second repository contains the source code of the [EVL
   library]({{% relref "core/user-api/_index.md" %}}), which is the
   user-space API to the EVL core:
 
-  * git://git.evenless.org/libevl.git
-  * https://git.evenless.org/libevl.git
+  * git://git.evlproject.org/libevl.git
+  * https://git.evlproject.org/libevl.git
 
 The build recipe is available [there]({{% relref
 "core/build-steps/_index.md" %}}).

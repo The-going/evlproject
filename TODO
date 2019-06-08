@@ -15,7 +15,7 @@
 
 - should we add an external link for each C routine present in the
   kernel, picked from some arbitrary kernel release from some LXR
-  site? Could we just use a link to git.evenless.org/file+line of some
-  sort?
+  site? Could we just use a link to git.evlproject.org/file+line of
+  some sort?
   
  

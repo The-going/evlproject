@@ -104,8 +104,8 @@ _dovetail/master_ branch of the following GIT repository which tracks
 the [mainline
 kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
 
-  * git://git.evenless.org/linux-evl.git
-  * https://git.evenless.org/linux-evl.git
+  * git://git.evlproject.org/linux-evl.git
+  * https://git.evlproject.org/linux-evl.git
 
 ## Audience
 

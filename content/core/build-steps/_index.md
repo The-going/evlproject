@@ -29,8 +29,8 @@ broken in some obsolete toolchains.
 ## Building the core {#building-evl-core}
 
 The kernel source tree which includes the latest EVL core is
-maintained at git://git.evenless.org/linux-evl. The development branch
-is _evl/master_.
+maintained at git://git.evlproject.org/linux-evl. The development
+branch is _evl/master_.
 
 Once your favorite kernel configuration tool is brought up, you should
 see the EVL configuration block somewhere inside the **General setup**
