@@ -124,6 +124,14 @@ is returned instead:
 
 - -ENOSYS	The EVL core is not enabled in the running kernel.
 
+- -ENOEXEC	The EVL core in the running kernel exports a different ABI level
+  		than the ABI `libevl.so` was compiled against. In some not so
+		distant future, the EVL ABI will be stable enough to provide
+		backward compatibility in the core to applications using older
+		ABI revisions, but we are not there yet. In the meantime, you may
+		have to rebuild your user-space libraries and applications against
+		the current UAPI the EVL core exports.
+
 ```
 #include <evl/thread.h>
 
