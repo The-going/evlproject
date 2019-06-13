@@ -15,19 +15,19 @@ weight: 10
 
 ---
 
-#### int evl_lock(struct evl_mutex *mutex)
+#### int evl_lock_mutex(struct evl_mutex *mutex)
 
 ---
 
-#### int evl_timedlock(struct evl_mutex *mutex, const struct timespec *timeout)
+#### int evl_timedlock_mutex(struct evl_mutex *mutex, const struct timespec *timeout)
 
 ---
 
-#### int evl_trylock(struct evl_mutex *mutex)
+#### int evl_trylock_mutex(struct evl_mutex *mutex)
 
 ---
 
-#### int evl_unlock(struct evl_mutex *mutex)
+#### int evl_unlock_mutex(struct evl_mutex *mutex)
 
 ---
 

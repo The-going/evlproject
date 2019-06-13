@@ -411,14 +411,14 @@ high frequency loop.
 {{% notice warning %}}
 In a specific case the EVL core will keep the thread running on the
 out-of-band execution stage though: whenever this thread has returned
-from a successful call to [`evl_lock()`]({{% relref
-"core/user-api/mutex/_index.md#evl_lock" %}}), holding an EVL
+from a successful call to [`evl_lock_mutex()`]({{% relref
+"core/user-api/mutex/_index.md#evl_lock_mutex" %}}), holding an EVL
 mutex. This ensures that no in-band activity on the same CPU can
 preempt the lock owner, which would certainly lead to a priority
 inversion would that lock be contended later on by another EVL
 thread. The lock owner is eventually switched back to in-band mode by
 the core as a result of [releasing]({{% relref
-"core/user-api/mutex/_index.md#evl_unlock" %}}) the last EVL mutex it
+"core/user-api/mutex/_index.md#evl_unlock_mutex" %}}) the last EVL mutex it
 was holding.
 {{% /notice %}}
 

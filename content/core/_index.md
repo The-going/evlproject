@@ -40,8 +40,8 @@ it looks like we need only four elements:
 - monitor. This element has the same purpose than the main kernel's
   _futex_, which is about providing an integrated - although much
   simpler - set of fundamental thread synchronization features. It is
-  used by the EVL library to implement mutexes, condition variables
-  and semaphores in user-space.
+  used by the EVL library to implement mutexes, condition variables,
+  event flags and semaphores in user-space.
 
 - clock. We may find platform-specific clock devices in addition to
   the core ones defined by the architecture, for which ad hoc drivers
