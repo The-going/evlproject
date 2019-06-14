@@ -44,3 +44,22 @@ EVL abstracts clock event devices and clock sources
 ---
 
 #### evl_udelay(unsigned int usecs)
+
+### Pre-defined clocks {#builtin-clocks}
+
+EVL defines two built-in clocks, you can pass any of the following
+identifiers to EVL calls which ask for a clock file descriptor
+(usually noted as _clockfd_):
+
+- `EVL_CLOCK_MONOTONIC` is the exact equivalent of the POSIX
+  `CLOCK_MONOTONIC` clock, which is a monotonically increasing clock
+  that cannot be set and represents time since some unspecified
+  starting point.
+
+- `EVL_CLOCK_REALTIME` is the exact equivalent of the POSIX
+  `CLOCK_REALTIME` clock, which is a non-monotonic wall clock which
+  can be manually set to an arbitrary value with proper privileges,
+  and can also be subject to dynamic adjustements by the NTP system.
+
+If you are to measure the elapsed time between two events, you
+definitely want to use `EVL_CLOCK_MONOTONIC`.

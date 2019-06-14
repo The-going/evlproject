@@ -90,13 +90,12 @@ contain only valid characters in this context, excluding slashes.
 The optional variable argument list completing the format.
 {{% /argument %}}
 
-evl_attach_self() returns the file descriptor of the newly attached
-thread on success. You may use this _fd_ to submit requests for the
-newly attached thread in other calls from the EVL library which ask
-for a thread file descriptor. If the call fails, a negated error code
-is returned instead:
+`evl_attach_self()` returns the file descriptor of the newly attached
+thread on success. You may use this _fd_ to submit requests for this
+thread in any call which asks for a thread file descriptor. If the
+call fails, a negated error code is returned instead:
 
-- -EEXIST	The generated name is conflicting with an existing thread's
+- -EEXIST	The generated name is conflicting with an existing thread
 		name.
 
 - -EINVAL	The generated name is badly formed, likely containing
@@ -343,6 +342,23 @@ something is wrong** in such code.
 
 ---
 
+{{< proto evl_is_inband >}}
+bool evl_is_inband(void)
+{{< /proto >}}
+
+In some cases, you may need to check the current execution stage for
+the caller. `evl_is_inband()` returns a _true_ boolean value if the
+caller runs [in-band]({{< relref "#evl_switch_inband" >}}), _false_
+otherwise.
+
+{{% notice note %}}
+A POSIX thread which is not currently attached to the EVL core always
+receives a _true_ value when issuing this call, which makes sense
+since it cannot run out-of-band.
+{{% /notice %}}
+
+---
+
 {{< proto evl_set_schedattr >}}
 int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)
 {{< /proto >}}
@@ -391,8 +407,8 @@ policies:
   the expense of briefly switching to the out-of-band execution stage
   on demand.
 
-`evl_sched_attrs()` returns zero on success, otherwise a negated error
-code is returned:
+`evl_set_schedattr()` returns zero on success, otherwise a negated
+error code is returned:
 
 -EBADF		_efd_ is not a valid thread descriptor.
 
@@ -409,7 +425,6 @@ code is returned:
 int change_self_schedparams(void)
 {
 	struct evl_sched_attrs attrs;
-	int ret;
 
 	attrs.sched_policy = SCHED_FIFO;
 	attrs.sched_priority = 90;
@@ -431,6 +446,8 @@ kernel works as follows:
 | ------------------    | -------------- |
 | SCHED_FIFO, prio      |    SCHED_FIFO, prio  |
 | SCHED_RR, prio        |    SCHED_FIFO, prio  |
+| SCHED_TP, prio        |    SCHED_FIFO, prio  |
+| SCHED_QUOTA, prio     |    SCHED_FIFO, prio  |
 | SCHED_WEAK, prio > 0  |    SCHED_FIFO, prio  |
 | SCHED_WEAK, prio == 0 |    SCHED_OTHER |
 
@@ -450,11 +467,76 @@ attributes of the thread after this call.
 int evl_get_schedattr(int efd, struct evl_sched_attrs *attrs)
 {{< /proto >}}
 
+This is the call for retrieving the current scheduling attributes of
+the thread referred to by _efd_.
+
+{{% argument efd %}}
+A file descriptor referring to the target thread, as returned by
+`evl_attach_self()`, `evl_get_self()`, or opening a thread
+element device in _/dev/evl/thread_ using `open(2)`.
+{{% /argument %}}
+
+{{% argument attrs %}}
+A pointer to a structure where the EVL core should write back the
+scheduling attributes.
+{{% /argument %}}
+
+```
+#include <evl/thread.h>
+
+int retrieve_self_schedparams(void)
+{
+	struct evl_sched_attrs attrs;
+
+	return evl_get_schedattr(evl_get_self(), &attrs);
+}
+```
+
+The value returned in `attrs.sched_priority` is the base priority
+level of the thread within its scheduling class, which does NOT
+reflect any priority inheritance/ceiling boost that might be ongoing.
+
+`evl_get_schedattr()` returns zero on success, otherwise a negated
+error code is returned:
+
+-EBADF		_efd_ is not a valid thread descriptor.
+
+-ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
+		"#evl_detach_self" >}}).
+
 ---
 
 {{< proto evl_get_state >}}
 int evl_get_state(int efd, struct evl_thread_state *statebuf)
 {{< /proto >}}
+
+`evl_get_state()` is an extended variant of `evl_get_schedattr()` for
+retrieving runtime information about the state of a thread. The return
+buffer is of type `struct evl_thread_state`, which is defined as
+follows:
+
+```
+struct evl_thread_state {
+	struct evl_sched_attrs eattrs;
+	int cpu;
+};
+```
+
+- unlike `evl_get_schedattr()`, the value returned in
+`statebuf->attrs.sched_priority` by `evl_get_state()` may reflect an
+ongoing [priority inheritance/ceiling boost]({{< relref
+"core/user-api/mutex/_index.md" >}}).
+
+- `statebuf->cpu` is the CPU the target thread runs on at the time of
+  the call.
+
+`evl_get_state()` returns zero on success, otherwise a negated
+error code is returned:
+
+-EBADF		_efd_ is not a valid thread descriptor.
+
+-ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
+		"#evl_detach_self" >}}).
 
 ---
 
@@ -466,8 +548,9 @@ _kthreads_, using EVL's [kernel API]({{% relref
 inside the API call starting the EVL kthread in this case. Most of the
 notions explained in this document apply to them too, except that
 there is no system call interface between the EVL core and the
-kthread. **So nothing can prevent EVL kthreads from calling the main
-kernel services from the wrong context.**
+kthread. For this reason, unlike EVL threads running in user-space,
+**nothing prevents EVL kthreads from calling the in-band kernel
+routines from the wrong context.**
 
 ### Where do thread devices live?
 

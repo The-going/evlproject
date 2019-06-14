@@ -217,7 +217,7 @@ There are two reasons a Linux task may switch out-of-band:
   some request this task did, such as issuing a system call which can
   only be handled from the out-of-band stage. This behavior is
   enforced by the [EVL core]({{% relref
-  "core/user-api/thread/_index.md#thread-element" %}}) too.
+  "core/user-api/thread/_index.md" %}}) too.
 
 Using Dovetail, a task which executes on the in-band stage moves
 out-of-band following this sequence of actions:
@@ -309,7 +309,7 @@ so far may have to switch in-band:
   * in response to some request this task did, such as issuing a
     regular system call which can only be handled from the in-band
     stage. Typically, this behavior is enforced by the [EVL core]({{%
-    relref "core/user-api/thread/_index.md#thread-element" %}}).
+    relref "core/user-api/thread/_index.md" %}}).
 
   * because the task received a synchronous fault or exception, such
     as a memory access violation, FPU exception and so on. A demotion
