@@ -34,7 +34,7 @@ features to be available.
 
 > Current target kernel release
 
-Linux 5.2-rc2
+Linux 5.2-rc4
 
 > ARM64 SoC
 
