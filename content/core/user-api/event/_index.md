@@ -253,7 +253,8 @@ to the in-band execution mode for the caller.
 
 {{% argument mutex %}}
 The in-memory mutex descriptor returned by either `evl_new_mutex()` or
-`evl_open_mutex()`.
+`evl_open_mutex()`. This lock should be used to serialize access to the
+shared information representing the condition.
 {{% /argument %}}
 
 `evl_wait_event()` returns zero if the event was signaled earlier by a
@@ -264,6 +265,11 @@ negated error code may be returned if:
 	      descriptor. If that pointer is out of the caller's
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
+
+-EBADFD	      A thread is currently pending on _evt_ protected by a
+	      different mutex. When multiple threads issue concurrent
+	      wait requests on the same event, they must use the same
+	      mutex to serialize.
 
 If _evt_ was statically initialized with EVL_EVENT_INITIALIZER(), then
 any error returned by [evl_new_event()]({{% relref "#evl_new_event"
