@@ -320,15 +320,15 @@ The possible return values include any status from
 int evl_signal_event(struct evl_event *evt)
 {{< /proto >}}
 
-This call wakes up the thread heading the wait queue of an event at
-the time of the call (i.e. having the highest priority among waiters).
-This notifies such thread that the condition it has waited for may
-have become true.
+This call notifies the thread heading the wait queue of an event at
+the time of the call (i.e. having the highest priority among waiters),
+indicating that the condition it has waited for may have become true.
 
 You must hold the _mutex_ lock which protects accesses to the
-condition around the call to `evl_signal_event()`, because the waiter
-will be actually [readied when such lock is dropped]({{< relref
-"#synchronizing-on-event" >}}).
+condition around the call to `evl_signal_event()`, because the
+notified thread will be actually [readied when such lock is
+dropped]({{< relref "#synchronizing-on-event" >}}), not at the time of
+the notification.
 
 {{% argument evt %}}
 The in-memory event descriptor constructed by either `evl_new_event()`
@@ -339,7 +339,7 @@ issued before the signal is sent, which may trigger a transition to
 the in-band execution mode for the caller.
 {{% /argument %}}
 
-`evl_signal_event()` returns zero upon success, with the signal set as
+`evl_signal_event()` returns zero upon success, with the signal set
 pending for the event. Otherwise, a negated error code is returned:
 
 -EINVAL	      _evt_ does not represent a valid in-memory event
@@ -353,9 +353,8 @@ returned by [evl_new_event()]({{% relref "#evl_new_event" %}}) may be
 passed back to the caller in case the implicit initialization call
 fails.
 
-`evl_signal_event()` returning zero on success does not guarantee that
-a waiter is going to be readied when unlocking the protection lock
-eventually. This only means that _evt_ is valid.
+If no thread was waiting on _evt_ at the time of the call, no action
+is performed and `evl_signal_event()` returns zero.
 
 ---
 
@@ -389,6 +388,9 @@ The possible return values include any status from
 -EINVAL		   _thrfd_ is not a valid file descriptor referring
 		   to an EVL thread.
 
+If the target thread was not waiting on _evt_ at the time of the call,
+no action is performed and `evl_signal_thread()` returns zero.
+
 ---
 
 {{< proto evl_broadcast_event >}}
@@ -410,6 +412,9 @@ the in-band execution mode for the caller.
 
 The possible return values include any status from
 [evl_signal_event()]({{% relref "#evl_signal_event" %}}).
+
+If no thread was waiting on _evt_ at the time of the call, no action
+is performed and `evl_signal_broadcast()` returns zero.
 
 ---
 
