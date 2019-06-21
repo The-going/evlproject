@@ -1,6 +1,6 @@
 ---
 title: "Building EVL"
-weight: 20
+weight: 3
 ---
 
 Building EVL is a two-step process, which may happen in any order:
@@ -10,16 +10,20 @@ Building EVL is a two-step process, which may happen in any order:
 - the EVL library (aka _libevl_), basic utilities and test programs
   are generated.
 
-## Prerequisites
+## Prerequisites {#building-evl-prereq}
 
 We need:
 
 - a GCC toolchain for the target CPU architecture.
 
 - the UAPI headers from the target Linux kernel fit with the EVL
-  core. In other words, we need access to the contents of
+  core. Each UAPI file exports a set of definitions and interface
+  types which are shared _libevl.so_ running in user-space, so that
+  the latter can submit well-formed system calls to the former. In
+  other words, to build _libevl.so_, we need access to the contents of
   `include/uapi/asm/` and `include/uapi/evl/` from a source kernel
-  tree which contains the EVL core code.
+  tree which contains the EVL core which is going to handle the system
+  calls.
 
 {{% notice warning %}}
 libevl relies on thread-local storage support (TLS), which might be

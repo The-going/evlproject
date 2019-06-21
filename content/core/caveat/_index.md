@@ -1,6 +1,6 @@
 ---
 title: "Caveat"
-weight: 25
+weight: 4
 ---
 
 ## Things you definitely want to know
