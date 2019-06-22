@@ -18,12 +18,12 @@ We need:
 
 - the UAPI headers from the target Linux kernel fit with the EVL
   core. Each UAPI file exports a set of definitions and interface
-  types which are shared _libevl.so_ running in user-space, so that
-  the latter can submit well-formed system calls to the former. In
-  other words, to build _libevl.so_, we need access to the contents of
-  `include/uapi/asm/` and `include/uapi/evl/` from a source kernel
-  tree which contains the EVL core which is going to handle the system
-  calls.
+  types which are shared with _libevl.so_ running in user-space, so
+  that the latter can submit well-formed system calls to the
+  former. In other words, to build _libevl.so_, we need access to the
+  contents of `include/uapi/asm/` and `include/uapi/evl/` from a
+  source kernel tree which contains the EVL core which is going to
+  handle the system calls.
 
 {{% notice warning %}}
 libevl relies on thread-local storage support (TLS), which might be
@@ -307,13 +307,14 @@ from an EVL thread context (i.e. _-u_ or _-k_).  Defaults to 0.
 
 #### Calibrating the core timer {#timer-tuning}
 
-The time spent traversing the kernel code from the interrupt entry
-code until the interrupt handler is invoked, is shorter than the time
-that would be required to schedule in a kernel thread instead. It
-would take even more time to switch in a user-space thread, which
-entails changing the current memory address space, performing
-potentially time-consuming MMU-related operations affecting the CPU
-caches.
+Upon receipt from an interrupt, the time spent traversing the kernel
+code from the low-level entry code until the interrupt handler
+installed by some driver is invoked eventually is shorter than the
+time that would be required for a kernel thread to resume on such
+event instead. It would take even more time to for a user-space thread
+to resume, since this would entail changing the current memory address
+space, performing potentially time-consuming MMU-related operations
+affecting the CPU caches.
 
 For this reason, EVL differentiates timers on the target context they
 activate, between IRQ(handler), kernel and user threads, anticipating
