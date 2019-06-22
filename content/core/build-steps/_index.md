@@ -309,11 +309,11 @@ from an EVL thread context (i.e. _-u_ or _-k_).  Defaults to 0.
 
 Upon receipt from an interrupt, the time spent traversing the kernel
 code from the low-level entry code until the interrupt handler
-installed by some driver is invoked eventually is shorter than the
-time that would be required for a kernel thread to resume on such
-event instead. It would take even more time to for a user-space thread
-to resume, since this would entail changing the current memory address
-space, performing potentially time-consuming MMU-related operations
+installed by some driver is invoked is shorter than the time that
+would be required for a kernel thread to resume on such event
+instead. It would take even more time for a user-space thread to
+resume, since this may entail changing the current memory address
+space, which may involve time-consuming MMU-related operations
 affecting the CPU caches.
 
 For this reason, EVL differentiates timers on the target context they
