@@ -316,27 +316,26 @@ resume, since this may entail changing the current memory address
 space, which may involve time-consuming MMU-related operations
 affecting the CPU caches.
 
-For this reason, EVL differentiates timers on the target context they
-activate, between IRQ(handler), kernel and user threads, anticipating
-the next timer shot accordingly, so that such context is activated as
-close as possible to the ideal time. This anticipation is called the
-_gravity_ of the clock serving the timer, which is actually a triplet
-representing the three possible types of contexts the timer can
-activate.
-
-Therefore, the gravity is a static adjustment value to account for the
-basic latency of the target system for responding to timer events, as
-perceived by the client code waiting for the wake up events. Such
-latency is increased by additional factors, such as:
+This basic latency may be increased by multiple factors such as:
 
 - bus or CPU cache latency,
 - delay required to program the timer chip for the next shot,
 - code running with interrupts disabled on the CPU to receive the IRQ,
-- inter-processor serialization (_spinlocks_).
+- inter-processor serialization within the EVL core (_hard spinlocks_).
+
+In order to deliver events as close as possible to the ideal time, EVL
+defines the notion of _clock gravity_, which is a static adjustment
+value to account for the basic latency of the target system for
+responding to timer events from any given clock device, as perceived
+by the client code waiting for these wake up events. For this reason,
+a clock gravity is defined as a triplet of values, which indicates the
+amount of time by which every timer shot should be anticipated from,
+depending on the target context it should activate, either IRQ
+handler, kernel or user thread.
 
 When started with the _-t_ option, `latmus` runs a series of tests for
-determining those best calibration values (aka _gravity triplet_) for
-the EVL core timer, then tells the core to use them.
+determining those best calibration values for the EVL core timer, then
+tells the core to use them.
 
 A typical output of this command looks like this:
 
