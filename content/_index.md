@@ -99,8 +99,8 @@ kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
   * git://git.evlproject.org/libevl.git
   * https://git.evlproject.org/libevl.git
 
-The build recipe is available [there]({{% relref
-"core/build-steps/_index.md" %}}).
+The build recipe is available [there]({{% relref "core/build-steps.md"
+%}}).
 
 ## Mailing list
 

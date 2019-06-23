@@ -15,7 +15,8 @@ an EVL thread running in user-space. This is a timer latency benchmark
 which does not require any additional interrupt source beyond the
 on-board hardware timer readily available to the kernel. You can also
 use this program to [calibrate the EVL core timer]({{< relref
-"core/timer-calibration" >}}), finding the best gravity values for this timer.
+"core/timer-calibration.md" >}}), finding the best gravity values for
+this timer.
 
 ```
 # /usr/evl/bin/latmus
@@ -94,7 +95,7 @@ the default mode, in absence of the _-t_ option on the command line.
 Run a core timer calibration procedure, as opposed to measuring the
 latency. _-i_, _-k_ and _-u_ can be used to select a specific tuning
 context, all of them are applied in sequence otherwise. See
-[below]({{< relref "core/timer-calibration" >}}).
+[below]({{< relref "core/timer-calibration.md" >}}).
 {{% /argument %}}
 
 {{% argument "-p --period=<µsecs>" %}}

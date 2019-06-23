@@ -123,7 +123,7 @@ call fails, a negated error code is returned instead:
 
 - -ENOSYS	The EVL core is not enabled in the running kernel.
 
-- -ENOEXEC 	The EVL core in the running kernel exports a different ABI
+- -ENOEXEC      The EVL core in the running kernel exports a different ABI
   		level than the ABI `libevl.so` was compiled
   		against. In some not so distant future, the EVL ABI
   		will be stable enough to provide backward
@@ -131,10 +131,9 @@ call fails, a negated error code is returned instead:
   		ABI revisions, but we are not there yet. To fix this
   		error in the meantime, you have to rebuild _libevl.so_
   		against the [UAPI the EVL core exports]({{< relref
-  		"core/build-steps/_index.md#building-evl-prereq"
-  		>}}). If in doubt, rebuild both components,
-  		(re-)install the newly built _libevl.so_ and boot on
-  		the rebuilt kernel.
+  		"core/build-steps.md#building-evl-prereq" >}}). If in
+  		doubt, rebuild both components, (re-)install the newly
+  		built _libevl.so_ and boot on the rebuilt kernel.
 
 ```
 #include <evl/thread.h>
