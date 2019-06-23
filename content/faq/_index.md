@@ -6,9 +6,9 @@ pre: "&#9656; "
 
 ### Who is behind the EVL project?
 
-A single developer at the moment, the guy who started [this
-stuff](https://xenomai.org) nearly two decades ago, then [that
-one](https://lwn.net/Articles/1743/) too, which eventually became
+The guy who started [this stuff](https://xenomai.org) nearly two
+decades ago, then [that one](https://lwn.net/Articles/1743/) too,
+which eventually became
 [this](https://lwn.net/Articles/140374/). Hopefully, at some point, I
 will get the dual kernel thing right eventually.
 
