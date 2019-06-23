@@ -41,7 +41,16 @@ from the GPOS infrastructure:
   set of real-time services, applications can unambiguously figure out
   which API calls are available for supporting time-critical work,
   excluding all the rest as being potentially non-deterministic with
-  respect to response time.
+  respect to response time. \
+  \
+  Said differently, would you assume that each and every routine from
+  the _glibc_ becomes real-time capable solely by virtue of running on a
+  native preemption system? Of course you would not, therefore you would
+  carefully select the set of services your real-time application may
+  call from its time-critical work loop in any case. For this reason,
+  providing a compact, dedicated API which exports a set of services
+  specifically aimed at real-time usage is clearly an asset, not a
+  limitation.
 
 This documentation presents _Dovetail_, an interface for integrating
 any sort of autonomous software core into the kernel, such as a
