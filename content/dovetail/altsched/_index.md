@@ -734,7 +734,12 @@ autonomous core initializes it.
 Your autonomous core may also need to keep its own set of per-process
 data.  To help in maintaining such information on a per-_mm_ basis,
 Dovetail adds the _oob\_state_ member of type _struct oob\_mm\_state_
-to the generic _mm_ descriptor structure (aka _struct mm\_struct_).
+to the generic _mm_ descriptor structure (aka _struct
+mm\_struct_). Because kernel threads can only borrow memory contexts
+temporarily but do not actually own them, this Dovetail extension is
+only available to EVL tasks running in user-space, **NOT** to threads
+created by [evl_run_kthread()]({{< relref
+"core/kernel-api/kthread/_index.md#evl_run_kthread" >}}).
 
 You may want to fill that structure reserved to out-of-band support
 with any information your core may need for maintaining a per-_mm_
@@ -771,9 +776,10 @@ struct oob_mm_state *dovetail_mm_state(void)
 {{< /proto >}}
 
 This call retrieves the address of the out-of-band data structure
-within the _mm_ descriptor of the current task, which is always a
-valid pointer. The content of this structure is zeroed when the memory
-context is created, and stays so until your autonomous core
-initializes it.
+within the _mm_ descriptor of the current user-space task. The content
+of this structure is zeroed when the memory context is created, and
+stays so until your autonomous core initializes it.
+
+If called from a kernel thread, NULL is returned instead.
 
 ---
