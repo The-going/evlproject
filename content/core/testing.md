@@ -104,11 +104,13 @@ tick every millisecond or 1Khz). The slowest sampling period is
 1000000 (1Hz).
 {{% /argument %}}
 
-{{% argument "-T --timeout=<secs>" %}}
+{{% argument "-T --timeout=<duration>[dhms]" %}}
 The duration of the test, excluding the one second warmup period. This
 option enables a timeout which stops the test automatically after the
-specified number of seconds has elapsed. By default, the test runs
-indefinitely, or until ^C is pressed.
+specified runtime has elapsed. By default, the test runs indefinitely,
+or until ^C is pressed. The duration is interpreted according to the
+modifier suffix, as a count of _d_ays, _m_inutes, _h_ours or
+_s_econds. In absence of modifier, seconds are assumed.
 {{% /argument %}}
 
 {{% argument "-A --maxlat-abort=<maxlat>" %}}
