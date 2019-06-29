@@ -163,17 +163,98 @@ is called internally for carrying out the request.
 int evl_adjust_clock(int clockfd, struct timex *tx)
 {{< /proto >}}
 
+This call is the EVL equivalent of the Linux-specific `adjtimex()`
+service, for tuning the clock adjustment algorithm of a specified EVL
+clock.
+
+{{% argument clockfd %}}
+The clock file descriptor, which must be a valid file descriptor
+received as a result of opening a clock device in _/dev/evl/clock_.
+{{% /argument %}}
+
+{{% argument tp %}}
+A pointer to a _timex_ structure which should define the tuning
+parameters.
+{{% /argument %}}
+
+`evl_adjust_clock()` sets the tuning parameters from _tx_ then returns
+zero on success, otherwise:
+
+- -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
+   file descriptor.
+
+- -EPERM if the caller does not have the permission to set the tuning
+   parameters.
+
+- -ENOTTY if _clockfd_ does not refer to an EVL clock device.
+
+- -EINVAL if some information in _tx_ is invalid.
+
+- -EFAULT if _tx_ points to invalid memory.
+
+{{% notice note %}}
+The EVL driver interfacing with the clock device must support
+adjustment for this request to succeed.
+{{% /notice %}}
+
 ---
 
 {{< proto evl_sleep >}}
-int evl_sleep(int clockfd, const struct timespec *timeout, struct timespec *remain)
+int evl_sleep(int clockfd, const struct timespec *timeout)
 {{< /proto >}}
+
+This call is the EVL equivalent of the POSIX `clock_nanosleep()`
+service, for blocking the caller until an arbitrary date expires on a
+specified EVL clock. Unlike its POSIX counterpart, `evl_sleep()` only
+accepts absolute timeout specifications though.
+
+{{% argument clockfd %}}
+The clock file descriptor, which can be:
+
+- any valid file descriptor received as a result of opening a clock
+  device in _/dev/evl/clock_.
+
+- the identifier of a [built-in EVL clock]({{< relref
+  "#builtin-clocks" >}}), such as `EVL_CLOCK_MONOTONIC` or
+  `EVL_CLOCK_REALTIME`.
+{{% /argument %}}
+
+{{% argument timeout %}}
+A pointer to a _timespec_ structure which specifies the wake up date.
+{{% /argument %}}
+
+`evl_sleep()` blocks the caller until the wake up date expires then
+returns zero on success, otherwise:
+
+- -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
+   file descriptor.
+
+- -ENOTTY if _clockfd_ does not refer to an EVL clock device.
+
+- -EFAULT if _timeout_ points to invalid memory.
+
+- -EINTR if the call was interrupted by an inband signal, or forcibly
+   unblocked by the EVL core.
 
 ---
 
 {{< proto evl_udelay >}}
 int evl_udelay(unsigned int usecs)
 {{< /proto >}}
+
+This call puts the caller to sleep until a count of microseconds has
+elapsed. `evl_udelay()` invokes `evl_sleep()` for sleeping until the
+delay expires on the EVL_CLOCK_MONOTONIC clock.
+
+{{% argument usecs %}}
+The count of microseconds to sleep for.
+{{% /argument %}}
+
+`evl_delay()` blocks the caller until the delay expires then returns
+zero on success, otherwise:
+
+- -EINTR if the call was interrupted by an inband signal, or forcibly
+   unblocked by the EVL core.
 
 ### Pre-defined clocks {#builtin-clocks}
 
