@@ -250,7 +250,7 @@ delay expires on the EVL_CLOCK_MONOTONIC clock.
 The count of microseconds to sleep for.
 {{% /argument %}}
 
-`evl_delay()` blocks the caller until the delay expires then returns
+`evl_udelay()` blocks the caller until the delay expires then returns
 zero on success, otherwise:
 
 - -EINTR if the call was interrupted by an inband signal, or forcibly
