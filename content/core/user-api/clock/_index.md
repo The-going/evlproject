@@ -34,7 +34,7 @@ EVL abstracts clock event devices and clock sources
 int evl_read_clock(int efd, struct timespec *tp)
 {{< /proto >}}
 
-This call is the EVL equivalent for the POSIX `clock_gettime()`
+This call is the EVL equivalent of the POSIX `clock_gettime()`
 service, for reading the time from a specified EVL clock.  It reads
 the current time maintained by the EVL clock, which is returned as
 counts of seconds and microseconds since the clock's _epoch_.
@@ -71,7 +71,7 @@ success, otherwise:
 int evl_set_clock(int efd, const struct timespec *tp)
 {{< /proto >}}
 
-This call is the EVL equivalent for the POSIX `clock_settime()`
+This call is the EVL equivalent of the POSIX `clock_settime()`
 service, for setting the time of a specified EVL clock.
 
 {{% argument efd %}}
@@ -119,7 +119,7 @@ is called internally for carrying out the request.
 int evl_get_clock_resolution(int efd, struct timespec *tp)
 {{< /proto >}}
 
-This call is the EVL equivalent for the POSIX `clock_getres()`
+This call is the EVL equivalent of the POSIX `clock_getres()`
 service, for reading the resolution of a specified EVL clock.  It
 returns this value as counts of seconds and microseconds. The
 resolution of clocks depends on the implementation and cannot be
