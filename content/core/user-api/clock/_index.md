@@ -31,7 +31,7 @@ EVL abstracts clock event devices and clock sources
 ### Clock services {#clock-services}
 
 {{< proto evl_read_clock >}}
-int evl_read_clock(int efd, struct timespec *tp)
+int evl_read_clock(int clockfd, struct timespec *tp)
 {{< /proto >}}
 
 This call is the EVL equivalent of the POSIX `clock_gettime()`
@@ -39,7 +39,7 @@ service, for reading the time from a specified EVL clock.  It reads
 the current time maintained by the EVL clock, which is returned as
 counts of seconds and microseconds since the clock's _epoch_.
 
-{{% argument efd %}}
+{{% argument clockfd %}}
 The clock file descriptor, which can be:
 
 - any valid file descriptor received as a result of opening a clock
@@ -58,23 +58,23 @@ stamp.
 `evl_read_clock()` writes the timestamp to _tp_ then returns zero on
 success, otherwise:
 
-- -EBADF if _efd_ is neither a built-in clock identifier or a valid
+- -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
    file descriptor.
 
-- -ENOTTY if _efd_ does not refer to an EVL clock device.
+- -ENOTTY if _clockfd_ does not refer to an EVL clock device.
 
 - -EFAULT if _tp_ points to invalid memory.
 
 ---
 
 {{< proto evl_set_clock >}}
-int evl_set_clock(int efd, const struct timespec *tp)
+int evl_set_clock(int clockfd, const struct timespec *tp)
 {{< /proto >}}
 
 This call is the EVL equivalent of the POSIX `clock_settime()`
 service, for setting the time of a specified EVL clock.
 
-{{% argument efd %}}
+{{% argument clockfd %}}
 The clock file descriptor, which can be:
 
 - any valid file descriptor received as a result of opening a clock
@@ -96,13 +96,13 @@ time on success, otherwise:
 - -EINVAL if the time specification referred to by _ts_ is invalid
    (e.g. `ts->tv_nsec` not in the [0..1e9] range).
 
-- -EBADF if _efd_ is neither a built-in clock identifier or a valid
+- -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
    file descriptor.
 
 - -EPERM if the caller does not have the permission to set some
    built-in clock via `clock_settime()`. See note.
 
-- -ENOTTY if _efd_ does not refer to an EVL clock device.
+- -ENOTTY if _clockfd_ does not refer to an EVL clock device.
 
 - -EFAULT if _tp_ points to invalid memory.
 
@@ -116,7 +116,7 @@ is called internally for carrying out the request.
 ---
 
 {{< proto evl_get_clock_resolution >}}
-int evl_get_clock_resolution(int efd, struct timespec *tp)
+int evl_get_clock_resolution(int clockfd, struct timespec *tp)
 {{< /proto >}}
 
 This call is the EVL equivalent of the POSIX `clock_getres()`
@@ -125,7 +125,7 @@ returns this value as counts of seconds and microseconds. The
 resolution of clocks depends on the implementation and cannot be
 configured.
 
-{{% argument efd %}}
+{{% argument clockfd %}}
 The clock file descriptor, which can be:
 
 - any valid file descriptor received as a result of opening a clock
@@ -143,10 +143,10 @@ A pointer to a _timespec_ structure which should receive the resolution.
 `evl_get_clock_resolution()` writes the resolution to _tp_ then
 returns zero on success, otherwise:
 
-- -EBADF if _efd_ is neither a built-in clock identifier or a valid
+- -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
    file descriptor.
 
-- -ENOTTY if _efd_ does not refer to an EVL clock device.
+- -ENOTTY if _clockfd_ does not refer to an EVL clock device.
 
 - -EFAULT if _tp_ points to invalid memory.
 
@@ -160,13 +160,13 @@ is called internally for carrying out the request.
 ---
 
 {{< proto evl_adjust_clock >}}
-int evl_adjust_clock(int efd, struct timex *tx)
+int evl_adjust_clock(int clockfd, struct timex *tx)
 {{< /proto >}}
 
 ---
 
 {{< proto evl_sleep >}}
-int evl_sleep(int efd, const struct timespec *timeout, struct timespec *remain)
+int evl_sleep(int clockfd, const struct timespec *timeout, struct timespec *remain)
 {{< /proto >}}
 
 ---
