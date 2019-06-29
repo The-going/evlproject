@@ -1,5 +1,5 @@
 ---
-title: "Event"
+menuTitle: "Event"
 weight: 15
 ---
 
@@ -144,12 +144,12 @@ static struct evl_event event;
 
 void create_new_event(void)
 {
-	int efd;
+	int evfd;
 
-	efd = evl_new_event(&event, EVL_CLOCK_MONOTONIC, "lunchtime");
+	evfd = evl_new_event(&event, EVL_CLOCK_MONOTONIC, "lunchtime");
 	/* skipping checks */
 	
-	return efd;
+	return evfd;
 }
 ```
 

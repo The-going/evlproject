@@ -1,7 +1,9 @@
 ---
-title: "Scheduling policies"
+menutitle: "Scheduling policies"
 weight: 52
 ---
+
+## Scheduling policies
 
 EVL defines five scheduling policies, which are prioritized: this
 means that every time the core needs to pick the next eligible thread
@@ -33,7 +35,7 @@ runnable thread in the following order:
 The SCHED_QUOTA and SCHED_TP policies are optionally supported by the
 core, make sure to enable `CONFIG_EVL_SCHED_QUOTA` or
 `CONFIG_EVL_SCHED_TP` respectively in the kernel configuration if you
-need it.
+need them.
 
 {{% notice tip %}}
 Before a thread can be assigned to any EVL class, its has to attach
