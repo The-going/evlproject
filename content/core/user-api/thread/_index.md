@@ -273,7 +273,7 @@ relref "core/user-api/thread/_index.md#evl_detach_self" %}}).
 
 ---
 
-{{< proto evl_attach_self >}}
+{{< proto evl_switch_oob >}}
 int evl_switch_oob(void)
 {{< /proto >}}
 
@@ -363,158 +363,12 @@ since it cannot run out-of-band.
 
 ---
 
-{{< proto evl_set_schedattr >}}
-int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)
-{{< /proto >}}
-
-This call changes the scheduling attributes for the thread referred to
-by _efd_ in the EVL core.
-
-{{% argument efd %}}
-A file descriptor referring to the target thread, as returned by
-`evl_attach_self()`, `evl_get_self()`, or opening a thread
-element device in _/dev/evl/thread_ using `open(2)`.
-{{% /argument %}}
-
-{{% argument attrs %}}
-A structure defining the new set of attributes, which depends
-on the scheduling policy mentioned in
-`attrs->sched_policy`. EVL currently implement the following
-policies:
-{{% /argument %}}
-
-- [SCHED_FIFO]({{% relref
-  "core/user-api/scheduling/_index.md#SCHED_FIFO" %}}), which is the
-  common first-in, first-out real-time policy.
-
-- [SCHED_RR]({{% relref "core/user-api/scheduling/_index.md#SCHED_RR"
-  %}}), defining a real-time, round-robin policy in which each member
-  of the class is allotted an individual time quantum before the CPU
-  is given to the next thread.
-
-- [SCHED_TP]({{% relref
-  "core/user-api/scheduling/_index.md#SCHED_TP" %}}), which enforces
-  temporal partitioning of multiple sets of threads based on a
-  cycle-based scheduling.
-
-- [SCHED_QUOTA]({{% relref
-  "core/user-api/scheduling/_index.md#SCHED_QUOTA" %}}), which
-  enforces a limitation on the CPU consumption of threads over a fixed
-  period of time, known as the global quota period. Threads undergoing
-  this policy are pooled in groups, with each group being given a
-  share of the period.
-
-- [SCHED_WEAK]({{% relref
-  "core/user-api/scheduling/_index.md#SCHED_WEAK" %}}), which is a
-  *non real-time* policy allowing its members to run in-band most of
-  the time, while retaining the ability to request EVL services, at
-  the expense of briefly switching to the out-of-band execution stage
-  on demand.
-
-`evl_set_schedattr()` returns zero on success, otherwise a negated
-error code is returned:
-
--EBADF		_efd_ is not a valid thread descriptor.
-
--EINVAL		Some of the parameters in _attrs_ are wrong. Check
-		`attrs->sched_policy`, and the policy-specific
-		information may EVL expect for more.
-
--ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
-		"#evl_detach_self" >}}).
-
-```
-#include <evl/thread.h>
-
-int change_self_schedparams(void)
-{
-	struct evl_sched_attrs attrs;
-
-	attrs.sched_policy = SCHED_FIFO;
-	attrs.sched_priority = 90;
-	return evl_set_schedattr(evl_get_self(), &attrs);
-}
-```
-
-`evl_set_schedattr()` immediately changes the scheduling attributes
-the EVL core uses for the target thread when it runs in out-of-band
-context. Later on, the next time such thread transitions from
-out-of-band to in-band context, the main kernel will apply an
-extrapolated version of those changes to its own scheduler as well.
-
-The extrapolation of the out-of-band scheduling attributes passed to
-`evl_set_schedattr()` to the in-band ones applied by the mainline
-kernel works as follows:
-
-| out-of-band policy    | in-band policy |
-| ------------------    | -------------- |
-| SCHED_FIFO, prio      |    SCHED_FIFO, prio  |
-| SCHED_RR, prio        |    SCHED_FIFO, prio  |
-| SCHED_TP, prio        |    SCHED_FIFO, prio  |
-| SCHED_QUOTA, prio     |    SCHED_FIFO, prio  |
-| SCHED_WEAK, prio > 0  |    SCHED_FIFO, prio  |
-| SCHED_WEAK, prio == 0 |    SCHED_OTHER |
-
-{{% notice warning %}}
-Calling `pthread_setschedparam()` from the C library does not affect
-the scheduling attributes of an EVL thread. It only affects the
-scheduling parameters of such thread from the standpoint of the main
-kernel. Because the C library may cache the current scheduling
-attributes for the in-band context of a thread - _glibc_ does so
-typically - the cached value may not reflect the actual scheduling
-attributes of the thread after this call.
-{{% /notice %}}
-
----
-
-{{< proto evl_get_schedattr >}}
-int evl_get_schedattr(int efd, struct evl_sched_attrs *attrs)
-{{< /proto >}}
-
-This is the call for retrieving the current scheduling attributes of
-the thread referred to by _efd_.
-
-{{% argument efd %}}
-A file descriptor referring to the target thread, as returned by
-`evl_attach_self()`, `evl_get_self()`, or opening a thread
-element device in _/dev/evl/thread_ using `open(2)`.
-{{% /argument %}}
-
-{{% argument attrs %}}
-A pointer to a structure where the EVL core should write back the
-scheduling attributes.
-{{% /argument %}}
-
-```
-#include <evl/thread.h>
-
-int retrieve_self_schedparams(void)
-{
-	struct evl_sched_attrs attrs;
-
-	return evl_get_schedattr(evl_get_self(), &attrs);
-}
-```
-
-The value returned in `attrs.sched_priority` is the base priority
-level of the thread within its scheduling class, which does NOT
-reflect any priority inheritance/ceiling boost that might be ongoing.
-
-`evl_get_schedattr()` returns zero on success, otherwise a negated
-error code is returned:
-
--EBADF		_efd_ is not a valid thread descriptor.
-
--ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
-		"#evl_detach_self" >}}).
-
----
-
 {{< proto evl_get_state >}}
 int evl_get_state(int efd, struct evl_thread_state *statebuf)
 {{< /proto >}}
 
-`evl_get_state()` is an extended variant of `evl_get_schedattr()` for
+`evl_get_state()` is an extended variant of [evl_get_schedattr()]({{<
+relref "core/user-api/scheduling/_index.md#evl_get_schedattr" >}}) for
 retrieving runtime information about the state of a thread. The return
 buffer is of type `struct evl_thread_state`, which is defined as
 follows:
@@ -526,9 +380,10 @@ struct evl_thread_state {
 };
 ```
 
-- unlike `evl_get_schedattr()`, the value returned in
-`statebuf->attrs.sched_priority` by `evl_get_state()` may reflect an
-ongoing [priority inheritance/ceiling boost]({{< relref
+- unlike ({{< relref
+"core/user-api/scheduling/_index.md#evl_get_schedattr" >}}), the value
+returned in `statebuf->attrs.sched_priority` by `evl_get_state()` may
+reflect an ongoing [priority inheritance/ceiling boost]({{< relref
 "core/user-api/mutex/_index.md" >}}).
 
 - `statebuf->cpu` is the CPU the target thread runs on at the time of
