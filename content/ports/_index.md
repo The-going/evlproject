@@ -34,7 +34,7 @@ features to be available.
 
 > Current target kernel release
 
-Linux 5.2-rc6
+Linux 5.2-rc7
 
 > ARM64 SoC
 
@@ -75,7 +75,7 @@ Linux 5.2-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc6</td>
+    <td>5.2-rc7</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
@@ -91,7 +91,7 @@ Linux 5.2-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc6</td>
+    <td>5.2-rc7</td>
   </tr>
 </table>
 
@@ -150,7 +150,7 @@ Linux 5.2-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc2</td>
+    <td>5.2-rc7</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">Broadcom BCM2636 (Raspberry PI 2 Model B)</a></td>
@@ -184,7 +184,7 @@ Linux 5.2-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc6</td>
+    <td>5.2-rc7</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
