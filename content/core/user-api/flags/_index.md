@@ -5,13 +5,13 @@ weight: 17
 
 ### Synchronizing on a group of flags {#synchronizing-on-flags}
 
-An event flag group is an efficient mechanism for synchronizing
-multiple threads, based on a 32bit value, where each individual bit
-represents the state of a particular event defined by the
-application. Therefore, each group defines 32 individual events, from
-bit #0 to bit #31. Threads can wait for bits to be posted by other
-threads. Although EVL's event flag group API is somewhat reminiscent
-of the [eventfd
+An event flag group is an efficient and lightweight mechanism for
+synchronizing multiple threads, based on a 32bit value, in which each
+individual bit represents the state of a particular event defined by
+the application. Therefore, each group defines 32 individual events,
+from bit #0 to bit #31. Threads can wait for bits to be posted by
+other threads. Although EVL's event flag group API is somewhat
+reminiscent of the [eventfd
 interface](http://man7.org/linux/man-pages/man2/eventfd.2.html), it is
 much simpler:
 
@@ -23,7 +23,10 @@ much simpler:
   becomes non-zero, at which point this value is returned to the
   thread heading the wait queue and the group is reset to zero in the
   same move. In other words, all bits set are immediately consumed by
-  the first waiter and cleared in the group atomically.
+  the first waiter and cleared in the group atomically. Threads wait
+  on a group by priority order, which is determined by the [scheduling
+  policy]({{< relref "core/user-api/scheduling/_index.md" >}}) they
+  undergo.
 
 ![Alt text](/images/flags.png "Event flag group")
 
