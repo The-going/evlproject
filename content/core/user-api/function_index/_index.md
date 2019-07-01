@@ -145,13 +145,13 @@ weight: 150
   </tr>
   <tr>
     <td><a href="/core/user-api/timer/index.html#evl_set_timer" target="_blank">evl_set_timer()</a></td>
-    <td>&#9651;</td> 
-    <td>&#10005;</td> 
+    <td>&#9866;</td> 
+    <td>&#9989;</td> 
   </tr>
   <tr>
     <td><a href="/core/user-api/timer/index.html#evl_get_timer" target="_blank">evl_get_timer()</a></td>
-    <td>&#9651;</td> 
-    <td>&#10005;</td> 
+    <td>&#9866;</td> 
+    <td>&#9989;</td> 
   </tr>
 </table>
 
@@ -183,8 +183,8 @@ weight: 150
   </tr>
   <tr>
     <td><a href="/core/user-api/mutex/index.html#evl_lock_mutex" target="_blank">evl_lock_mutex()</a></td>
-    <td>&#9651;</td> 
-    <td>&#10005;</td> 
+    <td>&#9651;</td>
+    <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/mutex/index.html#evl_trylock_mutex" target="_blank">evl_trylock_mutex()</a></td>
