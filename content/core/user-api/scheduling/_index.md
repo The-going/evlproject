@@ -3,7 +3,7 @@ menutitle: "Scheduling"
 weight: 52
 ---
 
-## The out-of-band scheduler
+### The out-of-band scheduler
 
 EVL defines five scheduling policies for running out-of-band threads.
 These policies are hierarchized: every time the core needs to pick the
@@ -43,7 +43,7 @@ itself to the core by a call to [evl_attach_self]({{% relref
 "core/user-api/thread/_index.md#evl_attach_self" %}}).
 {{% /notice %}}
 
-## Scheduler services {#sched-services}
+### Scheduler services {#sched-services}
 
 {{< proto evl_set_schedattr >}}
 int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)
@@ -196,9 +196,9 @@ int evl_sched_control(int policy, union evl_sched_ctlparam *param, union evl_sch
 
 ---
 
-## Scheduling policies
+### Scheduling policies
 
-### SCHED_FIFO {#SCHED_FIFO}
+#### SCHED_FIFO {#SCHED_FIFO}
 
 The first-in, first-out policy, fixed priority, preemptive scheduling
 policy. If you really need a refresher about this one, you can still
@@ -225,7 +225,7 @@ Switching a thread to FIFO scheduling is achieved by calling
 ```
 ---
 
-### SCHED_RR {#SCHED_RR}
+#### SCHED_RR {#SCHED_RR}
 
 The round-robin policy is based on SCHED_FIFO
 internally. Additionally, it limits the execution time of its members
@@ -256,7 +256,7 @@ Switching a thread to round-robin scheduling is achieved by calling
 ```
 ---
 
-### SCHED_QUOTA {#SCHED_QUOTA}
+#### SCHED_QUOTA {#SCHED_QUOTA}
 
 The quota-based policy enforces a limitation on the CPU consumption of
 threads over a fixed period of time, known as the global quota
@@ -303,7 +303,7 @@ relref "#modify-quota-group" >}}) and [removing]({{< relref
 "#remove-quota-group" >}}) thread groups is achieved by calling
 [`evl_sched_control()`]({{% relref "#evl_sched_control" %}}).
 
-#### Runtime credit and peak quota {#sched-peak-quota}
+##### Runtime credit and peak quota {#sched-peak-quota}
 
 Each thread group is given its full quota every time the global period
 starts, according to the [configuration set]({{< relref
@@ -315,7 +315,7 @@ would cause the quota to exceed the peak value, the extra time is
 spread over multiple subsequent periods until the credit is fully
 consumed.
 
-#### Creating a quota group {#create-quota-group}
+##### Creating a quota group {#create-quota-group}
 
 EVL supports up to 1024 distinct thread groups for quota-based
 scheduling system-wide. Each thread group is assigned to a specific
@@ -367,13 +367,13 @@ regarding the new group:
   is concerned. This sum should not exceed 100% for a CPU in a
   properly configured system.
 
-#### Modifying a quota group {#modify-quota-group}
+##### Modifying a quota group {#modify-quota-group}
 
-#### Removing a quota group {#remove-quota-group}
+##### Removing a quota group {#remove-quota-group}
 
 ---
 
-### SCHED_TP {#SCHED_TP}
+#### SCHED_TP {#SCHED_TP}
 
 This policy enforces a so-called _temporal partitioning_, which is a
 way to schedule thread activities on a given CPU so that they cannot
@@ -430,7 +430,7 @@ _ptid_ should be a valid partition identifier between 0 and
 Within a minor time frame, threads undergo the SCHED_FIFO policy
 according to their fixed _priority_ value.
 
-#### Setting the temporal partitioning information for a CPU
+##### Setting the temporal partitioning information for a CPU
 
 Temporal partitioning is defined on a per-CPU basis, you have to
 configure each CPU involved in this policy independently, enumerating
@@ -462,7 +462,7 @@ CPU, leaving the TP scheduling in stopped state. Generally speaking,
 once a TP schedule is installed for a CPU, it is left in standby mode
 until explicitly started.
 
-#### Starting the TP scheduling on a CPU
+##### Starting the TP scheduling on a CPU
 
 The following request enables the TP scheduler for the given CPU; you
 have to issue this request for activating a TP schedule:
@@ -475,7 +475,7 @@ have to issue this request for activating a TP schedule:
 	ret = evl_sched_control(SCHED_TP, &param, NULL, <cpu-number>);
 ```
 
-#### Stopping the TP scheduling on a CPU
+##### Stopping the TP scheduling on a CPU
 
 You can disable the scheduling of threads undergoing the SCHED_TP
 policy on a CPU by the following call:
@@ -492,7 +492,7 @@ Upon success, the target CPU won't be considered for running SCHED_TP
 threads, until the converse request `evl_tp_start` is received for
 that CPU.
 
-#### Retrieving the temporal partitioning information from a CPU
+##### Retrieving the temporal partitioning information from a CPU
 
 The following request fetches the current scheduling plan for a given
 CPU:
@@ -520,7 +520,7 @@ The minor frames active for the target CPU are readable from the
 `result.windows[]` array, up to `param.nr_windows[]` . The number of
 valid elements in this array is given by `result.info.nr_windows[]`.
 
-#### Removing the temporal partitioning information from a CPU
+##### Removing the temporal partitioning information from a CPU
 
 This is the converse operation to `evl_tp_install`, removing temporal
 partitioning support for the target CPU, releasing all related
@@ -529,7 +529,7 @@ prior to uninstalling.
 
 ---
 
-### SCHED_WEAK {#SCHED_WEAK}
+#### SCHED_WEAK {#SCHED_WEAK}
 
 You may want to run some POSIX threads in-band most of the time,
 except when they need to call some EVL services
@@ -600,7 +600,7 @@ Switching a thread to SCHED_WEAK is achieved by calling
 ```
 ---
 
-### SCHED_IDLE {#SCHED_IDLE}
+#### SCHED_IDLE {#SCHED_IDLE}
 
 The idle class has a single task on each CPU: the [low priority
 placeholder task]({{< relref
