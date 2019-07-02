@@ -134,7 +134,7 @@ Linux 5.2-rc7
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc2</td>
+    <td>5.2-rc7</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
