@@ -157,6 +157,14 @@ sense when collecting latency figures or tuning the EVL core timer
 from an EVL thread context (i.e. _-u_ or _-k_).  Defaults to 0.
 {{% /argument %}}
 
+{{% notice tip %}}
+If `latmus` fails starting with an _Invalid argument_ error,
+double-check the CPU number passed to -c if given. The designated CPU
+must be part of the out-of-band CPU set known to the EVL core. Check
+this file _/sys/devices/virtual/evl/control/cpus_ to know which CPUs
+are part of this set.
+{{% /notice %}}
+
 ## hectic: hammering the EVL context switching machinery
 
 By default, the `hectic` program runs a truckload of EVL threads both
