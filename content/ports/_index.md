@@ -34,7 +34,7 @@ features to be available.
 
 > Current target kernel release
 
-Linux 5.2-rc7
+Linux 5.2
 
 > ARM64 SoC
 
@@ -91,7 +91,7 @@ Linux 5.2-rc7
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc7</td>
+    <td>5.2</td>
   </tr>
   <tr>
     <td><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">QEMU virt</a></td>
@@ -99,7 +99,7 @@ Linux 5.2-rc7
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc7</td>
+    <td>5.2</td>
   </tr>
 </table>
 
@@ -134,7 +134,7 @@ Linux 5.2-rc7
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc7</td>
+    <td>5.2</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
@@ -192,7 +192,7 @@ Linux 5.2-rc7
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc7</td>
+    <td>5.2</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
@@ -200,7 +200,7 @@ Linux 5.2-rc7
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc4</td>
+    <td>5.2</td>
   </tr>
   <tr>
     <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 core i7 quad (DFI SD631)</a></td>
@@ -208,7 +208,7 @@ Linux 5.2-rc7
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc4</td>
+    <td>5.2</td>
   </tr>
 </table>
 
