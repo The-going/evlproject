@@ -8,10 +8,9 @@ weight: 85
 The interrupt pipeline requires the following features to be available
 from the target Linux kernel:
 
-- Generic IRQ handling (CONFIG_GENERIC_IRQ), which most architectures
-  should support these days.
-
-- IRQ domains (CONFIG_IRQ_DOMAIN).
+- Generic IRQ handling (CONFIG_GENERIC_IRQ) and IRQ domains
+  (CONFIG_IRQ_DOMAIN), which most architectures should support these
+  days.
 
 - Generic clock event abstraction (CONFIG_GENERIC_CLOCKEVENTS).
 
