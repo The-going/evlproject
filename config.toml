@@ -2,6 +2,7 @@ baseURL = "https://evlproject.org/"
 languageCode = "en-US"
 title = "EVL project"
 theme = "hugo-theme-learn"
+copyright = "Copyright 2019 - The EVL project."
 
 [params]
 author = "Philippe Gerum <rpm@xenomai.org>"
