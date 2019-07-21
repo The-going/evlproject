@@ -536,13 +536,13 @@ except when they need to call some EVL services
 occasionally. Occasionally here means either non-repeatedly, or at any
 rate _not_ from a high frequency loop.
 
-Members of this class are picked second last in the hierarchy of EVL
-scheduling classes, right before the sole member of the
+Members of this class are picked second to last in the hierarchy of
+EVL scheduling classes, right before the sole member of the
 [SCHED_IDLE]({{< relref "#SCHED_IDLE" >}}) class which stands for the
-in-band execution stage of the kernel. The intent is to preserve the
-priority such threads have in the in-band context when they (normally
-briefly) run on the out-of-band execution stage. For this reason,
-SCHED_WEAK threads have a fixed priority ranging from 0 to 99
+in-band execution stage of the kernel. The priority such threads have
+in the in-band context are preserved by this policy when they
+(normally briefly) run on the out-of-band execution stage. For this
+reason, SCHED_WEAK threads have a fixed priority ranging from 0 to 99
 included, which maps to in-band SCHED_OTHER (0), SCHED_FIFO and
 SCHED_RR (1-99) priority ranges.
 
@@ -585,7 +585,14 @@ to the SCHED_WEAK scheduling class:
 In all other cases where an in-band thread might need to be driven by
 out-of-band events which may occur at a moderate or higher rate, using
 a message-based mechanism such as a [cross-buffer]({{% relref
-"core/user-api/thread/_index.md" %}}) is the best way to go.
+"core/user-api/xbuf/_index.md" %}}) is the best way to go.
+
+Also note that some EVL services may be called by regular POSIX
+threads. Typically, a plain POSIX thread may [post an EVL
+semaphore]({{% relref "core/user-api/semaphore/_index.md" %}}) for
+signaling an out-of-band EVL thread pending on it. You can find the
+allowed calling contexts for each EVL service from `libevl`
+[there]({{% relref "core/user-api/function_index/_index.md" %}}).
 
 Switching a thread to SCHED_WEAK is achieved by calling
 [`evl_set_schedattr()`]({{% relref "#evl_set_schedattr" %}}). The

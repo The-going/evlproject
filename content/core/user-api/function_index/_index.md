@@ -183,38 +183,38 @@ weight: 150
   </tr>
   <tr>
     <td><a href="/core/user-api/mutex/index.html#evl_lock_mutex" target="_blank">evl_lock_mutex()</a></td>
-    <td>&#9651;</td>
+    <td>&#9651;<sup>4</sup></td>
     <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/mutex/index.html#evl_trylock_mutex" target="_blank">evl_trylock_mutex()</a></td>
-    <td>&#9651;</td> 
-    <td>&#10005;</td> 
+    <td>&#9651;<sup>4</sup></td>
+    <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/mutex/index.html#evl_timedlock_mutex" target="_blank">evl_timedlock_mutex()</a></td>
-    <td>&#9651;</td> 
-    <td>&#10005;</td> 
+    <td>&#9651;<sup>4</sup></td>
+    <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/mutex/index.html#evl_unlock_mutex" target="_blank">evl_unlock_mutex()</a></td>
     <td>&#9866;<sup>3</sup></td> 
-    <td>&#10005;</td> 
+    <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/mutex/index.html#evl_get_mutex_ceiling" target="_blank">evl_get_mutex_ceiling()</a></td>
-    <td>&#9866;</td> 
+    <td>&#9866;</td>
     <td>&#9989;</td> 
   </tr>
   <tr>
     <td><a href="/core/user-api/mutex/index.html#evl_set_mutex_ceiling" target="_blank">evl_set_mutex_ceiling()</a></td>
-    <td>&#9866;</td> 
-    <td>&#9989;</td> 
+    <td>&#9866;</td>
+    <td>&#9989;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/mutex/index.html#evl_close_mutex" target="_blank">evl_close_mutex()</a></td>
-    <td>&#9661;</td> 
-    <td>&#9989;</td> 
+    <td>&#9661;</td>
+    <td>&#9989;</td>
   </tr>
 </table>
 
@@ -241,28 +241,28 @@ weight: 150
   </tr>
   <tr>
     <td><a href="/core/user-api/event/index.html#evl_wait_event" target="_blank">evl_wait_event()</a></td>
-    <td>&#9866;</td> 
+    <td>&#9866;<sup>4</sup></td> 
     <td>&#10005;</td> 
   </tr>
   <tr>
     <td><a href="/core/user-api/event/index.html#evl_timedwait_event" target="_blank">evl_timedwait_event()</a></td>
-    <td>&#9866;</td> 
+    <td>&#9866;<sup>4</sup></td> 
     <td>&#10005;</td> 
   </tr>
   <tr>
     <td><a href="/core/user-api/event/index.html#evl_signal_event" target="_blank">evl_signal_event()</a></td>
-    <td>&#9866;</td> 
-    <td>&#10005;</td> 
+    <td>&#9866;<sup>4</sup></td>
+    <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/event/index.html#evl_signal_thread" target="_blank">evl_signal_thread()</a></td>
-    <td>&#9866;</td> 
-    <td>&#10005;</td> 
+    <td>&#9866;<sup>4</sup></td>
+    <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/event/index.html#evl_broadcast_event" target="_blank">evl_broadcast_event()</a></td>
-    <td>&#9866;</td> 
-    <td>&#10005;</td> 
+    <td>&#9866;<sup>4</sup></td>
+    <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/event/index.html#evl_close_event" target="_blank">evl_close_event()</a></td>
@@ -294,28 +294,28 @@ weight: 150
   </tr>
   <tr>
     <td><a href="/core/user-api/flags/index.html#evl_wait_flags" target="_blank">evl_wait_flags()</a></td>
-    <td>&#9651;</td> 
-    <td>&#10005;</td> 
+    <td>&#9651;<sup>4</sup></td>
+    <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/flags/index.html#evl_timedwait_flags" target="_blank">evl_timedwait_flags()</a></td>
-    <td>&#9651;</td> 
-    <td>&#10005;</td> 
+    <td>&#9651;<sup>4</sup></td>
+    <td>&#10005;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/flags/index.html#evl_trywait_flags" target="_blank">evl_trywait_flags()</a></td>
-    <td>&#9866;</td> 
-    <td>&#9989;</td> 
+    <td>&#9866;<sup>4</sup></td>
+    <td>&#9989;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/flags/index.html#evl_peek_flags" target="_blank">evl_peek_flags()</a></td>
-    <td>&#9866;</td> 
-    <td>&#9989;</td> 
+    <td>&#9866;</td>
+    <td>&#9989;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/flags/index.html#evl_post_flags" target="_blank">evl_post_flags()</a></td>
-    <td>&#9866;</td> 
-    <td>&#9989;</td> 
+    <td>&#9866;<sup>4</sup></td>
+    <td>&#9989;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/flags/index.html#evl_close_flags" target="_blank">evl_close_flags()</a></td>
@@ -347,28 +347,28 @@ weight: 150
   </tr>
   <tr>
     <td><a href="/core/user-api/sem/index.html#evl_get_sem" target="_blank">evl_get_sem()</a></td>
-    <td>&#9651;</td> 
+    <td>&#9651;<sup>4</sup></td> 
     <td>&#10005;</td> 
   </tr>
   <tr>
     <td><a href="/core/user-api/sem/index.html#evl_timedget_sem" target="_blank">evl_timedget_sem()</a></td>
-    <td>&#9651;</td> 
+    <td>&#9651;<sup>4</sup></td> 
     <td>&#10005;</td> 
   </tr>
   <tr>
     <td><a href="/core/user-api/sem/index.html#evl_tryget_sem" target="_blank">evl_tryget_sem()</a></td>
-    <td>&#9866;</td> 
+    <td>&#9866;<sup>4</sup></td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
     <td><a href="/core/user-api/sem/index.html#evl_peek_sem" target="_blank">evl_peek_sem()</a></td>
-    <td>&#9866;</td> 
-    <td>&#9989;</td> 
+    <td>&#9866;</td>
+    <td>&#9989;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/sem/index.html#evl_put_sem" target="_blank">evl_put_sem()</a></td>
-    <td>&#9866;</td> 
-    <td>&#9989;</td> 
+    <td>&#9866;<sup>4</sup></td>
+    <td>&#9989;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/sem/index.html#evl_close_sem" target="_blank">evl_close_sem()</a></td>
@@ -604,3 +604,9 @@ i.e. threads not [attached]({{< relref
 relref "core/user-api/scheduling/_index.md#SCHED_WEAK" >}}) policy, in
 which case it is switched back to in-band mode if it has released the
 last EVL mutex it holds by the end of the call.
+
+<sup>4</sup> As an exception, if this synchronization object was
+statically initialized (`EVL_*_INITIALIZER()`), this routine may
+switch the caller to the in-band stage in order to finalize the
+construction before carrying out the requested operation. This is
+required only once in the object's lifetime.

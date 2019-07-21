@@ -70,7 +70,7 @@ the waiter in case it has a higher priority than the poster.
 ---
 
 {{< proto evl_new_event >}}
-int evl_new_event(struct event *evt, int clockfd, const char *fmt, ...)
+int evl_new_event(struct evl_event *evt, int clockfd, const char *fmt, ...)
 {{< /proto >}}
 
 To create an event, you need to call `evl_new_event()` which returns a
@@ -107,8 +107,8 @@ The optional variable argument list completing the format.
 `evl_new_event()` returns the file descriptor of the newly created
 event on success. Otherwise, a negated error code is returned:
 
-- -EEXIST	The generated name is conflicting with an existing event
-		name.
+- -EEXIST	The generated name is conflicting with an existing mutex,
+		event, semaphore or flag group name.
 
 - -EINVAL	Either _clockfd_ does not refer to a valid EVL clock, or the
   		generated event name is badly formed, likely containing
@@ -146,7 +146,7 @@ void create_new_event(void)
 {
 	int evfd;
 
-	evfd = evl_new_event(&event, EVL_CLOCK_MONOTONIC, "lunchtime");
+	evfd = evl_new_event(&event, EVL_CLOCK_MONOTONIC, "name_of_event");
 	/* skipping checks */
 	
 	return evfd;
@@ -183,10 +183,10 @@ values which are accepted here.
 ---
 
 {{< proto evl_open_event >}}
-int evl_open_event(struct event *evt, const char *fmt, ...)
+int evl_open_event(struct evl_event *evt, const char *fmt, ...)
 {{< /proto >}}
 
-Knowing its name in the EVL device hierarchy, you may want to re-open
+Knowing its name in the EVL device hierarchy, you may want to open
 an existing event, possibly from a different process, obtaining a new
 file descriptor on such object. You can do so by calling
 `evl_open_event()`.
@@ -195,12 +195,12 @@ file descriptor on such object. You can do so by calling
 An in-memory event descriptor is constructed by `evl_open_event()`,
 which contains ancillary information other calls will need. _evt_ is a
 pointer to such descriptor of type `struct evl_event`. The information
-is retrieved from the existing event which was re-opened.
+is retrieved from the existing event which was opened.
 {{% /argument %}}
 
 {{% argument fmt %}}
 A printf-like format string to generate the name of the event to
-re-open. This name must exist in the EVL device hierachy at
+open. This name must exist in the EVL device hierachy at
 _/dev/evl/monitor/_.
 {{% /argument %}}
 
@@ -208,8 +208,8 @@ _/dev/evl/monitor/_.
 The optional variable argument list completing the format.
 {{% /argument %}}
 
-`evl_open_event()` returns the file descriptor of the re-opened event
-on success, Otherwise, a negated error code is returned:
+`evl_open_event()` returns the file descriptor referring to the opened
+event on success, Otherwise, a negated error code is returned:
 
 - -EINVAL	The name refers to an existing object, but not to an event.
 
@@ -257,9 +257,9 @@ The in-memory mutex descriptor returned by either `evl_new_mutex()` or
 shared information representing the condition.
 {{% /argument %}}
 
-`evl_wait_event()` returns zero if the event was signaled earlier by a
-call to `evl_signal_event()` or `evl_broadcast_event()`. Otherwise, a
-negated error code may be returned if:
+`evl_wait_event()` returns zero if the event was signaled by a call to
+`evl_signal_event()` or `evl_broadcast_event()`. Otherwise, a negated
+error code may be returned if:
 
 -EINVAL	      _evt_ does not represent a valid in-memory event
 	      descriptor. If that pointer is out of the caller's
@@ -422,10 +422,6 @@ is performed and `evl_signal_broadcast()` returns zero.
 int evl_close_event(struct evl_event *evt)
 {{< /proto >}}
 
-{{% argument evt %}}
-The in-memory descriptor of the event to dismantle.
-{{% /argument %}}
-
 You can use `evl_close_event()` to dispose of an EVL event, releasing
 the associated file descriptor, at which point _evt_ will not be valid
 for any subsequent operation from the current process. However, this
@@ -433,6 +429,10 @@ event object is kept alive in the EVL core until all file descriptors
 opened on it by call(s) to [evl_open_event()]({{< relref
 "#evl_open_event" >}}) have been released, whether from the current
 process or any other process.
+
+{{% argument evt %}}
+The in-memory descriptor of the event to dismantle.
+{{% /argument %}}
 
 `evl_close_event()` returns zero upon success. Otherwise, a negated
 error code is returned:
