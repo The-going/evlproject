@@ -92,7 +92,7 @@ its file descriptor as _clockfd_. [Built-in EVL clocks]({{% relref
 
 {{% argument fmt %}}
 A printf-like format string to generate the event name. A common way
-of generating unique event names is to add the calling process's
+of generating unique names is to add the calling process's
 _pid_ somewhere into the format string as illustrated in the
 example. The generated name is used to form a last part of a pathname,
 referring to the new event element's device in the file system. So

@@ -79,7 +79,7 @@ your time-critical loop, which would not make much sense anyway.
 
 {{% argument fmt %}}
 A printf-like format string to generate the thread name. A common way
-of generating unique thread names is to add the calling process's
+of generating unique names is to add the calling process's
 _pid_ somewhere into the format string as illustrated in the
 example. The generated name is used to form a file path, referring to
 the new thread element's device in the file system. So this name must

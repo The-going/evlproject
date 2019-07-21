@@ -72,7 +72,7 @@ pre-set some bits in the received event mask at creation time.
 
 {{% argument fmt %}}
 A printf-like format string to generate the group name. A common way
-of generating unique group names is to add the calling process's
+of generating unique names is to add the calling process's
 _pid_ somewhere into the format string as illustrated in the
 example. The generated name is used to form a last part of a pathname,
 referring to the new group element's device in the file system. So
@@ -344,7 +344,7 @@ The address of an integer which contains the set of flags received on
 successful return from the call.
 {{% /argument %}}
 
-`evl_trywait_flags()` returns zero on success returning a non-zero set
+`evl_trywait_flags()` returns zero on success and the non-zero set
 of pending events. Otherwise, a negated error code may be returned if:
 
 -EAGAIN       _flg_ had no event pending at the time of the call.
@@ -381,14 +381,12 @@ for it.
 {{% /argument %}}
 
 {{% argument r_bits %}}
-The address of an integer which contains the set of flags received on
+The address of an integer which contains the group value on
 successful return from the call.
 {{% /argument %}}
 
-`evl_trywait_flags()` returns zero on success returning a non-zero set
-of pending events. Otherwise, a negated error code may be returned if:
-
--EAGAIN       _flg_ had no event pending at the time of the call.
+`evl_peek_flags()` returns zero on success along with the current
+group value. Otherwise, a negated error code may be returned if:
 
 -EINVAL	      _flg_ does not represent a valid in-memory flag group
 	      descriptor. If that pointer is out of the caller's
