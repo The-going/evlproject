@@ -57,7 +57,7 @@ information.
 
 {{% notice tip %}}
 The code for an umbrella command named `evl` is already there in
-`libevl/commands/evl.c`, which like its `git` counterpart, serves as a
+`libevl/utils/evl.c`, which like its `git` counterpart, serves as a
 centralized command router for executing ancillary scripts or
 binaries. Such a script available from the same directory called
 `evl-trace` illustrates the interface logic with the `evl` command.
