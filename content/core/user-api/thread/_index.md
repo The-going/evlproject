@@ -508,7 +508,7 @@ total 0
 2140
 0 90 90 rt
 0x8002
-1 311156 311175 46999122352 0
+1 311156 311175 0 46999122352 0
 0
 ```
 
@@ -558,24 +558,34 @@ The format of these fields is as follows:
 - _stats_ gives statistical information about the CPU consumption of
   the thread, in the following order:
 
-  * the number of (forced) switches to in-band mode, which happens when
-    a thread issues an in-band system call from an out-of-band
-    context. This figure should not increase once a real-time EVL
-    thread has entered its time-critical work loop, otherwise this
+  * the number of (forced) switches to in-band mode, which happens
+    when a thread issues an in-band system call from an out-of-band
+    context (ISW). This figure should not increase once a real-time
+    EVL thread has entered its time-critical work loop, otherwise this
     would mean that such thread is actually leaving the out-of-band
     execution stage while it should not, getting latency hits in the
     process.
    
   * the number of EVL context switches the thread was subject to,
     meaning the number of times the thread was given back the CPU
-    after a blocked state. This value _exclusively_ reflects the
-    number of switches performed by EVL for resuming the thread in
+    after a blocked state (CTXSW). This value _exclusively_ reflects
+    the number of switches performed by EVL for resuming the thread in
     out-of-band mode, which excludes any context switch of the same
     thread due to in-band activity.
 
-  * the number of EVL system calls the thread has issued to the
-    core. Here again, only the EVL system calls are counted, in-band
+  * the number of EVL system calls the thread has issued to the core
+    (SYS). Here again, only the EVL system calls are counted, in-band
     system calls from the same threads are tracked by this counter.
+
+  * the number of times the core had to wake up the thread from a
+    remote CPU (RWA). This information is useful to find out thread
+    placement issues on CPUs.  The best situation is when the core can
+    wake up threads directly from the CPU they were put to sleep,
+    without inter-processor messaging (IPI) in order to force a remote
+    CPU to re-schedule. Although this is not always possible, as
+    multiple threads may have to synchronize from distinct CPUs, the
+    lesser this number, the smaller the overhead caused by wake up
+    requests.
 
   * the cumulated CPU usage of the thread since its creation,
     expressed as a count of nanoseconds.
