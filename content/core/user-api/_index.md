@@ -28,7 +28,7 @@ whichever comes first. It may still call routines from the standard
 proper services provided by `libevl` exclusively. If it calls a
 regular \*libc service while in the middle of a time-critical code,
 willingly or mistakenly, the EVL core will keep the system safe by
-transparently downgrading the caller to [in-band context]({{< relref
+transparently demoting the caller to [in-band context]({{< relref
 "dovetail/altsched/_index.md#altsched-theory" >}}) until the latter
 calls a real-time EVL service again.  However, the calling thread
 obviously lost any real-time guarantee in the process.

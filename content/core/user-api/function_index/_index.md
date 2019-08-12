@@ -588,13 +588,11 @@ weight: 150
 <sup>1</sup> Defines the stage switching behavior for out-of-band
 callers:
 
-- &#9651; the core may switch the current stage, upgrading the
-  caller to out-of-band mode if running in-band at the time of the
-  call.
+- &#9651; the core may switch the current stage, promoting the caller
+  to out-of-band mode if running in-band at the time of the call.
 
-- &#9661; the core may switch the current stage, downgrading the
-  caller to in-band mode if running out-of-band at the time of the
-  call.
+- &#9661; the core may switch the current stage, demoting the caller
+  to in-band mode if running out-of-band at the time of the call.
 
 - &#9866; the call does not entail any stage switch.
 
