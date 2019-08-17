@@ -34,7 +34,7 @@ features to be available.
 
 > Current target kernel release
 
-Linux 5.2
+Linux 5.3-rc4
 
 > ARM64 SoC
 
@@ -75,7 +75,7 @@ Linux 5.2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc7</td>
+    <td>5.3-rc4</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
@@ -83,7 +83,7 @@ Linux 5.2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc6</td>
+    <td>5.2</td>
   </tr>
   <tr>
     <td><a href="https://www.xilinx.com/support/documentation/boards_and_kits/zcu102/ug1182-zcu102-eval-bd.pdf" target="_blank">Xilinx Zynq UltraScale+ (ZCU102)</a></td>
@@ -99,7 +99,7 @@ Linux 5.2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2</td>
+    <td>5.3-rc4</td>
   </tr>
 </table>
 
@@ -126,7 +126,7 @@ Linux 5.2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc4</td>
+    <td>5.2</td>
   </tr>
   <tr>
     <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">NXP i.MX6qp (SabreSD)</a></td>
@@ -134,7 +134,7 @@ Linux 5.2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2</td>
+    <td>5.3-rc4</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
@@ -192,7 +192,7 @@ Linux 5.2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2</td>
+    <td>5.3-rc4</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
@@ -200,7 +200,7 @@ Linux 5.2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2</td>
+    <td>5.3-rc4</td>
   </tr>
   <tr>
     <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 core i7 quad (DFI SD631)</a></td>
@@ -208,7 +208,7 @@ Linux 5.2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2</td>
+    <td>5.3-rc4</td>
   </tr>
 </table>
 
