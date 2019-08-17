@@ -18,11 +18,11 @@ call. This service binds the caller to the EVL core, which enables it
 to invoke the real-time, ultra-low latency services the latter
 delivers.
 
-- Once attached, such thread may call EVL core services, until it
+- once attached, such thread may call EVL core services, until it
 detaches from the core by a call to [evl_detach_self()]({{< relref
 "core/user-api/thread/_index.md#evl_detach_thread" >}}), or exits,
 whichever comes first. It may still call routines from the standard
-\*libc, except when it requires real-time guarantees.
+\*libc, except when real-time guarantees are required.
 
 - when an EVL thread requires real-time guarantees, it must use the
 proper services provided by `libevl` exclusively. If it calls a
@@ -72,10 +72,10 @@ EVL system call wrappers.
 
 _NO, not even remotely._ This is a drop-in _complement_ to the regular
 C library and NPTL support you may be using, which enables your
-thread(s) of choice to be scheduled by the ultra-low latency EVL
-core. As it should be clear now from the above section, you may - and
-actually have to - use a combination of these libraries into a single
-application, but you must do this in a way that ensures that
+thread(s) of choice to be scheduled with ultra-low latency guarantee
+by the EVL core. As it should be clear now from the above section, you
+may - and actually have to - use a combination of these libraries into
+a single application, but you must do this in a way that ensures that
 your time-critical code only relies on either:
 
 - the [well-defined set]({{< relref
