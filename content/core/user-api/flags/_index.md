@@ -43,15 +43,17 @@ what you are looking for.
 
 ---
 
-{{< proto evl_new_flags >}}
-int evl_new_flags(struct evl_flags *flg, int clockfd, init initval,  const char *fmt, ...)
+{{< proto evl_new_flags_any >}}
+int evl_new_flags_any(struct evl_flags *flg, int clockfd, init initval,  const char *fmt, ...)
 {{< /proto >}}
 
 This call creates a new group of event flags, returning a file
-descriptor representing the new object upon success.
+descriptor representing the new object upon success.  This is the
+generic call form; for creating an event group with common pre-defined
+settings, see [evl_new_flags()}({{% relref "#evl_new_flags" %}}).
 
 {{% argument flg %}}
-An in-memory flag group descriptor is constructed by `evl_new_flags()`,
+An in-memory flag group descriptor is constructed by `evl_new_flags_any()`,
 which contains ancillary information other calls will need. _flg_
 is a pointer to such descriptor of type `struct evl_flags`.
 {{% /argument %}}
@@ -84,7 +86,7 @@ excluding slashes.
 The optional variable argument list completing the format.
 {{% /argument %}}
 
-`evl_new_flags()` returns the file descriptor of the newly created
+`evl_new_flags_any()` returns the file descriptor of the newly created
 flag group on success. Otherwise, a negated error code is returned:
 
 - -EEXIST	The generated name is conflicting with an existing mutex,
@@ -121,7 +123,7 @@ void create_new_flags(void)
 {
 	int fd;
 
-	fd = evl_new_flags(&flags, EVL_CLOCK_MONOTONIC, 0, "name_of_group");
+	fd = evl_new_flags_any(&flags, EVL_CLOCK_MONOTONIC, 0, "name_of_group");
 	/* skipping checks */
 	
 	return fd;
@@ -130,11 +132,28 @@ void create_new_flags(void)
 
 ---
 
-{{< proto EVL_FLAGS_INITIALIZER >}}
-EVL_FLAGS_INITIALIZER(name, clockfd, initval)
+{{< proto evl_new_flags >}}
+int evl_new_flags(struct evl_flags *flg, const char *fmt, ...)
 {{< /proto >}}
 
-The static initializer you can use with flag groups.
+This call creates a zero-initialized group of event flags, timed on
+the built-in [EVL monotonic clock]({{% relref
+"core/user-api/clock/_index.md#builtin-clocks" %}}). It is identical
+to calling:
+```
+	evl_new_flags_any(flg, EVL_CLOCK_MONOTONIC, 0, fmt, ...);
+```
+
+---
+
+{{< proto EVL_FLAGS_ANY_INITIALIZER >}}
+EVL_FLAGS_ANY_INITIALIZER(name, clockfd, initval)
+{{< /proto >}}
+
+The static initializer you can use with flag groups. This is the
+generic form; for initializing a group of event flags with common
+pre-defined settings, see [EVL_FLAGS_INITIALIZER]({{% relref
+"#EVL_FLAGS_INITIALIZER" %}}).
 
 {{% argument name %}}
 A name which is used to form a last part of a pathname, referring to
@@ -153,6 +172,21 @@ values which are accepted here.
 {{% argument initval %}}
 The initial value of the event mask of the flag group.
 {{% /argument %}}
+
+---
+
+{{< proto EVL_FLAGS_INITIALIZER >}}
+EVL_FLAGS_INITIALIZER(name)
+{{< /proto >}}
+
+This is a short-hand initializer specifying a zero init value and the
+built-in [EVL monotonic clock]({{% relref
+"core/user-api/clock/_index.md#builtin-clocks" %}}) for a
+group of event flags. It is identical to writing:
+
+```
+EVL_FLAGS_ANY_INITIALIZER(name, EVL_CLOCK_MONOTONIC, 0);
+```
 
 ---
 
@@ -215,9 +249,9 @@ posted flags.
 
 {{% argument flg %}}
 The in-memory flag group descriptor constructed by
-either `evl_new_flags()` or `evl_open_flags()`, or statically built
-with [EVL_FLAGS_INITIALIZER()]({{% relref "#EVL_FLAGS_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_flags()` for
+either `evl_new[_any]_flags()` or `evl_open_flags()`, or statically built
+with [EVL_FLAGS\[_ANY\]_INITIALIZER]({{% relref "#EVL_FLAGS_ANY_INITIALIZER"
+%}}). In the latter case, an implicit call to `evl_new_flags_any()` for
 _flg_ is issued before a wait is attempted, which may trigger a transition
 to the in-band execution mode for the caller.
 {{% /argument %}}
@@ -235,10 +269,11 @@ code may be returned if:
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
 
-If _flg_ was statically initialized with EVL_FLAGS_INITIALIZER(), then
-any error returned by [evl_new_flags()]({{% relref "#evl_new_flags"
-%}}) may be passed back to the caller in case the implicit
-initialization call fails.
+If _flg_ was statically initialized with
+[EVL_FLAGS\[_ANY\]_INITIALIZER]({{% relref
+"#EVL_FLAGS_ANY_INITIALIZER" %}}), then any error returned by
+[evl_new_flags_any()]({{% relref "#evl_new_flags" %}}) may be passed
+back to the caller in case the implicit initialization call fails.
 
 ---
 
@@ -253,9 +288,9 @@ sleeping without any flag being posted.
 
 {{% argument flg %}}
 The in-memory flag group descriptor constructed by
-either `evl_new_flags()` or `evl_open_flags()`, or statically built
-with [EVL_FLAGS_INITIALIZER()]({{% relref "#EVL_FLAGS_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_flags()` for
+either `evl_new[_any]_flags()` or `evl_open_flags()`, or statically built
+with [EVL_FLAGS\[ANY\]_INITIALIZER]({{% relref "#EVL_FLAGS_ANY_INITIALIZER"
+%}}). In the latter case, an implicit call to `evl_new_flags_any()` for
 _flg_ is issued before a wait is attempted, which may trigger a transition
 to the in-band execution mode for the caller.
 {{% /argument %}}
@@ -263,7 +298,7 @@ to the in-band execution mode for the caller.
 {{% argument timeout %}}
 A time limit to wait for the group to be posted before the call
 returns on error. The clock mentioned in the call to
-[evl_new_flags()]({{% relref "#evl_new_flags" %}}) will be used for
+[evl_new_flags_any()]({{% relref "#evl_new_flags_any" %}}) will be used for
 tracking the elapsed time.
 {{% /argument %}}
 
@@ -291,10 +326,10 @@ of the flag group at the time of the call if any (i.e. having the
 highest priority among waiters).
 
 {{% argument flg %}}
-The in-memory flag group descriptor constructed by either `evl_new_flags()`
+The in-memory flag group descriptor constructed by either `evl_new_flags[_any]()`
 or `evl_open_flags()`, or statically built with
-[EVL_FLAGS_INITIALIZER()]({{% relref "#EVL_FLAGS_INITIALIZER" %}}). In
-the latter case, an implicit call to `evl_new_flags()` for _flg_ is
+[EVL_FLAGS\[_ANY\]_INITIALIZER]({{% relref "#EVL_FLAGS_ANY_INITIALIZER" %}}). In
+the latter case, an implicit call to `evl_new_flags_any()` for _flg_ is
 issued before the event mask is posted, which may trigger a transition to
 the in-band execution mode for the caller.
 {{% /argument %}}
@@ -313,11 +348,12 @@ error code is returned:
 
 -EINVAL	      _bits_ is zero.
 
-If _flg_ was statically initialized with EVL_FLAGS_INITIALIZER() but
-not passed to any flag group-related call yet, then any error status
-returned by [evl_new_flags()]({{% relref "#evl_new_flags" %}}) may be
-passed back to the caller in case the implicit initialization call
-fails.
+If _flg_ was statically initialized with
+[EVL_FLAGS\[_ANY\]_INITIALIZER]({{% relref
+"#EVL_FLAGS_ANY_INITIALIZER" %}}) but not passed to any flag
+group-related call yet, then any error status returned by
+[evl_new_flags_any()]({{% relref "#evl_new_flags_any" %}}) may be passed back
+to the caller in case the implicit initialization call fails.
 
 ---
 
@@ -332,9 +368,9 @@ before returning to the caller.
 
 {{% argument flg %}}
 The in-memory flag group descriptor constructed by
-either `evl_new_flags()` or `evl_open_flags()`, or statically built
-with [EVL_FLAGS_INITIALIZER()]({{% relref "#EVL_FLAGS_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_flags()` for
+either `evl_new_flags[_any]()` or `evl_open_flags()`, or statically built
+with [EVL_FLAGS\[_ANY\]_INITIALIZER]({{% relref "#EVL_FLAGS_ANY_INITIALIZER" %}}).
+In the latter case, an implicit call to `evl_new_flags_any()` for
 _flg_ is issued before a wait is attempted, which may trigger a transition
 to the in-band execution mode for the caller.
 {{% /argument %}}
@@ -354,10 +390,11 @@ of pending events. Otherwise, a negated error code may be returned if:
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
 
-If _flg_ was statically initialized with EVL_FLAGS_INITIALIZER(), then
-any error returned by [evl_new_flags()]({{% relref "#evl_new_flags"
-%}}) may be passed back to the caller in case the implicit
-initialization call fails.
+If _flg_ was statically initialized with
+[EVL_FLAGS\[_ANY\]_INITIALIZER]({{% relref
+"#EVL_FLAGS_ANY_INITIALIZER" %}}), then any error returned by
+[evl_new_flags_any()]({{% relref "#evl_new_flags" %}}) may be passed
+back to the caller in case the implicit initialization call fails.
 
 ---
 
@@ -373,8 +410,8 @@ the group value to be read multiple times with no side-effect.
 
 {{% argument flg %}}
 The in-memory flag group descriptor constructed by either
-`evl_new_flags()` or `evl_open_flags()`, or statically built with
-[EVL_FLAGS_INITIALIZER()]({{% relref "#EVL_FLAGS_INITIALIZER" %}}). In
+`evl_new_flags[_any]()` or `evl_open_flags()`, or statically built with
+[EVL_FLAGS\[_ANY\]_INITIALIZER]({{% relref "#EVL_FLAGS_ANY_INITIALIZER" %}}). In
 the latter case, the flag group becomes valid for a call to
 `evl_peek_flags()` only after a post or [try]wait operation was issued
 for it.
@@ -419,6 +456,6 @@ error code is returned:
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
 
-Closing a [statically initialized]({{< relref "#EVL_FLAGS_INITIALIZER"
->}}) flag group descriptor which has never been used in wait or post
-operations always returns zero.
+Closing a [statically initialized]({{< relref
+"#EVL_FLAGS_ANY_INITIALIZER" >}}) flag group descriptor which has
+never been used in wait or post operations always returns zero.

@@ -139,7 +139,7 @@ weight: 150
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/timer/index.html#evl_new_sem" target="_blank">evl_new_timer()</a></td>
+    <td><a href="/core/user-api/timer/index.html#evl_new_timer" target="_blank">evl_new_timer()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
@@ -167,12 +167,12 @@ weight: 150
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/mutex/index.html#evl_new_mutex" target="_blank">evl_new_mutex()</a></td>
+    <td><a href="/core/user-api/mutex/index.html#evl_new_mutex_any" target="_blank">evl_new_mutex_any()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/mutex/index.html#evl_new_mutex_ceiling" target="_blank">evl_new_mutex_ceiling()</a></td>
+    <td><a href="/core/user-api/mutex/index.html#evl_new_mutex" target="_blank">evl_new_mutex()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
@@ -230,6 +230,11 @@ weight: 150
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
+    <td><a href="/core/user-api/event/index.html#evl_new_event_any" target="_blank">evl_new_event_any()</a></td>
+    <td>&#9661;</td> 
+    <td>&#9989;</td> 
+  </tr>
+  <tr>
     <td><a href="/core/user-api/event/index.html#evl_new_event" target="_blank">evl_new_event()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
@@ -283,6 +288,11 @@ weight: 150
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
+    <td><a href="/core/user-api/flags/index.html#evl_new_flags_any" target="_blank">evl_new_flags_any()</a></td>
+    <td>&#9661;</td> 
+    <td>&#9989;</td> 
+  </tr>
+  <tr>
     <td><a href="/core/user-api/flags/index.html#evl_new_flags" target="_blank">evl_new_flags()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
@@ -334,6 +344,11 @@ weight: 150
     <th>Function name</th>
     <th>EVL Switch<sup>1</sup></th> 
     <th>non-EVL<sup>2</sup></th> 
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/sem/index.html#evl_new_sem_any" target="_blank">evl_new_sem_any()</a></td>
+    <td>&#9661;</td> 
+    <td>&#9989;</td> 
   </tr>
   <tr>
     <td><a href="/core/user-api/sem/index.html#evl_new_sem" target="_blank">evl_new_sem()</a></td>

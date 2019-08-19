@@ -17,8 +17,8 @@ follows:
 #include <evl/mutex.h>
 #include <evl/event.h>
 
-struct evl_mutex lock;
-struct evl_event event;
+struct evl_mutex lock = EVL_MUTEX_INITIALIZER("this_lock");
+struct evl_event event = EVL_EVENT_INITIALIZER("this_event");
 bool condition = false;
 
 void waiter(void)
@@ -69,15 +69,18 @@ the waiter in case it has a higher priority than the poster.
 
 ---
 
-{{< proto evl_new_event >}}
-int evl_new_event(struct evl_event *evt, int clockfd, const char *fmt, ...)
+{{< proto evl_new_event_any >}}
+int evl_new_event_any(struct evl_event *evt, int clockfd, const char *fmt, ...)
 {{< /proto >}}
 
-To create an event, you need to call `evl_new_event()` which returns a
-file descriptor representing the new object upon success.
+To create an event, you need to call `evl_new_event_any()` which
+returns a file descriptor representing the new object upon
+success. This is the generic call form; for creating an event with
+common pre-defined settings, see [evl_new_event()}({{% relref
+"#evl_new_event" %}}).
 
 {{% argument evt %}}
-An in-memory event descriptor is constructed by `evl_new_event()`,
+An in-memory event descriptor is constructed by `evl_new_event_any()`,
 which contains ancillary information other calls will need. _evt_
 is a pointer to such descriptor of type `struct evl_event`.
 {{% /argument %}}
@@ -104,7 +107,7 @@ excluding slashes.
 The optional variable argument list completing the format.
 {{% /argument %}}
 
-`evl_new_event()` returns the file descriptor of the newly created
+`evl_new_event_any()` returns the file descriptor of the newly created
 event on success. Otherwise, a negated error code is returned:
 
 - -EEXIST	The generated name is conflicting with an existing mutex,
@@ -146,7 +149,7 @@ void create_new_event(void)
 {
 	int evfd;
 
-	evfd = evl_new_event(&event, EVL_CLOCK_MONOTONIC, "name_of_event");
+	evfd = evl_new_event_any(&event, EVL_CLOCK_MONOTONIC, "name_of_event");
 	/* skipping checks */
 	
 	return evfd;
@@ -160,11 +163,25 @@ hierarchy.
 
 ---
 
-{{< proto EVL_EVENT_INITIALIZER >}}
-EVL_EVENT_INITIALIZER(name, clockfd)
+{{< proto evl_new_event >}}
+int evl_new_event(struct evl_event *evt, const char *fmt, ...)
 {{< /proto >}}
 
-The static initializer you can use with events.
+This call creates an event timed on the built-in [EVL monotonic clock]({{%
+relref "core/user-api/clock/_index.md#builtin-clocks" %}}). It is identical to calling:
+```
+	evl_new_event_any(evt, EVL_CLOCK_MONOTONIC, fmt, ...);
+```
+
+---
+
+{{< proto EVL_EVENT_ANY_INITIALIZER >}}
+EVL_EVENT_ANY_INITIALIZER(name, clockfd)
+{{< /proto >}}
+
+The static initializer you can use with events. This is the generic
+form; for initializing an event with common pre-defined settings, see
+[EVL_EVENT_INITIALIZER]({{% relref "#EVL_EVENT_INITIALIZER" %}}).
 
 {{% argument name %}}
 A name which is used to form a last part of a pathname, referring to
@@ -180,6 +197,20 @@ associated with the event for timed operations. The descriptors of
 values which are accepted here.
 {{% /argument %}}
 
+---
+
+{{< proto EVL_EVENT_INITIALIZER >}}
+EVL_EVENT_INITIALIZER(name)
+{{< /proto >}}
+
+This is a short-hand initializer specifying the built-in [EVL
+monotonic clock]({{% relref
+"core/user-api/clock/_index.md#builtin-clocks" %}}) for an event. It
+is identical to writing:
+
+```
+EVL_EVENT_ANY_INITIALIZER(name, EVL_CLOCK_MONOTONIC);
+```
 ---
 
 {{< proto evl_open_event >}}
@@ -244,15 +275,15 @@ for waiting for an event is very important.
 
 {{% argument evt %}}
 The in-memory event descriptor constructed by
-either `evl_new_event()` or `evl_open_event()`, or statically built
-with [EVL_EVENT_INITIALIZER()]({{% relref "#EVL_EVENT_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_event()` for
+either `evl_new_event[_any]()` or `evl_open_event()`, or statically built
+with [EVL_EVENT\[_ANY\]_INITIALIZER]({{% relref "#EVL_EVENT_ANY_INITIALIZER"
+%}}). In the latter case, an implicit call to `evl_new_event_any()` for
 _evt_ is issued before a wait is attempted, which may trigger a transition
 to the in-band execution mode for the caller.
 {{% /argument %}}
 
 {{% argument mutex %}}
-The in-memory mutex descriptor returned by either `evl_new_mutex()` or
+The in-memory mutex descriptor returned by either `evl_new_mutex[_any]()` or
 `evl_open_mutex()`. This lock should be used to serialize access to the
 shared information representing the condition.
 {{% /argument %}}
@@ -271,10 +302,12 @@ error code may be returned if:
 	      wait requests on the same event, they must use the same
 	      mutex to serialize.
 
-If _evt_ was statically initialized with EVL_EVENT_INITIALIZER(), then
-any error returned by [evl_new_event()]({{% relref "#evl_new_event"
-%}}) may be passed back to the caller in case the implicit
-initialization call fails.
+If _evt_ was statically initialized with
+[EVL_EVENT\[_ANY\]_INITIALIZER]({{% relref
+"#EVL_EVENT_ANY_INITIALIZER" %}}), then any error returned by
+[evl_new_event_any()]({{% relref "#evl_new_event_any" %}}) may be
+passed back to the caller in case the implicit initialization call
+fails.
 
 ---
 
@@ -289,22 +322,22 @@ sleeping without the event being signaled.
 
 {{% argument evt %}}
 The in-memory event descriptor constructed by
-either `evl_new_event()` or `evl_open_event()`, or statically built
-with [EVL_EVENT_INITIALIZER()]({{% relref "#EVL_EVENT_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_event()` for
+either `evl_new_event[_any]()` or `evl_open_event()`, or statically built
+with [EVL_EVENT\[_ANY\]_INITIALIZER]({{% relref "#EVL_EVENT_ANY_INITIALIZER"
+%}}). In the latter case, an implicit call to `evl_new_event_any()` for
 _evt_ is issued before a wait is attempted, which may trigger a transition
 to the in-band execution mode for the caller.
 {{% /argument %}}
 
 {{% argument mutex %}}
-The in-memory mutex descriptor returned by either `evl_new_mutex()` or
+The in-memory mutex descriptor returned by either `evl_new_mutex[_any]()` or
 `evl_open_mutex()`.
 {{% /argument %}}
 
 {{% argument timeout %}}
 A time limit to wait for the event to be signaled before the call
 returns on error. The clock mentioned in the call to
-[evl_new_event()]({{% relref "#evl_new_event" %}}) will be used for
+[evl_new_event_any()]({{% relref "#evl_new_event_any" %}}) will be used for
 tracking the elapsed time.
 {{% /argument %}}
 
@@ -331,10 +364,10 @@ dropped]({{< relref "#synchronizing-on-event" >}}), not at the time of
 the notification.
 
 {{% argument evt %}}
-The in-memory event descriptor constructed by either `evl_new_event()`
-or `evl_open_event()`, or statically built with
-[EVL_EVENT_INITIALIZER()]({{% relref "#EVL_EVENT_INITIALIZER" %}}). In
-the latter case, an implicit call to `evl_new_event()` for _evt_ is
+The in-memory event descriptor constructed by
+either `evl_new_event[_any]()` or `evl_open_event()`, or statically built
+with [EVL_EVENT\[_ANY\]_INITIALIZER]({{% relref "#EVL_EVENT_ANY_INITIALIZER"
+%}}). In the latter case, an implicit call to `evl_new_event_any()` for _evt_ is
 issued before the signal is sent, which may trigger a transition to
 the in-band execution mode for the caller.
 {{% /argument %}}
@@ -347,11 +380,12 @@ pending for the event. Otherwise, a negated error code is returned:
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
 
-If _evt_ was statically initialized with EVL_EVENT_INITIALIZER() but
-not passed to any event-related call yet, then any error status
-returned by [evl_new_event()]({{% relref "#evl_new_event" %}}) may be
-passed back to the caller in case the implicit initialization call
-fails.
+If _evt_ was statically initialized with
+[EVL_EVENT\[_ANY\]_INITIALIZER]({{% relref
+"#EVL_EVENT_ANY_INITIALIZER" %}}) but not passed to any event-related
+call yet, then any error status returned by [evl_new_event_any()]({{%
+relref "#evl_new_event" %}}) may be passed back to the caller in case
+the implicit initialization call fails.
 
 If no thread was waiting on _evt_ at the time of the call, no action
 is performed and `evl_signal_event()` returns zero.
@@ -368,10 +402,10 @@ specific waiter instead of waking up the thread heading the wait
 queue.
 
 {{% argument evt %}}
-The in-memory event descriptor constructed by either `evl_new_event()`
-or `evl_open_event()`, or statically built with
-[EVL_EVENT_INITIALIZER()]({{% relref "#EVL_EVENT_INITIALIZER" %}}). In
-the latter case, an implicit call to `evl_new_event()` for _evt_ is
+The in-memory event descriptor constructed by
+either `evl_new_event[_any]()` or `evl_open_event()`, or statically built
+with [EVL_EVENT\[_ANY\]_INITIALIZER]({{% relref "#EVL_EVENT_ANY_INITIALIZER"
+%}}). In the latter case, an implicit call to `evl_new_event_any()` for _evt_ is
 issued before the signal is sent, which may trigger a transition to
 the in-band execution mode for the caller.
 {{% /argument %}}
@@ -402,10 +436,10 @@ This service is yet another variant of [evl_signal_event()]({{% relref
 sleeping on the event wait queue at the time of the call.
 
 {{% argument evt %}}
-The in-memory event descriptor constructed by either `evl_new_event()`
-or `evl_open_event()`, or statically built with
-[EVL_EVENT_INITIALIZER()]({{% relref "#EVL_EVENT_INITIALIZER" %}}). In
-the latter case, an implicit call to `evl_new_event()` for _evt_ is
+The in-memory event descriptor constructed by
+either `evl_new_event[_any]()` or `evl_open_event()`, or statically built
+with [EVL_EVENT\[_ANY\]_INITIALIZER]({{% relref "#EVL_EVENT_ANY_INITIALIZER"
+%}}). In the latter case, an implicit call to `evl_new_event_any()` for _evt_ is
 issued before the signal is sent, which may trigger a transition to
 the in-band execution mode for the caller.
 {{% /argument %}}
@@ -442,6 +476,6 @@ error code is returned:
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
 
-Closing a [statically initialized]({{< relref "#EVL_EVENT_INITIALIZER"
->}}) event descriptor which has never been used in wait or signal
-operations always returns zero.
+Closing a [statically initialized]({{< relref
+"#EVL_EVENT_ANY_INITIALIZER" >}}) event descriptor which has never
+been used in wait or signal operations always returns zero.
