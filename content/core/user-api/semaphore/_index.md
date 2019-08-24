@@ -17,7 +17,7 @@ for the basic operations.
 int evl_new_sem_any(struct evl_sem *sem, int clockfd, init initval,  const char *fmt, ...)
 {{< /proto >}}
 
-This call creates a new semaphore, returning a file descriptor
+This call creates a semaphore, returning a file descriptor
 representing the new object upon success. This is the generic call
 form; for creating a semaphore with common pre-defined settings, see
 [evl_new_sem()}({{% relref "#evl_new_sem" %}}).
@@ -42,13 +42,13 @@ The initial value of the semaphore count.
 {{% /argument %}}
 
 {{% argument fmt %}}
-A printf-like format string to generate the semaphore name. A common way
-of generating unique names is to add the calling process's
-_pid_ somewhere into the format string as illustrated in the
-example. The generated name is used to form a last part of a pathname,
-referring to the new semaphore element's device in the file system. So
-this name must contain only valid characters in this context,
-excluding slashes.
+A printf-like format string to generate the semaphore name. A common
+way of generating unique names is to add the calling process's _pid_
+somewhere into the format string as illustrated in the example. The
+generated name is used to form a last part of a pathname, referring to
+the new [monitor element]({{< relref "core/_index.md" >}}) device
+underpinning the semaphore in the file system. So this name must
+contain only valid characters in this context, excluding slashes.
 {{% /argument %}}
 
 {{% argument "..." %}}
@@ -124,8 +124,9 @@ settings, see [EVL_SEM_INITIALIZER]({{% relref "#EVL_SEM_INITIALIZER"
 
 {{% argument name %}}
 A name which is used to form a last part of a pathname, referring to
-the new semaphore element's device in the file system. So this name must
-contain only valid characters in this context, excluding slashes.
+the new [monitor element]({{< relref "core/_index.md" >}}) device
+underpinning the semaphore in the file system. So this name must contain
+only valid characters in this context, excluding slashes.
 {{% /argument %}}
 
 {{% argument clockfd %}}
@@ -250,8 +251,8 @@ unblocked by a subsequent call to [evl_put_sem()]({{% relref
 The in-memory semaphore descriptor constructed by
 either `evl_new_sem[_any]()` or `evl_open_sem()`, or statically built
 with [EVL_SEM\[_ANY\]_INITIALIZER]({{% relref "#EVL_SEM_ANY_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_sem_any()` for
-_sem_ is issued before a get operation is attempted, which may
+%}}). In the latter case, an implicit call to `evl_new_sem_any()` is
+issued for _sem_ before a get operation is attempted, which may
 trigger a transition to the in-band execution mode for the caller.
 {{% /argument %}}
 

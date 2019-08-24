@@ -95,12 +95,12 @@ its file descriptor as _clockfd_. [Built-in EVL clocks]({{% relref
 
 {{% argument fmt %}}
 A printf-like format string to generate the event name. A common way
-of generating unique names is to add the calling process's
-_pid_ somewhere into the format string as illustrated in the
-example. The generated name is used to form a last part of a pathname,
-referring to the new event element's device in the file system. So
-this name must contain only valid characters in this context,
-excluding slashes.
+of generating unique names is to add the calling process's _pid_
+somewhere into the format string as illustrated in the example.  The
+generated name is used to form a last part of a pathname, referring to
+the new [monitor element]({{< relref "core/_index.md" >}}) device
+underpinning the event in the file system. So this name must contain
+only valid characters in this context, excluding slashes.
 {{% /argument %}}
 
 {{% argument "..." %}}
@@ -185,8 +185,9 @@ form; for initializing an event with common pre-defined settings, see
 
 {{% argument name %}}
 A name which is used to form a last part of a pathname, referring to
-the new event element's device in the file system. So this name must
-contain only valid characters in this context, excluding slashes.
+the new [monitor element]({{< relref "core/_index.md" >}}) device
+underpinning the event in the file system. So this name must contain
+only valid characters in this context, excluding slashes.
 {{% /argument %}}
 
 {{% argument clockfd %}}
@@ -277,8 +278,8 @@ for waiting for an event is very important.
 The in-memory event descriptor constructed by
 either `evl_new_event[_any]()` or `evl_open_event()`, or statically built
 with [EVL_EVENT\[_ANY\]_INITIALIZER]({{% relref "#EVL_EVENT_ANY_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_event_any()` for
-_evt_ is issued before a wait is attempted, which may trigger a transition
+%}}). In the latter case, an implicit call to `evl_new_event_any()` is
+issued for _evt_ before a wait is attempted, which may trigger a transition
 to the in-band execution mode for the caller.
 {{% /argument %}}
 

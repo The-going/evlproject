@@ -47,10 +47,10 @@ what you are looking for.
 int evl_new_flags_any(struct evl_flags *flg, int clockfd, init initval,  const char *fmt, ...)
 {{< /proto >}}
 
-This call creates a new group of event flags, returning a file
-descriptor representing the new object upon success.  This is the
-generic call form; for creating an event group with common pre-defined
-settings, see [evl_new_flags()}({{% relref "#evl_new_flags" %}}).
+This call creates a group of event flags, returning a file descriptor
+representing the new object upon success.  This is the generic call
+form; for creating an event group with common pre-defined settings,
+see [evl_new_flags()}({{% relref "#evl_new_flags" %}}).
 
 {{% argument flg %}}
 An in-memory flag group descriptor is constructed by `evl_new_flags_any()`,
@@ -74,12 +74,12 @@ pre-set some bits in the received event mask at creation time.
 
 {{% argument fmt %}}
 A printf-like format string to generate the group name. A common way
-of generating unique names is to add the calling process's
-_pid_ somewhere into the format string as illustrated in the
-example. The generated name is used to form a last part of a pathname,
-referring to the new group element's device in the file system. So
-this name must contain only valid characters in this context,
-excluding slashes.
+of generating unique names is to add the calling process's _pid_
+somewhere into the format string as illustrated in the example.  The
+generated name is used to form a last part of a pathname, referring to
+the new [monitor element]({{< relref "core/_index.md" >}}) device
+underpinning the event group in the file system. So this name must
+contain only valid characters in this context, excluding slashes.
 {{% /argument %}}
 
 {{% argument "..." %}}
@@ -157,8 +157,9 @@ pre-defined settings, see [EVL_FLAGS_INITIALIZER]({{% relref
 
 {{% argument name %}}
 A name which is used to form a last part of a pathname, referring to
-the new group element's device in the file system. So this name must
-contain only valid characters in this context, excluding slashes.
+the new [monitor element]({{< relref "core/_index.md" >}}) device
+underpinning the event group in the file system. So this name must contain
+only valid characters in this context, excluding slashes.
 {{% /argument %}}
 
 {{% argument clockfd %}}
@@ -251,8 +252,8 @@ posted flags.
 The in-memory flag group descriptor constructed by
 either `evl_new[_any]_flags()` or `evl_open_flags()`, or statically built
 with [EVL_FLAGS\[_ANY\]_INITIALIZER]({{% relref "#EVL_FLAGS_ANY_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_flags_any()` for
-_flg_ is issued before a wait is attempted, which may trigger a transition
+%}}). In the latter case, an implicit call to `evl_new_flags_any()` is
+issued for _flg_ before a wait is attempted, which may trigger a transition
 to the in-band execution mode for the caller.
 {{% /argument %}}
 
