@@ -3,17 +3,23 @@ title: "Alternate scheduling"
 weight: 119
 ---
 
-Dovetail promotes the idea that a *dual kernel* system should keep the
-functional overlap between the kernel and the autonomous core
-minimal. To this end, a task from such core should be merely seen as a
-regular task with additional scheduling capabilities guaranteeing very
-low and bounded response times. To support such idea, Dovetail enables
-kthreads and regular user tasks to run alternatively in the
-out-of-band execution context introduced by the interrupt pipeline
-(aka *out-of-band* stage), or the common in-band kernel context for
-GPOS operations (aka *in-band* stage). These new capabilities are
-built on the [interrupt pipeline]({{< relref
-"dovetail/pipeline/_index.md" >}}) machinery.
+For [specific use cases requiring reliable, ultra-low response
+times]({{< relref "dovetail/_index.md##dual-kernel-upsides" >}}), we
+want to enable small autonomous software cores to control common Linux
+tasks based on their own scheduler infrastructure, decoupled and
+independently from all other kernel activities.
+
+This being said, Dovetail also promotes the idea that a *dual kernel*
+system should keep the functional overlap between the main kernel and
+the autonomous core minimal. To this end, a task from such core should
+be merely seen as a regular Linux task with additional scheduling
+capabilities guaranteeing very low and bounded response times. To
+support such idea, Dovetail enables kthreads and regular user tasks to
+run alternatively in the out-of-band execution context introduced by
+the interrupt pipeline (aka *out-of-band* stage), or the common
+in-band kernel context for GPOS operations (aka *in-band*
+stage). These new capabilities are built on the [interrupt
+pipeline]({{< relref "dovetail/pipeline/_index.md" >}}) machinery.
 
 As a result, autonomous core applications in user-space benefit from
 the common Linux programming model - including virtual memory
