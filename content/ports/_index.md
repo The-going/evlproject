@@ -11,8 +11,7 @@ ported in the following sequence:
 1. the [Dovetail]({{%relref "dovetail/_index.md" %}}) interface. This
    task is composed of two incremental milestones: first getting the
    [interrupt pipeline]({{% relref "dovetail/pipeline/_index.md" %}})
-   to work, then enabling the [alternate scheduling]({{% relref
-   "dovetail/altsched/_index.md" %}}). Porting [Dovetail]({{%relref
+   to work, then enabling the [alternate scheduling]({{% relref "dovetail/altsched.md" %}}). Porting [Dovetail]({{%relref
    "dovetail/_index.md" %}}) is where most of the work takes place,
    the other porting tasks are comparatively quite simple.
 

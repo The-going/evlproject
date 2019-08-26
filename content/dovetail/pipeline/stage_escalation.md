@@ -9,7 +9,7 @@ can be done using `run_oob_call()`. For instance, the EVL core is
 using this service to escalate calls to its rescheduling procedure to
 the out-of-band stage, as described in the discussion about [switching
 task contexts]({{% relref
-"dovetail/altsched/_index.md#context-switching" %}}) with Dovetail's
+"dovetail/altsched.md#context-switching" %}}) with Dovetail's
 support for alternate scheduling.
 
 ---
@@ -35,7 +35,7 @@ returned by _fn()_ is passed back to the caller.
 Because the routine may switch the execution stage back to in-band for
 the calling context, run_oob_call() restores the original stage only
 if it did not [change in the meantime]({{% relref
-"dovetail/altsched/_index.md#inband-switch" %}}). In addition, the
+"dovetail/altsched.md#inband-switch" %}}). In addition, the
 interrupt log of the current CPU is synchronized before returning to
 the caller. The following matrix describes the logic for determining
 which epilogue should be performed before leaving run_oob_call(),
@@ -56,7 +56,7 @@ underlying context may be. This is different from switching a task
 context to the out-of-band mode _indefinitely_ by offloading it to the
 autonomous core for scheduling. The latter operation would involve [a
 more complex procedure]({{% relref
-"dovetail/altsched/_index.md#oob-switch" %}}).
+"dovetail/altsched.md#oob-switch" %}}).
 {{% /notice %}}
 
 ---

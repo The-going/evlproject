@@ -7,7 +7,7 @@ weight: 80
 Porting the Dovetail interface to a different kernel release, or a
 different CPU architecture involves enabling the [interrupt
 pipeline]({{< relref "dovetail/pipeline/_index.md" >}}) first, then
-the [alternate scheduling]({{< relref "dovetail/altsched/_index.md"
+the [alternate scheduling]({{< relref "dovetail/altsched.md"
 >}}) feature which builds on the former.
 
 Interrupt pipelining is enabled by turning on CONFIG_IRQ_PIPELINE:

@@ -109,7 +109,7 @@ time on success, otherwise:
 {{% notice note %}}
 Setting `EVL_CLOCK_MONOTONIC` or `EVL_CLOCK_REALTIME` may imply a
 transition to the [inband execution stage]({{< relref
-"dovetail/altsched/_index.md#inband-switch" >}}) as `clock_settime()`
+"dovetail/altsched.md#inband-switch" >}}) as `clock_settime()`
 is called internally for carrying out the request.
 {{% /notice %}}
 
@@ -153,7 +153,7 @@ returns zero on success, otherwise:
 {{% notice note %}}
 Setting `EVL_CLOCK_MONOTONIC` or `EVL_CLOCK_REALTIME` may imply a
 transition to the [inband execution stage]({{< relref
-"dovetail/altsched/_index.md#inband-switch" >}}) as `clock_getres()`
+"dovetail/altsched.md#inband-switch" >}}) as `clock_getres()`
 is called internally for carrying out the request.
 {{% /notice %}}
 

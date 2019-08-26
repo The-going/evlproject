@@ -14,7 +14,7 @@ by the core to have access to the POSIX-defined `CLOCK_MONOTONIC` and
 `CLOCK_REALTIME` clocks from the out-of-band context, using a vDSO
 call, with no execution and response time penalty involved in invoking
 an [in-band syscall] ({{< relref
-"dovetail/altsched/_index.md#inband-switch" >}}).
+"dovetail/altsched.md#inband-switch" >}}).
 
 ### Reading timestamps via the vDSO in a nutshell
 
@@ -48,9 +48,9 @@ timekeeping by the kernel from a non-privileged environement:
 For several CPU architectures Linux supports, reading the
 CLOCK_MONOTONIC and CLOCK_REALTIME clocks is already possible via vDSO
 calls, including from tasks [running out-of-band]({{< relref
-"dovetail/altsched/_index.md#altsched-theory" >}}) without incurring
+"dovetail/altsched.md#altsched-theory" >}}) without incurring
 any [execution stage switch]({{< relref
-"dovetail/altsched/_index.md#stage-migration" >}}).
+"dovetail/altsched.md#stage-migration" >}}).
 
 For ARM, the situation is clumsy: the mainline kernel implementation
 supports reading timestamps directly from the vDSO **only** for the

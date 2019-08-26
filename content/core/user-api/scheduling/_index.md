@@ -611,7 +611,7 @@ Switching a thread to SCHED_WEAK is achieved by calling
 
 The idle class has a single task on each CPU: the [low priority
 placeholder task]({{< relref
-"dovetail/altsched/_index.md#altsched-theory" >}}).
+"dovetail/altsched.md#altsched-theory" >}}).
 
 SCHED_IDLE has the lowest priority among policies, its sole task is
 picked for scheduling only when other policies have no runnable task

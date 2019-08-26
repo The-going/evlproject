@@ -29,7 +29,7 @@ proper services provided by `libevl` exclusively. If it calls a
 regular \*libc service while in the middle of a time-critical code,
 willingly or mistakenly, the EVL core will keep the system safe by
 transparently demoting the caller to [in-band context]({{< relref
-"dovetail/altsched/_index.md#altsched-theory" >}}) until the latter
+"dovetail/altsched.md#altsched-theory" >}}) until the latter
 calls a real-time EVL service again.  However, the calling thread
 obviously lost any real-time guarantee in the process.
 
@@ -45,7 +45,7 @@ attach to the EVL core.
 
 2. The EVL thread runs its time-critical work loop, only calling EVL
 services which operate from the [out-of-band context]({{< relref
-"dovetail/altsched/_index.md#altsched-theory" >}}), therefore
+"dovetail/altsched.md#altsched-theory" >}}), therefore
 guaranteeing bounded, ultra-low latency. The pivotal EVL service from
 such loop has to be a blocking call, waiting for the next real-time
 event to process. For instance, such call could be
@@ -81,7 +81,7 @@ your time-critical code only relies on either:
 - the [well-defined set]({{< relref
   "core/user-api/function_index/_index.md" >}}) of `libevl`'s
   low-latency services which operates from the [out-of-band
-  context]({{< relref "dovetail/altsched/_index.md#altsched-theory"
+  context]({{< relref "dovetail/altsched.md#altsched-theory"
   >}}).
 
 - a (very) small subset of the \*libc calls which are known _not to_

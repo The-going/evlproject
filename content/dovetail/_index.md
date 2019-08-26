@@ -61,7 +61,7 @@ described:
 stage for an autonomous software core to run on.
 
 - then, support for [_alternate scheduling_]({{% relref
-"dovetail/altsched/_index.md" %}}) between the main kernel and the
+"dovetail/altsched.md" %}}) between the main kernel and the
 autonomous software core, for sharing *kthreads* and *user* tasks.
 
 Although both layers are likely to be needed for implementing some
