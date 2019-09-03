@@ -7,7 +7,7 @@ weight: 10
 
 EVL provides common mutexes for serializing thread access to a shared
 resource from [out-of-band context]({{< relref
-"dovetail/pipeline/_index.md" >}}), with an API close to the [POSIX
+"dovetail/pipeline/_index.md" >}}), with semantics close to the [POSIX
 specification](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html)
 for the basic operations.
 

@@ -5,9 +5,10 @@ weight: 119
 
 For [specific use cases requiring reliable, ultra-low response
 times]({{< relref "dovetail/_index.md##dual-kernel-upsides" >}}), we
-want to enable small autonomous software cores to control common Linux
-tasks based on their own scheduler infrastructure, decoupled and
-independently from all other kernel activities.
+want to enable hosted autonomous software cores to control common
+Linux tasks based on their own scheduler infrastructure, fully
+decoupled from the host's scheduler, with absolute priority over all
+other kernel activities.
 
 This being said, Dovetail also promotes the idea that a *dual kernel*
 system should keep the functional overlap between the main kernel and
@@ -176,7 +177,7 @@ alternate scheduling support for that task in the autonomous core.
 
 There is a not-so-subtle but somewhat confusing distinction between
 _running a Linux task out-of-band_, and running whatever code from the
-_out-of-band interrupt stage_.
+_out-of-band execution stage_.
 
 - In the first case, the task is not controlled by the main kernel
   scheduler anymore, but runs under the supervision of the autonomous
@@ -452,7 +453,7 @@ Those steps are:
 _NEXT_ task to schedule, by priority order. If _PREV_ still has the
 highest priority among all runnable tasks on the current CPU, the
 sequence stops there. CAVEAT: the core _must make sure to perform
-context switches from the out-of-band interrupt stage_, otherwise
+context switches from the out-of-band execution stage_, otherwise
 weird things may happen down the road. [`run_oob_call()`]({{% relref
 "dovetail/pipeline/stage_escalation.md" %}}) is a routine the
 interrupt pipeline provides which may help there. See the
