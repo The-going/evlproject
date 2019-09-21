@@ -15,22 +15,30 @@ these real-time capable drivers from the out-of-band execution stage
 with the a couple of additional services [libevl]({{< relref
 "core/user-api/_index.md" >}}) provides.
 
+{{% notice note %}}
+The EVL core does not currently support out-of-band socket
+semantics. Maybe at some point this will happen, but this needs more
+thought about proper integration of this feature. Not there yet.
+{{% /notice %}}
+
 You may notice that several POSIX file I/O services such as open(2),
-close(2), fcntl(2), mmap(2) and so on have no out-of-band
-counterpart. The reason is that we don't need them: opening, closing
-or mapping a file are inherently non-deterministic operations, which
-may block for an unspecified amount of time for a number of reasons,
-depending on the underlying file and current runtime
+close(2), fcntl(2), mmap(2) and so on have no out-of-band counterpart
+in the following list. The reason is that we don't need them: opening,
+closing or mapping a file are inherently non-deterministic operations,
+which may block for an unspecified amount of time for a number of
+reasons, depending on the underlying file and current runtime
 conditions. Besides, those are hardly useful in a time-critical loop.
 
 However, issuing data transfers and control requests to the driver is
 definitely something we may want to happen within a bounded time,
 hence directly from the out-of-band execution stage.
 
-{{% notice note %}}
-The EVL core does not currently support out-of-band socket
-semantics. Maybe at some point this will happen, but this needs more
-thought about proper integration of this feature. Not there yet.
+{{% notice tip %}}
+Since the EVL core exports each [element]({{< relref
+"core/_index.md#evl-core-elements" >}}) as a character device which
+can be accessed from _/dev/evl_, interacting with EVL elements via
+[libevl]({{< relref "core/user-api/_index.md" >}}) is a actually done
+through the out-of-band I/O interface documented here.
 {{% /notice %}}
 
 ### Out-of-band I/O services
