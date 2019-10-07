@@ -33,7 +33,7 @@ features to be available.
 
 > Current target kernel release
 
-Linux 5.4-rc1
+Linux 5.4-rc2
 
 > ARM64 SoC
 
@@ -74,7 +74,7 @@ Linux 5.4-rc1
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc1</td>
+    <td>5.4-rc2</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
@@ -149,7 +149,7 @@ Linux 5.4-rc1
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc1</td>
+    <td>5.4-rc2</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">STMicro Cannes2-STiH410 (B2260)</a></td>
@@ -191,7 +191,7 @@ Linux 5.4-rc1
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc1</td>
+    <td>5.4-rc2</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
@@ -199,7 +199,7 @@ Linux 5.4-rc1
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc1</td>
+    <td>5.4-rc2</td>
   </tr>
   <tr>
     <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 core i7 quad (DFI SD631)</a></td>
@@ -207,7 +207,7 @@ Linux 5.4-rc1
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.3-rc4</td>
+    <td>5.4-rc2</td>
   </tr>
 </table>
 
