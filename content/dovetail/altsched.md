@@ -210,24 +210,22 @@ document.
 ### Out-of-band switch  {#oob-switch}
 
 Switching out-of-band is the operation by which a Linux task moves
-under the control of the alternate scheduler brought in the main
-kernel by the autonomous core. From that point, the scheduling
-decisions are made by this core regarding that task.
+under the control of the alternate scheduler the autonomous core adds
+to the main kernel. From that point, the scheduling decisions are made
+by this core regarding that task. There are two reasons a Linux task
+may switch from in-band to out-of-band execution:
 
-There are two reasons a Linux task may switch out-of-band:
-
-- either it has requested it explicitly using a system call provided
-  by the autonomous core such as EVL's [evl_switch_oob()]({{% relref
+- either such transition is explicitly requested via a system call of
+  the autonomous core, such as EVL's [evl_switch_oob()]({{% relref
   "core/user-api/thread/_index.md#evl_switch_oob" %}}).
 
-- or the autonomous core has forced such transition, in response to
-  some request this task did, such as issuing a system call which can
-  only be handled from the out-of-band stage. This behavior is
-  enforced by the [EVL core]({{% relref
-  "core/user-api/thread/_index.md" %}}) too.
+- or the autonomous core has forced such transition, in response to a
+  user request, such as issuing a system call which can only be
+  handled from the out-of-band stage. The EVL core [ensures this]({{%
+  relref "core/user-api/thread/_index.md" %}}).
 
-Using Dovetail, a task which executes on the in-band stage moves
-out-of-band following this sequence of actions:
+Using Dovetail, a task which is executing on the in-band stage can
+switch out-of-band following this sequence of actions:
 
 1. this task calls `dovetail_leave_inband()`, which prepares for the
 transition, puts the caller to sleep (`TASK_INTERRUPTIBLE`) then
@@ -239,7 +237,7 @@ in-band task which should run on the current CPU.
 checks for any task pending transition to out-of-band stage, _before_
 the CPU is fully relinquished to the resuming in-band task. This check
 is performed by the `inband_switch_tail()` call present in the main
-scheduler. Such call has two purposes:
+   scheduler. Such call has two purposes:
 
    * detect when a task is in flight to the out-of-band stage, so that
      we can notify the autonomous core for finalizing the migration
@@ -554,11 +552,9 @@ Interrupts are **disabled** in the CPU when this handler is called.
 The autonomous core is likely to introduce its own set of system calls
 application tasks may invoke. From the standpoint of the main kernel,
 this is a foreign set of calls, which can be distinguished
-unambiguously from regular ones.
-
-If a task attached to the core issues any system call, regardless of
-which of the kernel or the core should handle it, the latter must be
-given the opportunity to:
+unambiguously from regular ones. If a task attached to the core issues
+any system call, regardless of which of the kernel or the core should
+handle it, the latter must be given the opportunity to:
 
 - handle the request directly, possibly switching the caller to
   out-of-band context first if required.
@@ -576,18 +572,21 @@ i.e. it has to belong to the core instead -, and the caller issued the
 request from the out-of-band context. This is the fast path, when a
 task running out-of-band is requesting a service the core provides.
 
-- `handle_pipelined_syscall()` is a slower path, in which this handler
-is probed for the appropriate execution stage in order to handle the
-request.  In this case, the calling logic is as follows:
+- otherwise the slow path is taken, in which
+`handle_pipelined_syscall()` is probed for handling the request from
+the appropriate execution stage.  In this case, Dovetail performs the
+following actions:
 
 {{<mermaid align="left">}}
 graph LR;
-    S("from out-of-band IRQ stage") --> A
+    S("switch to out-of-band IRQ stage") --> A
     style S fill:#ff950e;
     A["handle_pipelined_syscall()"] --> B{returned zero?}
-    B -->|Yes| C{on in-band stage?}
-    B -->|No| R(done)
-    C -->|Yes| Q(handle as regular kernel syscall)
+    B -->|Yes| C{on in-band IRQ stage?}
+    B -->|No| R{on in-band IRQ stage?}
+    R -->|Yes| U(branch to in-band user mode exit)
+    R -->|No| V(done)
+    C -->|Yes| Q(branch to in-band syscall handler)
     style Q fill:#99ccff;
     C -->|No| P[switch to in-band IRQ stage]
     style P fill:#ff950e;
@@ -595,19 +594,15 @@ graph LR;
 {{< /mermaid >}}
 
 In the flowchart above, `handle_pipelined_syscall()` should return
-zero if it wants Dovetail to propagate the unhandled system call down
-the pipeline, non-zero if the request was handled. The propagation is
-carried out:
+zero if it wants Dovetail to propagate an unhandled system call down
+the pipeline at each of the two possible steps, non-zero if the
+request was handled. Branching to the in-band user mode exit code
+ensures that any pending (in-band) signal is delivered to the current
+task and rescheduling opportunities are taken when (in-band) kernel
+preemption is enabled.
 
-- first by re-running `handle_pipelined_syscall()` in the in-band
-  context coming from the out-of-band one.
-
-- then by passing the syscall to the regular in-band system call
-handler in the assembly entry code eventually, if it remained
-unhandled by `handle_pipelined_syscall()`.
-
-Interrupts are **enabled** in the CPU when any of these handlers is
-called.
+Interrupts are always **enabled** in the CPU when any of these
+handlers is called.
 
 {{% notice note %}}
 The core may need to switch the calling task to the converse execution
