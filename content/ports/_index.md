@@ -33,7 +33,7 @@ features to be available.
 
 > Current target kernel release
 
-Linux 5.4-rc2
+Linux 5.4-rc4
 
 > ARM64 SoC
 
@@ -98,7 +98,7 @@ Linux 5.4-rc2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.3</td>
+    <td>5.4-rc4</td>
   </tr>
 </table>
 
@@ -133,7 +133,7 @@ Linux 5.4-rc2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc1</td>
+    <td>5.4-rc2</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
@@ -191,7 +191,7 @@ Linux 5.4-rc2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc2</td>
+    <td>5.4-rc4</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
