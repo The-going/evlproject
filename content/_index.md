@@ -63,8 +63,7 @@ composed of:
   core, with many cross-references between them, so that people can
   implement their software core of choice almost by example.
 
-At the end of the day, the success criteria for EVL should be about
-exhibiting:
+What EVL exhibits today:
 
 - low engineering and maintenance costs, so that common kernel
   knowledge with limited manpower should be enough to maintain
