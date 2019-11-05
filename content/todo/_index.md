@@ -12,7 +12,7 @@ pre: "&#9656; "
 |  Fix [poll element]({{< relref "#todo-poll-nesting" >}}) for deep nesting | ![poll](/images/unchecked.png?height=30px&width=30px) |
 |  Write [unit tests]({{< relref "#todo-libevl-tests" >}}) for libevl | ![tests](/images/unchecked.png?height=30px&width=30px) |
 |  Improve [tracepoints]({{< relref "#todo-tracepoints" >}}) in EVL core | ![tracepoints](/images/unchecked.png?height=30px&width=30px) |
-|  Kill the [ugly big lock]({{< relref "#todo-kill-biglock" >}}) in EVL core| ![biglock](/images/unchecked.png?height=30px&width=30px) |
+|  Kill the [ugly big lock]({{< relref "#todo-kill-biglock" >}}) in EVL core| ![biglock](/images/checked.png?height=30px&width=30px) |
 |  Sanity check for [vDSO-based clock source]({{< relref "#todo-vdso-cs" >}}) | ![vdso-cs](/images/unchecked.png?height=30px&width=30px) |
 
 ---
@@ -81,12 +81,14 @@ we need many more:
 - error injection is mostly absent from those tests.
 
 - there is no test verifying the sanity of the condition variable
-  implementation.
+  implementation. [DONE]
 
 - the file descriptor polling feature is only lightly tested, so is
-  the cross-buffer element.
+  the cross-buffer element.  [DONE]
 
 ### THE big issue: phase out the ugly big lock {#todo-kill-biglock}
+
+TASK CLOSED.
 
 This lock was inherited from the Xenomai code base (aka _nklock_
 there). This is a massive bottleneck on the road to efficient SMP
@@ -111,8 +113,8 @@ thread-to-scheduler interface points.
 The EVL core defines a number of FTRACE-based tracepoints, which for
 the most part have been inherited from Xenomai's Cobalt core, there is
 root for improvement in order to better fit the EVL context. In
-addition, the new code represents 2/3rd of the code base, which is not
-instrumented at all.
+addition, new code which has not been inherited from Xenomai is not
+instrumented for the most part.
 
 ### Sanity check for OOB-accessible clock_gettime() via vDSO {#todo-vdso-cs}
 
