@@ -33,7 +33,7 @@ features to be available.
 
 > Current target kernel release
 
-Linux 5.4-rc4
+Linux 5.4-rc6
 
 > ARM64 SoC
 
@@ -98,7 +98,7 @@ Linux 5.4-rc4
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc4</td>
+    <td>5.4-rc6</td>
   </tr>
 </table>
 
@@ -191,7 +191,7 @@ Linux 5.4-rc4
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc4</td>
+    <td>5.4-rc6</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
