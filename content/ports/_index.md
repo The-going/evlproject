@@ -82,7 +82,7 @@ Linux 5.4-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2</td>
+    <td>5.4-rc6</td>
   </tr>
   <tr>
     <td><a href="https://www.xilinx.com/support/documentation/boards_and_kits/zcu102/ug1182-zcu102-eval-bd.pdf" target="_blank">Xilinx Zynq UltraScale+ (ZCU102)</a></td>
@@ -133,7 +133,7 @@ Linux 5.4-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc2</td>
+    <td>5.4-rc6</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
