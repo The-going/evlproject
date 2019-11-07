@@ -5,6 +5,22 @@ weight: 4
 
 ## Things you definitely want to know
 
+### **isolcpus** is our friend too
+
+Isolating some CPUs on the kernel command line using the _isolcpus=_
+option, in order to prevent the load balancer from offloading in-band
+work to them is not only a good idea with
+[PREEMPT_RT](https://wiki.linuxfoundation.org/realtime/rtl/blog), but
+for any dual kernel configuration too.
+
+By doing so, having some random in-band work evicting cache lines on a
+CPU where real-time threads briefly sleep is less likely, increasing
+the odds of costly cache misses, which translates positively into the
+latency numbers you can get. Even if EVL's small footprint core has a
+limited exposure to such kind of disturbance, saving a handful of
+microseconds is worth it when the worst case figure is already within
+tenths of microseconds.
+
 ### **CONFIG_DEBUG_HARD_LOCKS** is cool but ruins real-time guarantees
 
 When CONFIG_DEBUG_HARD_LOCKS is enabled, the lock dependency engine
@@ -25,21 +41,20 @@ In short, it is fine enabling CONFIG_DEBUG_HARD_LOCKS for debugging
 some locking pattern in EVL, but you won't be able to meet real-time
 requirements at the same time in such configuration.
 
-### **isolcpus** is our friend too
+### CPU frequency scaling (usually) has an impact on latency
 
-Isolating some CPUs on the kernel command line using the _isolcpus=_
-option, in order to prevent the load balancer from offloading in-band
-work to them is not only a good idea with
-[PREEMPT_RT](https://wiki.linuxfoundation.org/realtime/rtl/blog), but
-for any dual kernel configuration too.
+Enabling the _ondemand_ CPUFreq governor - or any governor performing
+dynamic adjustment of the CPU frequency - may induce significant
+latency for EVL on your system, from ten microseconds to more than a
+hundred depending on the hardware. Selecting the so-called
+_performance_ governor is the safe option, which guarantees that no
+frequency transition ever happens, keeping the CPUs at their maximum
+processing speed.
 
-By doing so, having some random in-band work evicting cache lines on a
-CPU where real-time threads briefly sleep is less likely, increasing
-the odds of costly cache misses, which translates positively into the
-latency numbers you can get. Even if EVL's small footprint core has a
-limited exposure to such kind of disturbance, saving a handful of
-microseconds is worth it when the worst case figure is already within
-tenths of microseconds.
+In other words, if CONFIG_CPU_FREQ has to be enabled in your
+configuration, enabling CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE and
+CONFIG_CPU_FREQ_GOV_PERFORMANCE exclusively is most often the best way
+to prevent unexpectedly high latency peaks.
 
 ### Disable CONFIG_SMP for best latency on single-core systems
 
