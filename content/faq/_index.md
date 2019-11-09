@@ -2,7 +2,96 @@
 title: "FAQ"
 weight: 25
 pre: "&#9656; "
+draft: true
 ---
+
+### Why another dual kernel system?
+
+Why a dual kernel system based on Linux is still relevant when
+[real-time
+preemption](https://wiki.linuxfoundation.org/realtime/rtl/blog)
+capabilities will soon be available from the stock mainline kernel is
+addressed by [this document]({{%relref
+"dovetail/_index.md#dual-kernel-upsides" %}}). Why the [EVL
+core]({{%relref "core/_index.md" %}}) can better illustrate the deeper
+integration between a dedicated real-time core and the GPOS kernel
+than [Xenomai](https://xenomai.org/) - which is arguably one of the
+most deployed dual kernel systems to date - is explained next.
+
+Xenomai's _Cobalt_ real-time core and the interrupt pipeline support
+(aka _I-pipe_) it depends on have limitations which could not be
+lifted without changing fundamental aspects of their respective
+implementation and interfaces:
+
+- a tendency for many Xenomai drivers to duplicate mainline code and
+  eventually bit rot. Such a driver which originates from the mainline
+  kernel is significantly modified in order to convert it to
+  [RTDM](https://xenomai.org/documentation/xenomai-3/html/xeno3prm/group__rtdm.html),
+  Xenomai's own device driver model. Usually, the code from the
+  original driver which is not deemed useful for carrying out
+  real-time work is stripped out from the Xenomai copy, and the
+  resulting software has to live out-of-tree (kernel-wise). For these
+  reasons, upstream changes to the original driver are rarely
+  backported to its Xenomai counterpart because this is a tedious and
+  error-prone task done manually, which is an obvious maintenance
+  problem. This issue is particularly significant with all NIC drivers
+  available from Xenomai's real-time networking stack (_RTnet_).
+
+- a single lock model (aka _nklock_) in _Cobalt_ which serializes all
+  CPU cores running real-time code inside most critical sections. This
+  straightforward locking model has benefited Xenomai for years thanks
+  to its simplicity and reliability with only a few CPU cores, but it
+  shows its age in a time when 8+ cores per CPUs are frequently found,
+  including in the embedded space.
+
+- a code footprint which is still too large and complex in kernel
+  space despite a major reduction with the Xenomai 3.x series, due to
+  a POSIX interface directly implemented there which amounts to 100+
+  system calls. Among other issues, this makes the barrier to entry
+  for new contributors uselessly high.
+
+- the interrupt management, IRQ handling, clock source management are
+  all implemented mainly by redundant code in the _I-pipe_ which runs
+  in parallel to the mainline kernel's logic. Although efforts were
+  made over the years to simplify and better integrate the interrupt
+  pipelining mechanism into the mainline code, some design decisions
+  for the _I-pipe_ block further improvements in this area. As a
+  consequence, limitations are imposed on Xenomai, such as the
+  inability to deal reliably with power management events or even
+  survive dynamic frequency scaling in CPUs, which is kind of a
+  problem (although CPU throttling is [generally bad news for latency
+  figures]({{% relref "core/caveat/_index.md#caveat-cpufreq" %}}), but
+  the real-time core should not choke on it at the very least).
+
+Facing that, two options were possible: either fixing those
+fundamental issues gradually in the _Cobalt_ core over time, at the
+expense of breaking compatibility for many RTDM-based drivers already
+in the field (e.g. _nklock_ removal), supporting even more kernel
+interface wrappers (e.g. some RTDM-like shim layer), and eventually
+implementing a new Xenomai POSIX interface from scratch in user-space
+based on a new set of basic kernel services. Or, starting with a clean
+sheet, for the purpose of implementing a reference dual kernel system
+which could be straightforward and efficient enough for others to use
+directly or as a practical example for developing their own system,
+which is the idea behind the EVL project. This has led to the EVL
+real-time core, which addresses the issues presented earlier as
+follows:
+
+- the EVL core does not introduce a specific driver model, but
+  marginally extends the regular Linux model for supporting
+  [out-of-band I/O operations]({{% relref "core/kernel-api/_index.md"
+  %}}) from the real-time core instead.
+
+- it is scalable on large multi-core systems, there is **no big
+  lock**.
+
+- it implements a handful of basic features in kernel space known as
+  [_elements_]({{% relref "core/_index.md#evl-core-elements" %}}),
+  which are building blocks for high-level API services in user-space.
+
+- it is [Dovetail]({{% relref "dovetail/_index.md" %}})-native and was
+  actually used as a test bench for this new dual kernel interface
+  which solves the existing design issues of the _I-pipe_.
 
 ### Who is behind the EVL project?
 
@@ -12,71 +101,8 @@ which eventually became
 [this](https://lwn.net/Articles/140374/). Hopefully, at some point, I
 will get the dual kernel thing right eventually.
 
-### Why the EVL project?
-
-EVL is a way to experiment freely with dual kernel technology going
-back to the drawing board for the most part, which can be pretty damn
-fun.
-
-In the long run, I'm hoping that the work which takes place in EVL
-will help in improving [Xenomai](https://xenomai.org) which I
-contribute to as well. For instance, substituting the venerable
-[_I-pipe_](https://gitlab.denx.de/Xenomai/xenomai/wikis/Dovetail/)
-with [Dovetail]({{% relref "dovetail/_index.md" %}}) as Xenomai's
-dual kernel interface is a valuable goal.
-
 ### Where should the discussion on EVL take place?
 
 You can register on the [EVL mailing
 list](https://evlproject.org/mailman/listinfo/evl/) to discuss
 EVL-related topics including Dovetail and the real-time EVL core.
-
-### How do EVL and Xenomai differ?
-
-In several ways implementation-wise, starting from the interface which
-connects the Linux kernel to the autonomous core: EVL is developing
-[Dovetail]({{% relref "dovetail/_index.md" %}}), Xenomai relies on its
-ancestor, the [interrupt pipeline](https://git.xenomai.org/ipipe-arm).
-
-Although the EVL core inherits some basic code from Xenomai's [Cobalt
-core](https://git.xenomai.org/Xenomai/xenomai), both implementations
-are already quite different, and poised to diverge even more over
-time:
-
-- the EVL core only implements a handful of basic features in kernel
-  space known as [_elements_]({{% relref
-  "core/_index.md#evl-core-elements" %}}), which should be sufficient
-  to provide high-level API services from user-space. At the opposite,
-  Xenomai's Cobalt core implements a POSIX interface directly from
-  kernel space which amounts to 100+ system calls.
-
-- another major difference is the lack of specific driver model in the
-  EVL core, which fits in the regular Linux model. Xenomai relies on
-  the [RTDM]
-  (https://xenomai.org/documentation/xenomai-3/html/xeno3prm/group__rtdm.html)
-  layer instead, which is entirely separate.
-
-- high scalability with large multi-core systems is a strong goal of
-  the EVL core, and the current single-lock model Cobalt exhibits
-  won't fit that bill. For this reason, their respective scheduler
-  infrastructures are already diverging.
-
-EVL and Xenomai differ in purpose too.  On the one hand,
-[Xenomai](https://xenomai.org) aims at a comprehensive real-time
-framework offering multiple APIs, RTOS emulators and various protocol
-stacks, based on a POSIX-compliant core and the [I-pipe dual kernel
-interface](https://gitlab.denx.de/Xenomai/xenomai/wikis/Getting_The_I_Pipe_Patch),
-tracking [LTS kernel
-releases](https://www.kernel.org/category/releases.html).  Xenomai
-APIs can even run in single kernel configurations such as
-[PREEMPT_RT](https://wiki.linuxfoundation.org/realtime/rtl/blog).
-
-On the other hand, EVL is about enabling any autonomous software core
-to run along the most recent mainline kernel release, according to
-[clear interface rules]({{% relref "dovetail/_index.md" %}}) defined
-by the latter. In other words, _EVL is all about, and only about dual
-kernel technology_. To showcase this, EVL comes with a compact
-[real-time core]({{%relref "core/_index.md" %}}) delivering basic
-services via a [small library]({{% relref "core/user-api/_index.md"
-%}}) implementing its ad hoc API, for anyone to play with and build
-on.

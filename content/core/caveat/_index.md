@@ -5,7 +5,7 @@ weight: 4
 
 ## Things you definitely want to know
 
-### **isolcpus** is our friend too
+### **isolcpus** is our friend too {#caveat-isocpus}
 
 Isolating some CPUs on the kernel command line using the _isolcpus=_
 option, in order to prevent the load balancer from offloading in-band
@@ -41,7 +41,7 @@ In short, it is fine enabling CONFIG_DEBUG_HARD_LOCKS for debugging
 some locking pattern in EVL, but you won't be able to meet real-time
 requirements at the same time in such configuration.
 
-### CPU frequency scaling (usually) has an impact on latency
+### CPU frequency scaling (usually) has a negative impact on latency {#caveat-cpufreq}
 
 Enabling the _ondemand_ CPUFreq governor - or any governor performing
 dynamic adjustment of the CPU frequency - may induce significant

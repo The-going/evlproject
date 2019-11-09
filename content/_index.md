@@ -41,43 +41,57 @@ execution context, which in turn has the following upsides:
   fundamental conflicts with upstream changes, only marginal
   adjustments so far.
 
-## Dual kernel made easy
+## Pitching EVL
 
-EVL as a project is about enabling engineers to implement their own
-flavour of software core running symbiotically with Linux, whatever
-the specific purpose of this core may be. This ongoing work is
-composed of:
+In a nutshell, the EVL project is about introducing a simple, scalable
+and dependable dual kernel architecture for Linux, based on the
+[Dovetail interface]({{% relref "dovetail/_index.md" %}}) for coupling
+a task-specific software core to the main kernel. This interface is
+showcased by a compact [real-time core]({{%relref "core/_index.md"
+%}}) delivering basic services to applications via a [straightforward
+API]({{% relref "core/user-api/_index.md" %}}). EVL starts from a
+clean sheet, for the purpose of implementing a production-ready
+real-time infrastructure, which can also serve as a starting point for
+engineers to build their own flavour of software core running as part
+of the Linux system. This ongoing work is composed of:
 
 - the [Dovetail]({{% relref "dovetail/_index.md" %}}) interface, which
-  introduces a high-priority execution stage for the main kernel,
-  enabling an independent software core to run on it.
+  introduces a high-priority execution stage into the main kernel
+  logic, where a functionally-independent software core runs.
 
-- the [EVL core]({{%relref "core/_index.md" %}}), a compact autonomous
-  core showcasing [Dovetail]({{% relref "dovetail/_index.md" %}}). It
-  aims at delivering reliable low-latency services to applications
-  which have to meet real-time requirements. It is developed like any
-  ordinary feature of the mainline kernel, making the best of the rich
-  infrastructure we have there for improving the integration.
+- a compact [real-time core]({{%relref "core/_index.md" %}}), which is
+  deeply integrated into the main kernel. The EVL core delivers
+  dependable low-latency services to applications which have to meet
+  real-time requirements. Applications are developed using the common
+  Linux programming model.
 
 - an in-depth documentation which covers both Dovetail and the EVL
-  core, with many cross-references between them, so that people can
+  core, with many cross-references between them, so that engineers can
   implement their software core of choice almost by example.
 
-What EVL exhibits today:
+The result looks promising:
 
-- low engineering and maintenance costs, so that common kernel
-  knowledge with limited manpower should be enough to maintain
-  [Dovetail]({{% relref "dovetail/_index.md" %}}) and the [EVL
-  core]({{%relref "core/_index.md" %}}) over the development tip of
-  the mainline kernel.
+- Low engineering and maintenance costs. With a manageable code
+  footprint (20 KLOC, which is not even half the size of the
+  [Xenomai](https://xenomai.org/) core) and a well-integrated
+  implementation, working on EVL only requires common kernel
+  development knowledge.
 
-- low runtime cost, with excellent real-time performances including on
-  low-end and mid-range hardware, leaving plenty of cycles for running
-  GPOS work concurrently.
+- Low runtime cost. The EVL core has excellent real-time performances
+  including on low-end, single-core hardware, leaving plenty of CPU
+  cycles for running GPOS work concurrently.
 
-- high scalability, from single core to dozens of them happily running
-  the time-critical workload in parallel with reliably low latency
-  footprint.
+- High scalability. From single core to high-end multi-core machines
+  running time-critical workloads in parallel with low and bounded
+  latency. EVL does not require CPU isolation for running tasks with
+  demanding real-time response requirements, although [this may
+  help]({{% relref "core/caveat/_index.md#caveat-isolcpus" %}}) in
+  getting even lower latency figures.
+
+- Low configuration. No runtime tweaks are required to ensure that the
+  real-time behavior is not affected by other parts of the Linux
+  system. Once enabled in the kernel, the EVL core is ready to
+  deliver.
 
 ## Getting the sources
 
