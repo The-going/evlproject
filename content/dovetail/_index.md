@@ -52,17 +52,21 @@ from the GPOS infrastructure:
   specifically aimed at real-time usage is clearly an asset, not a
   limitation.
 
-This documentation presents _Dovetail_, an interface for integrating
-any sort of autonomous software core into the kernel, such as a
-real-time core. The two main software layers forming Dovetail are
-described:
+This documentation presents _Dovetail_, a kernel interface which
+defines a new execution stage in the mainline kernel logic.  At any
+time, out-of-band activities running on this stage can preempt the
+common work. A task-specific software core - such as a real-time core
+- can connect to this interface for gaining bounded response time to
+external interrupts and ultra-low latency scheduling
+capabilities. This translates into the Dovetail implementation as
+follows:
 
-- first the interrupt pipeline which creates a high-priority execution
-stage for an autonomous software core to run on.
+- the interrupt pipeline which creates a high-priority execution stage
+for an autonomous software core to run on.
 
-- then, support for [_alternate scheduling_]({{% relref
-"dovetail/altsched.md" %}}) between the main kernel and the
-autonomous software core, for sharing *kthreads* and *user* tasks.
+- support for the so-called [_alternate scheduling_]({{% relref
+"dovetail/altsched.md" %}}) between the main kernel and the autonomous
+software core for sharing *kthreads* and *user* tasks.
 
 Although both layers are likely to be needed for implementing some
 autonomous core, only the interrupt pipeline has to be enabled in the

@@ -4,49 +4,19 @@ title: "EVL project"
 
 # The EVL Project
 
-## Dual Kernel Rebooted
+## Pitching EVL
 
 For certain types of applications, offloading a particular set of
-time-critical tasks to an autonomous core hosted by the Linux kernel
-may deliver the best possible performance when compared to forcing the
-entire Linux kernel to meet the most stringent scheduling latency
-requirements that only those tasks may have. EVL is a practical work
-on finding the best possible integration of such a dedicated software
-core into the mainline Linux kernel.
-
-EVL re-imagines the venerable dual kernel design by introducing the
-dual kernel support logic at the heart of Linux, which defines the set
-of rules to host a guest core.  EVL also comes with a real-time core
-showcasing this integration, which is conceived as a learning tool for
-discovering the dual kernel technology as much as it aims at excellent
-performance and usability.
-
-The key technical issue is about introducing a new execution stage in
-the mainline kernel logic which would represent high priority,
-out-of-band activities separated from the common work running in-band.
-This requires a few kernel subsystems to know intimately about the new
-execution context, which in turn has the following upsides:
-
-- the integration is simpler and cleaner, because we don't need
-  sideways. The point is not about hiding the dual kernel interface
-  from the main logic, but on the contrary to make it a customary
-  interface of the main kernel.
-
-- compared to the
-  [I-pipe](https://git.xenomai.org/xenomai/wikis/Getting_The_I_Pipe_Patch)
-  which is the interface currently used by several dual kernel systems
-  such as [Xenomai](https://xenomai.org/), maintaining the new
-  [Dovetail dual kernel interface]({{% relref "dovetail/_index.md"
-  %}}) out-of-tree proved to be a much easier task already, without
-  fundamental conflicts with upstream changes, only marginal
-  adjustments so far.
-
-## Pitching EVL
+time-critical tasks to an autonomous software core hosted by the Linux
+kernel may deliver the best performance at the lowest engineering and
+runtime costs in comparison to forcing the entire kernel to meet the
+most demanding response time requirements which only those tasks
+have.
 
 In a nutshell, the EVL project is about introducing a simple, scalable
 and dependable dual kernel architecture for Linux, based on the
 [Dovetail interface]({{% relref "dovetail/_index.md" %}}) for coupling
-a task-specific software core to the main kernel. This interface is
+a high-priority software core to the main kernel. This interface is
 showcased by a compact [real-time core]({{%relref "core/_index.md"
 %}}) delivering basic services to applications via a [straightforward
 API]({{% relref "core/user-api/_index.md" %}}). EVL starts from a
