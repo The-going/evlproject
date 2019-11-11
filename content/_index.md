@@ -85,11 +85,11 @@ kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
 The build recipe is available [there]({{% relref "core/build-steps.md"
 %}}).
 
-## Mailing list
+## Participate and discuss
 
-You can register on the [EVL mailing
-list](https://evlproject.org/mailman/listinfo/evl/) to discuss
-EVL-related topics including Dovetail and the real-time EVL core.
+EVL-related topics including Dovetail and the EVL real-time core can
+be discussed in this [RIOT chat
+room](https://riot.im/app/#/room/#evlproject:matrix.org).
 
 ## Licensing terms
 
