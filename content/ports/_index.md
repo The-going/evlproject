@@ -11,13 +11,14 @@ ported in the following sequence:
 1. the [Dovetail]({{%relref "dovetail/_index.md" %}}) interface. This
    task is composed of two incremental milestones: first getting the
    [interrupt pipeline]({{% relref "dovetail/pipeline/_index.md" %}})
-   to work, then enabling the [alternate scheduling]({{% relref "dovetail/altsched.md" %}}). Porting [Dovetail]({{%relref
+   to work, then enabling the [alternate scheduling]({{% relref
+   "dovetail/altsched.md" %}}). Porting [Dovetail]({{%relref
    "dovetail/_index.md" %}}) is where most of the work takes place,
    the other porting tasks are comparatively quite simple.
 
-2. the [EVL core]({{%relref "core/_index.md" %}}). It is mostly
-   composed of architecture-independent code, only a few bits need to
-   be ported (a FPU test helper for the most part).
+2. the [EVL core]({{%relref "core/_index.md" %}}) which is mostly
+   composed of architecture-independent code, therefore only a few
+   bits need to be ported (a FPU test helper for the most part).
 
 3. the [EVL library]({{%relref "core/user-api/_index.md"
    %}}). Likewise, this code has very little dependencies on the
@@ -28,12 +29,12 @@ The table below summarizes the current status of the existing
 ports. If you are interested in porting your own autonomous core to a
 particular kernel release Dovetail supports, you certainly need the
 _IRQ pipeline_ column matching the target platform to be checked, and
-likely the _Alternate scheduling_ column as well. EVL requires both
-features to be available.
+likely the _Alternate scheduling_ column as well. Running the EVL core
+requires both features to be available.
 
 > Current target kernel release
 
-Linux 5.4-rc6
+Linux 5.4-rc7
 
 > ARM64 SoC
 
@@ -98,7 +99,7 @@ Linux 5.4-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc6</td>
+    <td>5.4-rc7</td>
   </tr>
 </table>
 
@@ -191,7 +192,7 @@ Linux 5.4-rc6
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc6</td>
+    <td>5.4-rc7</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
@@ -224,9 +225,10 @@ the platform, which is a good starting point. So far so good.
 
 <sup>3</sup> When this box is checked, the [EVL core]({{%relref
 "core/_index.md" %}}) passes a massive stress test involving the
-_hectic_ and _latmus_ applications running in parallel for 24 hrs, all
-glitchlessly. This denotes a reliable state, including flawless
-alternate scheduling of threads between the main kernel and EVL. On
-the contrary, a problem with sharing the FPU unit properly between the
-in-band and out-of-band execution contexts is most often the reason
-for keeping this box unchecked until the situation is fixed.
+_hectic_ and _latmus_ applications running in parallel along with the
+full test suite for 24 hrs, all glitchlessly. This denotes a reliable
+state, including flawless alternate scheduling of threads between the
+main kernel and EVL. On the contrary, a problem with sharing the FPU
+unit properly between the in-band and out-of-band execution contexts
+is most often the reason for keeping this box unchecked until the
+situation is fixed.
