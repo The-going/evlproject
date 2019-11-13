@@ -53,13 +53,15 @@ call, like
 EVL proxies can be also be used for carrying over memory mapping
 requests to a final device which actually serves the mapping.  The
 issuer of such request does not have to know which device driver will
-be actually serving that request: the proxy acts as an anchor point
-agreed between peer processes in order to locate a particular mappable
-resource, and the proxy simply redirects the mapping requests it
-receives to the device driver handling the target file it is proxying
-for.
+be actually handling that request: the proxy acts as an anchor point
+agreed between peer processes in order to locate a particular
+memory-mappable resource, and the proxy simply redirects the mapping
+requests it receives to the device driver handling the target file it
+is proxying for.
 
-> Exporting private memfd memory to the outer world
+![Alt text](/images/proxy-mmap.png "Mapping proxy")
+
+> Exporting process-private memfd memory to the outer world
 
 For instance, this usage of a proxy comes in handy when you need to
 export a private memory mapping like those obtained by
@@ -67,9 +69,9 @@ export a private memory mapping like those obtained by
 to a peer process, assuming you don't want to deal with the hassle of
 the POSIX
 [shm_open(3)](http://man7.org/linux/man-pages/man3/shm_open.3.html)
-interface for sharing memory objects.  in this case, all this peer has
-to know is the name of the proxy which is associated with the mappable
-device. It can
+interface for sharing memory objects.  In this case, all this peer has
+to know is the name of the proxy which is associated with the
+memory-mappable device. It can
 [open(2)](http://man7.org/linux/man-pages/man2/open.2.html) that proxy
 device in _/dev/evl/proxy/_, then issue the
 [mmap(2)](http://man7.org/linux/man-pages/man2/mmap.2.html) system
@@ -124,7 +126,9 @@ until the inband worker has relayed it to the destination file.
 Out-of-band writers may block attempting to write to a proxy file
 descriptor if the buffer is full, waiting to be depleted by the inband
 worker thread, unless the proxy descriptor is set to non-blocking mode
-(O_NONBLOCK).
+(O_NONBLOCK). Zero is an acceptable value if you plan to use this
+proxy exclusively for exporting a shared memory mapping, in which case
+there is no point in reserving an output buffer.
 {{% /argument %}}
 
 {{% argument granularity %}}
@@ -138,8 +142,9 @@ available from the circular buffer for sending them in one go to the
 target file. Conversely, any non-zero granularity value is used as the
 exact count of bytes which is written to the destination file by the
 inband worker at each transfer. For instance, in the
-[eventfd](http://man7.org/linux/man-pages/man2/eventfd.2.html) case,
-we would use sizeof(uint64_t).
+[eventfd](http://man7.org/linux/man-pages/man2/eventfd.2.html) use case,
+we would use sizeof(uint64_t). You may pass zero for a memory mapping
+proxy since no granularity is applicable in this case.
 {{% /argument %}}
 
 {{% argument fmt %}}
