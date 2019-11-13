@@ -77,6 +77,11 @@ weight: 150
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
+  <tr>
+    <td><a href="/core/user-api/scheduling/index.html#evl_get_cpustate" target="_blank">evl_get_cpustate()</a></td>
+    <td>&#9866;</td> 
+    <td>&#9989;</td> 
+  </tr>
 </table>
 
 #### Clock services
@@ -116,7 +121,7 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/clock/index.html#evl_sleep" target="_blank">evl_sleep()</a></td>
+    <td><a href="/core/user-api/clock/index.html#evl_sleep_until" target="_blank">evl_sleep_until()</a></td>
     <td>&#9651;</td> 
     <td>&#10005;</td> 
   </tr>
@@ -591,6 +596,11 @@ weight: 150
   <tr>
     <td><a href="/core/user-api/misc/index.html#evl_init" target="_blank">evl_init()</a></td>
     <td>N/A</td> 
+    <td>&#9989;</td> 
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/misc/index.html#evl_get_version" target="_blank">evl_get_version()</a></td>
+    <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
