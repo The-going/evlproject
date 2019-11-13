@@ -19,7 +19,7 @@ footprint and limited complexity makes it a good choice as a
 plug-and-forget real-time infrastructure, which can also be used as a
 starting point for custom core implementations:
 
-![Alt text](/images/kloc-core.png "EVL code footprint")
+![Alt text](/images/kloc-core.png "EVL kernel code footprint")
 
 The user-space interface to this core is the [EVL library]({{% relref
 "core/user-api/_index.md" %}}) (`libevl.so`), which implements the
@@ -28,6 +28,8 @@ synchronization services. No bells and whistles, only the basic
 stuff. The intent is to provide simple mechanisms, complex semantics
 and policies can and should be implemented in high level APIs based on
 this library running in userland.
+
+![Alt text](/images/kloc-user.png "EVL user code footprint")
 
 ## Elements {#evl-core-elements}
 
