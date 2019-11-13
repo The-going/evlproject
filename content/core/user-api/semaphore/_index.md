@@ -403,3 +403,19 @@ error code is returned:
 Closing a [statically initialized]({{< relref "#EVL_SEM_ANY_INITIALIZER"
 >}}) semaphore descriptor which has never been used in get or put
 operations always returns zero.
+
+---
+
+### Events pollable from a semaphore file descriptor
+
+The [evl_poll()]({{< relref "core/user-api/poll/_index.md" >}})
+interface can monitor the following events occurring on a semaphore
+file descriptor:
+
+- _POLLIN_ and _POLLRDNORM_ are set whenever the semaphore count is
+  strictly positive, which means that a subsequent attempt to deplete
+  it by a call to [evl_get_sem()]({{< relref "#evl_get_sem" >}}),
+  [evl_tryget_sem()]({{< relref "#evl_tryget_sem" >}}) or
+  [evl_timedget_sem()]({{< relref "#evl_timedget_sem" >}}) _might_ be
+  successful without blocking (i.e. unless another thread sneaks in
+  in the meantime and fully depletes the semaphore).

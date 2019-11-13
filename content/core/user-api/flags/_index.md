@@ -462,3 +462,24 @@ error code is returned:
 Closing a [statically initialized]({{< relref
 "#EVL_FLAGS_ANY_INITIALIZER" >}}) flag group descriptor which has
 never been used in wait or post operations always returns zero.
+
+---
+
+### Events pollable from an event flag group descriptor
+
+The [evl_poll()]({{< relref "core/user-api/poll/_index.md" >}})
+interface can monitor the following events occurring on an event
+flag group descriptor:
+
+- _POLLIN_ and _POLLRDNORM_ are set whenever the flag group value is
+  non-zero, which means that a subsequent attempt to read it by a call
+  to [evl_wait_flags()]({{< relref "#evl_wait_flags" >}}),
+  [evl_trywait_flags()]({{< relref "#evl_trywait_flags" >}}) or
+  [evl_timedwait_flags()]({{< relref "#evl_timedwait_flags" >}})
+  _might_ be successful without blocking (i.e. unless another thread
+  sneaks in in the meantime and collects the pending flags).
+
+- _POLLOUT_ and _POLLWRNORM_ are set whenever the flag group value is
+  zero, which means that no flag is pending at the time of the
+  call. As a result, polling for such status waits for all pending
+  events to have been read by the receiving side.
