@@ -96,3 +96,35 @@ your time-critical code only relies on either:
 Outside of those time-critical sections which require the EVL core to
 guarantee ultra-low latency scheduling for your application threads,
 your code may happily call whatever service from whatever \*libc.
+
+## What about multi-process applications?
+
+`libevl` does not impose any policy regarding how you might want to
+organize your application over multiple processes. However, the design
+and implementation of the interface to the EVL core makes sharing EVL
+resources a fairly simple task:
+
+- most EVL resources are visible as common [devices in the DEVTMPFS
+  file system]({{< relref "core/_index.md#everything-is-a-file"
+  >}}). [Threads]({{< relref "core/user-api/thread/_index.md" >}}),
+  [mutexes]({{< relref "core/user-api/mutex/_index.md" >}}),
+  [events]({{< relref "core/user-api/event/_index.md" >}}),
+  [semaphores]({{< relref "core/user-api/semaphore/_index.md" >}})
+  etc., every resource you might want to share can be accessed by
+  multiple processes as files.
+
+- the implementation guarantees that any EVL resource which is
+  accessible from the device file system can be safely manipulated by
+  any process which is allowed to get a file descriptor on the
+  corresponding device file. EVL system calls apply to the resource
+  which is eventually referred to by the file descriptor. For
+  instance, if two processes may open a device file which path is
+  _"/dev/evl/thread/supervisor"_, then both may reach the
+  _"supervisor"_ thread created by the EVL core via the
+  [evl_attach_self("supervisor")]({{< relref
+  "core/user-api/thread/_index.md#evl_thread_self" >}}) system call.
+
+In addition, EVL provides a mechanism which come in handy for sharing
+memory between processes, using the [file proxy]({{< relref
+"core/user-api/proxy/_index.md#proxy-mapping-export" >}}) as an anchor
+point for memory-mappable devices.

@@ -158,7 +158,7 @@ side of the channel as follows:
 	}
 ```
 
-### Export of memory mappings
+### Export of memory mappings {#proxy-mapping-export}
 
 EVL proxies can be also be used for carrying over memory mapping
 requests to a final device which actually serves the mapping.  The
