@@ -33,20 +33,56 @@ descriptor using EVL's [oob_write()]({{< relref
 readers can receive using the
 [read(2)](http://man7.org/linux/man-pages/man2/read.2.html) system
 call. You can associate any type of file with a proxy, including a
-[socket](http://man7.org/linux/man-pages/man2/socket.2.html),
-[eventfd](http://man7.org/linux/man-pages/man2/eventfd.2.html),
-[signalfd](http://man7.org/linux/man-pages/man2/signalfd.2.html),
-[pipe](http://man7.org/linux/man-pages/man7/pipe.7.html) and so on
+[socket(2)](http://man7.org/linux/man-pages/man2/socket.2.html),
+[eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html),
+[signalfd(2)](http://man7.org/linux/man-pages/man2/signalfd.2.html),
+[pipe(2)](http://man7.org/linux/man-pages/man7/pipe.7.html) and so on
 (see also the discussion below about the write [granularity]({{<
 relref "#evl_new_proxy" >}})). This means that you could also use a
 proxy for signaling an inband object from the out-of-band context, if
 doing so can be done using a regular
 [write(2)](http://man7.org/linux/man-pages/man2/write.2.html) system
 call, like
-[eventfd](http://man7.org/linux/man-pages/man2/eventfd.2.html) and
-[signalfd](http://man7.org/linux/man-pages/man2/signalfd.2.html).
+[eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html) and
+[signalfd(2)](http://man7.org/linux/man-pages/man2/signalfd.2.html).
+
+The proxy also handles output from callers running on the inband stage
+transparently. In this case, a regular
+[write(2)](http://man7.org/linux/man-pages/man2/write.2.html) can be
+used to channel the data to the target file.
 
 ![Alt text](/images/proxy.png "File proxy")
+
+> Logging debug messages via a proxy
+
+For instance, you may want your application to dump debug information
+to some arbitray file as it runs, including when running time-critical
+code out-of-band. Admittedly, this would add some overhead, but still
+low enough to keep the system happy, while giving you precious debug
+hints. Obviously, you cannot get away with calling the plain
+[printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html)
+service for this, since it would downgrade the calling EVL thread to
+[inband mode]({{< relref "dovetail/altsched.md#inband-switch"
+>}}). However, you may create a proxy to the debug file:
+
+```
+	#include <evl/proxy.>
+
+	int proxyfd, debugfd;
+
+	debugfd = open("/tmp/debug.log", O_WRONLY|O_CREAT|O_TRUNC, 0600);
+	...
+	/* Create a proxy offering a 1 MB buffer. */
+	proxyfd = evl_new_proxy(debugfd, 1024*1024, 0, "log:%d", getpid());
+	...
+```
+
+Then channel debug output from anywhere in your code you see fit
+through the proxy this way:
+
+```
+	evl_print_proxy(proxyfd, "some useful debug information");
+```
 
 ### Export of memory mappings
 
@@ -65,7 +101,7 @@ is proxying for.
 
 For instance, this usage of a proxy comes in handy when you need to
 export a private memory mapping like those obtained by
-[memfd_create()](http://man7.org/linux/man-pages/man2/memfd_create.2.html)
+[memfd_create(2)](http://man7.org/linux/man-pages/man2/memfd_create.2.html)
 to a peer process, assuming you don't want to deal with the hassle of
 the POSIX
 [shm_open(3)](http://man7.org/linux/man-pages/man3/shm_open.3.html)
@@ -80,6 +116,8 @@ application standpoint, creating then sharing a 1 KB RAM segment with
 other peer processes may be as simple as this:
 
 ```
+	#include <evl/proxy.>
+
 	int memfd, ret;
 	void *ptr;
 
@@ -114,6 +152,11 @@ Any remote process peer could then do:
 int evl_new_proxy(int targetfd, size_t bufsz, size_t granularity, const char *fmt, ...)
 {{< /proto >}}
 
+This call creates a proxy, returning a file descriptor representing
+the new object upon success. [oob_write()]({{< relref
+"core/user-api/io/_index.md#oob_write" >}}) should be used to send
+data through the proxy for zero-latency output to regular files.
+
 {{% argument targetfd %}}
 A descriptor referring to the destination file which should receive
 the output written to the proxy file descriptor returned by
@@ -135,26 +178,27 @@ there is no point in reserving an output buffer.
 In some cases, the target file may have special semantics, which
 requires a fixed amount of data to be submitted at each write
 operation, like the
-[eventfd](http://man7.org/linux/man-pages/man2/eventfd.2.html) file
+[eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html) file
 which requires 64-bit words to be written to it at each transfer. When
 granularity is zero, the proxy is free to pull as many bytes as
 available from the circular buffer for sending them in one go to the
 target file. Conversely, any non-zero granularity value is used as the
 exact count of bytes which is written to the destination file by the
 inband worker at each transfer. For instance, in the
-[eventfd](http://man7.org/linux/man-pages/man2/eventfd.2.html) use case,
+[eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html) use case,
 we would use sizeof(uint64_t). You may pass zero for a memory mapping
 proxy since no granularity is applicable in this case.
 {{% /argument %}}
 
 {{% argument fmt %}}
-A printf-like format string to generate the proxy name. A common
-way of generating unique names is to add the calling process's _pid_
-somewhere into the format string as illustrated in the example. The
-generated name is used to form a last part of a pathname, referring to
-the new [proxy]({{< relref "core/_index.md" >}}) device
-in the file system. So this name must contain only valid characters in
-this context, excluding slashes.
+A [printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html)-like
+format string to generate the proxy name. A common way of generating
+unique names is to add the calling process's _pid_ somewhere into the
+format string as illustrated in the example. The generated name is
+used to form a last part of a pathname, referring to the new
+[proxy]({{< relref "core/_index.md" >}}) device in the file system. So
+this name must contain only valid characters in this context,
+excluding slashes.
 {{% /argument %}}
 
 {{% argument "..." %}}
@@ -191,3 +235,107 @@ success. If the call fails, a negated error code is returned instead:
 		is called by any thread of your process, or by explicitly
 		calling `evl_init()`. You have to bootstrap the library
 		services in a way or another before creating an EVL proxy.
+
+---
+
+{{< proto evl_send_proxy >}}
+ssize_t evl_send_proxy(int proxyfd, const void *buf, size_t count)
+{{< /proto >}}
+
+This is a shorthand checking the current execution stage before
+sending the output through a proxy channel via the proper system call,
+i.e. [write(2)](http://man7.org/linux/man-pages/man2/write.2.html) if
+inband, or [oob_write()]({{< relref
+"core/user-api/io/_index.md#oob_write" >}}) if out-of-band. You can
+use this routine to emit output from a portion of code which may be
+used from both stages.
+
+{{% argument proxyfd %}}
+A descriptor referring to the proxy which should handle the output data.
+{{% /argument %}}
+
+{{% argument buf %}}
+A buffer containing the data to be written.
+{{% /argument %}}
+
+{{% argument count %}}
+The number of bytes to write starting from _buf_.
+Zero is acceptable and leads to a null-effect.
+{{% /argument %}}
+
+`evl_send_proxy()` returns the number of bytes sent through the proxy. A
+negated error code is returned on failure, which corresponds to the
+_errno_ value received from either
+[write(2)](http://man7.org/linux/man-pages/man2/write.2.html) or
+[oob_write()]({{< relref "core/user-api/io/_index.md#oob_write" >}})
+depending on the calling stage.
+
+---
+
+{{< proto evl_print_proxy >}}
+int evl_vprint_proxy(int proxyfd, const char *fmt, ...)
+{{< /proto >}}
+
+A routine which formats a
+[printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html)-like
+input string before sending the resulting output through a proxy
+channel.
+
+{{% argument proxyfd %}}
+A descriptor referring to the proxy which should handle the output data.
+{{% /argument %}}
+
+{{% argument fmt %}}
+The format string.
+{{% /argument %}}
+
+{{% argument "..." %}}
+The optional variable argument list completing the format.
+{{% /argument %}}
+
+`evl_print_proxy()` returns the number of bytes sent through the
+proxy. A negated error code is returned on failure, which may
+correspond to either a formatting error, or to a sending error in
+which case the error codes returned by [evl_send_proxy()]({{< relref
+"#evl_send_proxy" >}}) apply.
+
+---
+
+{{< proto evl_vprint_proxy >}}
+int evl_vprint_proxy(int proxyfd, const char *fmt, va_list ap)
+{{< /proto >}}
+
+This call is a variant of [evl_print_proxy()]({{< relref
+"#evl_print_proxy" >}}) which accepts format arguments specified as a
+pointer to a variadic parameter list.
+
+{{% argument proxyfd %}}
+A descriptor referring to the proxy which should handle the output data.
+{{% /argument %}}
+
+{{% argument fmt %}}
+The format string.
+{{% /argument %}}
+
+{{% argument ap %}}
+A pointer to a variadic parameter list.
+{{% /argument %}}
+
+`evl_vprint_proxy()` returns the number of bytes sent through the
+proxy. A negated error code is returned on failure, which may
+correspond to either a formatting error, or to a sending error in
+which case the error codes returned by [evl_send_proxy()]({{< relref
+"#evl_send_proxy" >}}) apply.
+
+---
+
+{{< proto evl_printf >}}
+int evl_printf(const char *fmt, ...)
+{{< /proto >}}
+
+A shorthand which sends formatted output through an internal proxy
+targeting _fileno(stdout)_. This particular proxy is built by the EVL
+library automatically when it initializes as a result of a direct or
+indirect call to `evl_init()`.
+
+---

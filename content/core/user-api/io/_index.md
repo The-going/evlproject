@@ -117,7 +117,7 @@ A buffer containing the data to be written.
 {{% /argument %}}
 
 {{% argument count %}}
-The number of bytes to write from _buf_.
+The number of bytes to write starting from _buf_.
 {{% /argument %}}
 
 `oob_write()` returns the actual number of bytes written from _buf_ on
@@ -135,7 +135,17 @@ EFAULT	if _buf_ points to invalid memory.
 EAGAIN	_fd_ is marked as non-blocking (O_NONBLOCK), and the write would
 	block.
 
-Other driver-specific error codes may be returned.
+Other driver-specific error codes may be returned, such as:
+
+EFBIG	_fd_ is a [proxy]({{< relref "core/user-api/proxy/_index.md"
+	>}}) file descriptor, and _count_ is larger than the size of the
+	output buffer as specified in the call to [evl_new_proxy()]
+	({{< relref "core/user-api/proxy/_index.md#evl_new_proxy" >}}).
+
+EINVAL	_fd_ is a [proxy]({{< relref "core/user-api/proxy/_index.md"
+	>}}) file descriptor, and _count_ is not a multiple of the
+	output granularity as specified in the call to [evl_new_proxy()]
+	({{< relref "core/user-api/proxy/_index.md#evl_new_proxy" >}}).
 
 ---
 
