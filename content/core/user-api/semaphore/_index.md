@@ -80,7 +80,9 @@ semaphore on success. Otherwise, a negated error code is returned:
 - -ENXIO        The EVL library is not initialized for the current process.
   		Such initialization happens implicitly when `evl_attach_self()`
 		is called by any thread of your process, or by explicitly
-		calling `evl_init()`. You have to bootstrap the library
+		calling [evl_init()]({{<
+  		relref "core/user-api/init/_index.md#evl_init"
+  		>}}). You have to bootstrap the library
 		services in a way or another before creating an EVL semaphore.
 
 ```

@@ -594,7 +594,7 @@ weight: 150
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/misc/index.html#evl_init" target="_blank">evl_init()</a></td>
+    <td><a href="/core/user-api/init/index.html#evl_init" target="_blank">evl_init()</a></td>
     <td>N/A</td> 
     <td>&#9989;</td> 
   </tr>
