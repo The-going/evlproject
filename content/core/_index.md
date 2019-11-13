@@ -14,7 +14,12 @@ stringent timing requirements. This small core is built like any
 ordinary feature of the Linux kernel, not as a foreign extension
 slapped on top of it.  [Dovetail]({{% relref "dovetail/_index.md" %}})
 plays an important part here, as it hides the nitty-gritty details of
-embedding a companion core into the kernel.
+embedding a companion core into the kernel. Its fairly low code
+footprint and limited complexity makes it a good choice as a
+plug-and-forget real-time infrastructure, which can also be used as a
+starting point for custom core implementations:
+
+![Alt text](/images/kloc-core.png "EVL code footprint")
 
 The user-space interface to this core is the [EVL library]({{% relref
 "core/user-api/_index.md" %}}) (`libevl.so`), which implements the
