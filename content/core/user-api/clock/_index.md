@@ -108,7 +108,7 @@ time on success, otherwise:
 
 {{% notice note %}}
 Setting `EVL_CLOCK_MONOTONIC` or `EVL_CLOCK_REALTIME` may imply a
-transition to the [inband execution stage]({{< relref
+transition to the [in-band execution stage]({{< relref
 "dovetail/altsched.md#inband-switch" >}}) as `clock_settime()`
 is called internally for carrying out the request.
 {{% /notice %}}
@@ -152,7 +152,7 @@ returns zero on success, otherwise:
 
 {{% notice note %}}
 Setting `EVL_CLOCK_MONOTONIC` or `EVL_CLOCK_REALTIME` may imply a
-transition to the [inband execution stage]({{< relref
+transition to the [in-band execution stage]({{< relref
 "dovetail/altsched.md#inband-switch" >}}) as `clock_getres()`
 is called internally for carrying out the request.
 {{% /notice %}}
@@ -233,7 +233,7 @@ returns zero on success, otherwise:
 
 - -EFAULT if _timeout_ points to invalid memory.
 
-- -EINTR if the call was interrupted by an inband signal, or forcibly
+- -EINTR if the call was interrupted by an in-band signal, or forcibly
    unblocked by the EVL core.
 
 ---
@@ -253,7 +253,7 @@ The count of microseconds to sleep for.
 `evl_udelay()` blocks the caller until the delay expires then returns
 zero on success, otherwise:
 
-- -EINTR if the call was interrupted by an inband signal, or forcibly
+- -EINTR if the call was interrupted by an in-band signal, or forcibly
    unblocked by the EVL core.
 
 ### Pre-defined clocks {#builtin-clocks}

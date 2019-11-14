@@ -6,7 +6,7 @@ weight: 40
 ### Zero-latency output to regular files
 
 A common issue with dual kernel systems stems from the requirement NOT
-to issue [inband system calls]({{< relref
+to issue [in-band system calls]({{< relref
 "dovetail/altsched.md#inband-switch" >}}) while running time-critical
 code in out-of-band context. Problem is that sometimes, you may need
 to write to regular files such as logging information to the console
@@ -19,17 +19,17 @@ can channel the output sent through a proxy file descriptor to some
 arbitrary destination file descriptor associated with the former,
 keeping the caller on the out-of-band execution stage. This works by
 buffering the output in a circular buffer, offloading the actual write
-to an internal worker thread running inband which relays the content
+to an internal worker thread running in-band which relays the content
 of this ring buffer to the target file represented by the destination
 descriptor. For this reason, such output can be delayed until the
-inband stage resumes on the current CPU.  For instance,
+in-band stage resumes on the current CPU.  For instance,
 [evl_printf()]({{< relref "#evl_printf" >}}) formats then emits the
 resulting string to _fileno(stdout)_ via an internal proxy created by
 `libevl.so` at initialization.
 
 Typically, out-of-band writers send data through the proxy file
 descriptor using EVL's [oob_write()]({{< relref
-"core/user-api/io/_index.md#oob_write" >}}) system call, which inband
+"core/user-api/io/_index.md#oob_write" >}}) system call, which in-band
 readers can receive using the
 [read(2)](http://man7.org/linux/man-pages/man2/read.2.html) system
 call. You can associate any type of file with a proxy, including a
@@ -39,14 +39,14 @@ call. You can associate any type of file with a proxy, including a
 [pipe(2)](http://man7.org/linux/man-pages/man7/pipe.7.html) and so on
 (see also the discussion below about the write [granularity]({{<
 relref "#evl_new_proxy" >}})). This means that you could also use a
-proxy for signaling an inband object from the out-of-band context, if
+proxy for signaling an in-band object from the out-of-band context, if
 doing so can be done using a regular
 [write(2)](http://man7.org/linux/man-pages/man2/write.2.html) system
 call, like
 [eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html) and
 [signalfd(2)](http://man7.org/linux/man-pages/man2/signalfd.2.html).
 
-The proxy also handles output from callers running on the inband stage
+The proxy also handles output from callers running on the in-band stage
 transparently. In this case, a regular
 [write(2)](http://man7.org/linux/man-pages/man2/write.2.html) can be
 used to channel the data to the target file.
@@ -62,7 +62,7 @@ low enough to keep the system happy, while giving you precious debug
 hints. Obviously, you cannot get away with calling the plain
 [printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html)
 service for this, since it would downgrade the calling EVL thread to
-[inband mode]({{< relref "dovetail/altsched.md#inband-switch"
+[in-band mode]({{< relref "dovetail/altsched.md#inband-switch"
 >}}). However, you may create a proxy to the debug file:
 
 ```
@@ -87,19 +87,19 @@ through the proxy this way:
 	evl_print_proxy(proxyfd, "some useful debug information");
 ```
 
-> Synchronizing inband threads on out-of-band events with via a proxy
+> Synchronizing in-band threads on out-of-band events with via a proxy
 
 There are a couple of ways which you could use in order to wake up an
-inband thread waiting for some event to occur on the out-of-band side
+in-band thread waiting for some event to occur on the out-of-band side
 of your application, while preventing the waker from being demoted as
 a result of sending such a signal. One would involve running the
-inband thread in the [SCHED_WEAK scheduling class]({{< relref
+in-band thread in the [SCHED_WEAK scheduling class]({{< relref
 "core/user-api/scheduling/_index.md#SCHED_WEAK" >}}), waiting on some
 EVL synchronization object, such as a [semaphore]({{< relref
 "core/user-api/semaphore/_index.md" >}}) or [event flag group]({{<
 relref "core/user-api/event/_index.md" >}}). Another one would use a
 [cross-buffer]({{< relref "core/user-api/xbuf/_index.md" >}}) for
-sending some wakeup datagram from the out-of-band caller to the inband
+sending some wakeup datagram from the out-of-band caller to the in-band
 waiter.
 
 The file proxy can also help in implementing such construct, by
@@ -129,7 +129,7 @@ in order to cope with the requirements of the
 [eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html)
 interface. Once the proxy is created, set up for routing all write
 requests to the regular event file descriptor by 64-bit chunks, the
-inband thread can wait for out-of-band events reading from the other
+in-band thread can wait for out-of-band events reading from the other
 side of the channel as follows:
 
 ```
@@ -247,9 +247,9 @@ the output written to the proxy file descriptor returned by
 
 {{% argument bufsz %}}
 The size in bytes of the ring buffer where the output data is kept
-until the inband worker has relayed it to the destination file.
+until the in-band worker has relayed it to the destination file.
 Out-of-band writers may block attempting to write to a proxy file
-descriptor if the output buffer is full, waiting to be depleted by the inband
+descriptor if the output buffer is full, waiting to be depleted by the in-band
 worker thread, unless the proxy descriptor is set to non-blocking mode
 (O_NONBLOCK). Zero is an acceptable value if you plan to use this
 proxy exclusively for exporting a shared memory mapping, in which case
@@ -266,7 +266,7 @@ granularity is zero, the proxy is free to pull as many bytes as
 available from the output ring buffer for sending them in one go to the
 target file. Conversely, any non-zero granularity value is used as the
 exact count of bytes which is written to the destination file by the
-inband worker at each transfer. For instance, in the
+in-band worker at each transfer. For instance, in the
 [eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html) use case,
 we would use sizeof(uint64_t). You may pass zero for a memory mapping
 proxy since no granularity is applicable in this case.
@@ -329,7 +329,7 @@ ssize_t evl_send_proxy(int proxyfd, const void *buf, size_t count)
 This is a shorthand checking the current execution stage before
 sending the output through a proxy channel via the proper system call,
 i.e. [write(2)](http://man7.org/linux/man-pages/man2/write.2.html) if
-inband, or [oob_write()]({{< relref
+in-band, or [oob_write()]({{< relref
 "core/user-api/io/_index.md#oob_write" >}}) if out-of-band. You can
 use this routine to emit output from a portion of code which may be
 used from both stages.

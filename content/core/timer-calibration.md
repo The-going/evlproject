@@ -7,7 +7,7 @@ weight: 2
 When enabled in the kernel, EVL transparently controls the hardware
 timer chip via a [proxy device]({{< relref "dovetail/porting/timer.md"
 >}}), serving all timing requests including those originating from the
-inband kernel logic. In order to maximize the timing accuracy, EVL
+in-band kernel logic. In order to maximize the timing accuracy, EVL
 needs to figure out the basic latency of the target platform.
 
 Upon receipt from an interrupt, the time spent traversing the kernel
