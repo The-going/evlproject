@@ -155,7 +155,7 @@ following came to mind:
   tracing from the out-of-band stage, so all we need is an interface
   here.
 
-	We could not use the file proxy to relay the traces through
+  We could not use the file proxy to relay the traces through
   the `trace_marker` file, because we want the tracepoint to appear in
   the output stream at the exact time the code running
   [out-of-band]({{% relref "dovetail/pipeline/_index.md" %}}) issued

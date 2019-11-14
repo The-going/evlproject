@@ -54,8 +54,12 @@ by _efd_ in the EVL core.
 
 {{% argument efd %}}
 A file descriptor referring to the target thread, as returned by
-`evl_attach_self()`, `evl_get_self()`, or opening a thread
-element device in _/dev/evl/thread_ using `open(2)`.
+[evl_attach_self()]({{% relref
+"core/user-api/thread/_index.md#evl_attach_self" %}}),
+[evl_get_self()]({{% relref
+"core/user-api/thread/_index.md#evl_get_self" %}}), or opening a
+thread element device in _/dev/evl/thread_ using
+[open(2)](http://man7.org/linux/man-pages/man2/open.2.html).
 {{% /argument %}}
 
 {{% argument attrs %}}
@@ -560,7 +564,7 @@ high frequency loop.
 {{% notice warning %}}
 In a specific case the EVL core will keep the thread running on the
 out-of-band execution stage though: whenever this thread has returned
-from a successful call to [`evl_lock_mutex()`]({{% relref
+from a successful call to [evl_lock_mutex()]({{% relref
 "core/user-api/mutex/_index.md#evl_lock_mutex" %}}), holding an EVL
 mutex. This ensures that no in-band activity on the same CPU can
 preempt the lock owner, which would certainly lead to a priority
@@ -595,7 +599,7 @@ allowed calling contexts for each EVL service from `libevl`
 [there]({{% relref "core/user-api/function_index/_index.md" %}}).
 
 Switching a thread to SCHED_WEAK is achieved by calling
-[`evl_set_schedattr()`]({{% relref "#evl_set_schedattr" %}}). The
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
 `evl_sched_attrs` attribute structure should be filled in as follows:
 
 ```

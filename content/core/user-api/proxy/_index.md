@@ -234,8 +234,8 @@ Any remote process peer could then do:
 int evl_new_proxy(int targetfd, size_t bufsz, size_t granularity, const char *fmt, ...)
 {{< /proto >}}
 
-This call creates a proxy, returning a file descriptor representing
-the new object upon success. [oob_write()]({{< relref
+This call creates a new proxy, then returns a file descriptor
+representing the new object upon success. [oob_write()]({{< relref
 "core/user-api/io/_index.md#oob_write" >}}) should be used to send
 data through the proxy for zero-latency output to regular files.
 
@@ -313,7 +313,8 @@ success. If the call fails, a negated error code is returned instead:
 - -ENOMEM	No memory available.
 
 - -ENXIO        The EVL library is not initialized for the current process.
-  		Such initialization happens implicitly when `evl_attach_self()`
+  		Such initialization happens implicitly when [evl_attach_self()]({{% relref
+  		"core/user-api/thread/_index.md#evl_attach_self" %}})
 		is called by any thread of your process, or by explicitly
 		calling [evl_init()]({{<
   		relref "core/user-api/init/_index.md#evl_init"

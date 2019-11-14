@@ -8,8 +8,7 @@ weight: 5
 The main kernel's thread is the basic execution unit in EVL. The most
 common kind of EVL threads is a regular POSIX thread started by
 `pthread_create(3)` which has attached itself to the EVL core by a
-call to [`evl_attach_self()`]({{% relref
-"core/user-api/thread/_index.md#evl_attach_self" %}}). Once a
+call to [evl_attach_self()]({{% relref "#evl_attach_self" %}}). Once a
 POSIX thread attached itself to EVL, it can:
 
 - request real-time services to the core, exclusively by calling
@@ -55,27 +54,28 @@ int evl_attach_self(const char *fmt, ...)
 
 EVL does not actually _create_ threads; instead, it enables a regular
 POSIX thread to invoke its real-time services once this thread has
-attached to the EVL core.  evl_attach_self() is the library call which
+attached to the EVL core.  `evl_attach_self()` is the library call which
 requests such attachment. All you need to provide is a _unique_ thread
 name, which will be the name of the device element representing that
 thread in the file system.
 
-There is no requirement as of when evl_attach_self() should be called
+There is no requirement as of when `evl_attach_self()` should be called
 in a thread's execution flow. You just have to call it before it
 starts requesting EVL services. Note that the main thread of a process
 is no different from any other thread to EVL. It may call
-evl_attach_self() whenever you see fit, or not at all if you don't
+`evl_attach_self()` whenever you see fit, or not at all if you don't
 plan to request EVL services from this context.
 
 As part of the attachment process, the calling thread is also pinned
 on its current CPU. You may change this default affinity by calling
-`sched_setaffinity(2)` as you see fit any time after
-`evl_attach_self()` has returned, but keep in mind that such _libc_
-service will trigger a regular Linux system call, which will cause
-your thread to switch to [in-band context]({{< relref
-"dovetail/altsched.md#inband-switch" >}}) automatically when
-doing so. So you may want to avoid calling `sched_setaffinity(2)` from
-your time-critical loop, which would not make much sense anyway.
+[sched_setaffinity(2)](http://man7.org/linux/man-pages/man2/sched_setaffinity.2.html)
+as you see fit any time after `evl_attach_self()` has returned, but
+keep in mind that such _libc_ service will trigger a regular Linux
+system call, which will cause your thread to switch to [in-band
+context]({{< relref "dovetail/altsched.md#inband-switch" >}})
+automatically when doing so. So you may want to avoid calling
+[sched_setaffinity(2)](http://man7.org/linux/man-pages/man2/sched_setaffinity.2.html)
+from your time-critical loop, which would not make much sense anyway.
 
 {{% argument fmt %}}
 A printf-like format string to generate the thread name. A common way
@@ -159,17 +159,15 @@ crw-rw----    1 root     root      246,   1 Jan  1  1970 cruncher-2712
 ```
 
 1. You can revert the attachment to EVL at any time by calling
-[`evl_detach_self()`]({{% relref
-"core/user-api/thread/_index.md#evl_detach_self" %}}) from the context
-of the thread to detach.
+[`evl_detach_self()`]({{% relref "#evl_detach_self" %}}) from the
+context of the thread to detach.
 
 2. Closing all the file descriptors referring to an EVL thread is not
 enough to drop its attachment to the EVL core. It merely prevents to
 submit any further request for the original thread via calls taking
 file descriptors. You would still have to call
-[`evl_detach_self()`]({{% relref
-"core/user-api/thread/_index.md#evl_detach_self" %}}) from
-the context of this thread to fully detach it.
+[`evl_detach_self()`]({{% relref "#evl_detach_self" %}}) from the
+context of this thread to fully detach it.
 
 3. If a valid file descriptor is still referring to a detached thread,
 or after the thread has exited, any request submitted for that thread
@@ -177,8 +175,7 @@ using such _fd_ would receive -ESTALE.
 
 4. An EVL thread which exits is automatically detached from the EVL
 core, you don't have to call [`evl_detach_self()`]({{% relref
-"core/user-api/thread/_index.md#evl_detach_self" %}})
-explicitly before exiting your thread.
+"#evl_detach_self" %}}) explicitly before exiting your thread.
 
 5. The EVL core drops the kernel resources attached to a thread once
 it has detached itself or has exited, and only after all the file
@@ -186,7 +183,7 @@ descriptors referring to that thread have been closed.
 
 6. The EVL library sets the O_CLOEXEC flag on the file descriptor
 referring to the newly attached thread before returning from
-`evl_attach_self()`.
+[evl_attach_self()]({{% relref "#evl_attach_self" %}}).
 
 ---
 
@@ -194,12 +191,11 @@ referring to the newly attached thread before returning from
 int evl_detach_self(void)
 {{< /proto >}}
 
-`evl_detach_self()` reverts the action of [`evl_attach_self()`]({{%
-relref "core/user-api/thread/_index.md#evl_attach_self" %}}),
-detaching the calling thread from the EVL core. Once this operation
-has succeeded, the current thread cannot submit EVL requests
-anymore. This call returns zero on success, or a negated error code if
-something went wrong:
+`evl_detach_self()` reverts the action of [evl_attach_self()]({{%
+relref "#evl_attach_self" %}}), detaching the calling thread from the
+EVL core. Once this operation has succeeded, the current thread cannot
+submit EVL requests anymore. This call returns zero on success, or a
+negated error code if something went wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
 
@@ -220,8 +216,7 @@ static void *byte_crunching_thread(void *arg)
 ```
 
 1. You can re-attach the detached thread to EVL at any time by calling
-[`evl_attach_self()`]({{% relref
-"core/user-api/thread/_index.md#evl_attach_self" %}}) again.
+[evl_attach_self()]({{% relref "#evl_attach_self" %}}) again.
 
 2. If a valid file descriptor is still referring to a detached thread,
 or after the thread has exited, any request submitted for that thread
@@ -242,12 +237,12 @@ int evl_get_self(void)
 {{< /proto >}}
 
 `evl_get_self()` returns the file descriptor obtained for the current
-thread after a successful call to [`evl_attach_self()`]({{% relref
-"core/user-api/thread/_index.md#evl_attach_self" %}}).  You may use
-this _fd_ to submit requests for the current thread in other calls
-from the EVL library which ask for a thread file descriptor.  This
-call returns a valid file descriptor referring to the caller on
-success, or a negated error code if something went wrong:
+thread after a successful call to [evl_attach_self()]({{% relref
+"#evl_attach_self" %}}).  You may use this _fd_ to submit requests for
+the current thread in other calls from the EVL library which ask for a
+thread file descriptor.  This call returns a valid file descriptor
+referring to the caller on success, or a negated error code if
+something went wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
 
@@ -269,7 +264,7 @@ static void get_caller_info(void)
 ```
 
 `evl_get_self()` will fail after a call to [`evl_detach_self()`]({{%
-relref "core/user-api/thread/_index.md#evl_detach_self" %}}).
+relref "#evl_detach_self" %}}).
 
 ---
 
