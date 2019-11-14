@@ -17,9 +17,11 @@ to a cross-buffer by calling [oob_write()]({{< relref
 by calling
 [write(2)](http://man7.org/linux/man-pages/man2/write.2.html) are
 received by calling [oob_read()]({{< relref
-"core/user-api/io/_index.md#oob_read" >}}).
-For instance, such a mechanism would enable a GUI front-end to receive
-monitoring data from a real-time work loop.
+"core/user-api/io/_index.md#oob_read" >}}). A cross-buffer can be used
+for transferring fixed-size or variable-size data, supports
+message-based and byte-oriented streams. For instance, such a
+mechanism would enable a GUI front-end to receive monitoring data from
+a real-time work loop.
 
 ![Alt text](/images/xbuf.png "Cross-buffer deadlock prevention")
 
