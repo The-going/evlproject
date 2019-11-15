@@ -36,8 +36,8 @@ this library running in userland.
 As the name suggests, _elements_ are the basic features we may require
 from the EVL core for supporting real-time applications in this dual
 kernel environment. Also, only the kernel could provide such features
-in an efficient way, pure user-space code could not deliver. So far,
-it looks like we need only four elements:
+in an efficient way, pure user-space code could not deliver. The EVL
+core defines five of them:
 
 - thread. As the basic execution unit, we want it to be runnable
   either in real-time mode or regular GPOS mode alternatively, which
@@ -65,6 +65,18 @@ it looks like we need only four elements:
   wait/poll for input from the other side. Cross-buffers serve the
   same purpose than Xenomai's _message pipes_ implemented by the
   _XDDP_ socket protocol.
+
+- file proxy. Linux-based dual kernel systems are nasty by design: the
+  huge set of GPOS features is always visible to applications but they
+  should not to use it when they carry out real-time work with the
+  help of the autonomous core, or risk unbounded response
+  time. Because of such exclusion, manipulating files created by the
+  main kernel such as calling
+  [printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html)
+  should not be done directly from time-critical loops. A file proxy
+  solves this type of issue by channeling the output it receives to an
+  arbitrary file descriptor, keeping the writer on the out-of-band
+  execution stage.
 
 ## Everything is a file {#everything-is-a-file}
 
@@ -134,34 +146,11 @@ following came to mind:
   we have file descriptors to play with in applications for referring
   to them, providing the EVL equivalent of `[e]poll` just makes sense.
 
-- file proxy. Linux-based dual kernel systems are nasty by design: the
-  huge set of GPOS features is always visible to applications but they
-  should not to use it when they carry out real-time work with the
-  help of the autonomous core, or risk unbounded response
-  time. Because such exclusion includes manipulating files created by
-  the main kernel: so much for using `printf(3)` in some
-  time-sensitive loop in this case. The file proxy should help in
-  easing the pain, by channeling file output through the _vfs_ in a
-  way that keeps the real-time side happy. Although the proxy is
-  technically part of the element framework in EVL because it is
-  represented by a device in the file system, applications could
-  resort to a pure user-space implementation for roughly the same
-  purpose, even if in a much more convoluted way.  So the file proxy
-  is considered a utility, not an element per se.
-
 - trace channel. We need a way to emit traces from applications
   through the main kernel's FTRACE mechanism for debugging purpose,
   directly from the real-time context. Dovetail readily enables
   tracing from the out-of-band stage, so all we need is an interface
   here.
-
-  We could not use the file proxy to relay the traces through
-  the `trace_marker` file, because we want the tracepoint to appear in
-  the output stream at the exact time the code running
-  [out-of-band]({{% relref "dovetail/pipeline/_index.md" %}}) issued
-  it. On the contrary, channeling the trace data through the proxy
-  would mean to defer the trace output, until the main kernel resumes
-  execution, which would make the trace data useless.
 
 ## EVL device drivers are (almost) common drivers
 
