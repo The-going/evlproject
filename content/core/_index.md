@@ -136,29 +136,13 @@ The above translates as follows in EVL:
   call, just like one would do using `poll(2)`, `epoll(7)` or
   `select(2)`.
 
-## Basic utilities
-
-We also need EVL to provide a few ancillary services, so that high
-level APIs or even applications could build over them. So far, the
-following came to mind:
-
-- synchronous I/O multiplexing. Since everything is a file in EVL, and
-  we have file descriptors to play with in applications for referring
-  to them, providing the EVL equivalent of `[e]poll` just makes sense.
-
-- trace channel. We need a way to emit traces from applications
-  through the main kernel's FTRACE mechanism for debugging purpose,
-  directly from the real-time context. Dovetail readily enables
-  tracing from the out-of-band stage, so all we need is an interface
-  here.
-
 ## EVL device drivers are (almost) common drivers
 
 EVL does not introduce any specific driver model. It exports a
 dedicated [kernel API]({{%relref "core/kernel-api/_index.md" %}}) for
 implementing real-time I/O operations in common character device
 drivers. In fact, the EVL core is composed of a set of such drivers,
-implementing each class of elements and utilities.
+implementing each class of elements.
 
 ## Developing the EVL core
 
