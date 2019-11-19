@@ -118,10 +118,10 @@ resources a fairly simple task:
   any process which is allowed to get a file descriptor on the
   corresponding device file. EVL system calls apply to the resource
   which is eventually referred to by the file descriptor. For
-  instance, if two processes may open a device file which path is
-  _"/dev/evl/thread/supervisor"_, then both may reach the
-  _"supervisor"_ thread created by the EVL core via the
-  [evl_attach_self("supervisor")]({{< relref
+  instance, if a process may open a device file which path is
+  _"/dev/evl/thread/supervisor"_, then it may send requests to the
+  corresponding thread, regardless of the process it belongs to. Such
+  thread was created by the [evl_attach_self("supervisor")]({{< relref
   "core/user-api/thread/_index.md#evl_thread_self" >}}) system call.
 
 In addition, EVL provides a mechanism which come in handy for sharing
