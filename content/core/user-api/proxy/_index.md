@@ -426,7 +426,7 @@ indirect call to [evl_init()]({{< relref
 
 ---
 
-### Events pollable from a proxy file descriptor
+### Events pollable from a proxy file descriptor {#proxy-poll-events}
 
 The [evl_poll()]({{< relref "core/user-api/poll/_index.md" >}})
 interface can monitor the following events occurring on a proxy file

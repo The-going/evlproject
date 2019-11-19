@@ -466,7 +466,7 @@ never been used in wait or post operations always returns zero.
 
 ---
 
-### Events pollable from an event flag group descriptor
+### Events pollable from an event flag group descriptor {#flags-poll-events}
 
 The [evl_poll()]({{< relref "core/user-api/poll/_index.md" >}})
 interface can monitor the following events occurring on an event

@@ -407,7 +407,7 @@ operations always returns zero.
 
 ---
 
-### Events pollable from a semaphore file descriptor
+### Events pollable from a semaphore file descriptor {#sema4-poll-events}
 
 The [evl_poll()]({{< relref "core/user-api/poll/_index.md" >}})
 interface can monitor the following events occurring on a semaphore

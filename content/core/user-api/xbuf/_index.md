@@ -133,7 +133,7 @@ success. If the call fails, a negated error code is returned instead:
 
 ---
 
-### Events pollable from a cross-buffer descriptor
+### Events pollable from a cross-buffer descriptor {#xbuf-poll-events}
 
 The [evl_poll()]({{< relref "core/user-api/poll/_index.md" >}})
 interface can monitor the following events occurring on a cross-buffer
