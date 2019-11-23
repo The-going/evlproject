@@ -45,29 +45,39 @@ execution flow upon I/O system calls looks like this:
 
 Which translates as follows:
 
-- When an application issues the `open(2)` or `close(2)` system call
-  to an EVL driver, the request goes through the virtual filesystem
+- When an application issues the
+  [open(2)](http://man7.org/linux/man-pages/man2/open.2.html) or
+  [close(2)](http://man7.org/linux/man-pages/man2/close.2.html) system
+  calls with a file descriptor referring to a file managed by an EVL
+  driver, the request normally goes through the virtual filesystem
   switch (VFS) as usual, ending up into the `.open()` and `.release()`
   handlers (when the last reference is dropped) defined by the driver
   in its `struct file_operations` descriptor. The same goes for
-  `mmap(2)`, `ioctl(2)`, `read(2)`, `write(2)`, and all other common
-  file operations for character device drivers.
+  [mmap(2)](http://man7.org/linux/man-pages/man2/mmap.2.html),
+  [ioctl(2)](http://man7.org/linux/man-pages/man2/ioctl.2.html),
+  [read(2)](http://man7.org/linux/man-pages/man2/read.2.html),
+  [write(2)](http://man7.org/linux/man-pages/man2/write.2.html), and
+  all other common file operations for character device drivers.
 
-- When an applications issues a `oob_read()`, `oob_write()` or
-  `oob_ioctl()` system call via the EVL library, Dovetail routes the
-  call to the EVL core (instead of the VFS), which in turn fires the
-  corresponding handlers defined by the driver's `struct
-  file_operations` descriptor: i.e.  `.oob_read()`, `.oob_write()`,
-  and `.oob_ioctl()`. Those handlers should use the EVL kernel API, or
-  the main kernel services which are known to be usable from the
-  out-of-band-context, _exclusively_. Failing to abide by this golden
-  rule may lead to funky outcomes ranging from plain kernel crashes
-  (lucky) to rampant memory corruption (unlucky).
+- When an applications issues the [oob_read()]({{< relref
+  "core/user-api/io/_index.md#oob_read" >}}), [oob_write()]({{< relref
+  "core/user-api/io/_index.md#oob_write" >}}) or [oob_ioctl()]({{<
+  relref "core/user-api/io/_index.md#oob_ioctl" >}}) system calls via
+  the EVL library, Dovetail routes the call to the EVL core (instead
+  of the VFS), which in turn fires the corresponding handlers defined
+  by the driver's `struct file_operations` descriptor: i.e.
+  `.oob_read()`, `.oob_write()`, and `.oob_ioctl()`. Those handlers
+  should use the EVL kernel API, or the main kernel services which are
+  known to be usable from the out-of-band-context,
+  _exclusively_. Failing to abide by this golden rule may lead to
+  funky outcomes ranging from plain kernel crashes (lucky) to rampant
+  memory corruption (unlucky).
 
 {{% notice tip %}}
 Now, you may wonder: _"what if an out-of-band operation is ongoing in
 the driver on a particular file, while I'm closing the last
-VFS-maintained reference to that file?"_ Well, the `close(2)` call
+VFS-maintained reference to that file?"_ Well, the
+[close(2)](http://man7.org/linux/man-pages/man2/close.2.html) call
 will block until the out-of-band operation finishes, at which point
 the `.release()` handler may proceed with dismantling the file. A
 [simple rule] ({{% relref
