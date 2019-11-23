@@ -228,6 +228,10 @@ Any remote process peer could then do:
 	...
 ```
 
+The other way you could do this is by passing the _memfd_ file
+descriptor via a socket-based control message, but this would require
+significantly more logic in both peers than using a proxy.
+
 ### Proxy services {#proxy-services}
 
 {{< proto evl_new_proxy >}}
