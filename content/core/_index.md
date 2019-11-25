@@ -157,7 +157,6 @@ kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
   * git://git.evlproject.org/linux-evl.git
   * https://git.evlproject.org/linux-evl.git
 
-This branch is routinely rebased over Dovetail's
-[_dovetail/master_]({{% relref
-"contents/dovetail/_index.md#developing-dovetail" %}}) branch from the
+This branch is routinely rebased over Dovetail's [dovetail/master]({{<
+relref "dovetail/_index.md#developing-dovetail" >}}) branch from the
 same repository.
