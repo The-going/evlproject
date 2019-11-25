@@ -7,9 +7,10 @@ weight: 5
 
 The main kernel's thread is the basic execution unit in EVL. The most
 common kind of EVL threads is a regular POSIX thread started by
-`pthread_create(3)` which has attached itself to the EVL core by a
-call to [evl_attach_self()]({{% relref "#evl_attach_self" %}}). Once a
-POSIX thread attached itself to EVL, it can:
+[pthread_create(3)](http://man7.org/linux/man-pages/man3/pthread_create.3.html)
+which has attached itself to the EVL core by a call to
+[evl_attach_self()]({{% relref "#evl_attach_self" %}}). Once a POSIX
+thread attached itself to EVL, it can:
 
 - request real-time services to the core, exclusively by calling
   routines available from the EVL library . In this case, and only in

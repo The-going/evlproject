@@ -11,9 +11,9 @@ An EVL application process is composed of one or more EVL threads,
 running along with any number of regular POSIX threads.
 
 - an EVL thread is a regular POSIX thread (spawned by a call to
-`pthread_create()` or the `main()` context) which has issued the
-[evl_attach_self()]({{< relref
-"core/user-api/thread/_index.md#evl_attach_thread" >}}) system
+[pthread_create(3)](http://man7.org/linux/man-pages/man3/pthread_create.3.html)
+or the `main()` context) which has issued the [evl_attach_self()]({{<
+relref "core/user-api/thread/_index.md#evl_attach_thread" >}}) system
 call. This service binds the caller to the EVL core, which enables it
 to invoke the real-time, ultra-low latency services the latter
 delivers.

@@ -137,13 +137,14 @@ kernel works as follows:
 | SCHED_WEAK, prio == 0 |    SCHED_OTHER |
 
 {{% notice warning %}}
-Calling `pthread_setschedparam()` from the C library does not affect
-the scheduling attributes of an EVL thread. It only affects the
-scheduling parameters of such thread from the standpoint of the main
-kernel. Because the C library may cache the current scheduling
-attributes for the in-band context of a thread - _glibc_ does so
-typically - the cached value may not reflect the actual scheduling
-attributes of the thread after this call.
+Calling
+[pthread_setschedparam(3)](http://man7.org/linux/man-pages/man3/pthread_setschedparam.3.html)
+from the C library does not affect the scheduling attributes of an EVL
+thread. It only affects the scheduling parameters of such thread from
+the standpoint of the main kernel. Because the C library may cache the
+current scheduling attributes for the in-band context of a thread -
+_glibc_ does so typically - the cached value may not reflect the
+actual scheduling attributes of the thread after this call.
 {{% /notice %}}
 
 ---
