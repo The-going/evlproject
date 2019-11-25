@@ -76,7 +76,7 @@ options, starting with CONFIG_SMP.
 
 - CONFIG_ACPI_PROCESSOR_IDLE may increase the latency upon wakeup on
   IRQ from idle on some SoC (up to 30 us observed) on x86. This option
-  is implicitely selected by the following configuration chain:
+  is implicitly selected by the following configuration chain:
   CONFIG_SCHED_MC_PRIO &#8594; CONFIG_INTEL_PSTATE &#8594;
   CONFIG_ACPI_PROCESSOR. If out-of-range latency figures are observed
   on your x86 hardware, turning off this chain may help.
