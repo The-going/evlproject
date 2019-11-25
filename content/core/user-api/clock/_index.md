@@ -34,7 +34,8 @@ EVL abstracts clock event devices and clock sources
 int evl_read_clock(int clockfd, struct timespec *tp)
 {{< /proto >}}
 
-This call is the EVL equivalent of the POSIX `clock_gettime()`
+This call is the EVL equivalent of the POSIX
+[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
 service, for reading the time from a specified EVL clock.  It reads
 the current time maintained by the EVL clock, which is returned as
 counts of seconds and microseconds since the clock's _epoch_.
@@ -71,7 +72,8 @@ success, otherwise:
 int evl_set_clock(int clockfd, const struct timespec *tp)
 {{< /proto >}}
 
-This call is the EVL equivalent of the POSIX `clock_settime()`
+This call is the EVL equivalent of the POSIX
+[clock_settime(3)](http://man7.org/linux/man-pages/man3/clock_settime.3.html)
 service, for setting the time of a specified EVL clock.
 
 {{% argument clockfd %}}
@@ -100,7 +102,9 @@ time on success, otherwise:
    file descriptor.
 
 - -EPERM if the caller does not have the permission to set some
-   built-in clock via `clock_settime()`. See note.
+   built-in clock via
+   [clock_settime(3)](http://man7.org/linux/man-pages/man3/clock_settime.3.html). See
+   note.
 
 - -ENOTTY if _clockfd_ does not refer to an EVL clock device.
 
@@ -109,7 +113,8 @@ time on success, otherwise:
 {{% notice note %}}
 Setting `EVL_CLOCK_MONOTONIC` or `EVL_CLOCK_REALTIME` may imply a
 transition to the [in-band execution stage]({{< relref
-"dovetail/altsched.md#inband-switch" >}}) as `clock_settime()`
+"dovetail/altsched.md#inband-switch" >}}) as
+[clock_settime()](http://man7.org/linux/man-pages/man3/clock_settime.3.html)
 is called internally for carrying out the request.
 {{% /notice %}}
 
@@ -119,7 +124,8 @@ is called internally for carrying out the request.
 int evl_get_clock_resolution(int clockfd, struct timespec *tp)
 {{< /proto >}}
 
-This call is the EVL equivalent of the POSIX `clock_getres()`
+This call is the EVL equivalent of the POSIX
+[clock_getres(3)](http://man7.org/linux/man-pages/man3/clock_getres.3.html)
 service, for reading the resolution of a specified EVL clock.  It
 returns this value as counts of seconds and microseconds. The
 resolution of clocks depends on the implementation and cannot be
@@ -153,7 +159,8 @@ returns zero on success, otherwise:
 {{% notice note %}}
 Setting `EVL_CLOCK_MONOTONIC` or `EVL_CLOCK_REALTIME` may imply a
 transition to the [in-band execution stage]({{< relref
-"dovetail/altsched.md#inband-switch" >}}) as `clock_getres()`
+"dovetail/altsched.md#inband-switch" >}}) as
+[clock_getres(3)](http://man7.org/linux/man-pages/man3/clock_getres.3.html)
 is called internally for carrying out the request.
 {{% /notice %}}
 
@@ -163,7 +170,8 @@ is called internally for carrying out the request.
 int evl_adjust_clock(int clockfd, struct timex *tx)
 {{< /proto >}}
 
-This call is the EVL equivalent of the Linux-specific `adjtimex()`
+This call is the EVL equivalent of the Linux-specific
+[adjtimex(2)](http://man7.org/linux/man-pages/man2/adjtimex.2.html)
 service, for tuning the clock adjustment algorithm of a specified EVL
 clock.
 
@@ -203,7 +211,8 @@ adjustment for this request to succeed.
 int evl_sleep(int clockfd, const struct timespec *timeout)
 {{< /proto >}}
 
-This call is the EVL equivalent of the POSIX `clock_nanosleep()`
+This call is the EVL equivalent of the POSIX
+[clock_nanosleep(3)](http://man7.org/linux/man-pages/man3/clock_nanosleep.3.html)
 service, for blocking the caller until an arbitrary date expires on a
 specified EVL clock. Unlike its POSIX counterpart, `evl_sleep()` only
 accepts absolute timeout specifications though.
@@ -243,8 +252,9 @@ int evl_udelay(unsigned int usecs)
 {{< /proto >}}
 
 This call puts the caller to sleep until a count of microseconds has
-elapsed. `evl_udelay()` invokes `evl_sleep()` for sleeping until the
-delay expires on the EVL_CLOCK_MONOTONIC clock.
+elapsed. `evl_udelay()` invokes [evl_sleep()]({{< relref "#evl_sleep"
+>}}) for sleeping until the delay expires on the EVL_CLOCK_MONOTONIC
+clock.
 
 {{% argument usecs %}}
 The count of microseconds to sleep for.
@@ -262,13 +272,13 @@ EVL defines two built-in clocks, you can pass any of the following
 identifiers to EVL calls which ask for a clock file descriptor
 (usually noted as _clockfd_):
 
-- `EVL_CLOCK_MONOTONIC` is identical to the POSIX `CLOCK_MONOTONIC`
+- `EVL_CLOCK_MONOTONIC` is identical to the `CLOCK_MONOTONIC` POSIX
   clock, which is a monotonically increasing clock that cannot be set
   and represents time since some unspecified starting point (aka _the
   epoch_). This identifier has the same meaning than a file descriptor
   opened on _/dev/evl/clock/monotonic_.
 
-- `EVL_CLOCK_REALTIME` is identical to the POSIX `CLOCK_REALTIME`
+- `EVL_CLOCK_REALTIME` is identical to the `CLOCK_REALTIME` POSIX
   clock, which is a non-monotonic wall clock which can be manually set
   to an arbitrary value with proper privileges, and can also be
   subject to dynamic adjustements by the NTP system. This identifier
