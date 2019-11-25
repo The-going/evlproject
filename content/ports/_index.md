@@ -34,7 +34,7 @@ requires both features to be available.
 
 > Current target kernel release
 
-Linux 5.4-rc7
+Linux 5.4
 
 > ARM64 SoC
 
