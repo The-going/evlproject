@@ -1,14 +1,13 @@
 ---
 title: "Out-of-band I/O services"
-menuTitle: "Out-of-band I/O"
 weight: 50
 ---
 
-### Talking to real-time device drivers
+### Talking to real-time capable device drivers
 
 Using the [EVL kernel API]({{< relref "core/kernel-api/_index.md"
 >}}), you can extend an existing character driver for supporting
-out-of-band I/O, or even write one from scratch.
+out-of-band I/O requests, or even write one from scratch.
 
 On the user side, application can exchange data with, send requests to
 these real-time capable drivers from the out-of-band execution stage

@@ -1,6 +1,5 @@
 ---
 menuTitle: "Timer(fd)"
-title: "Timers"
 weight: 30
 ---
 
