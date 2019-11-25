@@ -3,7 +3,9 @@ title: "Caveat"
 weight: 4
 ---
 
-## Things you definitely want to know
+# Things you definitely want to know
+
+## Generic issues
 
 ### **isolcpus** is our friend too {#caveat-isocpus}
 
@@ -67,3 +69,19 @@ Therefore, if you neither need SMP support nor kernel debug options
 which depend on instrumenting the spinlock constructs (e.g.
 CONFIG_DEBUG_PREEMPT), you may want to disable all the related kernel
 options, starting with CONFIG_SMP.
+
+## Architecture-specific issues
+
+### x86
+
+- CONFIG_ACPI_PROCESSOR_IDLE may increase the latency upon wakeup on
+  IRQ from idle on some SoC (up to 30 us observed) on x86. This option
+  is implicitely selected by the following configuration chain:
+  CONFIG_SCHED_MC_PRIO &#8594; CONFIG_INTEL_PSTATE &#8594;
+  CONFIG_ACPI_PROCESSOR. If out-of-range latency figures are observed
+  on your x86 hardware, turning off this chain may help.
+
+- NMI-based _perf_ data collection may cause the kernel to execute
+  utterly sluggish ACPI driver code at each event. Since disabling
+  CONFIG_PERF is not an option, passing **nmi_watchodg=0** on the
+  kernel command line at boot may help.
