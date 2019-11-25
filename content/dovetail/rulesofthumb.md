@@ -130,6 +130,6 @@ Unless you are lucky enough to have an ICE for debugging hard issues
 involving out-of-band contexts, you might have to resort to basic
 printk-style debugging over a serial line. Although the `printk()`
 machinery can be used from out-of-band context when Dovetail is
-enabled, you should rather use the [`raw_printk()`]({{%relref
+enabled, you should rather use the [raw_printk()]({{%relref
 "dovetail/porting/rawprintk.md" %}}) interface for
 this.

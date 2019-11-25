@@ -217,7 +217,7 @@ EVL provides 99 fixed priority levels starting a 1, which maps 1:1 to
 the main kernel's SCHED_FIFO implementation as well.
 
 Switching a thread to FIFO scheduling is achieved by calling
-[`evl_set_schedattr()`]({{% relref "#evl_set_schedattr" %}}). The
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
 `evl_sched_attrs` attribute structure should be filled in as follows:
 
 ```
@@ -244,7 +244,7 @@ instead. Since EVL is tickless, this quantum may be any valid
 duration, and may differ among threads from the same priority group.
 
 Switching a thread to round-robin scheduling is achieved by calling
-[`evl_set_schedattr()`]({{% relref "#evl_set_schedattr" %}}). The
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
 `evl_sched_attrs` attribute structure should be filled in as follows:
 
 ```
@@ -291,7 +291,7 @@ group. Therefore, a group with no thread does not consume its quota.
 ![Alt text](/images/quota_scheduling.png "Quota-based scheduling")
 
 Switching a thread to quota-based scheduling is achieved by calling
-[`evl_set_schedattr()`]({{% relref "#evl_set_schedattr" %}}). The
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
 `evl_sched_attrs` attribute structure should be filled in as follows:
 
 ```
@@ -305,7 +305,7 @@ Switching a thread to quota-based scheduling is achieved by calling
 [Creating]({{< relref "#create-quota-group" >}}), [modifying]({{<
 relref "#modify-quota-group" >}}) and [removing]({{< relref
 "#remove-quota-group" >}}) thread groups is achieved by calling
-[`evl_sched_control()`]({{% relref "#evl_sched_control" %}}).
+[evl_sched_control()]({{% relref "#evl_sched_control" %}}).
 
 ##### Runtime credit and peak quota {#sched-peak-quota}
 
@@ -331,7 +331,7 @@ A thread group is represented by a unique integer returned by the core
 upon creation, aka the _group identifier_.
 
 Creating a new thread group is achieved by calling
-[`evl_sched_contol()`]({{% relref "#evl_sched_control" %}}). Some
+[evl_sched_contol()]({{% relref "#evl_sched_control" %}}). Some
 information including the new group identifier is returned in the
 ancillary `evl_sched_ctlinfo` structure passed to the request. The
 `evl_sched_ctlparams` control structure should be filled in as
@@ -417,7 +417,7 @@ which will not run any SCHED_TP thread until this minor frame elapses.
 {{% /notice %}}
 
 Switching a thread to temporal partitioning is achieved by calling
-[`evl_set_schedattr()`]({{% relref "#evl_set_schedattr" %}}). The
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
 `evl_sched_attrs` attribute structure should be filled in as follows:
 
 ```

@@ -127,7 +127,7 @@ provides a high level interface to this feature.
 ## Direct logging of an IRQ event
 
 Sometimes, running the full interrupt delivery logic
-[`irq_inject_pipeline()`]({{< relref "#irq_inject_pipeline" >}})
+[irq_inject_pipeline()]({{< relref "#irq_inject_pipeline" >}})
 implements for feeding an interrupt into the pipeline may be overkill
 when we may make assumptions about the current execution context, and
 which stage should handle the event. The following fast helpers can be

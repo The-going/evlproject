@@ -188,7 +188,7 @@ _out-of-band execution stage_.
   else) may or may not be controlled by the main kernel, but the
   interrupt pipeline machinery has switched the CPU to out-of-band
   mode, which means that only interrupts bearing the IRQF_OOB flag are
-  delivered. Typically, [`run_oob_call()`]({{% relref
+  delivered. Typically, [run_oob_call()]({{% relref
   "dovetail/pipeline/stage_escalation.md" %}}) is a service
   provided by the interrupt pipeline which executes a function call
   over this context, without requiring the calling task to be
@@ -452,7 +452,7 @@ _NEXT_ task to schedule, by priority order. If _PREV_ still has the
 highest priority among all runnable tasks on the current CPU, the
 sequence stops there. CAVEAT: the core _must make sure to perform
 context switches from the out-of-band execution stage_, otherwise
-weird things may happen down the road. [`run_oob_call()`]({{% relref
+weird things may happen down the road. [run_oob_call()]({{% relref
 "dovetail/pipeline/stage_escalation.md" %}}) is a routine the
 interrupt pipeline provides which may help there. See the
 implementation of `evl_schedule()` in the EVL core for a typical
@@ -687,7 +687,7 @@ struct oob_thread_state {
 ```
 
 The core may then retrieve the address of the structure by calling
-[`dovetail_current_state()`]({{< relref "#dovetail_current_state"
+[dovetail_current_state()]({{< relref "#dovetail_current_state"
 >}}). For instance, this is the definition the EVL core has for the
 _oob\_thread\_state_ structure, storing a backpointer to its own task
 control block, along with a core-specific preemption count for fast
@@ -759,13 +759,13 @@ struct oob_mm_state {
 ```
 
 The core may then retrieve the address of the structure for the
-current task by calling [`dovetail_mm_state()`]({{< relref
+current task by calling [dovetail_mm_state()]({{< relref
 "#dovetail_mm_state" >}}). The EVL core does not define any extended
 memory context yet, but it could be used to maintain a per-process
 file descriptor table for instance.
 
 {{% notice tip %}}
-Catching the [`INBAND_PROCESS_CLEANUP`]({{< relref "#inband-events" >}})
+Catching the [INBAND_PROCESS_CLEANUP]({{< relref "#inband-events" >}})
 event would allow you to drop any resources attached to the extended
 memory context information, since it is called when this data is no
 longer in use by any thread of the exiting process.

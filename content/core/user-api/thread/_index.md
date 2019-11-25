@@ -159,14 +159,14 @@ crw-rw----    1 root     root      246,   1 Jan  1  1970 cruncher-2712
 ```
 
 1. You can revert the attachment to EVL at any time by calling
-[`evl_detach_self()`]({{% relref "#evl_detach_self" %}}) from the
+[evl_detach_self()]({{% relref "#evl_detach_self" %}}) from the
 context of the thread to detach.
 
 2. Closing all the file descriptors referring to an EVL thread is not
 enough to drop its attachment to the EVL core. It merely prevents to
 submit any further request for the original thread via calls taking
 file descriptors. You would still have to call
-[`evl_detach_self()`]({{% relref "#evl_detach_self" %}}) from the
+[evl_detach_self()]({{% relref "#evl_detach_self" %}}) from the
 context of this thread to fully detach it.
 
 3. If a valid file descriptor is still referring to a detached thread,
@@ -174,7 +174,7 @@ or after the thread has exited, any request submitted for that thread
 using such _fd_ would receive -ESTALE.
 
 4. An EVL thread which exits is automatically detached from the EVL
-core, you don't have to call [`evl_detach_self()`]({{% relref
+core, you don't have to call [evl_detach_self()]({{% relref
 "#evl_detach_self" %}}) explicitly before exiting your thread.
 
 5. The EVL core drops the kernel resources attached to a thread once
@@ -263,7 +263,7 @@ static void get_caller_info(void)
 }
 ```
 
-`evl_get_self()` will fail after a call to [`evl_detach_self()`]({{%
+`evl_get_self()` will fail after a call to [evl_detach_self()]({{%
 relref "#evl_detach_self" %}}).
 
 ---
