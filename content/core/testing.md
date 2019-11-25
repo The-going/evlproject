@@ -213,58 +213,55 @@ RTD|           1|        1311|        5926
 
 A series of unit testing programs is produced in `$prefix/tests` as
 part of building `libevl`. You should run each of them to make sure
-everything is fine.
+everything is fine. The simplest way to do this is as follows:
 
 > Running the EVL unit tests
 ```
-# for f in /usr/evl/tests/*; do echo $f && $f; done
-/usr/evl/tests/basic-xbuf
-thread tfd=7
-xfd=8
-write->oob_read: 4
-write->oob_read: 2
-write->oob_read: 1
-write->oob_read: 1
-oob_read[0]<-write: 1 => 0x41
-oob_read[1]<-write: 1 => 0x42
-oob_read[2]<-write: 1 => 0x43
-oob_read[3]<-write: 1 => 0x44
-oob_read[4]<-write: 1 => 0x45
-oob_read[5]<-write: 1 => 0x46
-oob_read[6]<-write: 1 => 0x47
-oob_read[7]<-write: 1 => 0x48
-dup(6) => 9
-dup2(6, 9) => 9
-peer reading from fd=6
-oob_write->read: 2
-oob_write->read: 2
-oob_write->read: 2
-inband[0] => 01
-inband[1] => 23
-inband[2] => 45
-/usr/evl/tests/clock-timer-periodic
-/usr/evl/tests/clone-fork-exec
-thread has efd=7
-exec() ok for pid 6855
-/usr/evl/tests/detach-self
-thread efd=7
-detach ret=0
-thread efd=7
-detach ret=0
-/usr/evl/tests/duplicate-element
-/usr/evl/tests/fault
-/usr/evl/tests/fpu-preload
-/usr/evl/tests/mapfd
-file proxy has efd=5
-mapfd child reading: mapfd-test
-/usr/evl/tests/monitor-pi
-/usr/evl/tests/monitor-pp-dynamic
-/usr/evl/tests/monitor-pp-lower
-/usr/evl/tests/monitor-pp-nested
-/usr/evl/tests/monitor-pp-pi
-/usr/evl/tests/monitor-pp-raise
-/usr/evl/tests/monitor-pp-tryenter
-/usr/evl/tests/monitor-pp-weak
-/usr/evl/tests/monitor-steal
-...
+# evl test
+duplicate-element: OK
+monitor-pp-dynamic: OK
+monitor-pi: OK
+clone-fork-exec: OK
+clock-timer-periodic: OK
+poll-close: OK
+sem-wait: OK
+monitor-pp-raise: OK
+monitor-pp-tryenter: OK
+heap-torture: OK
+monitor-pp-lower: OK
+poll-read: OK
+monitor-deadlock: OK
+monitor-wait-multiple: OK
+monitor-event: OK
+proxy-eventfd: OK
+monitor-flags.eshi: OK
+monitor-wait-multiple.eshi: OK
+sem-wait.eshi: OK
+detach-self.eshi: OK
+sem-timedwait.eshi: OK
+proxy-pipe.eshi: OK
+clock-timer-periodic.eshi: OK
+proxy-eventfd.eshi: OK
+monitor-event.eshi: OK
+heap-torture.eshi: OK
+poll-sem.eshi: OK
+poll-nested.eshi: OK
+sem-close-unblock: OK
+monitor-steal: OK
+basic-xbuf: OK
+simple-clone: OK
+monitor-flags: OK
+poll-sem: OK
+sem-timedwait: OK
+mapfd: OK
+proxy-pipe: OK
+poll-flags: OK
+poll-nested: OK
+monitor-pp-pi: OK
+fault: OK
+monitor-pi-deadlock: OK
+detach-self: OK
+monitor-pp-nested: OK
+monitor-pp-weak: OK
+fpu-preload: OK
 ```
