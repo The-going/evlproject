@@ -88,8 +88,9 @@ EINVAL  if _fd_ does not support the [.oob_read operation]({{< relref
 
 EFAULT	if _buf_ points to invalid memory.
 
-EAGAIN	_fd_ is marked as non-blocking (O_NONBLOCK), and the read would
-	block.
+EAGAIN	_fd_ is marked as [non-blocking (O_NONBLOCK)]
+	(http://man7.org/linux/man-pages/man2/fcntl.2.html), and the read
+	operation would block.
 
 Other driver-specific error codes may be returned, such as:
 
@@ -152,8 +153,9 @@ EINVAL  if _fd_ does not support the [.oob_write operation]({{< relref
 
 EFAULT	if _buf_ points to invalid memory.
 
-EAGAIN	_fd_ is marked as non-blocking (O_NONBLOCK), and the write would
-	block.
+EAGAIN	_fd_ is marked as [non-blocking (O_NONBLOCK)]
+	(http://man7.org/linux/man-pages/man2/fcntl.2.html), and the
+	write operation would block.
 
 Other driver-specific error codes may be returned, such as:
 
@@ -223,7 +225,7 @@ ENOTTY  if _fd_ does not support the [.oob_ioctl operation]({{< relref
 
 EFAULT	if _buf_ points to invalid memory.
 
-EAGAIN	_fd_ is marked as non-blocking (O_NONBLOCK), and the read would
-	block.
+EAGAIN	_fd_ is marked as [non-blocking (O_NONBLOCK)], and the control
+	request would block.
 
 Other driver-specific error codes may be returned.

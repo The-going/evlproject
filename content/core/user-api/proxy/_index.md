@@ -254,8 +254,9 @@ The size in bytes of the ring buffer where the output data is kept
 until the in-band worker has relayed it to the destination file.
 Out-of-band writers may block attempting to write to a proxy file
 descriptor if the output buffer is full, waiting to be depleted by the in-band
-worker thread, unless the proxy descriptor is set to non-blocking mode
-(O_NONBLOCK). Zero is an acceptable value if you plan to use this
+worker thread, unless the proxy descriptor is set to [non-blocking mode
+(O_NONBLOCK)](http://man7.org/linux/man-pages/man2/fcntl.2.html). Zero
+is an acceptable value if you plan to use this
 proxy exclusively for exporting a shared memory mapping, in which case
 there is no point in reserving an output buffer.
 {{% /argument %}}

@@ -30,7 +30,8 @@ a real-time work loop.
 The following rules apply to cross-buffer transfers, in either
 directions (inbound and outbound):
 
-- If O_NONBLOCK is clear on the cross-buffer file descriptor, there
+- If [O_NONBLOCK](http://man7.org/linux/man-pages/man2/fcntl.2.html)
+  is clear on the cross-buffer file descriptor, there
   are no short reads on the receiving end: a reader always gets a
   complete message of the requested length, blocking if necessary
   _except_ if a sender is currently blocked on the other end of the
@@ -50,15 +51,16 @@ buffer size which is a multiple of the basic message size, reading
 and writing complete messages at each transfer.
 {{% /notice %}}
 
-  Otherwise, if O_NONBLOCK is set and not enough bytes are immediately
+  Otherwise, if [O_NONBLOCK](http://man7.org/linux/man-pages/man2/fcntl.2.html)
+  is set and not enough bytes are immediately
   available from the ring buffer for satisfying the request, the write
   operation fails with the `EAGAIN` error status.
 
 - There are no short or scattered writes to the ring buffer: the
   operation either succeeds immediately or blocks until enough space
   is available into the buffer for copying the entire message
-  atomically, unless O_NONBLOCK is set on the cross-buffer file
-  descriptor (`EAGAIN`).
+  atomically, unless [O_NONBLOCK](http://man7.org/linux/man-pages/man2/fcntl.2.html)
+  is set on the cross-buffer file descriptor (`EAGAIN`).
 
 ### Cross-buffer services {#xbuf-services}
 

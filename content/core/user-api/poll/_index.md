@@ -248,6 +248,10 @@ error code is returned:
 
 - -EINVAL	 _nrset_ is negative.
 
+- -EAGAIN	_fd_ is marked as [non-blocking (O_NONBLOCK)]
+  		(http://man7.org/linux/man-pages/man2/fcntl.2.html), and no
+  		file descriptor from the polling set has any event pending.
+
 - -EFAULT	 _pollset_ points to invalid memory.
 
 ---
