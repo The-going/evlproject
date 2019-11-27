@@ -321,7 +321,7 @@ The in-memory mutex descriptor previously constructed by
 [evl_init_heap()]({{< relref "#evl_init_heap" >}}).
 {{% /argument %}}
 
-{{% argument ptr %}}
+{{% argument block %}}
 The address of a chunk to release which was originally obtained from
 [evl_alloc_block()]({{< relref "#evl_alloc_block" >}}).
 {{% /argument %}}
@@ -345,7 +345,7 @@ The in-memory mutex descriptor previously constructed by
 [evl_init_heap()]({{< relref "#evl_init_heap" >}}).
 {{% /argument %}}
 
-{{% argument ptr %}}
+{{% argument block %}}
 The address of a block to check for sanity.
 {{% /argument %}}
 
