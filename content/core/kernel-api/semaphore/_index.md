@@ -3,6 +3,8 @@ title: "Kernel semaphores"
 weight: 20
 ---
 
+![Alt text](/images/wip.png "To be continued")
+
 #### void evl_init_ksem(struct evl_ksem *ksem, unsigned int value)
 
 ---

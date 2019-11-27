@@ -3,6 +3,8 @@ title: "Kernel threads"
 weight: 5
 ---
 
+![Alt text](/images/wip.png "To be continued")
+
 #### evl_run_kthread(__kthread, __fn, __priority, __fmt, __args...)
 
 ---

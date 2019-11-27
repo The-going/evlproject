@@ -3,6 +3,8 @@ title: "Kernel mutexes"
 weight: 10
 ---
 
+![Alt text](/images/wip.png "To be continued")
+
 #### void evl_init_kmutex(struct evl_kmutex *kmutex)
 
 ---

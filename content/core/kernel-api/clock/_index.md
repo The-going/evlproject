@@ -3,6 +3,8 @@ menuTitle: "Clock devices"
 weight: 30
 ---
 
+![Alt text](/images/wip.png "To be continued")
+
 The target platform can provide particular clock chips and/or clock
 source drivers in addition to the architecture-specific ones. For
 instance, some device on a PCI bus could implement a timer chip which

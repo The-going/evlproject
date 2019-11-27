@@ -3,6 +3,8 @@ title: "Using cross-buffers"
 weight: 40
 ---
 
+![Alt text](/images/wip.png "To be continued")
+
 #### struct evl_xbuf *evl_get_xbuf(int efd, struct evl_file **efilpp)
 
 ---
