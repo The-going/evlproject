@@ -3,6 +3,7 @@ languageCode = "en-US"
 title = "EVL project"
 theme = "hugo-theme-learn"
 copyright = "Copyright 2019 - The EVL project."
+enableGitInfo = true
 
 [params]
 author = "Philippe Gerum <rpm@xenomai.org>"
@@ -11,7 +12,7 @@ disableSearch = false
 disableInlineCopyToClipBoard = true
 disableBreadcrumb = false
 themeVariant = "evl"
-disableShortcutsTitle=true
+disableShortcutsTitle = true
 
 [[menu.shortcuts]]
 name = "<i class='fas fa-envelope'></i> Contact"
