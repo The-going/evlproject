@@ -5,32 +5,33 @@ weight: 1
 
 ### Initializing `libevl` {#init-libevl}
 
-Initializing the core EVL library for any given application process
-means undertaking these steps:
+When initializing, the core EVL library undertakes the following steps
+once for any given application process:
 
-- set up the specific bits for the CPU architecture, which boils down
-  to resolving the address of the
+- it sets up the specific bits for the CPU architecture, which boils
+  down to resolving the address of the
   [vDSO](http://man7.org/linux/man-pages/man7/vdso.7.html) for the
   current process.
 
-- lock the current and future process memory by a call to
+- it locks the current and future process memory by a call to
   [mlockall(2)](http://man7.org/linux/man-pages/man2/mlock.2.html), so
   that we won't get page faults due to on-demand memory schemes such
   as the [copy-on-write
   technique](https://landley.net/writing/memory-faq.txt).
 
-- connect to the EVL core running in kernel space, performing a few
-  sanity checks such as making sure the core can handle the ABI the
-  application will use later on to issue EVL system calls.
+- it connects to the EVL core running in kernel space, performing a
+  few sanity checks such as making sure the core can handle the ABI
+  the application will use later on to issue EVL system calls.
 
-- initialize a couple of built-in [proxy streams]({{< relref
+- it initializes a couple of built-in [proxy streams]({{< relref
   "core/user-api/proxy/_index.md" >}}), such as the one
   [evl_printf()]({{< relref "core/user-api/proxy/_index.md#evl_printf"
   >}}) needs to send zero-latency output to _stdout_ from the
   out-of-band context.
 
-- finally, set up a signal handler to receive SIGEVL which the core
-  may send to an application process in some (seldom) circumstances.
+- finally, a signal handler is installed in order to receive SIGEVL
+  which the core may send to an application process in some (seldom)
+  circumstances.
 
 All these actions are performed once by a bootstrap routine named
 [evl_init()]({{< relref "#evl_init" >}}), which may be either called
@@ -38,9 +39,9 @@ explicitly by the application code - usually at startup on behalf of
 the `main()` thread - or indirectly as a result of invoking
 [evl_attach_self()]({{% relref
 "core/user-api/thread/_index.md#evl_attach_self" %}}) for the first
-time. Threads put aside, any attempt to create other EVL resources
+time. Threads put aside, any attempt to create other EVL objects
 before [evl_init()]({{< relref "#evl_init" >}}) has run leads to the
--ENXIO error.
+`-ENXIO` error.
 
 > Explicit initialization from the `main()` entry point
 
@@ -92,9 +93,9 @@ int evl_init(void)
 
 This function boostraps the EVL services for the current process as
 explained in the [introduction]({{< relref "#init-libevl" >}}). Only
-the first call to this routine applies, subsequent direct or indirect
-calls to [evl_init()]({{< relref "#evl_init" >}}) are silently
-ignored, returning the status code of the initial call.
+the first call to this routine applies, subsequent calls to
+[evl_init()]({{< relref "#evl_init" >}}) are silently ignored,
+returning the status code of the initial call.
 
 On success, this service returns zero. Otherwise, a negated error code
 is returned:
