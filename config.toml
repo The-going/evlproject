@@ -11,6 +11,13 @@ disableSearch = false
 disableInlineCopyToClipBoard = true
 disableBreadcrumb = false
 themeVariant = "evl"
+disableShortcutsTitle=true
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-envelope'></i> Contact"
+identifier = "Contact"
+url = "mailto:Philippe Gerum <rpm@xenomai.org>"
+weight = 20
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
