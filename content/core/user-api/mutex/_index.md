@@ -262,6 +262,15 @@ multiple threads wait for acquiring the lock, the one with the
 [highest scheduling priority]({{< relref "core/user-api/scheduling"
 >}}) which has been waiting for the longest time is served first.
 
+{{% notice note %}}
+As long as the caller holds an EVL mutex, switching to in-band mode is
+wrong since this would introduce a priority inversion. For this
+reason, EVL threads which undergo the [SCHED_WEAK policy]({{< relref
+"core/user-api/scheduling/_index.md#SCHED_WEAK" >}}) are kept running
+out-of-band by the core until the last mutex they have acquired is
+dropped.
+{{% /notice %}}
+
 {{% argument mutex %}}
 The in-memory mutex descriptor constructed by
 either `evl_new_mutex[_any]()` or `evl_open_mutex()`, or statically built
@@ -323,7 +332,7 @@ The possible return values include any status from
 ---
 
 {{< proto evl_trylock_mutex >}}
-int evl_timedlock_mutex(struct evl_mutex *mutex)
+int evl_trylock_mutex(struct evl_mutex *mutex)
 {{< /proto >}}
 
 This call attempts to lock the mutex like [evl_lock_mutex()]({{%

@@ -681,7 +681,9 @@ i.e. threads not [attached]({{< relref
 <sup>3</sup> Except if the caller undergoes the [SCHED_WEAK]({{<
 relref "core/user-api/scheduling/_index.md#SCHED_WEAK" >}}) policy, in
 which case it is switched back to in-band mode if it has released the
-last EVL mutex it holds by the end of the call.
+last [EVL mutex]({{< relref
+"core/user-api/mutex/_index.md#evl_mutex_lock" }}) it holds by the end
+of the call.
 
 <sup>4</sup> As an exception, if this synchronization object was
 statically initialized (`EVL_*_INITIALIZER()`), this routine may
