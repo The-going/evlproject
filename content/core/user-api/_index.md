@@ -96,8 +96,9 @@ your time-critical code only relies on either:
 - a (very) small subset of the common C library which are known **NOT
   to** depend on regular in-band kernel services. In other words,
   routines which won't issue common Linux system calls in any way. For
-  instance, routines from the [string(3)] section come to mind in this
-  case, like
+  instance, routines from the
+  [string(3)](http://man7.org/linux/man-pages/man3/string.3.html)
+  section come to mind in this case, like
   [strcpy(3)](http://man7.org/linux/man-pages/man3/strcpy.3.html),
   [memcpy(3)](http://man7.org/linux/man-pages/man3/memcpy.3.html) and
   friends. At the opposite, any call which directly or indirectly
