@@ -35,7 +35,7 @@ thread** obviously **lost any real-time guarantee** in the process.
 
 To sum up, the lifetime of an EVL application usually looks like this:
 
-1. When a new process is initializing, a regular thread - often the
+1. When a new process initializes, a regular thread - often the
 `main()` one - invokes routines from the C library in order to get
 common resources, like opening files, allocating memory buffers and so
 on. At some point later on, this thread calls [evl_attach_self()]({{<
