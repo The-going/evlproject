@@ -1,5 +1,5 @@
 ---
-title: "Kernel threads"
+title: "Kernel thread"
 weight: 5
 ---
 

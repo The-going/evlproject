@@ -1,5 +1,5 @@
 ---
-title: "Kernel semaphores"
+title: "Kernel semaphore"
 weight: 20
 ---
 

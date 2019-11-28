@@ -1,5 +1,5 @@
 ---
-title: "Timers"
+title: "Timer"
 weight: 35
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "Using cross-buffers"
+title: "Cross-buffer access"
 weight: 40
 ---
 

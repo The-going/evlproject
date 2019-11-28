@@ -1,6 +1,6 @@
 ---
-title: "EVL Spinlocks"
-weight: 25
+title: "EVL Spinlock"
+weight: 27
 ---
 
 ![Alt text](/images/wip.png "To be continued")

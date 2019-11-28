@@ -1,5 +1,5 @@
 ---
-menuTitle: "Clock devices"
+menuTitle: "Clock device"
 weight: 30
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "Kernel mutexes"
+title: "Kernel mutex"
 weight: 10
 ---
 
