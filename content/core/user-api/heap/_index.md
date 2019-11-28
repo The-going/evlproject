@@ -103,7 +103,7 @@ The allocation strategy is as follows:
   follows:
 
 ```
-# /usr/evl/tests/heap-torture -v
+# $(evl test -L heap-torture) -v
 ```
 
 #### Other options for a real-time capable memory allocator
