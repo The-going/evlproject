@@ -1,5 +1,5 @@
 ---
-title: "Caveat"
+menuTitle: "Caveat"
 weight: 4
 ---
 
