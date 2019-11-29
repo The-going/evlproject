@@ -440,7 +440,7 @@ The _clone_ file is a special device which allows the EVL library to
 request the creation of a thread element. _This is for internal use only_.
 {{% /notice %}}
 
-### How to reach a remote EVL thread?
+### How to reach a remote EVL thread? {#thread-device-open}
 
 If you need to submit requests for an EVL thread which belongs to a
 different process, you only need to open the device file representing
@@ -594,6 +594,15 @@ The format of these fields is as follows:
   timeout. EVL starts a timer when a thread enters a timed wait on
   some kernel resource; _timeout_ reports the time to go until this
   timer fires.
+
+### Thread-specific [OOB_IOCTL]({{< relref "core/user-api/io/_index.md#oob_ioctl" >}}) requests {#thread-ioctl}
+
+Threads can be sent [out-of-band control requests]({{< relref
+"core/user-api/io/_index.md#oob_ioctl" >}}) using the file descriptor
+either returned by [evl_attach_self()]({{< relref "#evl_attach_self"
+>}}), or received from the
+[open(2)](http://man7.org/linux/man-pages/man2/open.2.html) system
+call for a [thread device]({{< relref "#thread-device-open" >}}).
 
 ---
 

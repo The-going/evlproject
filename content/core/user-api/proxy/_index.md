@@ -53,7 +53,7 @@ used to channel the data to the target file.
 
 ![Alt text](/images/proxy.png "File proxy")
 
-> Logging debug messages via a proxy
+#### Logging debug messages via a proxy {#proxy-logging-example}
 
 For instance, you may want your application to dump debug information
 to some arbitray file as it runs, including when running time-critical
@@ -87,7 +87,7 @@ through the proxy this way:
 	evl_print_proxy(proxyfd, "some useful debug information");
 ```
 
-> Synchronizing in-band threads on out-of-band events with via a proxy
+#### Synchronizing in-band threads on out-of-band events with via a proxy {#proxy-synchronization-example}
 
 There are a couple of ways which you could use in order to wake up an
 in-band thread waiting for some event to occur on the out-of-band side
@@ -171,7 +171,7 @@ is proxying for.
 
 ![Alt text](/images/proxy-mmap.png "Mapping proxy")
 
-> Exporting process-private memfd memory to the outer world
+#### Exporting process-private memfd memory to the outer world {#proxy-memfd-example}
 
 For instance, this usage of a proxy comes in handy when you need to
 export a private memory mapping like those obtained by
