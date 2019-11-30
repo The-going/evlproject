@@ -595,7 +595,7 @@ The format of these fields is as follows:
   some kernel resource; _timeout_ reports the time to go until this
   timer fires.
 
-### Thread-specific [OOB_IOCTL]({{< relref "core/user-api/io/_index.md#oob_ioctl" >}}) requests {#thread-ioctl}
+### Thread-specific I/O control requests {#thread-ioctl}
 
 Threads can be sent [out-of-band control requests]({{< relref
 "core/user-api/io/_index.md#oob_ioctl" >}}) using the file descriptor
@@ -603,6 +603,8 @@ either returned by [evl_attach_self()]({{< relref "#evl_attach_self"
 >}}), or received from the
 [open(2)](http://man7.org/linux/man-pages/man2/open.2.html) system
 call for a [thread device]({{< relref "#thread-device-open" >}}).
+
+![Alt text](/images/wip.png "To be continued")
 
 ---
 
