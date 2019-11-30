@@ -594,42 +594,42 @@ weight: 150
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/misc/index.html#evl_init_tube" target="_blank">evl_init_tube()</a></td>
+    <td><a href="/core/user-api/tube/index.html#evl_init_tube" target="_blank">evl_init_tube()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/misc/index.html#evl_send_tube" target="_blank">evl_send_tube()</a></td>
+    <td><a href="/core/user-api/tube/index.html#evl_send_tube" target="_blank">evl_send_tube()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/misc/index.html#evl_receive_tube" target="_blank">evl_receive_tube()</a></td>
+    <td><a href="/core/user-api/tube/index.html#evl_receive_tube" target="_blank">evl_receive_tube()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/misc/index.html#evl_get_tube_size" target="_blank">evl_get_tube_size()</a></td>
+    <td><a href="/core/user-api/tube/index.html#evl_get_tube_size" target="_blank">evl_get_tube_size()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/misc/index.html#evl_init_tube_rel" target="_blank">evl_init_tube_rel()</a></td>
+    <td><a href="/core/user-api/tube/index.html#evl_init_tube_rel" target="_blank">evl_init_tube_rel()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/misc/index.html#evl_send_tube_rel" target="_blank">evl_send_tube_rel()</a></td>
+    <td><a href="/core/user-api/tube/index.html#evl_send_tube_rel" target="_blank">evl_send_tube_rel()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/misc/index.html#evl_receive_tube_rel" target="_blank">evl_receive_tube_rel()</a></td>
+    <td><a href="/core/user-api/tube/index.html#evl_receive_tube_rel" target="_blank">evl_receive_tube_rel()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/misc/index.html#evl_get_tube_size_rel" target="_blank">evl_get_tube_size_rel()</a></td>
+    <td><a href="/core/user-api/tube/index.html#evl_get_tube_size_rel" target="_blank">evl_get_tube_size_rel()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>
