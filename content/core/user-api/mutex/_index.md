@@ -429,6 +429,7 @@ code may be returned if:
 	      descriptor. If that pointer is out of the caller's
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
+
 ---
 
 {{< proto evl_get_mutex_ceiling >}}
@@ -451,6 +452,7 @@ on success. Otherwise, a negated error code may be returned if:
 	      descriptor. If that pointer is out of the caller's
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
+
 ---
 
 {{< proto evl_close_mutex >}}
