@@ -89,7 +89,9 @@ The build recipe is available [there]({{% relref "core/build-steps.md"
 
 EVL-related topics including Dovetail and the EVL real-time core can
 be discussed in this [RIOT chat
-room](https://riot.im/app/#/room/#evlproject:matrix.org).
+room](https://riot.im/app/#/room/#evlproject:matrix.org). Alternatively,
+you can register on the [EVL mailing
+list](https://evlproject.org/mailman/listinfo/evl/).
 
 ## Licensing terms
 
