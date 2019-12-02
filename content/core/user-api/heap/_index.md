@@ -44,9 +44,10 @@ To this end, the heap manager maintains:
 
 - a free page pool. At initialization time, most of the memory area
   passed to [evl_init_heap()]({{< relref "#evl_init_heap" >}}) is
-  forming this pool. This pool is maintained in an [AVL
-  tree](https://en.wikipedia.org/wiki/AVL_tree) to ensure time-bounded
-  operations on inserting and removing pages.
+  forming this pool. This pool is maintained in an couple of [AVL
+  trees](https://en.wikipedia.org/wiki/AVL_tree) to ensure
+  time-bounded operations on inserting and removing pages (either by
+  size or address).
 
 - an array of list of pages used as a fast block cache, where each
   entry links pages occupied by chunks of the same size. Since the
