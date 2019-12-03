@@ -31,7 +31,7 @@ The following steps are required to create a tube:
 
 1. You first need to declare the C structure type of the canister
 which is going to convey data through that tube. This is done by using
-the `DECLARE_EVL_TUBE_CANISTER(canister_tag, data_type)` macro in your
+the `DECLARE_EVL_CANISTER(canister_tag, data_type)` macro in your
 code, which should be given the name of the new canister type (used as
 the C structure tag), and the C type of the data to be conveyed in
 that canister. For instance, the following snippet would declare the
@@ -55,7 +55,7 @@ diagnostic protocol, could be anything else of use of course):
   	 uint16_t ecu;
 	 unsigned char data[17];
   };
-  DECLARE_EVL_TUBE_CANISTER(j1587_canister, struct j1587_data);
+  DECLARE_EVL_CANISTER(j1587_canister, struct j1587_data);
   ```
 
 	This macro expands to a complete C `struct j1587_canister`
@@ -68,7 +68,7 @@ is fit for one specific type of canister, you cannot use multiple
 types of canister with a single tube. Such declaration is obtained by
 expanding the `DECLARE_EVL_TUBE(tube_tag, canister_tag)` macro, which
 receives the name of the new tube type (used as a C structure tag) and
-the canister tag passed earlier to `DECLARE_EVL_TUBE_CANISTER()`.
+the canister tag passed earlier to `DECLARE_EVL_CANISTER()`.
 
   ```
   #include <evl/tube.h>
@@ -92,7 +92,7 @@ required. This should be seen as the maximum number of canisters which
 can be queued into the tube at once. In other words, this is the
 maximum number of messages such queue can hold without running out of
 memory. The initialization code can refer to the declarations of the
-canister and tube types obtained by DECLARE_EVL_TUBE_CANISTER() and
+canister and tube types obtained by DECLARE_EVL_CANISTER() and
 DECLARE_EVL_TUBE():
 
   ```
@@ -100,7 +100,7 @@ DECLARE_EVL_TUBE():
   #include <evl/tube.h>
 
   /* The tube can convey up to 16 floating-point values at once. */
-  static DECLARE_EVL_TUBE_CANISTER(j1587_canister, struct j1587_data) canisters[16];
+  static DECLARE_EVL_CANISTER(j1587_canister, struct j1587_data) canisters[16];
   static DECLARE_EVL_TUBE(j1587_tube, j1587_canister) tube;
 
   evl_init_tube(&tube, canisters, 16);
@@ -137,7 +137,7 @@ a pointer to the final data, so that only that pointer needs to be copied, e.g.:
           struct massive_bitmap_canister *next;
      };
    */
-  DECLARE_EVL_TUBE_CANISTER(massive_bitmap_canister, void *);
+  DECLARE_EVL_CANISTER(massive_bitmap_canister, void *);
   ```
 
 #### Using tubes for inter-process messaging {#inter-process-tube}
@@ -149,13 +149,13 @@ the tube data structure use base-offset addressing instead of absolute
 memory pointers, so that such data structure can be mapped onto a
 piece of memory shared between processes via [mmap(2)](
 http://man7.org/linux/man-pages/man2/mmap.2.html). `DECLARE_EVL_TUBE_REL()`
-should be used to define the C type of the new inter-process tube. In
-addition, [evl_init_tube_rel()]({{< relref "#evl_init_tube_rel" >}})
-should be used for initializing the such tube,
-[evl_send_tube_rel()]({{< relref "#evl_send_tube" >}}) for pushing
-data through it, [evl_receive_tube_rel()]({{< relref
-"#evl_receive_tube_rel" >}}) for pulling available messages from it
-and so on.
+should be used to define the C type of the new inter-process tube,
+along with `DECLARE_EVL_CANISTER_REL()` for declaring the
+canister type for such a tube. Eventually, [evl_init_tube_rel()]({{<
+relref "#evl_init_tube_rel" >}}) should be used for initializing the
+the new tube, [evl_send_tube_rel()]({{< relref "#evl_send_tube" >}})
+for pushing data through it, and [evl_receive_tube_rel()]({{< relref
+"#evl_receive_tube_rel" >}}) for pulling available messages from it.
 
 Of course, you still need to refrain from conveying absolute pointers
 referring to a particular process address space into the message
@@ -237,7 +237,7 @@ relref "#tube-creation" >}}) macro.
 The start address of an array of canisters which should be used to
 convey the payload through the tube. The C type of the basic element
 should have been declared earlier by the
-[DECLARE_EVL_TUBE_CANISTER()]({{< relref "#tube-creation" >}})
+[DECLARE_EVL_CANISTER()]({{< relref "#tube-creation" >}})
 macro.
 {{% /argument %}}
 
