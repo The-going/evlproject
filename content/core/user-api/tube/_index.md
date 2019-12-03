@@ -99,7 +99,7 @@ DECLARE_EVL_TUBE():
   #include <stdio.h>
   #include <evl/tube.h>
 
-  /* The tube can convey up to 16 floating-point values at once. */
+  /* The tube can convey up to sixteen j1587 items at once. */
   static DECLARE_EVL_CANISTER(j1587_canister, struct j1587_data) canisters[16];
   static DECLARE_EVL_TUBE(j1587_tube, j1587_canister) tube;
 
@@ -146,7 +146,7 @@ A special form of tube can be used for transferring data between
 processes, using the *__rel()_ interface variant, which stands for
 _relative addressing_. As this implies, all internal references within
 the tube data structure use base-offset addressing instead of absolute
-memory pointers, so that such data structure can be mapped onto a
+memory pointers, so that such data structure can be mapped to a
 piece of memory shared between processes via [mmap(2)](
 http://man7.org/linux/man-pages/man2/mmap.2.html). `DECLARE_EVL_TUBE_REL()`
 should be used to define the C type of the new inter-process tube,
@@ -159,7 +159,51 @@ for pushing data through it, and [evl_receive_tube_rel()]({{< relref
 
 Of course, you still need to refrain from conveying absolute pointers
 referring to a particular process address space into the message
-payload.
+payload. Here is an example of mapping an EVL tube which can handle up
+to 1024 messages flowing concurrently, to a new shared memory segment
+which we will be creating for the purpose:
+
+```
+  #include <fcntl.h>
+  #include <unistd.h>
+  #include <evl/tube.h>
+  #include <sys/types.h>
+  #include <sys/mman.h>
+  #include <sys/stat.h>
+
+  struct j1587_data {
+  	 uint16_t pid;
+  	 uint16_t ecu;
+	 unsigned char data[17];
+  };
+
+  DECLARE_EVL_CANISTER_REL(j1587_rel_canister, struct j1587_data);
+  DECLARE_EVL_TUBE_REL(j1587_rel_tube, j1587_rel_canister);
+  j1587_rel_tube *tube;
+  int shmfd, ret;
+  size_t len;
+  void *ptr;
+
+  /* Create a shared memory object. */
+  shmfd = shm_open(some_shm_pathname, O_RDWR, 0660);
+  ...
+  /*
+   * Use ftruncate() to fit the shared memory to the tube size. We want
+   * up to 1024 data items to flow concurrently through the tube.
+   */
+  len = evl_get_tube_size_rel(j1787_rel_tube, 1024);
+  ret = ftruncate(shmfd, len);
+  ...
+  /* Now map this new segment into our address space. */
+  ptr = mmap(NULL, len, PROT_READ|PROT_WRITE, MAP_SHARED, shmfd, 0);
+  ...
+  /*
+   * Finally, set up the tube over the shared memory and retrieve its
+   * descriptor for further commands. From this point, you can send and
+   * receive j1787_data messages through it.
+   */
+  tube = evl_init_tube_rel(j1587_rel_tube, j1587_rel_canister, ptr, len);
+  ```
 
 #### Using tubes for out-of-band &#8660; in-band messaging {#inter-stage-tube}
 
