@@ -1,7 +1,7 @@
 ---
 menuTitle: "Running tests"
 title: "Testing the installation"
-weight: 3
+weight: 4
 ---
 
 EVL comes with a series of tests you can run to make sure the core is
@@ -209,7 +209,7 @@ RTD|           1|        1311|        5926
 ...
 ```
 
-## Unit testing
+## Unit testing {#evl-unit-testing}
 
 A series of unit testing programs is produced in `$prefix/tests` as
 part of building `libevl`. You should run each of them to make sure

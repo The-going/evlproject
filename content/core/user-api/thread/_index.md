@@ -24,14 +24,14 @@ thread attached itself to EVL, it can:
 - invoke services from your favourite C library (_glibc_, _musl_,
   _uClibc_ etc.), which may end up issuing system calls to the main
   kernel for carrying out the job. EVL may have to demote the caller
-  automatically from the EVL context to a runtime mode which is
-  compatible with using the main kernel services. As a result of this,
-  you get NO help from EVL for keeping short and bounded latency
-  figures anymore, but you do have access to any feature the main
-  kernel provides. This mode is normally reserved to initialization
-  and cleanup phases of your application. If you end up using them in
-  the middle of a would-be time-critical loop, well, something is
-  seriously wrong in this code.
+  automatically from the EVL context to the in-band stage, so that it
+  enters a runtime mode which is compatible with using the main kernel
+  services. As a result of this, you get NO help from EVL for keeping
+  short and bounded latency figures anymore, but you do have access to
+  any feature the main kernel provides. This mode is normally reserved
+  to initialization and cleanup phases of your application. If you end
+  up using them in the middle of a would-be time-critical loop, well,
+  something is seriously wrong in this code.
 
 {{% notice info %}}
 A thread which is being scheduled by EVL instead of the main kernel is
@@ -477,11 +477,12 @@ CPU   PID   SCHED   PRIO  NAME
   0   399    weak     0   lat-measure:394
 ```
 
-There are display options you can pass to 'evl ps' to get more
-information about each EVL thread, sorting the result list according
-to various criteria.
+There are display options you can pass to the ['evl ps']({{< relref
+"core/commands.md#evl-ps-command" >}}) command to get more information
+about each EVL thread, sorting the result list according to various
+criteria.
 
-#### Looking at the /sysfs data
+#### Looking at the /sysfs data {#thread-sysfs-data}
 
 Since every EVL element is backed by a regular character device, so
 are threads. Therefore, what to look for is the set of thread device

@@ -1,6 +1,6 @@
 ---
 menuTitle: "Caveat"
-weight: 4
+weight: 6
 ---
 
 # Things you definitely want to know
