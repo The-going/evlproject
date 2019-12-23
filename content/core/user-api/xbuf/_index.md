@@ -72,7 +72,14 @@ This call creates a new cross-buffer, then returns a file descriptor
 representing the communication channel upon success. Internally, a
 cross-buffer is implemented as a pair of ring buffers conveying data
 from in-band to out-of-band context (i.e. _inbound_ traffic), and
-conversely (i.e. _outbound_ traffic).
+conversely (i.e. _outbound_ traffic). [oob_write()]({{< relref
+"core/user-api/io/_index.md#oob_write" >}}) and [oob_read()]({{<
+relref "core/user-api/io/_index.md#oob_read" >}}) should be used by
+callers running on the out-of-band stage for sending/receiving data
+through this channel respectively. Conversely,
+[write(2)](http://man7.org/linux/man-pages/man2/write.2.html) and
+[read(2)](http://man7.org/linux/man-pages/man2/read.2.html) should be
+used for accessing the channel from the in-band stage.
 
 {{% argument i_bufsz %}}
 The size in bytes of the ring buffer conveying inbound traffic. If
@@ -106,7 +113,7 @@ success. If the call fails, a negated error code is returned instead:
 
 - -EEXIST	The generated name is conflicting with an existing cross-buffer.
 
-- -EINVAL	Either _i_bufsz_ and/or _o_bufsz_ are wrong, or the
+- -EINVAL	Either _i\_bufsz_ and/or _o\_bufsz_ are wrong, or the
   		generated cross-buffer name is badly formed, likely containing
 		invalid character(s), such as a slash. Keep in mind that
 		it should be usable as a basename of a device file path.
