@@ -21,9 +21,11 @@ ported in the following sequence:
    bits need to be ported (a FPU test helper for the most part).
 
 3. the [EVL library]({{%relref "core/user-api/_index.md"
-   %}}). Likewise, this code has very little dependencies on the
-   underlying CPU architecture and platform. A port boils down to
-   resolving the address of the `clock_gettime()` helper in the vDSO.
+%}}). Likewise, this code has very little dependencies on the
+underlying CPU architecture and platform. A port boils down to
+resolving the address of the
+[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
+in the vDSO.
 
 The table below summarizes the current status of the existing
 ports. If you are interested in porting your own autonomous core to a

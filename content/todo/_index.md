@@ -116,14 +116,17 @@ root for improvement in order to better fit the EVL context. In
 addition, new code which has not been inherited from Xenomai is not
 instrumented for the most part.
 
-### Sanity check for OOB-accessible clock_gettime() via vDSO {#todo-vdso-cs}
+### Sanity check for OOB-accessible [clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html) via the vDSO {#todo-vdso-cs}
 
 The latmus test should do a quick check about not receiving a stage
-migration signal as a result of calling clock_gettime(). We have to
-make sure that we go through the vDSO for reading timestamps, without
-incurring any in-band syscall. In the ARM case, switching in-band when
-calling clock_gettime() would denote a system clocksource which was
-not enabled for user MMIO access, which is bad.
+migration signal as a result of calling
+[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html). We
+have to make sure that we go through the vDSO for reading timestamps,
+without incurring any in-band syscall. In the ARM case, switching
+in-band when calling
+[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
+would denote a system clocksource which was not enabled for user MMIO
+access, which is bad.
 
 ---
 

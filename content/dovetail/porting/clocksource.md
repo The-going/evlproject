@@ -7,22 +7,24 @@ weight: 95
 Your autonomous core most likely needs a fast access to the current
 clock source from the out-of-band context, for reading precise
 timestamps which are in sync with the kernel's idea of time. The best
-way to achieve this is by enabling the fast `clock_gettime()` helper
-in the [vDSO support](https://lwn.net/Articles/615809/) for the target
-CPU architecture. At least, you may want user-space tasks controlled
-by the core to have access to the POSIX-defined `CLOCK_MONOTONIC` and
-`CLOCK_REALTIME` clocks from the out-of-band context, using a vDSO
-call, with no execution and response time penalty involved in invoking
-an [in-band syscall] ({{< relref
+way to achieve this is by enabling the fast
+[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
+helper in the [vDSO support](https://lwn.net/Articles/615809/) for the
+target CPU architecture. At least, you may want user-space tasks
+controlled by the core to have access to the POSIX-defined
+`CLOCK_MONOTONIC` and `CLOCK_REALTIME` clocks from the out-of-band
+context, using a vDSO call, with no execution and response time
+penalty involved in invoking an [in-band syscall] ({{< relref
 "dovetail/altsched.md#inband-switch" >}}).
 
 ### Reading timestamps via the vDSO in a nutshell
 
-Basically, A vDSO-based `clock_gettime()` implementation wants to read
-from non-privileged CPU mode the same monotonic hardware counter which
-is currently used by the kernel for timekeeping, before converting the
-count to nanoseconds. In other words, this implementation should
-mirror the kernel
+Basically, A vDSO-based
+[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
+implementation wants to read from non-privileged CPU mode the same
+monotonic hardware counter which is currently used by the kernel for
+timekeeping, before converting the count to nanoseconds. In other
+words, this implementation should mirror the kernel
 [clocksource](https://www.kernel.org/doc/Documentation/timers/timekeeping.txt)
 behavior. However, it should do so relying exclusively on resources
 which may be accessed from user mode, since the vDSO code segment
@@ -58,15 +60,18 @@ so-called _architected timer_ the armv8 specification requires from
 compliant CPUs. With CPUs following an earlier specification, a
 truckload of different hardware chips may be used for that purpose
 instead, which the vDSO implementation does not provide any support
-for. In these cases, a plain in-band system call may be issued
-whenever the vDSO-based `clock_gettime()` is called from an
-application, which would be a showstopper for keeping the response
-time short and bounded.
+for. Sometimes, the architected timer is present but not usable for
+timekeeping duties because of firmware issues. In these cases, a plain
+in-band system call may be issued whenever the vDSO-based
+[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
+is called from an application, which would be a showstopper for
+keeping the response time short and bounded.
 
 {{% notice tip %}}
 On ARM, if you receive the following message from the _latmus_ utility
 when exiting a latency test, chances are that the vDSO helper for
-`clock_gettime()` still uses a syscall-based request for reading the
+[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
+still uses a syscall-based request for reading the
 clock.  In such an event, the Dovetail port to your SoC is
 incomplete, and you may have to convert the original clock source the
 kernel uses to a user-mappable one the vDSO can read directly via MMIO.
@@ -74,51 +79,67 @@ kernel uses to a user-mappable one the vDSO can read directly via MMIO.
 # latmus
 <latency output>
 ^C
-WARNING: unexpected switches to in-band mode detected, latency figures may not be reliable. Please report.
+*** WARNING: unexpected switches to in-band mode detected,
+             those latency figures are NOT reliable.
+             Please submit a bug report upstream.
 ```
 {{% /notice %}}
 
-### Dovetail and the USER_MMIO clock sources
+Bottom line: a Dovetail port **requires** a syscall-less vDSO access
+to the underlying clock source so that companion cores like EVL can
+meet real-time requirements.
 
-In order to address the ARM situation when no architected timer is
-available, Dovetail first extends the _clocksource\_mmio_ semantics
-with the _user-mapped, MMIO-accessed clock sources_ aka _struct
-clocksource\_user\_mmio_, implemented in `drivers/clocksource/mmio.c`.
-In essence, a _clocksource\_user\_mmio_ object is a MMIO-based clock
-source which a vDSO code may map into the calling application's
-address space, so that it can read the hardware counter directly. More
-precisely, the MMIO space covering the hardware counter register(s)
-is mapped into the caller's address space.
+### The generic vDSO and USER_MMIO clock sources {#generic-clocksource-vdso}
+
+If your target kernel supports the generic vDSO implementation
+(CONFIG_HAVE_GENERIC_VDSO), Dovetail already provides the core support
+for accessing MMIO-based clock sources from the vDSO, which is
+essentially part of the application context:
+
+- firstly, it extends the _clocksource\_mmio_ semantics with the
+MMIO-accessed clock sources mapped to user space aka _struct
+clocksource\_user\_mmio_, implemented in `drivers/clocksource/mmio.c`,
+which we call USER_MMIO for short in this document.  In essence, a
+USER_MMIO clock source is a MMIO-based clock source which any
+application may map into its own address space, so that it can read
+the hardware counter directly. Specifically, the MMIO space covering
+the hardware counter register(s) is mapped into the caller's address
+space.
+
+- Secondly, Dovetail extends the generic vDSO implementation in
+`lib/vdso.c` and `kernel/time/vsyscall.c` in order to make USER_MMIO
+clock sources visible to applications, in addition to the architected
+timer if present.
+
+- Finally, Dovetail converts some MMIO clock sources to USER_MMIO
+clock sources, such as the OMAP2 general-purpose timer, the ARM global
+timer counter and the DesignWare APB timer. More conversions will come
+over time, as Dovetail is ported to a broader range of hardware.
 
 {{% notice note %}}
 The mapping operation happens once in a process lifetime, during the
-very first call to `clock_gettime()` issued by the application. Since
-this involves running in-band code for updating the caller's address
-space, this particular call gives absolutely **no** response time
-guarantee. So it's good practice to force an initial dummy call to
-`clock_gettime()` from the library code which initializes the
+very first call to [clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
+issued by the application. Since this involves running in-band code for
+updating the caller's address space, this particular call gives absolutely
+**no** response time guarantee. So it's good practice to force an initial
+dummy call to [clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
+from the library code which initializes the
 interface between applications and your autonomous core (i.e. some
 user-space library which implements the out-of-band system calls
 wrappers to send requests to this core). For EVL, this is done in
 [libevl]({{< relref "core/user-api/_index.md" >}}).
 {{% /notice %}}
 
-Dovetail also modifies the ARM vDSO code in order to deal with the
-USER_MMIO clock sources (see `arch/arm/vdso/vgettimeofday.c`),
-extending the range of supported hardware which we can read timestamps
-directly from, without resorting to any system call.
+#### Making a MMIO clock source accessible from the vDSO
 
-Finally, Dovetail converts some of the existing clock sources, such as
-the OMAP2 general-purpose timer, the ARM global timer counter and the
-DesignWare APB timer. More conversions will come over time, as
-Dovetail is ported to a broader range of hardware.
+If you need to convert an existing MMIO clock source to a
+user-mappable one visible from the generic vDSO, you can follow this
+three-step process:
 
-Converting a MMIO clock source to a user-mappable one is a three-step
-process:
-
-- in Kconfig, mention `[CONFIG_]CLKSRC_VDSO_MAPPED` in the
-  configuration dependency list for building your target kernel, in
-  order to compile in Dovetail's USER_MMIO support.
+- in the Kconfig stanza enabling the clock source, select
+  `[CONFIG_]GENERIC_CLOCKSOURCE_VDSO` in the dependency list to
+  compile the required support in the generic vDSO code, which in turn
+  selects the USER_MMIO support it depends on.
 
 - in the clock source implementation, convert the _struct clocksource_
   descriptor to a _struct clocksource\_user\_mmio_ descriptor. The
@@ -225,7 +246,7 @@ use.
  	select ARCH_HAS_HOLES_MEMORYMODEL
  	select ARCH_OMAP
  	select CLKSRC_MMIO
-+	select CLKSRC_VDSO_MAPPED
++	select GENERIC_CLOCKSOURCE_VDSO
  	select GENERIC_IRQ_CHIP
  	select GPIOLIB
  	select MACH_OMAP_GENERIC
