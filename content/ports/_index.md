@@ -96,6 +96,14 @@ Linux 5.5-rc2
     <td>5.2</td>
   </tr>
   <tr>
+    <td><a href="https://www.variscite.com/product/system-on-module-som/cortex-a53-krait/dart-mx8m-mini-nxp-i-mx8m-mini/" target="_blank">NXP i.MX8M Mini (Variscite DART-MX8M-MINI)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.2</td>
+  </tr>
+  <tr>
     <td><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">QEMU virt</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
@@ -164,6 +172,14 @@ Linux 5.5-rc2
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">Broadcom BCM2636 (Raspberry PI 2 Model B)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.5-rc2</td>
+  </tr>
+  <tr>
+    <td><a href="http://nanopi.io/nanopi-neo.html/" target="_blank">AllWinner H3 (NanoPI NEO)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
