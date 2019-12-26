@@ -101,7 +101,7 @@ Linux 5.5-rc2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2</td>
+    <td>5.2 <sup>*</sup></td>
   </tr>
   <tr>
     <td><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">QEMU virt</a></td>
@@ -112,6 +112,8 @@ Linux 5.5-rc2
     <td>5.5-rc2</td>
   </tr>
 </table>
+
+<sup>*</sup> Mainline kernel with SoC-specific bits picked from the vendor tree.
 
 > ARM SoC
 
