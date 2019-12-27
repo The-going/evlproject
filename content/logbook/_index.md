@@ -112,12 +112,11 @@ point in waiting patiently for the main kernel logic to finish
 switching its own tasks before preempting it upon out-of-band
 IRQ. Several micro-benchmarks on ARM and arm64 revealed that a
 significant portion of the maximum latency was induced by switching
-memory contexts atomically. Dovetail now supports generic non-atomic
-mm switching for the in-band stage, which allows the EVL core to
-preempt in the middle of an in-band memory context switch, reducing
-even further the wakeup latency of out-of-band threads under high
-memory stress, especially when sluggish outer cache controllers are
-part of the picture.
+contexts atomically. Dovetail now supports generic non-atomic
+context switching for the in-band stage which allows the EVL core to
+preempt during this process, reducing even further the wakeup latency
+of out-of-band threads under high memory stress, especially when
+sluggish outer cache controllers are part of the picture.
 
 ---
 
