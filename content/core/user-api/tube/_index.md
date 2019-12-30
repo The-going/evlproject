@@ -41,15 +41,6 @@ diagnostic protocol, could be anything else of use of course):
   ```
   #include <evl/tube.h>
 
-  /*
-     The following macro call defines the C struct type
-     describing a canister as:
-    
-     struct j1587_canister {
-          struct j1587_data payload;
-          struct j1587_canister *next;
-     };
-   */
   struct j1587_data {
   	 uint16_t pid;
   	 uint16_t ecu;
@@ -58,9 +49,16 @@ diagnostic protocol, could be anything else of use of course):
   DECLARE_EVL_CANISTER(j1587_canister, struct j1587_data);
   ```
 
-	This macro expands to a complete C `struct j1587_canister`
-  definition, laying out the information needed to convey one item of
-  type `struct j1587_data`.
+	The macro call above expands to a complete C `struct
+  j1587_canister` definition, laying out the information needed to
+  convey one item of type `struct j1587_data`, such as:
+ 
+  ```
+  struct j1587_canister {
+  	struct j1587_data payload;
+   	struct j1587_canister *next;
+   };
+  ```
 
 2. Then you need to declare the tube data structure itself, mentioning
 which kind of canister is going to flow through it. Note that a tube
@@ -73,17 +71,18 @@ the canister tag passed earlier to `DECLARE_EVL_CANISTER()`.
   ```
   #include <evl/tube.h>
 
-  /*
-     The following macro call defines the C struct type
-     describing a tube conveying canisters which in turn contain
-     a payload of type j1587_data:
-    
-     struct j1587_tube {
-          ...
-     };
-   */
   DECLARE_EVL_TUBE(j1587_tube, j1587_canister);
   ```
+
+     The macro call above defines the C struct type describing a
+   tube conveying canisters which in turn contain a payload of
+   type j1587_data, such as:
+  
+   ```
+	struct j1587_tube {
+		...
+	};
+   ```
 
 3. Finally, you need to initialize the tube by a call to
 [evl_init_tube()]({{< relref "#evl_init_tube" >}}), passing it a
@@ -128,16 +127,18 @@ a pointer to the final data, so that only that pointer needs to be copied, e.g.:
   ```
   #include <evl/tube.h>
 
-  /*
-     The following macro call defines the C struct type
-     describing a canister as:
+  DECLARE_EVL_CANISTER(massive_bitmap_canister, void *);
+  ```
+
+  The macro call above defines the C struct type describing a canister
+  which conveys a reference to a large bulk of data using an opaque
+  pointer. It would be expanded as follows in the code:
     
+  ```
      struct massive_bitmap_canister {
           void *payload;
           struct massive_bitmap_canister *next;
      };
-   */
-  DECLARE_EVL_CANISTER(massive_bitmap_canister, void *);
   ```
 
 #### Using tubes for inter-process messaging {#inter-process-tube}
