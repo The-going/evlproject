@@ -11,13 +11,26 @@ how long they would have to do so, does not have to be defined or even
 known in advance. For this purpose, `libevl` implements a memory heap
 manager usable from the [out-of-band context]({{< relref
 "dovetail/altsched.md" >}}), from which objects can be allocated or
-released dynamically in a time-bounded fashion. The EVL heap manager
-organizes the portion of RAM the application has provided, [allocating
-chunks]({{< relref "#evl_alloc_heap" >}}) from this area and
-[releasing them]({{< relref "#evl_alloc_heap" >}}) on request. There
-is no arbitrary limit on the number of heaps an application can
-create, which is only limited to the available system resources. There
-is a limit on the largest heap one can create though, which is 2Gb.
+released dynamically in a time-bounded fashion.
+
+An EVL heap is composed of at least one so-called _memory extent_,
+which is a contiguous RAM area _chunks_ are [allocated]({{< relref
+"#evl_alloc_heap" >}}) from and [released]({{< relref "#evl_free_heap"
+>}}) to. Each extent is at most 4Gb - 512 bytes long. The first extent
+attached to any given heap is passed at creation time to
+[evl_init_heap()]({{< relref "#evl_init_heap" >}}). Then, you may add
+more space for storage by attaching more RAM extents to such heap
+using [evl_extend_heap()]({{< relref "#evl_extend_heap" >}}). There is
+no arbitrary limit on the number of extents forming a heap; however,
+since these extents are tracked in a linked list which might have to
+be scanned for space when allocating chunks from a crowded heap, you
+may want to limit the live extents to a reasonable number (less than
+ten would seem appropriate). There is no arbitrary limit on the number
+of heaps an application can create either.
+
+In other words, how many heaps you may create and how large such heaps
+might be is only limited to the amount of RAM available on your
+system.
 
 #### How an EVL heap works
 
@@ -215,7 +228,7 @@ returned:
 -	-EINVAL is returned if _size_ is invalid, cannot be used to derive
         a proper user size. A proper user size should be aligned on
 	a page boundary (512 bytes), cover at least one page of storage,
-	without exceeding 2Gb.
+	without exceeding 4Gb - 512 bytes.
 
 -	Since `evl_init_heap()` creates a mutex for protecting access to
 	the heap meta-data, any return code returned by
@@ -259,7 +272,7 @@ returned:
 -	-EINVAL is returned if _size_ is invalid, cannot be used to derive
         a proper user size. A proper user size should be aligned on
 	a page boundary (512 bytes), cover at least one page of storage,
-	without exceeding 2Gb.
+	without exceeding 4Gb - 512 bytes.
 
 ---
 
