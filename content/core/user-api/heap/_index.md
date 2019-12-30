@@ -41,23 +41,23 @@ Michael J. Karels. You can find it at [various
 locations](http://docs.FreeBSD.org/44doc/papers/kernmalloc.pdf) on the
 Internet.
 
-An EVL heap organizes the memory it has been given as a set of
+An EVL heap organizes the memory extents it has been given as a set of
 fixed-size pages where allocated blocks live, with each page worth 512
-bytes of storage. Pages can be either part of the free pool, or busy
-storing user data. A busy page either contains one or multiple blocks
-(aka _chunks_), or it may be part of a larger block which spans
-multiple contiguous pages in memory. Pages containing chunks (as
-opposed to pages representing a portion of a larger block) are grouped
-by common chunk size, which is always a power of 2. Every allocation
-request is rounded to the next power of 2, with a minimum of 16 bytes,
-e.g. calling [evl_alloc_heap()]({{< relref "#evl_alloc_heap" >}}) for
-60 bytes will reserve a 64-byte chunk internally.
+bytes of storage. In any given extent, pages can be either part of the
+free pool, or busy storing user data. A busy page either contains one
+or multiple blocks (aka _chunks_), or it may be part of a larger block
+which spans multiple contiguous pages in memory. Pages containing
+chunks (as opposed to pages representing a portion of a larger block)
+are grouped by common chunk size, which is always a power of 2. Every
+allocation request is rounded to the next power of 2, with a minimum
+of 16 bytes, e.g. calling [evl_alloc_heap()]({{< relref
+"#evl_alloc_heap" >}}) for 60 bytes will reserve a 64-byte chunk
+internally.
 
-To this end, the heap manager maintains:
+To this end, the heap manager maintains for each extent of a given
+heap:
 
-- a free page pool. At initialization time, most of the memory area
-  passed to [evl_init_heap()]({{< relref "#evl_init_heap" >}}) is
-  forming this pool. This pool is maintained in an couple of [AVL
+- a free page pool. This pool is maintained in an couple of [AVL
   trees](https://en.wikipedia.org/wiki/AVL_tree) to ensure
   time-bounded operations on inserting and removing pages (either by
   size or address).
@@ -69,22 +69,24 @@ To this end, the heap manager maintains:
   chunks of 16 bytes each are available, 16 chunks for 32 bytes chunks
   and so on, up to 2 chunks of 256 bytes.
 
-The allocation strategy is as follows:
+The allocation strategy is as follows, for each available extent until
+the request is satisfied or impossible to satisfy by any extent:
 
 - if the application requests a chunk which is not larger than half
   the size of a page (i.e. 2^8 or 256 bytes), then the fast block
-  cache is first searched for a free chunk. For instance, a request
-  for allocating 24 bytes would cause a lookup into the fast cache for
-  a free 32-byte long chunk. If no free chunk is available from the
-  cache for that requested size, a new page is pulled from the free
-  pool, added to the cache for the corresponding size, and the
-  allocation proceeds from there, returning one chunk from the newly
-  allocated page to the caller.
+  cache of the current extent is first searched for a free chunk. For
+  instance, a request for allocating 24 bytes would cause a lookup
+  into the fast cache for a free 32-byte long chunk. If no free chunk
+  is available from the cache for that requested size, a new page is
+  pulled from the free pool, added to the cache for the corresponding
+  size, and the allocation proceeds from there, returning one chunk
+  from the newly allocated page to the caller.
 
 - if the requested chunk is larger than half the size of a page
   (i.e. >= 2^9 bytes), a set of contiguous pages which covers the
-  entire allocation request is directly pulled from the free pool. In
-  this case, the fast block cache is not used.
+  entire allocation request is directly pulled from the free pool
+  maintained in the current extent. In this case, the fast block cache
+  is not used.
 
 ![Alt text](/images/heap.png "EVL heap management")
 
@@ -95,21 +97,21 @@ The allocation strategy is as follows:
   while updating the heap state.
 
 - O(1) access guarantee on allocation and release of free chunks into
-  the fast block cache, ranging from 16 to 256 bytes. This is the
+  a fast block cache, ranging from 16 to 256 bytes. This is the
   typical allocation pattern an EVL heap is good at handling very
   quickly.
 
 - O(log n) access guarantee on allocation and release of pages from/to
-  the free pool.
+  a free pool.
 
 - the EVL heap yields limited internal fragmentation for small chunks
-  which can fit into the fast block cache. Since there is no meta-data
-  associated to busy blocks pulled from the cache, the memory overhead
-  is basically zero in this case. The larger the chunk, the larger the
-  internal fragmentation since all requested sizes are aligned on the
-  next power of 2, up to 2^9. So asking for 257 bytes would actually
-  consume an entire 512-byte page internally, directly pulled from the
-  free pool.
+  which can fit into fast block caches. Since there is no meta-data
+  associated to busy blocks pulled from such cache, the memory
+  overhead is basically zero in this case. The larger the chunk, the
+  larger the internal fragmentation since all requested sizes are
+  aligned on the next power of 2, up to 2^9. So asking for 257 bytes
+  would actually consume an entire 512-byte page internally, directly
+  pulled from the corresponding free pool.
 
 - for precise information about the runtime performance of the EVL
   heap manager on your platform, you may want to have a look at the
