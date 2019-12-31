@@ -54,8 +54,8 @@ of 16 bytes, e.g. calling [evl_alloc_heap()]({{< relref
 "#evl_alloc_heap" >}}) for 60 bytes will reserve a 64-byte chunk
 internally.
 
-To this end, the heap manager maintains for each extent of a given
-heap:
+To this end, the heap manager maintains the following data structures
+for each extent of a given heap:
 
 - a free page pool. This pool is maintained in an couple of [AVL
   trees](https://en.wikipedia.org/wiki/AVL_tree) to ensure
@@ -82,11 +82,11 @@ the request is satisfied or impossible to satisfy by any extent:
   size, and the allocation proceeds from there, returning one chunk
   from the newly allocated page to the caller.
 
-- if the requested chunk is larger than half the size of a page
-  (i.e. >= 2^9 bytes), a set of contiguous pages which covers the
-  entire allocation request is directly pulled from the free pool
-  maintained in the current extent. In this case, the fast block cache
-  is not used.
+- if the size of requested chunk rounded up to the next power of 2 is
+  larger than half the size of a page (i.e. >= 2^9 bytes), a set of
+  contiguous pages which covers the entire allocation request is
+  directly pulled from the free pool maintained in the current
+  extent. In this case, the fast block cache is not used.
 
 ![Alt text](/images/heap.png "EVL heap management")
 
