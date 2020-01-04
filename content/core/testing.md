@@ -55,18 +55,6 @@ defaults. These defaults are statically defined by the EVL
 platform code.
 {{% /argument %}}
 
-{{% argument "-L --load" %}}
-Run a stress load in the background when running the latency
-test. This option is enabled by default when calibrating the EVL core
-timer using the _-t_ option.
-{{% /argument %}}
-
-{{% argument "-N --noload" %}}
-Do not run any stress load in the background when running the latency
-test. This option can be used to force disable the default setting
-when calibrating the EVL core timer using the _-t_ option.
-{{% /argument %}}
-
 {{% argument "-q --quiet" %}}
 Tame down verbosity of the test to the bare minimum, only the final
 latency report will be issued when in effect. Passing this option
