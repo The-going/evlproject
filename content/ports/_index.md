@@ -36,7 +36,7 @@ requires both features to be available.
 
 > Current target kernel release
 
-Linux 5.5-rc2
+Linux 5.5-rc4
 
 > ARM64 SoC
 
@@ -77,7 +77,7 @@ Linux 5.5-rc2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc2</td>
+    <td>5.5-rc4</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
@@ -109,7 +109,7 @@ Linux 5.5-rc2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc2</td>
+    <td>5.5-rc4</td>
   </tr>
 </table>
 
@@ -212,7 +212,7 @@ Linux 5.5-rc2
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc2</td>
+    <td>5.5-rc4</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
