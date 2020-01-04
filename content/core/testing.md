@@ -7,7 +7,7 @@ weight: 4
 EVL comes with a series of tests you can run to make sure the core is
 performing correctly on your target system.
 
-## latmus: the litmus test for latency
+## latmus: the litmus test for latency {#latmus-program}
 
 Without any argument, the program called `latmus` runs a 1Khz sampling
 loop, collecting the min, max and average latency values obtained for

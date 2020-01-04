@@ -5,6 +5,20 @@ weight: 30
 pre: "&#9656; "
 ---
 
+### Week 1.2020
+
+The GPIO latency test was merged into the [latmus]({{< relref
+"core/testing.md" >}}) program.  This code is paired with a fairly
+simple [Zephyr](https://zephyrproject.org)-based application which
+implements the latency monitor we need for measuring the response time
+of a user-space thread running on the system under test to GPIO events
+the monitoring device generates. Using this combo, we can even measure
+the response time of non-EVL, strictly single-kernel configurations,
+to GPIO events.
+
+Also, Dovetail and EVL were upgraded to kernel 5.5-rc4. Trivial merge,
+no issue.
+
 ### Week 51.2019
 
 Dovetail was ported from kernel 5.4 to kernel 5.5-rc2. Not much fuss,
