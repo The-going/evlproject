@@ -492,7 +492,7 @@ human-readable format. Let's have a look at the attributes exported by
 the sampling thread of some random run of EVL's _latmus_ utility:
 
 ```
-# cd /sys/devices/virtual/thread/lat-sampler:2136
+# cd /sys/devices/virtual/thread/timer-responder:2136
 # ls -l
 total 0
 -r--r--r--    1 root     root          4096 Mar  1 12:01 pid
