@@ -12,7 +12,7 @@ which can be a mere executable, or a script in whatever language. The
 general syntax is as follows:
 
 ```
-evl [-P <cmddir>] <command> [command-args]
+evl [-V] [-P <cmddir>] [<command> [command-args]]
 ```
 
 - \<command\> may be either:
@@ -22,6 +22,40 @@ evl [-P <cmddir>] <command> [command-args]
 
 - _-P_ switches to a different installation path for command
   plugins, which is located at $prefix/libexec by default.
+
+- _-V_ displays the version information then exits. The information is
+  extracted from the `libevl` library the EVL command depends on,
+  displayed in the following format:
+
+    **evl.\<serial\> \-\- #\<git-HEAD-commit\> (\<git-HEAD-date\>) [ABI \<revision\>]**
+
+    where **\<serial\>** is the `libevl` serial release number, the
+    **\<git-HEAD\>** information refers to the topmost GIT commit
+    which is present in the binary distribution the _evl_ command is
+    part of, and **\<revision\>** refers to the kernel ABI this binary
+    distribution is compatible with. For instance:
+
+```
+~ # evl -V
+evl.0 -- #ff99204 (2020-01-04 18:34:10 +0100) [ABI 12]
+```
+
+{{% notice info %}}
+The information following the double dash may be omitted if the built
+sources were not version-controlled by GIT.
+{{% /notice %}}
+
+Without any argument, the _evl_ utility displays this general help,
+along with a short help string for each of the supported (sub)commands
+found in **\<cmddir\>**, such as:
+
+```
+~ # evl
+evl [-V] [-P <cmddir>] [<command> [command-args]], with <command> in:
+ps           report a snapshot of the current EVL threads
+test         run EVL tests
+trace        ftrace control front-end for EVL
+```
 
 ### Reporting a snapshot of the current EVL threads (ps) {#evl-ps-command}
 
