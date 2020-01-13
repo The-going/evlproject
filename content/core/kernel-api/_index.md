@@ -1,13 +1,17 @@
 ---
-title: "Driver interface"
+title: "Writing drivers"
 weight: 15
 pre: "&rsaquo; "
 ---
 
-EVL heavily relies on [Dovetail]({{% relref "dovetail/_index.md" %}})
-for its seamless integration into the main kernel. Among other things,
-the latter extends the set of file operations which can be supported
-by file descriptions, so that they can handle I/O operations from the
+## What is an EVL driver? {#evl-driver-definition}
+
+An EVL driver is a regular Linux character device driver which also
+implements a couple of additional I/O operations.  EVL heavily relies
+on [Dovetail]({{% relref "dovetail/_index.md" %}}) for its seamless
+integration into the main kernel. Among other things, the latter
+extends the set of file operations which can be supported by file
+descriptions, so that they can handle I/O operations from the
 out-of-band stage upon request from an autonomous core such as EVL,
 while retaining the common structure of a character device
 driver. Applications running in user-space can start these I/O
