@@ -138,24 +138,26 @@ handler of an OOB-capable character device driver.
 Because the in-band kernel and the EVL core run almost fully
 asynchronously, some [out-of-band I/O operations]({{< relref
 "core/user-api/io" >}}) - which the in-band kernel does not know about
-- might still be pending for _efilp_ when `release()` is invoked by
-the in-band kernel. For instance, some application which issued an
-[oob_read()]({{< relref "core/user-api/io#oob_read" >}}) request might
-still be waiting for data in the `oob_read()` operation handler of the
-driver, sleeping on an EVL wait queue or a [semaphore]({{< relref
-"core/kernel-api/semaphore/_index.md" >}}), when some other thread of
-the program
+- might still be pending for _efilp_ when the `release()` handler is
+invoked by the in-band kernel. For instance, some application which
+issued an [oob_read()]({{< relref "core/user-api/io#oob_read" >}})
+request might still be waiting for data in the `oob_read()` operation
+handler of the driver, sleeping on an EVL wait queue or a
+[semaphore]({{< relref "core/kernel-api/semaphore/_index.md" >}}),
+when some other thread of the program
 [closes](http://man7.org/linux/man-pages/man2/close.2.html) all the
-file descriptors referring to that file. In order to track those
-operations, EVL maintains an internal reference count on every device
-file registered with [evl_open_file()]({{< relref "#evl_open_file"
->}}). [evl_release_file()]({{< relref "#evl_release_file" >}}) waits
-for this reference count to reach zero before returning to the caller,
-acting as a synchronization barrier with respect to any concurrent
-out-of-band operation which might be running on any CPU. When this
-routine returns, you can be sure that no such operation is ongoing in
-the system for the released file, therefore it can be safely
-dismantled afterwards.
+file descriptors referring to that file, leading to the `release()`
+handler to be called by the
+[VFS](https://www.kernel.org/doc/Documentation/filesystems/vfs.txt). In
+order to track those operations, EVL maintains an internal reference
+count on every device file registered with [evl_open_file()]({{<
+relref "#evl_open_file" >}}). [evl_release_file()]({{< relref
+"#evl_release_file" >}}) waits for this reference count to reach zero
+before returning to the caller, acting as a synchronization barrier
+with respect to any concurrent out-of-band operation which might be
+running on any CPU. When this routine returns, you can be sure that no
+such operation is ongoing in the system for the released file,
+therefore it can be safely dismantled afterwards.
 
 For this reason, you do want to call [evl_release_file()]({{< relref
 "#evl_release_file" >}}) _before_ any resource attached to the file
