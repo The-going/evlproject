@@ -5,6 +5,13 @@ weight: 20
 pre: "&#9656; "
 ---
 
+{{% notice info %}}
+The EVL project primarily tracks the [mainline Linux
+kernel](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git). In
+absence of any specific information, all kernel releases mentioned
+below refer to mainline Linux.
+{{% /notice %}}
+
 To get EVL running on a platform, we need the following software to be
 ported in the following sequence:
 
