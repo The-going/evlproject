@@ -7,15 +7,15 @@ pre: "&rsaquo; "
 ## What is an EVL driver? {#evl-driver-definition}
 
 An EVL driver is a regular Linux character device driver which also
-implements a couple of additional I/O operations.  EVL heavily relies
-on [Dovetail]({{% relref "dovetail/_index.md" %}}) for its seamless
-integration into the main kernel. Among other things, the latter
-extends the set of file operations which can be supported by file
-descriptions, so that they can handle I/O operations from the
-out-of-band stage upon request from an autonomous core such as EVL,
-while retaining the common structure of a character device
-driver. Applications running in user-space can start these I/O
-operations, by issuing specific system calls to EVL.
+implements a set of out-of-band I/O operations advertised by its file
+operation descriptor (`struct file_operations`). These out-of-band I/O
+requests are only available to [EVL threads]({{< relref
+"core/user-api/thread" >}}), since they run on the [out-of-band
+execution stage]({{< relref
+"dovetail/pipeline/_index.md#two-stage-pipeline" >}}). Applications
+running in user-space can start these I/O operations by issuing
+[specific system calls]({{< relref "core/user-api/io" >}}) to the EVL
+core.
 
 > Excerpt from _include/linux/fs.h_, as modified by Dovetail
 ```
@@ -29,16 +29,10 @@ struct file_operations {
 } __randomize_layout;
 ```
 
-Therefore, EVL drivers are common character device drivers, which only
-need to implement some out-of-band handlers for performing real-time
-I/O operations upon request from the EVL core. In other words, there
-is no such thing as an _EVL driver model_, because EVL fits into the
-regular Linux driver model.
-
-Dovetail is in charge of routing the system calls received from
-applications to the proper recipient, either the EVL core or the host
-kernel.  As mentioned earlier when describing the
-[everything-is-a-file]({{% relref
+[Dovetail]({{% relref "dovetail/_index.md" %}}) is in charge of
+routing the system calls received from applications to the proper
+recipient, either the EVL core or the in-band kernel.  As mentioned
+earlier when describing the [everything-is-a-file]({{% relref
 "core/_index.md#everything-is-a-file" %}}) mantra, only I/O transfer
 and control requests have to run from the out-of-band context
 (i.e. EVL's real-time mode), creating and dismantling the underlying
@@ -80,9 +74,10 @@ Which translates as follows:
 {{% notice tip %}}
 Now, you may wonder: _"what if an out-of-band operation is ongoing in
 the driver on a particular file, while I'm closing the last
-VFS-maintained reference to that file?"_ Well, the
+VFS-maintained reference to that file?"_ Well, with a properly written
+EVL driver, the
 [close(2)](http://man7.org/linux/man-pages/man2/close.2.html) call
-will block until the out-of-band operation finishes, at which point
+should block until the out-of-band operation finishes, at which point
 the `.release()` handler may proceed with dismantling the file. A
 [simple rule] ({{% relref
 "core/kernel-api/file/_index.md#evl_release_file" %}}) for writing EVL
