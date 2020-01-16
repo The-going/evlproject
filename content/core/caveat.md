@@ -81,10 +81,24 @@ options, starting with CONFIG_SMP.
   CONFIG_ACPI_PROCESSOR. If out-of-range latency figures are observed
   on your x86 hardware, turning off this chain may help.
 
+- CONFIG_X86_P4_CLOCKMOD may cause the TSC clock source to become
+  unstable as a result of inducing severe slowdowns. Since the TSC is
+  the best rated clock source for real-time duties we can [reach
+  directly from the vDSO]({{< relref "dovetail/porting/clocksource.md"
+  >}}) - others being either not reachable there, too slow or even
+  terminally broken - you should disable the P4 clock modulation in
+  the kernel configuration.
+
 - NMI-based _perf_ data collection may cause the kernel to execute
   utterly sluggish ACPI driver code at each event. Since disabling
   CONFIG_PERF is not an option, passing **nmi_watchodg=0** on the
   kernel command line at boot may help.
+
+{{% notice warning %}}
+Passing **nmi_watchodg=0** turns off the hard lockup detection for the
+in-band kernel. However, by enabling CONFIG_EVL_WATCHDOG, EVL will
+still detect runaway EVL threads stuck in out-of-band execution.
+{{% /notice %}}
 
 ---
 
