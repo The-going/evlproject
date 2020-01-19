@@ -5,6 +5,39 @@ weight: 30
 pre: "&#9656; "
 ---
 
+### Week 3.2020
+
+A [new serialization mechanism]({{< relref
+"core/kernel-api/stax/_index.md" >}}) was implemented in order to
+address a common problem with adding out-of-band support to existing
+drivers: how to safely share a portion of the driver logic between the
+in-band and out-of-band stages? The idea underlying this mechanism is
+based on the observation that dealing with a device involves different
+phases: most of which usually have no real-time requirement such as
+device set up and channel configuration, only a few may have, such as
+exchanging payload data between the application and the device via I/O
+transfers.
+
+A typical example would be about accessing an Alsa device: we may want
+to control the settings of a device using the mixer application from
+the in-band context, or alternatively run a capture/playback loop via
+the PCM core from the out-of-band context for achieving bounded
+ultra-low latency when exchanging audio samples with the same
+device. We may allow the device to be reconfigured when the driver is
+not exchanging data with the codec in out-of-band mode and conversely,
+but we do not want both operations to happen concurrently inside the
+Alsa core. Because the application layer may not be able to ensure
+that such operations never overlap (e.g. playing an audio stream with
+`aplay` while changing the mixer settings from a different context
+using `amixer`), a kernel mechanism which helps in keeping the general
+logic safe is welcome.
+
+### Week 2.2020
+
+Documentation about benchmarking EVL is on its way. It will cover the
+GPIO latency test, and recommendations for measuring the worst case
+latency with EVL and other real-time Linux infrastructures.
+
 ### Week 1.2020
 
 The GPIO latency test was merged into the [latmus]({{< relref
