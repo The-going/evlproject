@@ -34,12 +34,15 @@ resolving the address of the
 [clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
 in the vDSO.
 
-The table below summarizes the current status of the existing
-ports. If you are interested in porting your own autonomous core to a
-particular kernel release Dovetail supports, you certainly need the
-_IRQ pipeline_ column matching the target platform to be checked, and
-likely the _Alternate scheduling_ column as well. Running the EVL core
-requires both features to be available.
+The table below summarizes the current status of the EVL ports to
+particular SoCs which we are aware of. If you are interested in
+porting your own autonomous core to a particular kernel release
+Dovetail supports, you certainly need the _IRQ pipeline_ column
+matching the target platform to be checked, and likely the _Alternate
+scheduling_ column as well. Running the EVL core requires both
+features to be available. If you ported EVL to a SoC which does not
+appear in this list and want to let people know about it,
+please drop me a note at <rpm@xenomai.org>.
 
 > Current target kernel release
 
@@ -80,6 +83,14 @@ Linux 5.5-rc4
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">Broadcom BCM2837 (Raspberry 3 Model B)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.5-rc4</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank">Broadcom BCM2711 (Raspberry PI 4 Model B)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
@@ -153,7 +164,7 @@ Linux 5.5-rc4
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc2</td>
+    <td>5.5-rc4</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
@@ -236,6 +247,14 @@ Linux 5.5-rc4
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td>5.4-rc2</td>
+  </tr>
+  <tr>
+    <td><a href="https://ark.intel.com/content/www/us/en/ark/products/34687/intel-desktop-board-dq45cb.html" target="_blank">Intel Desktop Board DQ45CB</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>5.5-rc4</td>
   </tr>
 </table>
 
