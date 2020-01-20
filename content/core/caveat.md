@@ -72,7 +72,7 @@ options, starting with CONFIG_SMP.
 
 ## Architecture-specific issues
 
-### x86
+### x86 {#x86-caveat}
 
 - CONFIG_ACPI_PROCESSOR_IDLE may increase the latency upon wakeup on
   IRQ from idle on some SoC (up to 30 us observed) on x86. This option

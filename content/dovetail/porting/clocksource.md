@@ -108,7 +108,7 @@ wrappers to send requests to this core). For EVL, this is done in
 [libevl]({{< relref "core/user-api/_index.md" >}}).
 {{% /notice %}}
 
-#### Making a MMIO clock source accessible from the vDSO
+#### Making a MMIO clock source accessible from the vDSO {#enabling-mmio-clocksource}
 
 If you need to convert an existing MMIO clock source to a
 user-mappable one visible from the generic vDSO, you can follow this
