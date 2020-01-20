@@ -46,7 +46,7 @@ please drop me a note at <rpm@xenomai.org>.
 
 > Current target kernel release
 
-Linux 5.5-rc4
+Linux 5.5-rc7
 
 > ARM64 SoC
 
@@ -103,7 +103,7 @@ Linux 5.5-rc4
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.4-rc6</td>
+    <td>5.5-rc7</td>
   </tr>
   <tr>
     <td><a href="https://www.xilinx.com/support/documentation/boards_and_kits/zcu102/ug1182-zcu102-eval-bd.pdf" target="_blank">Xilinx Zynq UltraScale+ (ZCU102)</a></td>
@@ -127,7 +127,7 @@ Linux 5.5-rc4
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc4</td>
+    <td>5.5-rc7</td>
   </tr>
 </table>
 
@@ -164,7 +164,7 @@ Linux 5.5-rc4
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc4</td>
+    <td>5.5-rc7</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
@@ -230,7 +230,7 @@ Linux 5.5-rc4
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc4</td>
+    <td>5.5-rc7</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
@@ -254,7 +254,7 @@ Linux 5.5-rc4
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc4</td>
+    <td>5.5-rc7</td>
   </tr>
 </table>
 
@@ -271,7 +271,7 @@ the platform, which is a good starting point. So far so good.
 
 <sup>3</sup> When this box is checked, the [EVL core]({{%relref
 "core/_index.md" %}}) passes a massive stress test involving the
-_hectic_ and _latmus_ applications running in parallel along with the
+`hectic` and `latmus` applications running in parallel along with the
 full test suite for 24 hrs, all glitchlessly. This denotes a reliable
 state, including flawless alternate scheduling of threads between the
 main kernel and EVL. On the contrary, a problem with sharing the FPU
