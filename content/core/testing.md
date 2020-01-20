@@ -11,23 +11,26 @@ performing correctly on your target system.
 
 Without any argument, the program called `latmus` runs a 1Khz sampling
 loop, collecting the min, max and average latency values obtained for
-an EVL thread running in user-space. This is a timer latency benchmark
-which does not require any additional interrupt source beyond the
-on-board hardware timer readily available to the kernel. You can also
-use this program to [calibrate the EVL core timer]({{< relref
-"core/timer-calibration.md" >}}), finding the best gravity values for
-this timer.
+an EVL thread running in user-space which responds to timer
+events. This is a timer latency benchmark which does not require any
+additional interrupt source beyond the on-chip hardware timer readily
+available to the kernel. You can also use this program to [calibrate
+the EVL core timer]({{< relref "core/timer-calibration.md" >}}),
+finding the best gravity values for this timer.
 
 ```
 # /usr/evl/bin/latmus
 ```
 
 {{% notice note %}}
-To get this test running, you will need `CONFIG_EVL_LATMUS` to be
-enabled in the kernel configuration, and loaded into the kernel under
-test if you built it as a dynamic module. For those familiar with
-Xenomai 3, this program combines the features of the `latency` and
-`autotune` utilities available there into a single executable.
+Unless you plan to measure [in-band response time to GPIO events]({{<
+relref "core/benchmarks/_index.md#latmus-gpio-response-time" >}}) only,
+you will need `CONFIG_EVL_LATMUS` to be enabled in the kernel
+configuration to get other `latmus` tests running, and loaded into the
+kernel under test if you built it as a dynamic module. For those
+familiar with Xenomai 3, this program combines the features of the
+`latency` and `autotune` utilities available there into a single
+executable.
 {{% /notice %}}
 
 `latmus` accepts the following arguments, given as short or long
@@ -66,10 +69,16 @@ Run the test in the shell's background. All output is suppressed until
 the final latency report.
 {{% /argument %}}
 
-{{% argument "-a --mode-abort" %}}
-Automatically abort upon unexpected switch to in-band mode of the
-sampling thread. This option only makes sense when collecting latency
-figures from an EVL thread running in user-space (i.e. _-u_).
+{{% argument "-K --keep-going" %}}
+Keep the execution going upon unexpected switch to in-band mode of
+the responder thread. Normally, any [switch to in-band mode]({{< relref
+"core/user-api/thread/_index.md#thread-services" >}}) from the thread
+responding to timer/GPIO events would cause the execution to stop with
+an error message, since the latency figures would be tainted by a
+transition to the non real-time context. This option tells `latmus` to
+keep going regardless; it only makes sense for debugging purpose, when
+collecting latency figures from an EVL thread running in user-space
+(i.e. _-u_).
 {{% /argument %}}
 
 {{% argument "-m --measure" %}}
@@ -133,14 +142,14 @@ latency, which should never be as high on any target platform with EVL.
 {{% /argument %}}
 
 {{% argument "-P --priority=<prio>" %}}
-Set the scheduling priority of the sampling thread in the SCHED_FIFO
+Set the scheduling priority of the responder thread in the SCHED_FIFO
 class.  This option only makes sense when collecting latency figures
 or tuning the EVL core timer from an EVL thread context (i.e. _-u_ or
 _-k_).  Defaults to 90.
 {{% /argument %}}
 
 {{% argument "-c --cpu=<nr>" %}}
-Set the CPU affinity of the sampling thread.  This option only makes
+Set the CPU affinity of the responder thread.  This option only makes
 sense when collecting latency figures or tuning the EVL core timer
 from an EVL thread context (i.e. _-u_ or _-k_).  Defaults to 0.
 {{% /argument %}}
