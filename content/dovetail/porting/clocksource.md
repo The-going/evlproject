@@ -17,7 +17,7 @@ context, using a vDSO call, with no execution and response time
 penalty involved in invoking an [in-band syscall] ({{< relref
 "dovetail/altsched.md#inband-switch" >}}).
 
-### Reading timestamps via the vDSO in a nutshell
+### Reading timestamps via the vDSO in a nutshell {#time-vdso-access}
 
 Basically, A vDSO-based
 [clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
