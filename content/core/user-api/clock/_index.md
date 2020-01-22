@@ -207,15 +207,15 @@ adjustment for this request to succeed.
 
 ---
 
-{{< proto evl_sleep >}}
-int evl_sleep(int clockfd, const struct timespec *timeout)
+{{< proto evl_sleep_until >}}
+int evl_sleep_until(int clockfd, const struct timespec *timeout)
 {{< /proto >}}
 
 This call is the EVL equivalent of the POSIX
 [clock_nanosleep(3)](http://man7.org/linux/man-pages/man3/clock_nanosleep.3.html)
 service, for blocking the caller until an arbitrary date expires on a
-specified EVL clock. Unlike its POSIX counterpart, `evl_sleep()` only
-accepts absolute timeout specifications though.
+specified EVL clock. Unlike its POSIX counterpart, `evl_sleep_until()`
+only accepts absolute timeout specifications though.
 
 {{% argument clockfd %}}
 The clock file descriptor, which can be:
@@ -232,8 +232,8 @@ The clock file descriptor, which can be:
 A pointer to a _timespec_ structure which specifies the wake up date.
 {{% /argument %}}
 
-`evl_sleep()` blocks the caller until the wake up date expires then
-returns zero on success, otherwise:
+`evl_sleep_until()` blocks the caller until the wake up date expires
+then returns zero on success, otherwise:
 
 - -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
    file descriptor.
@@ -247,20 +247,20 @@ returns zero on success, otherwise:
 
 ---
 
-{{< proto evl_udelay >}}
-int evl_udelay(unsigned int usecs)
+{{< proto evl_usleep >}}
+int evl_usleep(useconds_t usecs)
 {{< /proto >}}
 
 This call puts the caller to sleep until a count of microseconds has
-elapsed. `evl_udelay()` invokes [evl_sleep()]({{< relref "#evl_sleep"
->}}) for sleeping until the delay expires on the EVL_CLOCK_MONOTONIC
-clock.
+elapsed. `evl_usleep()` invokes [evl_sleep_until()]({{< relref
+"#evl_sleep_until" >}}) for sleeping until the delay expires on the
+EVL_CLOCK_MONOTONIC clock.
 
 {{% argument usecs %}}
 The count of microseconds to sleep for.
 {{% /argument %}}
 
-`evl_udelay()` blocks the caller until the delay expires then returns
+`evl_usleep()` blocks the caller until the delay expires then returns
 zero on success, otherwise:
 
 - -EINTR if the call was interrupted by an in-band signal, or forcibly
