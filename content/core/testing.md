@@ -9,32 +9,44 @@ performing correctly on your target system.
 
 ## latmus: the litmus test for latency {#latmus-program}
 
-Without any argument, the program called `latmus` runs a 1Khz sampling
-loop, collecting the min, max and average latency values obtained for
-an EVL thread running in user-space which responds to timer
-events. This is a timer latency benchmark which does not require any
-additional interrupt source beyond the on-chip hardware timer readily
-available to the kernel. You can also use this program to [calibrate
-the EVL core timer]({{< relref "core/timer-calibration.md" >}}),
-finding the best gravity values for this timer.
+- With the sole _-m_ option or without any argument, the
+[latmus](https://git.evlproject.org/libevl.git/tree/benchmarks/latmus.c)
+application runs a 1Khz sampling loop, collecting the min, max and
+average latency values obtained for an EVL thread running in
+user-space which responds to [timer events]({{< relref
+"core/benchmarks/_index.md#latmus-timer-response-time" >}}). This is a
+basic latency benchmark which does not require any additional
+interrupt source beyond the on-chip hardware timer readily available
+to the kernel.
 
-```
-# /usr/evl/bin/latmus
-```
+- In addition, you can use this application to measure the response time
+of a thread running in user-space to external interrupts, specifically
+to [GPIO events]({{< relref
+"core/benchmarks/_index.md#latmus-timer-response-time" >}}). This
+second call form is selected by the _-Z_ and _-z_ option switches.
 
-{{% notice note %}}
-Unless you plan to measure [in-band response time to GPIO events]({{<
-relref "core/benchmarks/_index.md#latmus-gpio-response-time" >}}) only,
-you will need `CONFIG_EVL_LATMUS` to be enabled in the kernel
-configuration to get other `latmus` tests running, and loaded into the
-kernel under test if you built it as a dynamic module. For those
-familiar with Xenomai 3, this program combines the features of the
-`latency` and `autotune` utilities available there into a single
-executable.
+- Finally, passing _-t_ starts a [calibration of the EVL core timer]({{<
+relref "core/timer-calibration.md" >}}), finding the best configuration
+values.
+
+{{% notice tip %}}
+Unless you only plan to measure [in-band response time to GPIO
+events]({{< relref
+"core/benchmarks/_index.md#latmus-gpio-response-time" >}}), you will
+need `CONFIG_EVL_LATMUS` to be enabled in the kernel configuration to
+run the timer calibration or the [response to timer test]({{< relref
+"core/benchmarks/_index.md#latmus-timer-response-time" >}}). This
+driver must be loaded into the kernel under test if you built it as a
+dynamic module. For those familiar with Xenomai 3, this program
+combines and extends the features of the
+[latency](https://xenomai.org/documentation/xenomai-3/html/man1/latency/index.html)
+and
+[autotune](https://xenomai.org/documentation/xenomai-3/html/man1/autotune/index.html)
+utilities.
 {{% /notice %}}
 
-`latmus` accepts the following arguments, given as short or long
-option names:
+[latmus](https://git.evlproject.org/libevl.git/tree/benchmarks/latmus.c)
+accepts the following arguments, given as short or long option names:
 
 {{% argument "-i --irq" %}}
 Collect latency figures or tune the EVL core timer from the context of
@@ -82,17 +94,19 @@ collecting latency figures from an EVL thread running in user-space
 {{% /argument %}}
 
 {{% argument "-m --measure" %}}
-Run a latency measurement test, as opposed to tuning the core
-timer. _-i_, _-k_ and _-u_ can be used to select a specific
-measurement context, _-u_ applies otherwise. Latency measurement is
-the default mode, in absence of the _-t_ option on the command line.
+Measure the response time to [timer events]({{< relref
+"core/benchmarks/_index.md#latmus-timer-response-time" >}}).  In
+addition to this option, _-i_, _-k_ and _-u_ select a specific
+measurement context, _-u_ applies by default. Measurement of response
+time to timer events is the default mode, in absence of the _-t_, _-Z_ and _-z_
+options on the command line.
 {{% /argument %}}
 
 {{% argument "-t --tune" %}}
-Run a core timer calibration procedure, as opposed to measuring the
-latency. _-i_, _-k_ and _-u_ can be used to select a specific tuning
-context, all of them are applied in sequence otherwise. See
-[below]({{< relref "core/timer-calibration.md" >}}).
+Run a core timer calibration procedure. _-i_, _-k_ and _-u_ can be
+used to select a specific tuning context, all of them are applied in
+sequence otherwise. See [below]({{< relref "core/timer-calibration.md"
+>}}). This option is mutually exclusive with _-m_, _-Z_ and _-z_.
 {{% /argument %}}
 
 {{% argument "-p --period=<µsecs>" %}}
@@ -106,8 +120,8 @@ The duration of the test, excluding the one second warmup period. This
 option enables a timeout which stops the test automatically after the
 specified runtime has elapsed. By default, the test runs indefinitely,
 or until ^C is pressed. The duration is interpreted according to the
-modifier suffix, as a count of _d_ays, _m_inutes, _h_ours or
-_s_econds. In absence of modifier, seconds are assumed.
+modifier suffix, as a count of **d**ays, **m**inutes, **h**ours or
+**s**econds. In absence of modifier, seconds are assumed.
 {{% /argument %}}
 
 {{% argument "-A --maxlat-abort=<maxlat>" %}}
@@ -154,12 +168,56 @@ sense when collecting latency figures or tuning the EVL core timer
 from an EVL thread context (i.e. _-u_ or _-k_).  Defaults to 0.
 {{% /argument %}}
 
+{{% argument "-Z --oob-gpio=<host>" %}}
+Start an out-of-band test measuring the [response time to GPIO
+events]({{< relref
+"core/benchmarks/_index.md#latmus-gpio-response-time" >}}) in
+out-of-band mode, i.e. relying on real-time capabilities of the EVL
+core. The argument is the host name or IPv4 addresses of the remote
+board which monitors the response time from the SUT running
+the
+[latmus](https://git.evlproject.org/libevl.git/tree/benchmarks/latmus.c)
+application. This option must be associated with _-I_ and _-O_ to
+specify the GPIO chip(s) and pin numbers to use.
+{{% /argument %}}
+
+{{% argument "-z --inband-gpio=<host>" %}}
+Start an in-band test measuring the [response time to GPIO events]({{<
+relref "core/benchmarks/_index.md#latmus-gpio-response-time" >}}) in
+plain in-band mode. The argument is the host name or IPv4 address of
+the remote board which monitors the response time from the
+SUT running the
+[latmus](https://git.evlproject.org/libevl.git/tree/benchmarks/latmus.c)
+application. This option must be associated with _-I_ and _-O_ to
+specify the GPIO chip(s) and pin numbers to use.
+{{% /argument %}}
+
+{{% argument "-I --gpio-in=<gpiochip-name>,<pin-number>[,rising-edge|falling-edge]" %}}
+Specify the GPIO chip and pin number to be used for receiving the [GPIO
+pulses]({{< relref
+"core/benchmarks/_index.md#latmus-gpio-response-time" >}}) from the
+remote monitor board. Optionally, you can select whether GPIO events
+should be triggered on the rising edge (default) or falling edges of
+GPIO signals. This option only makes sense whenever _-Z_ or _-z_ are
+present on the command line too.
+{{% /argument %}}
+
+{{% argument "-O --gpio-out=<gpiochip-name>,<pin-number>" %}}
+Specify the GPIO chip and pin number to be used for acknowledging the
+[GPIO pulses]({{< relref
+"core/benchmarks/_index.md#latmus-gpio-response-time" >}}) received
+from the monitor board.
+This option only makes sense whenever _-Z_ or _-z_ are present on the
+command line too.
+{{% /argument %}}
+
 {{% notice tip %}}
-If `latmus` fails starting with an _Invalid argument_ error,
-double-check the CPU number passed to -c if given. The designated CPU
-must be part of the out-of-band CPU set known to the EVL core. Check
-this file _/sys/devices/virtual/evl/control/cpus_ to know which CPUs
-are part of this set.
+If [latmus]({{< relref "#latmus-program" >}}) fails starting with an
+_Invalid argument_ error, double-check the CPU number passed to -c if
+given. The designated CPU must be part of the out-of-band CPU set
+known to the EVL core. Check this file
+_/sys/devices/virtual/evl/control/cpus_ to know which CPUs are part of
+this set.
 {{% /notice %}}
 
 ## hectic: hammering the EVL context switching machinery
@@ -260,6 +318,7 @@ monitor-pi-deadlock: OK
 detach-self: OK
 monitor-pp-nested: OK
 monitor-pp-weak: OK
+stax-lock: OK
 fpu-preload: OK
 ```
 
