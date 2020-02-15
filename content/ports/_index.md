@@ -95,7 +95,7 @@ Linux 5.5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc7</td>
+    <td>5.5</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
