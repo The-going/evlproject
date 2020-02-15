@@ -190,12 +190,12 @@ be hard disabled in the CPU as well anyway.
 
 ## Extended IRQ work API {#irq-work}
 
-Due to the NMI-type nature of interrupts running out-of-band code from
+Due to the NMI-like nature of interrupts running out-of-band code from
 the standpoint of the main kernel, such code might preempt in-band
 activities in the middle of a [critical section]({{%relref
-"dovetail/pipeline/_index.md#no-inband-reentry" %}}). For this
-reason, it would be unsafe to call any in-band routine from an
-out-of-band context.
+"dovetail/pipeline/_index.md#no-inband-reentry" %}}). For this reason,
+it would be unsafe to call any in-band routine from an out-of-band
+context.
 
 However, we may schedule execution of in-band work handlers from
 out-of-band code, using the regular `irq_work_queue()` service which

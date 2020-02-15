@@ -628,11 +628,6 @@ pointer argument which relates to the event type.
 
 The following events are defined (see _include/linux/dovetail.h_):
 
-- INBAND_TASK_SCHEDULE(struct task_struct *next)
-
-  sent in preparation of a context switch, right before the memory
-  context is switched to *next*.
-
 - INBAND_TASK_SIGNAL(struct task_struct *target)
 
   sent when *target* is about to receive a signal. The core may decide
@@ -735,27 +730,25 @@ autonomous core initializes it.
 
 Your autonomous core may also need to keep its own set of per-process
 data.  To help in maintaining such information on a per-_mm_ basis,
-Dovetail adds the _oob\_state_ member of type _struct oob\_mm\_state_
-to the generic _mm_ descriptor structure (aka _struct
-mm\_struct_). Because kernel threads can only borrow memory contexts
-temporarily but do not actually own them, this Dovetail extension is
-only available to EVL tasks running in user-space, **NOT** to threads
-created by [evl_run_kthread()]({{< relref
-"core/kernel-api/kthread/_index.md#evl_run_kthread" >}}).
+Dovetail adds the `oob_state` member of type `struct oob_mm_state` to
+the generic `struct mm_struct` descriptor . Because kernel threads can
+only borrow memory contexts temporarily but do not actually own any,
+this Dovetail extension is only available to EVL threads running in
+user-space, **NOT** to threads created by [evl_run_kthread()]({{<
+relref "core/kernel-api/kthread/_index.md#evl_run_kthread" >}}).
 
 You may want to fill that structure reserved to out-of-band support
 with any information your core may need for maintaining a per-_mm_
 context. By having this information defined in a file accessible from
-the architecture-specific code by including _\<dovetail/mm\_info.h\>_,
-the core-specific structure is automatically added to _struct
-mm\_struct_ as required. For instance:
+the architecture-specific code by including `\<dovetail/mm_info.h\>`,
+the core-specific structure is automatically added to `struct
+mm_struct` as required. For instance:
 
 > arch/arm/include/dovetail/mm_info.h
 ```
 struct oob_mm_state {
        /* Define your core-specific per-mm data here. */
 };
-
 ```
 
 The core may then retrieve the address of the structure for the
@@ -779,12 +772,21 @@ struct oob_mm_state *dovetail_mm_state(void)
 
 This call retrieves the address of the out-of-band data structure
 within the _mm_ descriptor of the current user-space task. The content
-of this structure is zeroed when the memory context is created, and
-stays so until your autonomous core initializes it.
+of this structure is zeroed by the in-band kernel when it creates the
+memory context, and stays so until your autonomous core initializes
+it. If called from a kernel thread, NULL is returned instead.
 
-If called from a kernel thread, NULL is returned instead.
+> Definition of dovetail_mm_state()
+```
+static inline
+struct oob_mm_state *dovetail_mm_state(void)
+{
+	if (current->flags & PF_KTHREAD)
+		return NULL;
 
----
+	return &current->mm->oob_state;
+}
+```
 
 ---
 
