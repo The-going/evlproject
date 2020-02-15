@@ -29,7 +29,7 @@ weight: 20
 
 ---
 
-#### void evl_broadcast_ksem(struct evl_ksem *ksem)
+#### void evl_broadcast(struct evl_ksem *ksem)
 
 ---
 

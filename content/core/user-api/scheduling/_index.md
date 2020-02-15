@@ -92,7 +92,7 @@ individual time quantum before the CPU is given to the next thread.
   expense of briefly switching to the out-of-band execution stage on
   demand.
 
-`evl_set_schedattr()` returns zero on success, otherwise a negated
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) returns zero on success, otherwise a negated
 error code is returned:
 
 -EBADF		_efd_ is not a valid thread descriptor.
@@ -117,15 +117,16 @@ int change_self_schedparams(void)
 }
 ```
 
-`evl_set_schedattr()` immediately changes the scheduling attributes
-the EVL core uses for the target thread when it runs in out-of-band
-context. Later on, the next time such thread transitions from
-out-of-band to in-band context, the main kernel will apply an
-extrapolated version of those changes to its own scheduler as well.
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) immediately
+changes the scheduling attributes the EVL core uses for the target
+thread when it runs in out-of-band context. Later on, the next time
+such thread transitions from out-of-band to in-band context, the main
+kernel will apply an extrapolated version of those changes to its own
+scheduler as well.
 
 The extrapolation of the out-of-band scheduling attributes passed to
-`evl_set_schedattr()` to the in-band ones applied by the mainline
-kernel works as follows:
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) to the
+in-band ones applied by the mainline kernel works as follows:
 
 | out-of-band policy    | in-band policy |
 | ------------------    | -------------- |
@@ -185,8 +186,8 @@ The value returned in `attrs.sched_priority` is the base priority
 level of the thread within its scheduling class, which does NOT
 reflect any priority inheritance/ceiling boost that might be ongoing.
 
-`evl_get_schedattr()` returns zero on success, otherwise a negated
-error code is returned:
+[evl_get_schedattr()]({{% relref "#evl_get_schedattr" %}}) returns
+zero on success, otherwise a negated error code is returned:
 
 -EBADF		_efd_ is not a valid thread descriptor.
 
@@ -367,10 +368,10 @@ regarding the new group:
   final value.
 
 - info.quota.quota_sum is the sum of the quota values of all groups
-  assigned to the CPU specified in the `evl_sched_control()`
-  request. This gives the overall CPU business as far as SCHED_QUOTA
-  is concerned. This sum should not exceed 100% for a CPU in a
-  properly configured system.
+  assigned to the CPU specified in the [evl_sched_control()]({{%
+  relref "#evl_sched_control" %}}) request. This gives the overall CPU
+  business as far as SCHED_QUOTA is concerned. This sum should not
+  exceed 100% for a CPU in a properly configured system.
 
 ##### Modifying a quota group {#modify-quota-group}
 

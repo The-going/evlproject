@@ -55,28 +55,51 @@ int evl_attach_self(const char *fmt, ...)
 
 EVL does not actually _create_ threads; instead, it enables a regular
 POSIX thread to invoke its real-time services once this thread has
-attached to the EVL core.  `evl_attach_self()` is the library call which
-requests such attachment. All you need to provide is a _unique_ thread
-name, which will be the name of the device element representing that
-thread in the file system.
+attached to the EVL core.  [evl_attach_self()]({{% relref
+"#evl_attach_self" %}}) is the library call which requests such
+attachment. All you need to provide is a _unique_ thread name, which
+will be the name of the device element representing that thread in the
+file system.
 
-There is no requirement as of when `evl_attach_self()` should be called
-in a thread's execution flow. You just have to call it before it
-starts requesting EVL services. Note that the main thread of a process
-is no different from any other thread to EVL. It may call
-`evl_attach_self()` whenever you see fit, or not at all if you don't
-plan to request EVL services from this context.
+There is no requirement as of when [evl_attach_self()]({{% relref
+"#evl_attach_self" %}}) should be called in a thread execution
+flow. You just have to call it before it starts requesting EVL
+services. Note that the main thread of a process is no different from
+any other thread to EVL. It may call [evl_attach_self()]({{% relref
+"#evl_attach_self" %}}) whenever you see fit, or not at all if you
+don't plan to request EVL services from this context.
 
 As part of the attachment process, the calling thread is also pinned
 on its current CPU. You may change this default affinity by calling
 [sched_setaffinity(2)](http://man7.org/linux/man-pages/man2/sched_setaffinity.2.html)
-as you see fit any time after `evl_attach_self()` has returned, but
-keep in mind that such _libc_ service will trigger a regular Linux
-system call, which will cause your thread to switch to [in-band
-context]({{< relref "dovetail/altsched.md#inband-switch" >}})
-automatically when doing so. So you may want to avoid calling
+as you see fit any time after [evl_attach_self()]({{% relref
+"#evl_attach_self" %}}) has returned, but keep in mind that such
+_libc_ service will trigger a regular Linux system call, which will
+cause your thread to switch to [in-band context]({{< relref
+"dovetail/altsched.md#inband-switch" >}}) automatically when doing
+so. So you may want to avoid calling
 [sched_setaffinity(2)](http://man7.org/linux/man-pages/man2/sched_setaffinity.2.html)
 from your time-critical loop, which would not make much sense anyway.
+
+During the attachment, your thread is given an [out-of-band
+scheduling]({{% relref "core/user-api/scheduling/_index.md" %}}) class
+and priority which have been translated from the in-band scheduling
+settings it had before the call, as follows:
+
+| in-band settings        | out-of-band settings |
+| ------------------      | ------------------   |
+| SCHED_OTHER, 0          |    [SCHED_WEAK]({{% relref "core/user-api/scheduling/_index.md#SCHED_WEAK" %}}), 0     |
+| SCHED_BATCH, 0          |    [SCHED_WEAK]({{% relref "core/user-api/scheduling/_index.md#SCHED_WEAK" %}}), 0     |
+| SCHED_IDLE, 0           |    [SCHED_WEAK]({{% relref "core/user-api/scheduling/_index.md#SCHED_WEAK" %}}), 0     |
+| <other policies>, prio  |    [SCHED_FIFO]({{% relref "core/user-api/scheduling/_index.md#SCHED_FIFO" %}}), prio  |
+
+As a consequence, the thread would still run in-band on return from
+[evl_attach_self()]({{% relref "#evl_attach_self" %}}) if it was
+originally assigned to the _SCHED_OTHER_, _SCHED_BATCH_ or
+_SCHED_IDLE_ classes. Conversely, the thread would run out-of-band on
+return from [evl_attach_self()]({{% relref "#evl_attach_self" %}}) if
+it was originally assigned to any other in-band scheduling class
+(e.g. _SCHED_FIFO_).
 
 {{% argument fmt %}}
 A printf-like format string to generate the thread name. A common way
@@ -91,10 +114,11 @@ contain only valid characters in this context, excluding slashes.
 The optional variable argument list completing the format.
 {{% /argument %}}
 
-`evl_attach_self()` returns the file descriptor of the newly attached
-thread on success. You may use this _fd_ to submit requests for this
-thread in any call which asks for a thread file descriptor. If the
-call fails, a negated error code is returned instead:
+[evl_attach_self()]({{% relref "#evl_attach_self" %}}) returns the
+file descriptor of the newly attached thread on success. You may use
+this _fd_ to submit requests for this thread in any call which asks
+for a thread file descriptor. If the call fails, a negated error code
+is returned instead:
 
 - -EEXIST	The generated name is conflicting with an existing thread
 		name.
@@ -113,8 +137,9 @@ call fails, a negated error code is returned instead:
 		has been reached.
 
 - -EPERM	The caller is not allowed to lock memory via a call to
-		`mlockall(2)`. Since memory locking is a requirement for running
-		EVL threads, no joy.
+		[mlockall(2)](http://man7.org/linux/man-pages/man2/mlock.2.html). Since
+		memory locking is a requirement for running EVL
+		threads, no joy.
 
 - -ENOMEM	No memory available, whether the kernel could not
 		lock down all of the calling process's virtual address
@@ -192,7 +217,7 @@ referring to the newly attached thread before returning from
 int evl_detach_self(void)
 {{< /proto >}}
 
-`evl_detach_self()` reverts the action of [evl_attach_self()]({{%
+[evl_detach_self()]({{% relref "#evl_detach_self" %}}) reverts the action of [evl_attach_self()]({{%
 relref "#evl_attach_self" %}}), detaching the calling thread from the
 EVL core. Once this operation has succeeded, the current thread cannot
 submit EVL requests anymore. This call returns zero on success, or a
@@ -224,8 +249,8 @@ or after the thread has exited, any request submitted for that thread
 using such descriptor would receive -ESTALE.
 
 3. An EVL thread which exits is automatically detached from the EVL
-core, you don't have to call `evl_detach_self()` explicitly before
-exiting your thread.
+core, you don't have to call [evl_detach_self()]({{% relref
+"#evl_detach_self" %}}) explicitly before exiting your thread.
 
 4. The EVL core drops the kernel resources attached to a thread once
 it has detached itself or has exited, and only after all the file
@@ -237,13 +262,13 @@ descriptors referring to that thread have been closed.
 int evl_get_self(void)
 {{< /proto >}}
 
-`evl_get_self()` returns the file descriptor obtained for the current
-thread after a successful call to [evl_attach_self()]({{% relref
-"#evl_attach_self" %}}).  You may use this _fd_ to submit requests for
-the current thread in other calls from the EVL library which ask for a
-thread file descriptor.  This call returns a valid file descriptor
-referring to the caller on success, or a negated error code if
-something went wrong:
+[evl_get_self()]({{% relref "#evl_get_self" %}}) returns the file
+descriptor obtained for the current thread after a successful call to
+[evl_attach_self()]({{% relref "#evl_attach_self" %}}).  You may use
+this _fd_ to submit requests for the current thread in other calls
+from the EVL library which ask for a thread file descriptor.  This
+call returns a valid file descriptor referring to the caller on
+success, or a negated error code if something went wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
 
@@ -264,8 +289,8 @@ static void get_caller_info(void)
 }
 ```
 
-`evl_get_self()` will fail after a call to [evl_detach_self()]({{%
-relref "#evl_detach_self" %}}).
+[evl_get_self()]({{% relref "#evl_get_self" %}}) will fail after a
+call to [evl_detach_self()]({{% relref "#evl_detach_self" %}}).
 
 ---
 
@@ -281,13 +306,14 @@ behaviour. Any EVL service which requires it will enforce such switch
 if and when required automatically, so in most cases there should be
 no point in dealing with this manually in applications.
 
-`evl_switch_oob()` is defined for the rare circumstances where some
-high-level API based on the EVL core library might have to enforce a
-particular execution stage, based on a deep knowledge of how EVL works
-internally. Entering a syscall-free section of code for which the
-out-of-band mode needs to be guaranteed on entry would be the only
-valid reason to call `evl_switch_oob()`.  This call returns zero on
-success, or a negated error code if something went wrong:
+[evl_switch_oob()]({{% relref "#evl_switch_oob" %}}) is defined for
+the rare circumstances where some high-level API based on the EVL core
+library might have to enforce a particular execution stage, based on a
+deep knowledge of how EVL works internally. Entering a syscall-free
+section of code for which the out-of-band mode needs to be guaranteed
+on entry would be the only valid reason to call [evl_switch_oob()]({{%
+relref "#evl_switch_oob" %}}).  This call returns zero on success, or
+a negated error code if something went wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
 
@@ -319,13 +345,15 @@ context]({{< relref "dovetail/altsched.md#inband-switch" >}})
 automatically, so in most cases there should be no point in dealing
 with this manually in applications.
 
-`evl_switch_inband()` is defined for the rare circumstances where some
-high-level API based on the EVL core library might have to enforce a
-particular execution stage, based on a deep knowledge of how EVL works
-internally. Entering a syscall-free section of code for which the
-in-band mode needs to be guaranteed on entry would be the only valid
-reason to call `evl_switch_inband()`.  This call returns zero on
-success, or a negated error code if something went wrong:
+[evl_switch_inband()]({{% relref "#evl_switch_inband" %}}) is defined
+for the rare circumstances where some high-level API based on the EVL
+core library might have to enforce a particular execution stage, based
+on a deep knowledge of how EVL works internally. Entering a
+syscall-free section of code for which the in-band mode needs to be
+guaranteed on entry would be the only valid reason to call
+[evl_switch_inband()]({{% relref "#evl_switch_inband" %}}).  This call
+returns zero on success, or a negated error code if something went
+wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
 
@@ -347,9 +375,9 @@ bool evl_is_inband(void)
 {{< /proto >}}
 
 In some cases, you may need to check the current execution stage for
-the caller. `evl_is_inband()` returns a _true_ boolean value if the
-caller runs [in-band]({{< relref "#evl_switch_inband" >}}), _false_
-otherwise.
+the caller. [evl_is_inband()]({{% relref "#evl_is_inband" %}}) returns
+a _true_ boolean value if the caller runs [in-band]({{< relref
+"#evl_switch_inband" >}}), _false_ otherwise.
 
 {{% notice note %}}
 A POSIX thread which is not currently attached to the EVL core always
@@ -363,8 +391,9 @@ since it cannot run out-of-band.
 int evl_get_state(int efd, struct evl_thread_state *statebuf)
 {{< /proto >}}
 
-`evl_get_state()` is an extended variant of [evl_get_schedattr()]({{<
-relref "core/user-api/scheduling/_index.md#evl_get_schedattr" >}}) for
+[evl_get_state()]({{% relref "#evl_get_state" %}}) is an extended
+variant of [evl_get_schedattr()]({{< relref
+"core/user-api/scheduling/_index.md#evl_get_schedattr" >}}) for
 retrieving runtime information about the state of a thread. The return
 buffer is of type `struct evl_thread_state`, which is defined as
 follows:
@@ -378,15 +407,16 @@ struct evl_thread_state {
 
 - unlike ({{< relref
 "core/user-api/scheduling/_index.md#evl_get_schedattr" >}}), the value
-returned in `statebuf->attrs.sched_priority` by `evl_get_state()` may
-reflect an ongoing [priority inheritance/ceiling boost]({{< relref
-"core/user-api/mutex/_index.md" >}}).
+returned in `statebuf->attrs.sched_priority` by [evl_get_state()]({{%
+relref "#evl_get_state" %}}) may reflect an ongoing [priority
+inheritance/ceiling boost]({{< relref "core/user-api/mutex/_index.md"
+>}}).
 
 - `statebuf->cpu` is the CPU the target thread runs on at the time of
   the call.
 
-`evl_get_state()` returns zero on success, otherwise a negated
-error code is returned:
+[evl_get_state()]({{% relref "#evl_get_state" %}}) returns zero on
+success, otherwise a negated error code is returned:
 
 -EBADF		_efd_ is not a valid thread descriptor.
 

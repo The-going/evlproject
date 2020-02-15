@@ -298,9 +298,15 @@ $ evl trace -ef
 ### Running the test suite (test) {#evl-test-command}
 
 This command is a short-hand for running the [EVL test suite]({{<
-relref "core/testing.md#evl-unit-testing" >}}). In its simplest form,
-it runs all of the tests available from the default installation path
-at $prefix/tests:
+relref "core/testing.md#evl-unit-testing" >}}). The usage is as
+follows:
+
+```
+$ evl test [-l][-L][-k] [test-list]
+```
+
+With no argument, this command runs all of the tests available from
+the default installation path at $prefix/tests:
 
 ```
 $ evl test
@@ -320,8 +326,8 @@ duplicate-element: OK
 monitor-pi: OK
 ```
 
-Eventually, you may chose to list the available tests instead of
-executing them, by using the _-l_ switch:
+You may ask for listing the available tests instead of executing them,
+by using the _-l_ switch:
 
 ```
 $ evl test -l
@@ -340,6 +346,10 @@ $ evl test -L proxy-pipe mapfd
 /usr/evl/tests/proxy-pipe
 /usr/evl/tests/mapfd
 ```
+
+If some test goes wrong, the command normally stops
+immediately. Passing _-k_ would allow it to keep going until the end
+of the series.
 
 ### Implementing your own EVL commands {#evl-add-plugin}
 

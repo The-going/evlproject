@@ -49,6 +49,10 @@ weight: 25
 
 ---
 
+#### void evl_clear_flag(struct evl_flag *wf)
+
+---
+
 #### DEFINE_EVL_FLAG(__name)
 
 ---
