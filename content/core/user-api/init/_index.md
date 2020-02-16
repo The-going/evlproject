@@ -29,10 +29,6 @@ once for any given application process:
   >}}) needs to send zero-latency output to _stdout_ from the
   out-of-band context.
 
-- finally, a signal handler is installed in order to receive SIGEVL
-  which the core may send to an application process in some (seldom)
-  circumstances.
-
 All these actions are performed once by a bootstrap routine named
 [evl_init()]({{< relref "#evl_init" >}}), which may be either called
 explicitly by the application code - usually at startup on behalf of
