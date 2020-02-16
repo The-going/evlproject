@@ -5,6 +5,81 @@ weight: 30
 pre: "&#9656; "
 ---
 
+### Week 8.2020
+
+EVL is now tracking kernel 5.5, heading to 5.6-rc1. A seriously silly
+bug in the ARM port was uncovered recently, causing _undefined
+instruction_ exceptions to be spuriously reported by the EVL core. If
+you run the ARM port of EVL, make sure to pull from the **evl/master**
+branch, or at the very least pick [this
+commit](https://git.evlproject.org/linux-evl.git/commit/?h=dovetail/master&id=386a332946b72f58793f9a4c72859cb9ff12d4c6)
+which is actually reverting a broken and useless change.
+
+### Week 5-7.2020
+
+When a common application is being (p)traced by gdb in the so-called
+_all-stop mode_, any thread which is stopped (e.g. because it hits a
+breakpoint or ^C is pressed) causes all other threads within the same
+process to stop as well. As the gdb documentation states, this allows
+to examine the overall state of the program, including switching focus
+between threads, without worrying that things may change underfoot.
+
+With a companion core sharing the responsibility of scheduling these
+threads, enforcing the all-stop mode requires a bit more work than
+just sending SIGSTOP to the siblings because the threads currently
+running out-of-band may delay stop requests which have to be issued
+and handled from the in-band context. In the meantime, the sibling
+threads running out-of-band may execute a significant amount of code
+before they eventually obey the in-band stop request, which is
+precisely what we would like to avoid.
+
+To address this issue, support for synchronous debugger breakpoints is
+now available from the EVL core. This feature keeps a thread
+(single-)stepped by a debugger synchronized with its siblings from the
+same process running in the background, as follows:
+    
+- as soon as a ptracer (e.g. gdb) regains control over a thread which
+  just hit a breakpoint or received SIGINT, sibling threads from the
+  same process which run out-of-band are immediately frozen.
+    
+- all sibling threads which have been frozen are set to wait on a
+  common barrier before they can be released. Such release happens
+  once all of them have joined the barrier in out-of-band context,
+  once the stepped thread resumes. This ensures that siblings resume
+  in an orderly (i.e. priority-based) manner from a common point in
+  the timeline, instead of staggered.
+
+Although the implementation differs, this is inspired from the similar
+feature available with [Xenomai 3](https://xenomai.org).
+
+### Week 4.2020
+
+Unboxed the [Raspberry PI
+4](https://www.raspberrypi.org/products/raspberry-pi-4-model-b) this
+week, and ported EVL to the [Broadcom
+BCM2711](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2711/README.md)
+chip to get a sense of its performance when it comes to real-time
+duties. Actually, there was nothing to be ported, at least for the
+basic timer and GPIO latency tests, everything just worked out of the
+box over EVL v5.5-rc4. For testing EVL with an _armv8_ kernel on the
+PI 4, you will need a 64bit root file system too, since EVL does not
+support the mixed ABI model yet (i.e. the EVL port to _armv8_ does not
+accept EVL system calls issued by executables targeting _armv7_ yet).
+
+As the vendor documentation states, "the architecture of the BCM2711
+is a considerable upgrade on that used by the SoCs in earlier Pi
+models". Hell yes. It is, at the very least when it comes to real-time
+performance. Compared to the PI 3B+ model, worst case latency is
+slashed by half for the same tests.
+
+{{% notice warning %}}
+Because of past thermal issues with this chip, you really want to
+consider [upgrading the
+firmware](https://www.tomshardware.com/features/raspberry-pi-4-firmware-cool-temps-network-boot)
+for any serious testing with the Raspberry PI 4. Bonus point: you will
+get a decent PXE boot in the same move.
+{{% /notice %}}
+
 ### Week 3.2020
 
 A [new serialization mechanism]({{< relref
