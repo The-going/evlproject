@@ -7,13 +7,22 @@ pre: "&#9656; "
 
 ### Week 8.2020
 
-EVL is now tracking kernel 5.5, heading to 5.6-rc1. A seriously silly
-bug in the ARM port was uncovered recently, causing _undefined
+EVL is now tracking kernel v5.5, heading to v5.6-rc1. A seriously
+silly bug in the ARM port was uncovered recently, causing _undefined
 instruction_ exceptions to be spuriously reported by the EVL core. If
 you run the ARM port of EVL, make sure to pull from the **evl/master**
 branch, or at the very least pick [this
 commit](https://git.evlproject.org/linux-evl.git/commit/?h=dovetail/master&id=386a332946b72f58793f9a4c72859cb9ff12d4c6)
 which is actually reverting a broken and useless change.
+
+Update: EVL was rebased on kernel v5.6-rc2; coming from v5.5.0, this
+has been a fairly smooth process. Some upstream changes to the x86
+trap handling, and the addition of time namespaces to the generic vDSO
+support triggered some issues, but nothing bad or even tricky overall.
+This code is available from the new **evl/next** branch,
+**evl/master** will stay on v5.5 until v5.6 final is out, as discussed
+on the [mailing
+list](https://evlproject.org/pipermail/evl/2020-February/000145.html).
 
 ### Week 5-7.2020
 
