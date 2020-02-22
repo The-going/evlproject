@@ -62,32 +62,26 @@ truckload of different hardware chips may be used for that purpose
 instead, which the vDSO implementation does not provide any support
 for. Sometimes, the architected timer is present but not usable for
 timekeeping duties because of firmware issues. In these cases, a plain
-in-band system call may be issued whenever the vDSO-based
+in-band system call would be issued whenever the vDSO-based
 [clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
 is called from an application, which would be a showstopper for
 keeping the response time short and bounded.
 
 {{% notice tip %}}
-On ARM, if you receive the following message from the _latmus_ utility
-when exiting a latency test, chances are that the vDSO helper for
+In some rare cases, converting the available clocksource(s) so that we
+can read them directly from the vDSO might not be an option, typically
+because reading them would require supervisor privileges in the CPU,
+which the vDSO context excludes by definition.  For these desperate
+situations, there is still the option for your companion core to
+[intercept system calls]({{< relref "dovetail/altsched.md#syscall-events" >}}) to
 [clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
-still uses a syscall-based request for reading the
-clock.  In such an event, the Dovetail port to your SoC is
-incomplete, and you may have to convert the original clock source the
-kernel uses to a user-mappable one the vDSO can read directly via MMIO.
-```
-# latmus
-<latency output>
-^C
-*** WARNING: unexpected switches to in-band mode detected,
-             those latency figures are NOT reliable.
-             Please submit a bug report upstream.
-```
+from the out-of-band handler, and serve them directly from that spot.
+This may be significantly slower compared to a direct readout from the
+vDSO, but the core would manage to get timestamps for `CLOCK_MONOTONIC`
+and `CLOCK_REALTIME` clocks at least without involving the in-band stage.
+EVL solves a limitation with clock sources on [legacy x86
+hardware]({{< relref "core/caveat.md#x86-caveat" >}}) this way.
 {{% /notice %}}
-
-Bottom line: a Dovetail port **requires** a syscall-less vDSO access
-to the underlying clock source so that companion cores like EVL can
-meet real-time requirements.
 
 ### The generic vDSO and USER_MMIO clock sources {#generic-clocksource-vdso}
 
