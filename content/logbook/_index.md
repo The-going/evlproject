@@ -24,7 +24,7 @@ This code is available from the new **evl/next** branch,
 on the [mailing
 list](https://evlproject.org/pipermail/evl/2020-February/000145.html).
 
-### Week 5-7.2020
+### Week 5-7.2020 {#announce-syncbp}
 
 When a common application is being (p)traced by gdb in the so-called
 _all-stop mode_, any thread which is stopped (e.g. because it hits a

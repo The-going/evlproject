@@ -4,7 +4,7 @@ weight: 119
 ---
 
 For [specific use cases requiring reliable, ultra-low response
-times]({{< relref "dovetail/_index.md##dual-kernel-upsides" >}}), we
+times]({{< relref "dovetail/_index.md#dual-kernel-upsides" >}}), we
 want to enable hosted autonomous software cores to control common
 Linux tasks based on their own scheduler infrastructure, fully
 decoupled from the host's scheduler, with absolute priority over all
@@ -55,8 +55,8 @@ as follows:
   the application.
 
 - once the alternate scheduling feature is initialized, the task
-  should enable it by a call to `dovetail_start_altsched()`. From this
-  point, that task:
+  should enable it by a call to [dovetail_start_altsched()]({{< relref
+  "#dovetail_start_altsched" >}}). From this point, that task:
 
   * can switch between the in-band and out-of-band execution stages
     freely.
@@ -138,7 +138,7 @@ void dovetail_init_altsched(struct dovetail_altsched_context *p)
 
 This call initializes the alternate scheduling context for the current
 task; this should be done once, before the task calls
-`dovetail_start_altsched()`.
+[dovetail_start_altsched()]({{< relref "#dovetail_start_altsched" >}}).
 
 {{% argument p %}}
 The alternate scheduling context is kept in a per-task structure of
@@ -205,7 +205,7 @@ and `evl_release_thread()`.
 You may want to keep this in mind when going through the rest of this
 document.
 
-## Migrating between execution stages {#stage-migration}
+## Switching between execution stages {#stage-migration}
 
 ### Out-of-band switch  {#oob-switch}
 
@@ -410,7 +410,7 @@ EVL core, with support from `evl_suspend_thread()` and
 `evl_schedule()` for suspending and rescheduling threads respectively.
 {{% /notice %}}
 
-## Dovetail context switching {#context-switching}
+## Switching tasks out-of-band {#context-switching}
 
 Dovetail allows an autonomous core embedded into the main kernel to
 schedule a set of Linux tasks _out-of-band_ compared to the regular
@@ -511,15 +511,13 @@ _fpsimd_ management from this handler.
 whether the current task just returned from a [transition from
 out-of-band to in-band context]({{< relref "#inband-switch" >}}).
 
----
-
 ## The event notifier {#event-notifier}
 
-Once `dovetail_start_altsched()` has been called for a Linux task, it
-may receive events of interest with respect to running under the
-supervision of an autonomous core. Those events are delivered by
-invoking _\_\_weak_ handlers which should by overriden by this
-core.
+Once [dovetail_start_altsched()]({{< relref "#dovetail_start_altsched"
+>}}) has been called for a regular in-band task, it may receive events
+of interest with respect to running under the supervision of an
+autonomous core. Those events are delivered by invoking _\_\_weak_
+handlers which should by overriden by this core.
 
 ### Out-of-band exception handling {#oob-events}
 
@@ -620,40 +618,105 @@ task management. Except for `INBAND_PROCESS_CLEANUP` which is called for
 *any* exiting user-space task, all other notifications are only issued
 for tasks bound to the core (which may involve kthreads).
 
-The notification is delivered to the `handle_inband_event()` handler.
-Interrupts are **enabled** in the CPU when this handler is called.
-
-The notification handler is given the event type code, and a single
-pointer argument which relates to the event type.
-
-The following events are defined (see _include/linux/dovetail.h_):
+The notification is delivered to the [handle_inband_event()]({{<
+relref "#handle_inband_event" >}}) handler. The execution context of
+this handler is always in-band. The out-of-band and in-band stages are
+[unstalled]({{< relref "dovetail/pipeline/interrupt_protection.md"
+>}}) at the time of the call. The notification handler receives the
+event type code, and a single pointer argument which depends on the
+event type. The following events are defined (see
+_include/linux/dovetail.h_):
 
 - INBAND_TASK_SIGNAL(struct task_struct *target)
 
-  sent when *target* is about to receive a signal. The core may decide
-  to schedule a transition of the recipient to the in-band stage in
-  order to have it handle that signal asap, which is required for
-  keeping the kernel sane. This notification is always sent from the
-  context of the issuer.
+  	sent when @target is about to receive a signal. The core may
+  decide to schedule a transition of the recipient to the in-band
+  stage in order to have it handle that signal asap, which is required
+  for keeping the kernel sane. This notification is always sent from
+  the context of the issuer.
 
 - INBAND_TASK_MIGRATION(struct dovetail_migration_data *p)
 
-  sent when p->task is about to move to CPU p->dest_cpu.
+  	sent when p->task is about to move to CPU p->dest_cpu.
 
 - INBAND_TASK_EXIT(struct task_struct *current)
 
-  sent from `do_exit()` before the current task has dropped the files
-  and mappings it owns.
+  	sent from `do_exit()` before the current task has dropped the
+  files and mappings it owns.
 
 - INBAND_PROCESS_CLEANUP(struct mm_struct *mm)
 
-  sent before *mm* is entirely dropped, before the mappings are
+  	sent before *mm* is entirely dropped, before the mappings are
   exited. Per-process resources which might still be maintained by the
   core could be released there, as all tasks sharing this memory
   context have exited. Unlike other events, this one is triggered for
   *every* user-space task which is being dismantled by the kernel,
   regardless of whether some of its threads were known from your
   autonomous core.
+
+- INBAND_TASK_RETUSER(void)
+
+	sent as a result of arming the return-to-user request via a
+  call to [dovetail_request_ucall()]({{< relref
+  "#dovetail_request_ucall" >}}). In other words, Dovetail fires this
+  event because you asked for it by calling the latter service. The
+  [INBAND_TASK_RETUSER]({{< relref "#inband-events" >}}) event handler
+  in your companion core is allowed to switch the caller to the
+  out-of-band stage before returning, ensuring the application code
+  resumes in that context.
+
+- INBAND_TASK_PTSTOP(void)
+
+	sent when the current in-band task is about to sleep in
+  ptrace_stop(), which is the place a task is supposed to wait until a
+  debugger allows it to continue. A user-space task which receives
+  SIGTRAP as a result of hitting a breakpoint, or SIGSTOP from the
+  [ptrace(2)](http://man7.org/linux/man-pages/man2/ptrace.2.html)
+  machinery parks itself by calling ptrace_stop(), until resumed by a
+  [ptrace(2)](http://man7.org/linux/man-pages/man2/ptrace.2.html)
+  request.
+
+- INBAND_TASK_PTCONT(void)
+
+	sent when the current in-band task is waking up from
+  ptrace_stop() after the debugger allowed it to continue. The task
+  may return to user-space afterwards, or go handling some pending
+  signals.
+
+- INBAND_TASK_PTSTEP(struct task_struct *target)
+
+	sent by the
+  [ptrace(2)](http://man7.org/linux/man-pages/man2/ptrace.2.html)
+  implementation when it is about to (single-)step the @target
+  task. Like PTSTOP and PTCONT, PTSTEP can be used to synchronize your
+  companion core with the
+  [ptrace(2)](http://man7.org/linux/man-pages/man2/ptrace.2.html)
+  logic. For instance, EVL uses these events to provide support for
+  [synchronous breakpoints]({{< relref
+  "logbook/_index.md#announce-syncbp" >}}) when debugging applications
+  over [gdb](https://www.gnu.org/software/gdb/).
+
+---
+
+{{< proto handle_inband_event >}}
+void handle_inband_event(enum inband_event_type event, void *data)
+{{< /proto >}}
+
+The handler which should be defined in the code of your companion core
+implementation for receiving [in-band event]({{< relref
+"#inband-events" >}}) notifications. Dovetail defines a dummy weak
+implementation of it, which your implementation would supersede if
+defined.
+
+{{% argument event %}}
+The [event code]({{< relref "#inband-events" >}}) (INBAND_TASK\_*)
+as defined above.
+{{% /argument %}}
+
+{{% argument data %}}
+An opaque pointer to some data further qualifying the event, which
+actual type depends on the [event code]({{< relref "#inband-events" >}}).
+{{% /argument %}}
 
 ## Alternate task context {#dovetail-task-context}
 
@@ -724,8 +787,6 @@ the current task, which is always a valid pointer. The content of this
 structure is zeroed when the task is created, and stays so until your
 autonomous core initializes it.
 
----
-
 ## Extended memory context {#dovetail-mm-context}
 
 Your autonomous core may also need to keep its own set of per-process
@@ -787,6 +848,44 @@ struct oob_mm_state *dovetail_mm_state(void)
 	return &current->mm->oob_state;
 }
 ```
+
+## Intercepting return to in-band user mode {#inband-ret-to-user}
+
+In some specific cases, the implementation of your companion core may
+need some thread running in-band to call back before it resumes
+execution of the application code in user mode. For instance, you
+might want to force that thread to switch back to out-of-band mode
+before it leaves the kernel and resumes user mode execution. For this
+to happen, you would need that thread to jump back to the core at that
+point, which would do the right thing from
+there. [dovetail_request_ucall]({{< relref "#dovetail_request_ucall"
+>}}) allows that.
+
+---
+
+{{< proto dovetail_request_ucall >}}
+void dovetail_request_ucall(struct task_struct *target)
+{{< /proto >}}
+
+{{% argument target %}}
+The task which should call back at the first opportunity. _target_
+should have enabled the alternate scheduling support by a previous
+call to [dovetail_start_altsched()]({{< relref
+"#dovetail_start_altsched" >}}). If not, [dovetail_request_ucall]({{<
+relref "#dovetail_request_ucall" >}}) has no effect.
+{{% /argument %}}
+
+Pend a request for _target_ to fire the [INBAND_TASK_RETUSER]({{<
+relref "#inband-events" >}}) event at the first opportunity, which
+happens whenever the task is about to resume execution in user mode
+from the in-band stage.
+
+If the [INBAND_TASK_RETUSER]({{< relref "#inband-events" >}}) event
+handler in the companion core sends any signal to the current task, it
+will be delivered before the application code resumes. The event
+handler may pend a request to be called back again using
+[dovetail_request_ucall()]({{< relref "#dovetail_request_ucall"
+>}}).
 
 ---
 
