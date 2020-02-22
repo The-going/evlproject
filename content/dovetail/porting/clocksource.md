@@ -67,22 +67,6 @@ in-band system call would be issued whenever the vDSO-based
 is called from an application, which would be a showstopper for
 keeping the response time short and bounded.
 
-{{% notice tip %}}
-In some rare cases, converting the available clocksource(s) so that we
-can read them directly from the vDSO might not be an option, typically
-because reading them would require supervisor privileges in the CPU,
-which the vDSO context excludes by definition.  For these desperate
-situations, there is still the option for your companion core to
-[intercept system calls]({{< relref "dovetail/altsched.md#syscall-events" >}}) to
-[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
-from the out-of-band handler, and serve them directly from that spot.
-This may be significantly slower compared to a direct readout from the
-vDSO, but the core would manage to get timestamps for `CLOCK_MONOTONIC`
-and `CLOCK_REALTIME` clocks at least without involving the in-band stage.
-EVL solves a limitation with clock sources on [legacy x86
-hardware]({{< relref "core/caveat.md#x86-caveat" >}}) this way.
-{{% /notice %}}
-
 ### The generic vDSO and USER_MMIO clock sources {#generic-clocksource-vdso}
 
 If your target kernel supports the generic vDSO implementation
@@ -321,6 +305,22 @@ index 69c3a6d94933..bc7d177759c3 100644
 +			clocksource_gpt.mmio.clksrc.name, clksrc.rate);
  }
  ```
+
+{{% notice tip %}}
+In some rare cases, converting the available clocksource(s) so that we
+can read them directly from the vDSO might not be an option, typically
+because reading them would require supervisor privileges in the CPU,
+which the vDSO context excludes by definition.  For these almost desperate
+situations, there is still the option for your companion core to
+[intercept system calls]({{< relref "dovetail/altsched.md#syscall-events" >}}) to
+[clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
+from the out-of-band handler, handling them directly from that spot.
+This would be slower compared to a direct readout from the
+vDSO, but the core would manage to get timestamps for `CLOCK_MONOTONIC`
+and `CLOCK_REALTIME` clocks at least without involving the in-band stage.
+EVL solves a limitation with clock sources on [legacy x86
+hardware]({{< relref "core/caveat.md#x86-caveat" >}}) this way.
+{{% /notice %}}
 
 ---
 
