@@ -783,8 +783,8 @@ have argued that real-time applications should have _reasonable_
 requirements, defined by a set of restriction on their behavior and
 environment, so that bounded response time can be guaranteed, which
 sounds like asking application developers to abide by the rules
-defined by kernel folks. **_When was the last time any of them did
-so?_**
+defined by kernel folks. When was the last time any of them did
+so anyway?
 
 Obviously, we cannot ask the infrastructure to be resilient to any
 type of issue, including broken hardware or fatal kernel
@@ -841,7 +841,7 @@ relevant over time when it comes to observing the worst case latency:
   possibly treading on a lot of code and manipulating large volumes of
   data, the real-time program is gradually evicted from the CPU
   caches. When it resumes eventually in order to process an incoming
-  event, it faces many cache misses, which induces delays. For this
+  event, it faces many cache misses, which induce delays. For this
   reason, and maybe counter-intuitively at first, the faster the timed
   loop the responder thread undergoes, the fewer the opportunities for
   the GPOS work to disturb the environment, the better the latency
