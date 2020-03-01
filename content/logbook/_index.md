@@ -5,6 +5,15 @@ weight: 30
 pre: "&#9656; "
 ---
 
+### Week 9.2020
+
+The core and libevl have been made y2038-safe. EVL is now tracking
+kernel v5.6-rc3.
+
+The libevl repository shows the new **next** branch, which works in
+lockstep with **evl/next** on the kernel side (linux-evl). Once the
+latter moves to **evl/master**, **next** should move to **master**.
+
 ### Week 8.2020
 
 EVL is now tracking kernel v5.5, heading to v5.6-rc1. A seriously
