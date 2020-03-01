@@ -116,11 +116,6 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/clock/index.html#evl_adjust_clock" target="_blank">evl_adjust_clock()</a></td>
-    <td>&#9866;</td> 
-    <td>&#9989;</td> 
-  </tr>
-  <tr>
     <td><a href="/core/user-api/clock/index.html#evl_sleep_until" target="_blank">evl_sleep_until()</a></td>
     <td>&#9651;</td> 
     <td>&#10005;</td> 

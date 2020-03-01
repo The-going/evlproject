@@ -91,7 +91,7 @@ settings it had before the call, as follows:
 | SCHED_OTHER, 0          |    [SCHED_WEAK]({{% relref "core/user-api/scheduling/_index.md#SCHED_WEAK" %}}), 0     |
 | SCHED_BATCH, 0          |    [SCHED_WEAK]({{% relref "core/user-api/scheduling/_index.md#SCHED_WEAK" %}}), 0     |
 | SCHED_IDLE, 0           |    [SCHED_WEAK]({{% relref "core/user-api/scheduling/_index.md#SCHED_WEAK" %}}), 0     |
-| <other policies>, prio  |    [SCHED_FIFO]({{% relref "core/user-api/scheduling/_index.md#SCHED_FIFO" %}}), prio  |
+| \<other policies\>, prio  |    [SCHED_FIFO]({{% relref "core/user-api/scheduling/_index.md#SCHED_FIFO" %}}), prio  |
 
 As a consequence, the thread would still run in-band on return from
 [evl_attach_self()]({{% relref "#evl_attach_self" %}}) if it was

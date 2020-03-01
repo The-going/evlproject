@@ -166,47 +166,6 @@ is called internally for carrying out the request.
 
 ---
 
-{{< proto evl_adjust_clock >}}
-int evl_adjust_clock(int clockfd, struct timex *tx)
-{{< /proto >}}
-
-This call is the EVL equivalent of the Linux-specific
-[adjtimex(2)](http://man7.org/linux/man-pages/man2/adjtimex.2.html)
-service, for tuning the clock adjustment algorithm of a specified EVL
-clock.
-
-{{% argument clockfd %}}
-The clock file descriptor, which must be a valid file descriptor
-received as a result of opening a clock device in _/dev/evl/clock_.
-{{% /argument %}}
-
-{{% argument tp %}}
-A pointer to a _timex_ structure which should define the tuning
-parameters.
-{{% /argument %}}
-
-`evl_adjust_clock()` sets the tuning parameters from _tx_ then returns
-zero on success, otherwise:
-
-- -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
-   file descriptor.
-
-- -EPERM if the caller does not have the permission to set the tuning
-   parameters.
-
-- -ENOTTY if _clockfd_ does not refer to an EVL clock device.
-
-- -EINVAL if some information in _tx_ is invalid.
-
-- -EFAULT if _tx_ points to invalid memory.
-
-{{% notice note %}}
-The EVL driver interfacing with the clock device must support
-adjustment for this request to succeed.
-{{% /notice %}}
-
----
-
 {{< proto evl_sleep_until >}}
 int evl_sleep_until(int clockfd, const struct timespec *timeout)
 {{< /proto >}}
