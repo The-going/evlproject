@@ -76,8 +76,8 @@ $ make [-C $SRCDIR] [ARCH=$cpu_arch] [CROSS_COMPILE=$toolchain] UAPI=$uapi_dir [
 | Variable   |  Description
 | --------   |    -------
 | $SRCDIR    |  Path to this source tree
-| $cpu_arch  |   CPU architecture you build for ('arm', 'arm64')
-| $toolchain |  Optional prefix of the binutils filename (e.g. 'aarch64-linux-gnu-', 'arm-linux-gnueabihf-')
+| $cpu_arch  |   CPU architecture you build for ('arm', 'arm64', 'x86')
+| $toolchain |  Optional prefix of the binutils filename (e.g. 'arm-linux-gnueabihf-', 'aarch64-linux-gnu-')
 
 > Other build variables
 
@@ -104,16 +104,6 @@ Let's say the library source code is located at ~/git/libevl, and the
 kernel sources featuring the EVL core is located at
 ~/git/linux-evl.
 
-{{% notice note %}}
-This is good practice to always generate the build output files to a
-separate build directory using the O= directive on the _make_ command
-line, not to clutter your source tree with those. Generating output to
-a separate directory also creates convenience Makefiles on the fly in
-the output tree, which you can use to run subsequent builds, without
-having to mention the whole series of settings on the _make_ command
-line again.
-{{% /notice %}}
-
 Cross-compiling EVL and installing the resulting library and utilities
 to a staging directory located at /nfsroot/\<machine\>/usr/evl would
 amount to this:
@@ -136,6 +126,16 @@ $ mkdir /tmp/build-hikey
 $ cd ~/git/libevl
 $ make O=/tmp/build-hikey ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- UAPI=~/git/linux-evl DESTDIR=/nfsroot/hikey/usr/evl install
 ```
+
+{{% notice note %}}
+This is good practice to always generate the build output files to a
+separate build directory using the O= directive on the _make_ command
+line, not to clutter your source tree with those. Generating output to
+a separate directory also creates convenience Makefiles on the fly in
+the output tree, which you can use to run subsequent builds without
+having to mention the whole series of variables and options on the
+_make_ command line again.
+{{% /notice %}}
 
 #### Native EVL build
 

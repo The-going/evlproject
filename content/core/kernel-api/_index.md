@@ -10,8 +10,8 @@ An EVL driver is a regular Linux character device driver which also
 implements a set of out-of-band I/O operations advertised by its file
 operation descriptor (`struct file_operations`). These out-of-band I/O
 requests are only available to [EVL threads]({{< relref
-"core/user-api/thread" >}}), since they run on the [out-of-band
-execution stage]({{< relref
+"core/user-api/thread" >}}), since only such threads may run on the
+[out-of-band execution stage]({{< relref
 "dovetail/pipeline/_index.md#two-stage-pipeline" >}}). Applications
 running in user-space can start these I/O operations by issuing
 [specific system calls]({{< relref "core/user-api/io" >}}) to the EVL

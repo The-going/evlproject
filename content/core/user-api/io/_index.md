@@ -225,7 +225,8 @@ ENOTTY  if _fd_ does not support the [.oob_ioctl operation]({{< relref
 
 EFAULT	if _buf_ points to invalid memory.
 
-EAGAIN	_fd_ is marked as [non-blocking (O_NONBLOCK)], and the control
+EAGAIN  _fd_ is marked as non-blocking (O_NONBLOCK)
+	(http://man7.org/linux/man-pages/man2/fcntl.2.html), and the control
 	request would block.
 
 Other driver-specific error codes may be returned.
