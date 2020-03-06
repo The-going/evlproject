@@ -1,7 +1,7 @@
 ---
 menuTitle: "Benchmarking"
 title: "Running benchmarks"
-weight: 5
+weight: 6
 ---
 
 ### Measuring the response time to interrupts {#measuring-irq-response-time}
@@ -268,7 +268,7 @@ option]({{< relref "core/testing.md" >}}) may be a good idea.
 
 - _\# clock gravity: 2000i 3500k 3500u_
 
-    The [calibration settings](({{< relref "core/timer-calibration.md"
+    The [calibration settings](({{< relref "core/runtime-settings.md"
     >}})) of the EVL core clock which applied during the test.
 
 - _\# clocksource: tsc_
@@ -887,3 +887,7 @@ will be used in the test scenarios:
 
 
 ![Alt text](/images/wip.png "To be continued")
+
+---
+
+{{<lastmodified>}}

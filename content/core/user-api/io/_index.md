@@ -44,7 +44,7 @@ can be accessed from _/dev/evl_, interacting with EVL elements via
 through the out-of-band I/O interface documented here.
 {{% /notice %}}
 
-### Out-of-band I/O services
+### Out-of-band I/O services {#oob-io-services}
 
 {{< proto oob_read >}}
 ssize_t oob_read(int efd, void *buf, size_t count)

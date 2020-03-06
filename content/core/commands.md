@@ -1,6 +1,6 @@
 ---
 menuTitle: "Commands"
-weight: 3
+weight: 5
 ---
 
 # The 'evl' command

@@ -25,9 +25,9 @@ to [GPIO events]({{< relref
 "core/benchmarks/_index.md#latmus-timer-response-time" >}}). This
 second call form is selected by the _-Z_ and _-z_ option switches.
 
-- Finally, passing _-t_ starts a [calibration of the EVL core timer]({{<
-relref "core/timer-calibration.md" >}}), finding the best configuration
-values.
+- Finally, passing _-t_ starts a [calibration of the EVL core
+timer]({{< relref "core/runtime-settings.md" >}}), finding the best
+configuration values.
 
 {{% notice tip %}}
 Unless you only plan to measure [in-band response time to GPIO
@@ -105,7 +105,7 @@ options on the command line.
 {{% argument "-t --tune" %}}
 Run a core timer calibration procedure. _-i_, _-k_ and _-u_ can be
 used to select a specific tuning context, all of them are applied in
-sequence otherwise. See [below]({{< relref "core/timer-calibration.md"
+sequence otherwise. See [below]({{< relref "core/runtime-settings.md"
 >}}). This option is mutually exclusive with _-m_, _-Z_ and _-z_.
 {{% /argument %}}
 

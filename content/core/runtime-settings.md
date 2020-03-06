@@ -1,8 +1,10 @@
 ---
-menuTitle: "Timer calibration"
-title: "Calibrating the core timer"
-weight: 2
+menuTitle: "Runtime settings"
+title: "Runtime configuration"
+weight: 3
 ---
+
+### Calibrating the core timer
 
 When enabled in the kernel, EVL transparently controls the hardware
 timer chip via a [proxy device]({{< relref "dovetail/porting/timer.md"
