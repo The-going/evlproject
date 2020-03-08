@@ -1,6 +1,6 @@
 ---
 title: "Synthetic IRQs"
-weight: 50
+weight: 45
 ---
 
 The pipeline introduces an additional type of interrupts, which are

@@ -48,9 +48,10 @@ as follows:
 
 - a Linux task running in user-space, or a kernel thread, need to
   initialize the alternate scheduling feature for themselves with a
-  call to `dovetail_init_altsched()`. For instance, the EVL core does
-  so as part of the attachment process of a thread to the autonomous
-  core when [evl_attach_self()]({{% relref
+  call to [dovetail_init_altsched()]({{< relref
+  "#dovetail_init_altsched" >}}). For instance, the EVL core does so
+  as part of the attachment process of a thread to the autonomous core
+  when [evl_attach_self()]({{% relref
   "core/user-api/thread/_index.md#evl_attach_self" %}}) is called by
   the application.
 
@@ -71,8 +72,9 @@ as follows:
     the autonomous core, independently from the scheduling operations
     carried out by the main kernel.
 
-    Conversely, `dovetail_stop_altsched()` disables the notifications
-    for a task, which is likely to be detached from the autonomous core
+    Conversely, [dovetail_stop_altsched()]({{< relref
+    "#dovetail_stop_altsched" >}}) disables the notifications for a
+    task, which is likely to be detached from the autonomous core
     later on.
 
 - at any point in time, any Linux task is either controlled by the
@@ -144,7 +146,7 @@ task; this should be done once, before the task calls
 The alternate scheduling context is kept in a per-task structure of
 type _dovetail_altsched_context_ which should be maintained by the
 autonomous core. This can be done as part of the [per-task context
-management]({{< relref "#dovetail-task-context" >}}) facility
+management]({{< relref "#dovetail-task-context" >}}) feature
 Dovetail introduces.
 {{% /argument %}}
 
@@ -227,17 +229,19 @@ may switch from in-band to out-of-band execution:
 Using Dovetail, a task which is executing on the in-band stage can
 switch out-of-band following this sequence of actions:
 
-1. this task calls `dovetail_leave_inband()`, which prepares for the
-transition, puts the caller to sleep (`TASK_INTERRUPTIBLE`) then
-reschedules immediately. At this point, the migrating task is in
-flight to the out-of-band stage. `schedule()` resumes the next
-in-band task which should run on the current CPU.
+1. this task calls [dovetail_leave_inband()]({{< relref
+"#dovetail_leave_inband" >}}) from the in-band stage it runs on
+(blue), which prepares for the transition, puts the caller to sleep
+(`TASK_INTERRUPTIBLE`) then reschedules immediately. At this point,
+the migrating task is in flight to the out-of-band stage (light
+red). Meanwhile, `schedule()` resumes the next in-band task which
+should run on the current CPU.
 
 2. as the next in-band task context resumes, the scheduling tail code
 checks for any task pending transition to out-of-band stage, _before_
 the CPU is fully relinquished to the resuming in-band task. This check
 is performed by the `inband_switch_tail()` call present in the main
-   scheduler. Such call has two purposes:
+scheduler. Such call has two purposes:
 
    * detect when a task is in flight to the out-of-band stage, so that
      we can notify the autonomous core for finalizing the migration
@@ -248,12 +252,12 @@ is performed by the `inband_switch_tail()` call present in the main
      current task, once the migration process is complete.
 
 When switching out-of-band, case #1 is met, which triggers a call to
-the `resume_oob_task()` handler the autonomous core should implement
-for completing the transition. This would typically mean: unblock the
-migrating task from the standpoint of its own scheduler, then
-reschedule. In the following flowchart, `core_resume_task()` and
-`core_schedule()` stand for these two operations, with each dotted
-link representing a context switch:
+the [resume_oob_task()]({{< relref "#resume_oob_task" >}}) handler the
+companion core should implement for completing the transition. This
+would typically mean: unblock the migrating task from the standpoint
+of its own scheduler, then reschedule. In the following flowchart,
+`core_resume_task()` and `core_schedule()` stand for these two
+operations, with each dotted link representing a context switch:
 
 {{<mermaid align="left">}}
 graph LR;
@@ -285,9 +289,11 @@ scheduler:
 ![Alt text](/images/oob_switch.png "Out-of-band switch")
 
 {{% notice tip %}}
-`evl_switch_oob()` implements the switch to out-of-band context in the
-EVL core, with support from `evl_release_thread()` and
-`evl_schedule()` for resuming and rescheduling threads respectively.
+[evl_switch_oob()]({{% relref
+"core/user-api/thread/_index.md#evl_switch_oob" %}}) implements the
+switch to out-of-band context in the EVL core, with support from
+`evl_release_thread()` and `evl_schedule()` for resuming and
+rescheduling threads respectively.
 {{% /notice %}}
 
 ### In-band switch {#inband-switch}
@@ -366,15 +372,16 @@ in-band following this sequence of actions:
 
 4. the migrating task resumes from the tail scheduling code of the
    alternate scheduler, where it suspended in step #2. Noticing the
-   migration, the core calls `dovetail_resume_inband()` eventually,
-   for finalizing the transition of the incoming task to the in-band
-   stage.
+   migration, the core calls [dovetail_resume_inband()]({{< relref
+   "#dovetail_resume_inband" >}}) eventually, for finalizing the
+   transition of the incoming task to the in-band stage.
 
 In the following flowchart, `core_suspend_task()` and
 `core_schedule()` stand for the operations described at step #2, with
 each dotted link representing a context switch. The out-of-band idle
-state represents the CPU transitioning from out-of-band to in-band
-execution stage, as the core has no more out-of-band task to schedule:
+state represents the CPU transitioning from out-of-band (light red) to
+in-band (blue) execution stage, as the core has no more out-of-band
+task to schedule:
 
 {{<mermaid align="left">}}
 graph LR;
@@ -405,10 +412,11 @@ state to a blocked state in the autonomous core, and conversely from
 ![Alt text](/images/inband_switch.png "In-band switch")
 
 {{% notice tip %}}
-`evl_switch_inband()` implements the switch to in-band context in the
-EVL core, with support from `evl_suspend_thread()` and
-`evl_schedule()` for suspending and rescheduling threads respectively.
-{{% /notice %}}
+[evl_switch_inband()]({{< relref
+"core/user-api/thread/_index.md#evl_switch_inband" >}}) switches the caller to
+in-band context in the EVL core, with support from
+`evl_suspend_thread()` and `evl_schedule()` for suspending and
+rescheduling threads respectively.  {{% /notice %}}
 
 ## Switching tasks out-of-band {#context-switching}
 
@@ -458,23 +466,27 @@ interrupt pipeline provides which may help there. See the
 implementation of `evl_schedule()` in the EVL core for a typical
 usage.
 
-2. `dovetail_context_switch()` is called, switching the memory context
-as/if required, and the CPU register file to _NEXT_'s, saving _PREV_'s
-in the same move.  If _NEXT_ **is not** the [low priority placeholder
-task]({{< relref "#altsched-theory" >}}) but _PREV_ is, we will be
-preempting the in-band kernel: in this case, we must tell the kernel
-about such preemption by passing _leave\_inband=true_ to
-`dovetail_context_switch()`.
+2. [dovetail_context_switch()]({{< relref "#dovetail_context_switch"
+>}}) is called, switching the memory context as/if required, and the
+CPU register file to _NEXT_'s, saving _PREV_'s in the same move.  If
+_NEXT_ **is not** the [low priority placeholder task]({{< relref
+"#altsched-theory" >}}) but _PREV_ is, we will be preempting the
+in-band kernel: in this case, we must tell the kernel about such
+preemption by passing _leave\_inband=true_ to
+[dovetail_context_switch()]({{< relref "#dovetail_context_switch"
+>}}).
 
 3. _NEXT_ resumes from its latest switching point, which may be:
 
    * the switch tail code in `core_schedule()`, if _NEXT_ was running
      out-of-band prior to sleeping, in which case
-     `dovetail_context_switch()` returns _false_.
+     [dovetail_context_switch()]({{< relref "#dovetail_context_switch"
+     >}}) returns _false_.
 
    * the switch tail code of `schedule()` if _NEXT_ is completing an
      [in-band switch]({{< relref "#inband-switch" >}}), in which case
-     `dovetail_context_switch()` returns _true_.
+     [dovetail_context_switch()]({{< relref "#dovetail_context_switch"
+     >}}) returns _true_.
 
 ---
 
@@ -500,24 +512,87 @@ in-band kernel context as a whole.
 {{% /argument %}}
 
 This routine performs an out-of-band context switch. It must be called
-with hard IRQs off. The arch-specific `arch_dovetail_context_resume()`
-handler is called by the resuming task before leaving
-`dovetail_context_switch()`. This _weak_ handler should be overriden
-by a Dovetail port which requires arch-specific tweaks for completing
-the reactivation of _next_. For instance, the arm64 port performs the
-_fpsimd_ management from this handler.
+with hard IRQs off. The arch-specific
+[arch_dovetail_context_resume()]({{< relref
+"#arch_dovetail_context_resume" >}}) handler is called by the resuming
+task before leaving [dovetail_context_switch()]({{< relref
+"#dovetail_context_switch" >}}). This _weak_ handler should be
+overriden by a Dovetail port which requires arch-specific tweaks for
+completing the reactivation of _next_. For instance, the arm64 port
+performs the _fpsimd_ management from this handler.
 
-`dovetail_context_switch()` returns a boolean value telling the caller
+[dovetail_context_switch()]({{< relref "#dovetail_context_switch"
+>}}) returns a boolean value telling the caller
 whether the current task just returned from a [transition from
 out-of-band to in-band context]({{< relref "#inband-switch" >}}).
+
+---
+
+{{< proto dovetail_leave_inband >}}
+int dovetail_leave_inband(void)
+{{< /proto >}}
+
+[dovetail_leave_inband()]({{< relref "#dovetail_leave_inband" >}})
+should be called by your companion core in order to perform the
+[out-of-band switch]({{< relref "#oob-switch" >}}) for the current
+task.
+
+On success, zero is returned, and the calling context is running on
+the [out-of-band stage]({{< relref
+"dovetail/pipeline/_index.md#two-stage-pipeline" >}}). Otherwise,
+-ERESTARTSYS is returned if a signal was pending at the time of the
+call, in which case the transition could not take place.
+
+> The usage is illustrated by the [implementation of
+  evl_switch_oob()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/sched/core.c?h=evl/master)
+  in the EVL core.
+
+---
+
+{{< proto dovetail_resume_inband >}}
+void dovetail_resume_inband(void)
+{{< /proto >}}
+
+[dovetail_resume_inband()]({{< relref "#dovetail_resume_inband" >}})
+should be called by your companion core as part of the [in-band switch
+process]({{< relref "#inband-switch" >}}) for the current task,
+_after_ the current task has resumed on the in-band execution stage
+from the out-of-band suspension call in step 2 of the [in-band switch
+process]({{< relref "#inband-switch" >}}). This *mandatory* call
+finalizes the transition to this stage, by reconciling the current
+task state with the internal state of the in-band scheduler.
+
+> The usage is illustrated by the [implementation of
+  evl_switch_inband()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/sched/core.c?h=evl/master)
+  in the EVL core.
+
+---
+
+{{< proto resume_oob_task >}}
+__weak void resume_oob_task(void)
+{{< /proto >}}
+
+This handler should be implemented by your companion core, in order to
+complete step 2 of the [out-of-band switch process]({{< relref
+"#oob-switch" >}}). Basically, this handler should lift the blocking
+condition added to the task at step 2 of the [in-band switch
+process]({{< relref "#inband-switch" >}}) which denotes in-band
+execution, such as `T_INBAND` for the EVL core.
+
+[resume_oob_task]({{< relref "#resume_oob_task" >}}) is called with
+interrupts **disabled** in the CPU, out-of-band stage is stalled.
+
+> An [implementation of
+  resume_oob_task()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/sched/core.c?h=evl/master)
+  is present in the EVL core.
 
 ## The event notifier {#event-notifier}
 
 Once [dovetail_start_altsched()]({{< relref "#dovetail_start_altsched"
 >}}) has been called for a regular in-band task, it may receive events
 of interest with respect to running under the supervision of an
-autonomous core. Those events are delivered by invoking _\_\_weak_
-handlers which should by overriden by this core.
+autonomous core. Those events are delivered by invoking handlers which
+should by implemented by this core.
 
 ### Out-of-band exception handling {#oob-events}
 
@@ -537,19 +612,61 @@ involves dealing with debug traps `ptrace()` may poke into the
 debuggee's code for breakpointing.
 {{% /notice %}}
 
-The notification is delivered to the `handle_oob_trap()` handler the
-core should override for receiving those events (_\_\_weak_
-binding). `handle_oob_trap()` is passed the exception code as defined
-in _arch/*/include/asm/dovetail.h_, and a pointer to the register
-frame of the faulting context (_struct pt\_regs_).
+The notification is delivered to the [handle_oob_trap()]({{< relref
+"#handle_oob_trap" >}}) handler the core should override for receiving
+those events (_\_\_weak_ binding). [handle_oob_trap()]({{< relref
+"#handle_oob_trap" >}}) is passed the exception code as defined in
+_arch/*/include/asm/dovetail.h_, and a pointer to the register frame
+of the faulting context (_struct pt\_regs_).
+
+---
+
+{{< proto handle_oob_trap >}}
+__weak void handle_oob_trap(unsigned int trapnr, struct pt_regs *regs)
+{{< /proto >}}
+
+This handler is called whenever a CPU trap is received by a
+[Dovetail-enabled task]({{< relref "#dovetail_start_altsched" >}})
+while running on the [out-of-band execution stage]({{< relref
+"dovetail/pipeline/_index.md#two-stage-pipeline" >}}). In such an
+event, the caller must be switched to the in-band stage, in order to
+safely perform the normal trap handling operations on return.  In
+other words, Dovetail invokes this handler to ask your companion core
+to switch back to a safe in-band context, before the in-band kernel
+can actually handle such trap.
+
+Obviously, the caller would lose the benefit of running on the
+out-of-band stage, inducing latency in the process, but since it has
+taken a CPU trap, it looks like things did not go as expected already
+anyway. So the best option in this case is to switch the caller to
+in-band mode, leaving the actual trap handling and any related fixup
+to the in-band code once the transition is done.
+
+{{% argument trapnr %}}
+
+The trap code number. Such code depends on the CPU architecture:
+
+- the documented Intel trap numbers are used for x86 (#GP, #DE, #OF etc.)
+- other architectures may use a Dovetail-specific enumeration defined in
+  `arch/*/include/asm/dovetail.h`.
+
+{{% /argument %}}
+
+{{% argument regs %}}
+The register file at the time of the trap.
+{{% /argument %}}
 
 Interrupts are **disabled** in the CPU when this handler is called.
+
+> An [implementation of
+  handle_oob_trap()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/thread.c?h=evl/master)
+  is present in the EVL core.
 
 ### System calls {#syscall-events}
 
 The autonomous core is likely to introduce its own set of system calls
-application tasks may invoke. From the standpoint of the main kernel,
-this is a foreign set of calls, which can be distinguished
+application tasks may invoke. From the standpoint of the in-band
+kernel, this is a foreign set of calls, which can be distinguished
 unambiguously from regular ones. If a task attached to the core issues
 any system call, regardless of which of the kernel or the core should
 handle it, the latter must be given the opportunity to:
@@ -557,23 +674,24 @@ handle it, the latter must be given the opportunity to:
 - handle the request directly, possibly switching the caller to
   out-of-band context first if required.
 
-- pass the request downward to the normal system call path on the
+- pass the request downward to the in-band system call path on the
   in-band stage, possibly switching the caller to in-band context if
   needed.
 
 Dovetail intercepts system calls early in the kernel entry code,
 delivering them to one of these handlers the core should override:
 
-- the call is delivered to the `handle_oob_syscall()` handler if the
-system call number is not in the valid range for the in-band kernel -
-i.e. it has to belong to the core instead -, and the caller issued the
-request from the out-of-band context. This is the fast path, when a
-task running out-of-band is requesting a service the core provides.
+- the call is delivered to the [handle_oob_syscall()]({{< relref
+"#handle_oob_syscall" >}}) handler if the system call number is not in
+the valid range for the in-band kernel - i.e. it has to belong to the
+core instead -, and the caller issued the request from the out-of-band
+context. This is the fast path, when a task running out-of-band is
+requesting a service the core provides.
 
 - otherwise the slow path is taken, in which
-`handle_pipelined_syscall()` is probed for handling the request from
-the appropriate execution stage.  In this case, Dovetail performs the
-following actions:
+[handle_pipelined_syscall()]({{< relref "#handle_pipelined_syscall"
+>}}) is probed for handling the request from the appropriate execution
+stage.  In this case, Dovetail performs the following actions:
 
 {{<mermaid align="left">}}
 graph LR;
@@ -591,24 +709,146 @@ graph LR;
     P --> A
 {{< /mermaid >}}
 
-In the flowchart above, `handle_pipelined_syscall()` should return
-zero if it wants Dovetail to propagate an unhandled system call down
-the pipeline at each of the two possible steps, non-zero if the
-request was handled. Branching to the in-band user mode exit code
-ensures that any pending (in-band) signal is delivered to the current
-task and rescheduling opportunities are taken when (in-band) kernel
-preemption is enabled.
+In the flowchart above, [handle_pipelined_syscall()]({{< relref
+"#handle_pipelined_syscall" >}}) should return zero if it wants
+Dovetail to propagate an unhandled system call down the pipeline at
+each of the two possible steps, non-zero if the request was
+handled. Branching to the in-band user mode exit code ensures that any
+pending (in-band) signal is delivered to the current task and
+rescheduling opportunities are taken when (in-band) kernel preemption
+is enabled.
+
+What makes a system call number out-of-range for the in-band kernel is
+architecture-dependent. Some architectures may use the
+most-significant bit in a syscall number as a differentiator
+(i.e. regular if cleared, foreign if set), others may use a different
+system call prefix to distinguish from the valid in-band call prefix.
+See how `__EVL_SYSCALL_BIT` and `__ARM_NR_dovetail` are used for this
+purpose in the [libevl]({{< relref "core/user-api/_index.md" >}})
+implementation for arm64/x86 and ARM respectively.
 
 Interrupts are always **enabled** in the CPU when any of these
 handlers is called.
 
 {{% notice note %}}
-The core may need to switch the calling task to the converse execution
-stage (i.e. in-band <-> out-of-band) either from the
-`handle_oob_syscall()` or `handle_pipelined_syscall()` handlers, this
-is fine. Dovetail would notice and reconcile its logic according to
-the current stage on return of these handlers.
-{{% /notice %}}
+The core may need to switch the calling task to
+the converse execution stage (i.e. in-band <-> out-of-band) either
+from the [handle_oob_syscall()]({{< relref "#handle_oob_syscall" >}})
+or [handle_pipelined_syscall()]({{< relref "#handle_pipelined_syscall"
+>}}) handlers, this is fine. Dovetail would notice and continue
+accordingly to the current stage on return of these handlers.  {{%
+/notice %}}
+
+---
+
+{{< proto handle_oob_syscall >}}
+__weak void handle_oob_syscall(struct pt_regs *regs)
+{{< /proto >}}
+
+This handler should implement the fast path for handling out-of-band
+system calls.  It is called by Dovetail whenever a system call is
+detected on entry of the common syscall path implemented by the
+in-band kernel, which should be handled directly by the companion core
+instead. Both of the following conditions must be met for this route
+to be taken:
+
+- the caller is a user task running on the [out-of-band execution
+stage]({{< relref "dovetail/pipeline/_index.md#two-stage-pipeline"
+>}}).
+
+- the system call number is not in the range of the regular in-band
+system call numbers.
+
+A system call meeting those conditions denotes a request issued by an
+application to a companion core which it can handle directly from its
+native execution stage (i.e. [out-of-band]({{< relref
+"dovetail/pipeline/_index.md#two-stage-pipeline" >}})). This handler
+should be defined in the code of your companion core implementation
+for receiving such system calls. Dovetail defines a dummy weak
+implementation of it, which the implementation of the core would
+supersede if defined (_\_\_weak_ binding).
+
+The EVL core
+[exhibits](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/syscall.c?h=evl/master)
+a typical implementation of such a handler.
+
+{{% argument regs %}}
+The register file at the time of the system call, which contains the
+call arguments passed by the application.
+{{% /argument %}}
+
+The handler should write the error code of the request to the
+in-memory storage of the proper CPU register in _regs_, as defined by
+the ABI convention for the CPU architecture.
+
+[handle_oob_syscall]({{< relref "#handle_oob_syscall" >}}) is called
+with interrupts enabled in the CPU, out-of-band stage is
+unstalled. Whether the in-band stage accepts interrupts is undefined.
+
+> An [implementation of
+  handle_oob_syscall()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/syscall.c?h=evl/master)
+  is present in the EVL core.
+
+---
+
+{{< proto handle_pipelined_syscall >}}
+__weak void handle_pipelined_syscall(struct pt_regs *regs)
+{{< /proto >}}
+
+This handler is called by Dovetail whenever a system call is detected
+on entry of the common syscall path implemented by the in-band kernel,
+if the requirements for delivering it to the companion core via the
+fast route implemented by [handle_oob_syscall]({{< relref
+"#handle_oob_syscall" >}}) are not met, and any of the following
+condition is true:
+
+- the caller is a user task for which [alternate scheduling]({{<
+relref "#dovetail_start_altsched" >}}) was enabled.
+
+- the system call number is not in the range of the regular in-band
+system call numbers, which means that a companion core might be able
+to handle it (if not eventually, such a request would cause the caller
+to receive -ENOSYS).
+
+The handler should write the error code of the request to the
+in-memory storage of the proper CPU register in _regs_, as defined by
+the ABI convention for the CPU architecture.  In addition,
+[handle_pipelined_syscall]({{< relref "#handle_pipelined_syscall" >}})
+should return an integer status, which specifies the action Dovetail
+should take on return:
+
+- zero tells Dovetail to pass the system call to the regular in-band
+  handler next. This status makes sense if the companion core did not
+  handle the request, but did switch the calling context to in-band
+  mode. This typically happens whenever the companion core wants to
+  automatically demote the execution stage of the caller when it
+  detects a regular in-band system call issued over the wrong
+  (i.e. out-of-band) context, in which case it may [switch it
+  in-band]({{< relref "#inband-switch" >}}) automatically for
+  preserving the system integrity, before asking Dovetail to forward
+  the request to the right (in-band) handler.
+
+- a strictly positive status tells Dovetail to branch to the system
+  call exit path immediately. This status makes sense if the companion
+  core did handle the request, leaving the caller on the out-of-band
+  execution stage.
+
+- a negative status tells Dovetail to branch to the regular system
+  call epilogue, _without_ passing the system call to the regular
+  in-band handler though. This status makes sense if the companion
+  core already handled the request, switching to in-band mode in the
+  process. In such an event, the in-band kernel still wants to check
+  for pending signals and rescheduling opportunity, which is the
+  purpose of the epilogue code.
+
+[handle_pipelined_syscall]({{< relref "#handle_pipelined_syscall" >}})
+is called with interrupts enabled in the CPU, out-of-band stage is
+unstalled. If current, the in-band stage accepts interrupts, otherwise
+whether the in-band stage is stalled or not is undefined.
+
+> An [implementation of
+  handle_pipelined_syscall()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/syscall.c?h=evl/master)
+  is present in the EVL core.
 
 ### In-band events {#inband-events}
 
@@ -621,11 +861,11 @@ for tasks bound to the core (which may involve kthreads).
 The notification is delivered to the [handle_inband_event()]({{<
 relref "#handle_inband_event" >}}) handler. The execution context of
 this handler is always in-band. The out-of-band and in-band stages are
-[unstalled]({{< relref "dovetail/pipeline/interrupt_protection.md"
->}}) at the time of the call. The notification handler receives the
-event type code, and a single pointer argument which depends on the
-event type. The following events are defined (see
-_include/linux/dovetail.h_):
+both [unstalled]({{< relref
+"dovetail/pipeline/interrupt_protection.md" >}}) at the time of the
+call. The notification handler receives the event type code, and a
+single pointer argument which depends on the event type. The following
+events are defined (see _include/linux/dovetail.h_):
 
 - INBAND_TASK_SIGNAL(struct task_struct *target)
 
@@ -699,7 +939,7 @@ _include/linux/dovetail.h_):
 ---
 
 {{< proto handle_inband_event >}}
-void handle_inband_event(enum inband_event_type event, void *data)
+__weak void handle_inband_event(enum inband_event_type event, void *data)
 {{< /proto >}}
 
 The handler which should be defined in the code of your companion core
@@ -717,6 +957,13 @@ as defined above.
 An opaque pointer to some data further qualifying the event, which
 actual type depends on the [event code]({{< relref "#inband-events" >}}).
 {{% /argument %}}
+
+The in-band stage is always current and accepts interrupts on entry to
+this call.
+
+> An [implementation of
+  handle_inband_event()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/thread.c?h=evl/master)
+  is present in the EVL core.
 
 ## Alternate task context {#dovetail-task-context}
 
@@ -741,7 +988,6 @@ instance:
 struct oob_thread_state {
        /* Define your core-specific per-task data here. */
 };
-
 ```
 
 The core may then retrieve the address of the structure by calling

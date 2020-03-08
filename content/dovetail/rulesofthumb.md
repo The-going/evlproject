@@ -1,6 +1,6 @@
 ---
 title: "Rules Of Thumb"
-weight: 120
+weight: 125
 ---
 
 ## Turn on debug options in the kernel configuration!

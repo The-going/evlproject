@@ -37,7 +37,7 @@ evl [-V] [-P <cmddir>] [<command> [command-args]]
 
 ```
 ~ # evl -V
-evl.0 -- #ff99204 (2020-01-04 18:34:10 +0100) [ABI 12]
+evl.0 -- #1c6115c (2020-03-06 16:24:00 +0100) [requires ABI 19]
 ```
 
 {{% notice info %}}
