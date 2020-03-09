@@ -21,7 +21,7 @@ showstopper. No doubt that every real-time infrastructure out there
 wants to shine on that one. To measure the response time to interrupts
 in different contexts, EVL provides the [latmus]({{< relref
 "core/testing.md##latmus-program" >}}) utility. The following figure
-summarizes the potential delays which may exist between the moment an
+illustrates the potential delays which may exist between the moment an
 interrupt request is raised by a device, and the time a responder
 thread running in the application space can act upon it:
 
@@ -127,8 +127,8 @@ every second to a logger thread with the minimum, maximum and average
 latency values observed over this period. The 1Hz display loop which
 is visible while the [latmus application]({{< relref
 "core/testing.md#latmus-program" >}}) is running is synchronized on
-the receipt of such summary. The execution flow just described can be
-summarized as follows:
+the receipt of such summary. The following figure illustrates this
+execution flow:
 
 ![Alt text](/images/timer-response-test.png "Response time to timer events")
 
@@ -460,8 +460,8 @@ logger thread running on the remote [latmus application]({{< relref
 minimum, maximum and average latency values observed over the last 1Hz
 period. Here again, the 1Hz display loop you can observe while
 [latmus]({{< relref "core/testing.md#latmus-program" >}}) is running
-is synchronized on the receipt of such summary. The execution flow
-just described can be summarized as follows:
+is synchronized on the receipt of such summary.  The following figure
+illustrates this execution flow:
 
 ![Alt text](/images/gpio-response-test.png "Response time to GPIO events")
 
