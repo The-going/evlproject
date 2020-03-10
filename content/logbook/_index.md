@@ -5,6 +5,22 @@ weight: 30
 pre: "&#9656; "
 ---
 
+### Week 10.2020
+
+A week mostly spent working on the documentation, such as describing
+how Dovetail helps in tracking [file
+descriptors](https://evlproject.org/dovetail/files/) so that companion
+cores can implement their own file-based interface. In addition, more
+details were added to the description of the [alternate
+scheduling](https://evlproject.org/dovetail/files/)
+interface. Finally, the new [under the
+hood](https://evlproject.org/core/under-the-hood/) section was
+started, which is intended to help anyone interested in or simply
+curious about the "other path to Linux real-time", whether it is
+useful for developing your own Linux-based dual kernel system,
+contributing to EVL, or educational purpose. EVL is now tracking
+kernel v5.6-rc4.
+
 ### Week 9.2020
 
 The core and libevl have been made y2038-safe. EVL is now tracking

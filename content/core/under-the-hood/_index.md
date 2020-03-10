@@ -110,8 +110,11 @@ The factory performs the following tasks:
   for monitors and so on.
 
 - it maintains a reference count on every element instantiated in the
-  system. The resources allocated for an element are automatically
-  released when the last file descriptor referring to it is closed.
+  system, so as to automatically remove elements when they have no
+  more referrers. Typically, closing the last file descriptor
+  referring to the file underlying an element would cause such removal
+  (unless some kernel code is still withholding references to the same
+  element).
 
 {{% notice info %}}
 Unlike other elements, a thread may exist in absence of any file
