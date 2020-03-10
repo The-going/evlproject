@@ -46,7 +46,7 @@ please drop me a note at <rpm@xenomai.org>.
 
 > Current target kernel release
 
-Linux 5.6-rc3
+Linux 5.6-rc5
 
 > ARM64 SoC
 
@@ -87,7 +87,7 @@ Linux 5.6-rc3
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc2</td>
+    <td>5.6-rc5</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank">Broadcom BCM2711 (Raspberry PI 4 Model B)</a></td>
@@ -127,7 +127,7 @@ Linux 5.6-rc3
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc3</td>
+    <td>5.6-rc5</td>
   </tr>
 </table>
 
@@ -164,7 +164,7 @@ Linux 5.6-rc3
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc3</td>
+    <td>5.6-rc5</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
@@ -230,7 +230,7 @@ Linux 5.6-rc3
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc3</td>
+    <td>5.6-rc5</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
