@@ -5,22 +5,28 @@ weight: 5
 
 # The 'evl' command
 
-The _evl_ umbrella utility can run the set of (sub)commands available
-for controlling, inspecting and testing the state of the EVL
-core. Each of these commands is implemented by an external plugin,
-which can be a mere executable, or a script in whatever language. The
-general syntax is as follows:
+The 'evl' umbrella utility can run the set of base commands available
+for controlling, inspecting and testing the state of the EVL core and
+any command matching the 'evl-*' glob pattern which may be reachable
+from the shell $PATH variable. The way the 'evl' utility centralizes
+access to a variety of EVL-related commands is very similar to that of
+[git](https://git-scm.com/) on purpose. Each of the EVL commands is
+implemented by an external plugin, which can be a mere executable, or
+a script in whatever language. The only requirement is that the caller
+must have execute permission on such file to run it.
+
+The general syntax is as follows:
 
 ```
-evl [-V] [-P <cmddir>] [<command> [command-args]]
+evl [-V] [-P <cmddir>] [-h] [<command> [command-args]]
 ```
 
-- \<command\> may be either:
-  * **ps** which report a snapshot of the current EVL threads
-  * **test** which run the EVL tests
-  * **trace** which is a simple front-end to the _ftrace_ interface for EVL
+- \<command\> may be any command word listed by 'evl -h', such as:
+  **ps**           which reports a snapshot of the current EVL threads
+  **test**         for running the EVL test suite
+  **trace**        which is a simple front-end to the _ftrace_ interface for EVL
 
-- _-P_ switches to a different installation path for command
+- _-P_ switches to a different installation path for base command
   plugins, which is located at $prefix/libexec by default.
 
 - _-V_ displays the version information then exits. The information is
@@ -31,7 +37,7 @@ evl [-V] [-P <cmddir>] [<command> [command-args]]
 
     where **\<serial\>** is the `libevl` serial release number, the
     **\<git-HEAD\>** information refers to the topmost GIT commit
-    which is present in the binary distribution the _evl_ command is
+    which is present in the binary distribution the 'evl' command is
     part of, and **\<revision\>** refers to the kernel ABI this binary
     distribution is compatible with. For instance:
 
@@ -45,13 +51,20 @@ The information following the double dash may be omitted if the built
 sources were not version-controlled by GIT.
 {{% /notice %}}
 
-Without any argument, the _evl_ utility displays this general help,
-along with a short help string for each of the supported (sub)commands
-found in **\<cmddir\>**, such as:
+- given only _-h_ or without any argument, 'evl' displays this general
+help, along with a short help string for each of the supported
+commands found in **\<cmddir\>**, such as:
 
 ```
 ~ # evl
-evl [-V] [-P <cmddir>] [<command> [command-args]], with <command> in:
+usage: evl [options] [<command> [<args>]]
+-P --prefix=<path>   set command path prefix
+-V --version         print library and required ABI versions
+-h --help            this help
+
+available commands:
+
+gdb          debug EVL command plugin with GDB
 ps           report a snapshot of the current EVL threads
 test         run EVL tests
 trace        ftrace control front-end for EVL
@@ -353,16 +366,35 @@ of the series.
 
 ### Implementing your own EVL commands {#evl-add-plugin}
 
-You can implement your own command plugins, then install them into the
-$prefix/libexec directory so that the _evl_ utility can find
-them. This utility sets a few environment variables before calling any
-plugin. Your plugin code can retrieve them using
+You can implement your own 'evl' command plugins, which may be located
+anywhere provided it is reachable from the shell PATH variable with
+the proper execute permission bit set. EVL comes with a set of base
+plugins available from $prefix/libexec (*).  The latter directory is
+implicitly searched for the command _after_ the PATH variable was
+considered, which means that you may override any base command with
+your own implementation whenever you see fit.
+
+> Crash course: adding the 'foo' command script to ~/tools
+```
+$ mkdir ~/tools
+$ cat > ~/tools/evl-foo
+#! /bin/sh
+echo "this is your 'evl foo' command"
+^D
+$ chmod +x ~/tools/evl-foo
+$ export PATH=$PATH:~/tools
+$ evl foo
+this is your 'evl foo' command
+```
+
+In addition, 'evl' sets a few environment variables before calling a
+plugin. Your plugin executable/script can retrieve them using
 [getenv(3)](http://man7.org/linux/man-pages/man3/getenv.3.html) from a
 C program, or directly dereference those variables from a shell:
 
 | Variable | Description | Default value |
 | -------- | ----------- | ------------- |
-| EVL_CMDDIR | Where to find the plugins | $prefix/libexec (*) |
+| EVL_CMDDIR | Where to find the base plugins | $prefix/libexec |
 | EVL_TESTDIR | Where to find the tests | $prefix/tests |
 | EVL_SYSDIR | root of the /sysfs hierarchy for EVL devices | /sys/devices/virtual |
 | EVL_TRACEDIR | root of ftrace hierarchy | /sys/kernel/debug/tracing |

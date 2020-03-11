@@ -71,7 +71,7 @@ revision.
   evl.0 -- #1c6115c (2020-03-06 16:24:00 +0100) [requires ABI 19]
   ```
 
-#### Locating ABI boundaries and prereqs
+#### Locating ABI boundaries and prereqs {git-evlabi}
 
 When developing (with) the EVL core, it may sometimes be useful to
 find which code changes in the GIT commit history correspond to ABI
