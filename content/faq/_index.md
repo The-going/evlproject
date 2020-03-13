@@ -1,7 +1,7 @@
 ---
 title: "FAQ"
 weight: 25
-pre: "&#9656; "
+pre: "&#8226; "
 draft: true
 ---
 

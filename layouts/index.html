@@ -1,0 +1,20 @@
+<!-- This is the layout of the home page -->
+{{ partial "header.html" . }}
+<span id="sidebar-toggle-span">
+<a href="#" id="sidebar-toggle" data-sidebar-toggle=""><i class="fas fa-bars"></i> navigation</a>
+</span>
+<style>
+  body {
+    background-image: url('/images/homebgnd.png');
+  }
+</style>
+<script>
+(function($){
+  $(document).on('contextmenu', 'img', function() {
+      return false;
+  })
+})(jQuery);
+</script>
+{{ $headless := .Site.GetPage "/homepage" }}
+{{ $headless.Content }}
+{{ partial "footer.html" . }}

@@ -2,26 +2,26 @@
     
     --MAIN-TEXT-color:#323232; /* Color of text by default */
     --MAIN-TITLES-TEXT-color: #5e5e5e; /* Color of titles h2-h3-h4-h5 */
-    --MAIN-LINK-color:#cd853f; /* Color of links */
-    --MAIN-LINK-HOVER-color:#ffbf00; /* Color of hovered links */
+    --MAIN-LINK-color:#0082ed; /* Color of links */
+    --MAIN-LINK-HOVER-color:#0082ed; /* Color of hovered links */
     --MAIN-ANCHOR-color: #eeeeee; /* color of anchors on titles */
 
-    --MENU-HEADER-BG-color:#e0e0e0; /* Background color of menu header */
-    --MENU-HEADER-BORDER-color:#e0e0e0; /*Color of menu header border */ 
+    --MENU-HEADER-BG-color:#0084ba; /* Background color of menu header */
+    --MENU-HEADER-BORDER-color:#0084ba; /*Color of menu header border */ 
 
-    --MENU-SEARCH-BG-color:#bdbdbd; /* Search field background color (by default borders + icons) */
-    --MENU-SEARCH-BOX-color: #bdbdbd; /* Override search field border color */
-    --MENU-SEARCH-BOX-ICONS-color: #424242; /* Override search field icons color */
+    --MENU-SEARCH-BG-color:#f0f0f0; /* Search field background color (by default borders + icons) */
+    --MENU-SEARCH-BOX-color: #f0f0f0; /* Override search field border color */
+    --MENU-SEARCH-BOX-ICONS-color: #0084ba; /* Override search field icons color */
 
-    --MENU-SECTIONS-ACTIVE-BG-color:#731b26; /* Background color of the active section and its childs */
-    --MENU-SECTIONS-BG-color:#731b26; /* Background color of other sections */
-    --MENU-SECTIONS-LINK-color: #fff; /* Color of links in menu */
-    --MENU-SECTIONS-LINK-HOVER-color: #c9a767;  /* Color of links in menu, when hovered */
-    --MENU-SECTION-ACTIVE-CATEGORY-color: #777; /* Color of active category text */
-    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #fafafa; /* Color of background for the active category (only) */
+    --MENU-SECTIONS-ACTIVE-BG-color:#0084ba; /* Background color of the active section and its childs */
+    --MENU-SECTIONS-BG-color:#0084ba; /* Background color of other sections */
+    --MENU-SECTIONS-LINK-color: #fafafa; /* Color of links in menu */
+    --MENU-SECTIONS-LINK-HOVER-color: #00d0d6;  /* Color of links in menu, when hovered */
+    --MENU-SECTION-ACTIVE-CATEGORY-color: #0084ba; /* Color of active category text */
+    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #ffffff; /* Color of background for the active category (only) */
 
-    --MENU-VISITED-color: #e0e0e0; /* Color of 'page visited' icons in menu */
-    --MENU-SECTION-HR-color: #c9a767; /* Color of <hr> separator in menu */
+    --MENU-VISITED-color: #0084ba; /* Color of 'page visited' icons in menu */
+    --MENU-SECTION-HR-color: #004fd0; /* Color of <hr> separator in menu */
     
 }
 
@@ -102,31 +102,23 @@ a:hover {
 }
 
 div.notices.warning p {
-    border-top: 30px solid #c82605;
-    background: #f5f5f5;
+    border-top: 30px solid #004fd0;
+    background: #f7f7f7;
 }
 
 div.notices.note p {
-    border-top: 30px solid #731b26;
-    background: #f5f5f5;
+    border-top: 30px solid #00a5d0;
+    background: #f7f7f7;
 }
 
 div.notices.tip p {
-    border-top: 30px solid #731b26;
-    background: #f5f5f5;
+    border-top: 30px solid #00a5d0;
+    background: #f7f7f7;
 }
 
 div.notices.info p {
-    border-top: 30px solid #731b26;
-    background: #f5f5f5;
-}
-
-table.status {
-    text-align: center;
-}
-
-th, td {
-    text-align: center;
+    border-top: 30px solid #00a5d0;
+    background: #f7f7f7;
 }
 
 div.proto {
@@ -134,4 +126,71 @@ div.proto {
     font-weight: 500;
     font-family: "Consolas", menlo, monospace;
     font-size: 115%;
+}
+
+code {
+    border-radius: 2px;
+    white-space: nowrap;
+    color: #5e5e5e;
+    background: #ffffff;
+    border: 0px;
+    padding: 0px 2px;
+}
+
+.home-item1 {
+    grid-area: home_area;
+}
+
+.home-grid-container {
+  display: grid;
+  grid-template-areas: 'home_area home_area home_area';
+  grid-template-columns: auto auto auto;
+  grid-template-rows: 320px 120px auto;
+  grid-gap: 50px;
+  background-color: #0084ba;
+  padding: 0px;
+}
+
+.home-grid-container > div {
+  background-color: #0084ba;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 18px;
+}
+
+.mixed-grid-container {
+  display: grid;
+  grid-template-areas: 'mixed_area mixed_area';
+  grid-template-columns: 600px auto;
+  grid-gap: 0px;
+  padding: 0px;
+}
+
+.mixed-grid-container > div {
+  text-align: left;
+  padding: 0px 0;
+}
+
+.bigbutton {
+  background-color: #0084ba;
+  border: none;
+  color: #fff;
+  padding: 15px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 2px solid #fff;
+}
+
+.bigbutton:hover {
+  background-color: #00d2ed;
+  color: white;
+}
+
+.bigbutton:active {
+    transform: translateY(4px);
 }

@@ -1,8 +1,8 @@
 ---
 title: "Dovetail interface"
 date: 2018-06-26T19:28:38+02:00
-weight: 5
-pre: "&#9656; "
+weight: 10
+pre: "&#8226; "
 ---
 
 ## Introducing Dovetail {#dual-kernel-upsides}
@@ -13,24 +13,27 @@ way of supporting real-time applications in the embedded space over
 the years.
 
 This *dual kernel* design introduces a small real-time infrastructure
-into the Linux code, which immediately handles time-critical,
-out-of-band activities independently from the ongoing main kernel
-work. Application threads co-managed by this infrastructure still
-benefit from the common kernel services such as virtual memory
+into the Linux kernel, which immediately handles time-critical,
+out-of-band activities independently from the ongoing general purpose
+kernel work. Application threads co-managed by this infrastructure
+still benefit from the common kernel services such as virtual memory
 management; they can leverage the rich GPOS feature set Linux provides
 such as networking, data storage or GUIs too.
 
 There are significant upsides to keeping the real-time core separate
 from the GPOS infrastructure:
 
-- because the two kernels are independent, real-time activities are
-  not serialized with GPOS operations internally, removing potential
-  delays which might be induced by the non time-critical
-  work. Likewise, there is no requirement for keeping the GPOS
-  operations fine-grained and highly preemptible at any time, which
-  would otherwise induce noticeable overhead on low-end hardware, due
-  to the need for pervasive task priority inheritance and IRQ
-  threading.
+- because the autonomous core does not depend on the main kernel logic
+  for running time-critical operations, real-time activities are not
+  serialized with GPOS operations internally. This removes potential
+  delays induced by the latter, by construction. As a result, there is
+  no need for keeping all GPOS operations fine-grained and highly
+  preemptible at any time, which may otherwise induce noticeable
+  overhead as task priority inheritance and IRQ threading have to
+  apply system-wide, affecting all tasks including those which have
+  zero real-time requirement. To sum up, the lesser the effort for the
+  kernel to maintain real-time guarantees internally, the more CPU
+  bandwidth is available to applications.
 
 - when debugging a real-time issue, the functional isolation of the
   real-time infrastructure from the rest of the kernel code restricts
@@ -53,13 +56,13 @@ from the GPOS infrastructure:
   limitation.
 
 This documentation presents _Dovetail_, a kernel interface which
-defines a new execution stage in the mainline kernel logic.  At any
-time, out-of-band activities running on this stage can preempt the
-common work. A task-specific software core - such as a real-time core
-- can connect to this interface for gaining bounded response time to
-external interrupts and ultra-low latency scheduling
-capabilities. This translates into the Dovetail implementation as
-follows:
+introduces a high-priority execution stage into the main kernel logic.
+At any time, out-of-band activities running on this stage can preempt
+the common work. A task-specific software core - such as a [real-time
+core]({{< relref "core/_index.md" >}}) - can connect to this interface
+for gaining bounded response time to external interrupts and ultra-low
+latency scheduling capabilities. This translates into the Dovetail
+implementation as follows:
 
 - the interrupt pipeline which creates a high-priority execution stage
 for an autonomous software core to run on.
@@ -86,25 +89,53 @@ component instead, such as the [EVL core]({{% relref "core/_index.md" %}}).
 
 ## Why do we need this?
 
-Dovetail is the successor to the *I-pipe*, the interrupt pipeline
-implementation [Xenomai's Cobalt](https://xenomai.org/gitlab/xenomai/)
-real-time core currently relies on. The rationale behind this effort
-is about securing the maintenance of this key component of dual kernel
-systems such as [Xenomai](https://xenomai.org), so that they could be
-maintained with common kernel development knowledge, at a fraction of
-the engineering and maintenance cost native preemption requires. For
-several reasons, the
-[I-pipe](https://gitlab.denx.de/Xenomai/xenomai/wikis/Dovetail/) does
-not qualify.
-
-Maintaining the I-pipe proved to be difficult over the years as
-changes to the mainline kernel regularly caused non-trivial code
-conflicts, sometimes nasty regressions to us downstream. Although the
+Linux-based dual kernel systems require some interface layer to couple
+the secondary core (typically a real-time capable one like the [EVL
+core]({{< relref "core/_index.md" >}})) to the logic of the kernel it
+is embedded in, so as to benefit from the rich Linux feature set while
+running dedicated applications with stringent real-time
+requirements. The archetypical implementation of such kind of
+interface is the
+[I-pipe](https://gitlab.denx.de/Xenomai/xenomai/wikis/home), which
+served both [RTAI](http://rtai.org) and
+[Xenomai](https://xenomai.org/) over the years. For several reasons
+explained [in this
+document](https://gitlab.denx.de/Xenomai/xenomai/wikis/Dovetail/),
+maintaining the I-pipe proved to be difficult as changes to the
+mainline kernel regularly caused non-trivial code conflicts, sometimes
+nasty regressions to the I-pipe maintainers downstream. Although the
 concept of interrupt pipelining proved to be correct in delivering
 short response time with reasonably limited changes to the original
-kernel, the way this mechanism is currently integrated into the
-mainline code shows its age, as explained in [this document]
-(https://gitlab.denx.de/Xenomai/xenomai/wikis/Dovetail/).
+kernel, the way this mechanism is integrated into the mainline code
+shows its age.
+
+Dovetail is the successor to the **I-pipe**, with the following goals:
+
+- introduce a [high-priority execution stage]({{< relref
+  "dovetail/pipeline/_index.md#two-stage-pipeline" >}}) for
+  time-critical operations into the kernel logic, enabling all device
+  interrupts to behave like NMIs from the standpoint of the kernel.
+
+- provide a straightforward interface to autonomous cores for running
+  Linux tasks on this high-priority execution stage when they have to,
+  enabling ultra-fine grained preemption of all other kernel
+  activities in such an event.
+
+- enable the common Linux programming model for applications which
+  should be controlled by the autonomous core for delivering ultra-low
+  latency services (private user address space, multi-threading, SMP
+  capabilities, system calls etc).
+
+- make it possible to maintain Dovetail (and ultimately the [EVL
+  core]({{< relref "core/_index.md" >}}) which is based on it) with
+  common kernel development knowledge, at a fraction of the
+  engineering and maintenance cost native preemption requires.
+  Typically, Dovetail always favors extending existing kernel
+  subsystems with the ability to deal with the new execution stage,
+  instead of taking sideways steps. For instance, the [interrupt
+  pipeline logic]({{< relref "dovetail/pipeline/irq_handling.md" >}})
+  is directly integrated into the [generic IRQ
+  layer](https://www.kernel.org/doc/html/latest/core-api/genericirq.html).
 
 ## Developing Dovetail {#developing-dovetail}
 

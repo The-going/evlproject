@@ -1,7 +1,7 @@
 ---
 title: "Writing drivers"
-weight: 15
-pre: "&rsaquo; "
+weight: 10
+pre: "&#9702; "
 ---
 
 ## What is an EVL driver? {#evl-driver-definition}

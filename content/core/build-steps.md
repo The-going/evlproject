@@ -3,16 +3,51 @@ title: "Building EVL"
 weight: 1
 ---
 
-Building EVL is a two-step process, which may happen in any order:
+## Building EVL from source
 
-- a Linux kernel image featuring the EVL core is built.
+{{% mixedgrid src="/images/overview-build-process.png" %}}
 
-- the EVL library (aka _libevl_), basic utilities and test programs
-  are generated.
+**The build process.** Building EVL from the source code is a two-step
+process: we need to build a kernel enabling the EVL core, and the
+library implementing the user API to this core - aka [libevl]({{<
+relref "core/user-api/_index.md" >}}) - using the proper
+toolchain. These steps may happen in any order. The output of this
+process is:
 
-## Prerequisites {#building-evl-prereq}
+- a Linux kernel image featuring [Dovetail]({{< relref
+  "dovetail/_index.md" >}}) and the [EVL core]({{< relref
+  "core/_index.md" >}}) on top of it.
 
-We need:
+- the `libevl.so` shared library<sup>*</sup> which enables
+  applications to request services from the EVL core, along with a few
+  [basic utilities]({{< relref "core/commands.md" >}}) and [test
+  programs]({{< relref "core/testing.md" >}}).
+
+  <sup>*</sup> The static archive `libevl.a` is generated as well.
+ 
+{{% /mixedgrid %}}
+
+### Getting the sources
+
+EVL sources are maintained in two separate [GIT](https://git-scm.com)
+repositories. As a preliminary step, you may want to have a look at
+the [EVL development process]({{< relref "devprocess.md" >}}), in
+order to determine which GIT branches you may be interested in these
+repositories:
+
+- The kernel tree featuring the EVL core:
+
+  * git://git.evlproject.org/linux-evl.git
+  * https://git.evlproject.org/linux-evl.git
+
+- The libevl tree which provides the user interface to the core:
+
+  * git://git.evlproject.org/libevl.git
+  * https://git.evlproject.org/libevl.git
+
+### Other prerequisites {#building-evl-prereq}
+
+In addition to the source code, we need:
 
 - a GCC toolchain for the target CPU architecture.
 
@@ -27,14 +62,10 @@ We need:
 
 {{% notice warning %}}
 libevl relies on thread-local storage support (TLS), which might be
-broken in some obsolete toolchains.
+broken in some obsolete (ARM) toolchains. Make sure to use a current one.
 {{% /notice %}}
 
-## Building the core {#building-evl-core}
-
-The kernel source tree which includes the latest EVL core is
-maintained at git://git.evlproject.org/linux-evl. The development
-branch is _evl/master_.
+### Building the core {#building-evl-core}
 
 Once your favorite kernel configuration tool is brought up, you should
 see the EVL configuration block somewhere inside the **General setup**
@@ -61,9 +92,7 @@ list](https://evlproject.org/mailman/listinfo/evl/) with the relevant
 information.
 {{% /notice %}}
 
-## Building libevl {#building-libevl}
-
-### Build command
+### Building libevl {#building-libevl}
 
 The generic command for building libevl is:
 
@@ -95,8 +124,6 @@ $ make [-C $SRCDIR] [ARCH=$cpu_arch] [CROSS_COMPILE=$toolchain] UAPI=$uapi_dir [
 | all     |     generate all binaries (library, utilities and tests)
 | clean   |     remove the build files
 | install |     do all, copying the generated binaries to $DESTDIR in the process
-
-### Examples
 
 #### Cross-compiling EVL
 
@@ -160,7 +187,7 @@ $ cd ~/git/libevl
 $ make O=/tmp/build-native UAPI=~/git/linux-evl DESTDIR=/usr/evl install
 ```
 
-## Testing the installation
+### Testing the installation
 
 At this point, you really want to [test the EVL installation]({{<
 relref "core/testing.md" >}}).

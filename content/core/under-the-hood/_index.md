@@ -1,8 +1,8 @@
 ---
 menuTitle: "Under the hood"
 title: "Under the hood"
-weight: 7
-pre: "&rsaquo; "
+weight: 15
+pre: "&#9702; "
 ---
 
 This (work-in-progress) section will help you navigate the design and

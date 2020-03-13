@@ -2,7 +2,7 @@
 menuTitle: "Ports"
 title: "Status of EVL ports"
 weight: 20
-pre: "&#9656; "
+pre: "&#8226; "
 ---
 
 {{% notice info %}}
@@ -46,11 +46,21 @@ please drop me a note at <rpm@xenomai.org>.
 
 > Current target kernel release
 
-Linux 5.6-rc5
+Linux {{< param evlTrackingKernel >}}
 
 > ARM64 SoC
 
-<table class="status" style="width:50%">
+<div>
+<style>
+#ports {
+       width: 70%;
+}
+#ports td {
+       text-align: center;
+}
+</style>
+
+<table id="ports">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -71,7 +81,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.1-rc3</td>
+    <td>v5.1-rc3</td>
   </tr>
   <tr>
     <td><a href="https://developer.qualcomm.com/hardware/dragonboard-410c" target="_blank">Qualcomm DragonBoard 410c</a></td>
@@ -79,7 +89,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.0</td>
+    <td>v5.0</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">Broadcom BCM2837 (Raspberry 3 Model B)</a></td>
@@ -87,7 +97,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc5</td>
+    <td>v5.6-rc6</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank">Broadcom BCM2711 (Raspberry PI 4 Model B)</a></td>
@@ -95,7 +105,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc2</td>
+    <td>v5.6-rc2</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
@@ -103,7 +113,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc7</td>
+    <td>v5.5-rc7</td>
   </tr>
   <tr>
     <td><a href="https://www.xilinx.com/support/documentation/boards_and_kits/zcu102/ug1182-zcu102-eval-bd.pdf" target="_blank">Xilinx Zynq UltraScale+ (ZCU102)</a></td>
@@ -111,7 +121,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2</td>
+    <td>v5.2</td>
   </tr>
   <tr>
     <td><a href="https://www.variscite.com/product/system-on-module-som/cortex-a53-krait/dart-mx8m-mini-nxp-i-mx8m-mini/" target="_blank">NXP i.MX8M Mini (Variscite DART-MX8M-MINI)</a></td>
@@ -119,7 +129,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2 <sup>*</sup></td>
+    <td>v5.2.9 <sup>*</sup></td>
   </tr>
   <tr>
     <td><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">QEMU virt</a></td>
@@ -127,7 +137,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc5</td>
+    <td>v5.6-rc6</td>
   </tr>
 </table>
 
@@ -135,7 +145,7 @@ Linux 5.6-rc5
 
 > ARM SoC
 
-<table class="status" style="width:50%">
+<table id="ports">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -156,7 +166,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2</td>
+    <td>v5.2</td>
   </tr>
   <tr>
     <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">NXP i.MX6qp (SabreSD)</a></td>
@@ -164,7 +174,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc5</td>
+    <td>v5.6-rc6</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
@@ -172,7 +182,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.1-rc3</td>
+    <td>v5.1-rc3</td>
   </tr>
   <tr>
     <td><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">Altera Cyclone V SoC FPGA (DevKit)</a></td>
@@ -180,7 +190,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc2</td>
+    <td>v5.6-rc2</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">STMicro Cannes2-STiH410 (B2260)</a></td>
@@ -188,7 +198,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.2-rc7</td>
+    <td>v5.2-rc7</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">Broadcom BCM2636 (Raspberry PI 2 Model B)</a></td>
@@ -196,7 +206,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5</td>
+    <td>v5.5</td>
   </tr>
   <tr>
     <td><a href="http://nanopi.io/nanopi-neo.html/" target="_blank">AllWinner H3 (NanoPI NEO)</a></td>
@@ -204,12 +214,13 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5-rc2</td>
+    <td>v5.5-rc2</td>
   </tr>
 </table>
 
 > X86_64
-<table class="status" style="width:50%">
+
+<table id="ports">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -230,7 +241,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc5</td>
+    <td>v5.6-rc6</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
@@ -238,7 +249,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc2</td>
+    <td>v5.6-rc2</td>
   </tr>
   <tr>
     <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 core i7 quad (DFI SD631)</a></td>
@@ -246,7 +257,7 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.6-rc2</td>
+    <td>v5.6-rc2</td>
   </tr>
   <tr>
     <td><a href="https://ark.intel.com/content/www/us/en/ark/products/34687/intel-desktop-board-dq45cb.html" target="_blank">Intel Desktop Board DQ45CB</a></td>
@@ -254,9 +265,10 @@ Linux 5.6-rc5
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>5.5</td>
+    <td>v5.5</td>
   </tr>
 </table>
+</div>
 
 <br>
 

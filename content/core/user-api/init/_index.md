@@ -1,6 +1,6 @@
 ---
 menuTitle: "Initialization"
-weight: 1
+weight: 3
 ---
 
 ### Initializing `libevl` {#init-libevl}

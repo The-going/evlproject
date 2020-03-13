@@ -4,7 +4,7 @@ title: "Runtime configuration"
 weight: 3
 ---
 
-### Calibrating the core timer
+### Calibrating the core timer {#calibrate-core-timer}
 
 When enabled in the kernel, EVL transparently controls the hardware
 timer chip via a [proxy device]({{< relref "dovetail/porting/timer.md"
@@ -38,7 +38,7 @@ amount of time by which every timer shot should be anticipated from,
 depending on the target context it should activate, either IRQ
 handler, kernel or user thread.
 
-When started with the _-t_ option, `latmus` runs a series of tests for
+When started with the `-t` option, `latmus` runs a series of tests for
 determining those best calibration values for the EVL core timer, then
 tells the core to use them.
 
@@ -56,8 +56,8 @@ user gravity...6500 ns
 
 You might want to restrict the calibration process to specific
 context(s), in which case you should pass the corresponding context
-modifiers to the `latmus` command, such as _-u_ for user-space and
-_-i_ for IRQ latency respectively:
+modifiers to the `latmus` command, such as `-u` for user-space and
+`-i` for IRQ latency respectively:
 
 > Context-specific calibration
 ```

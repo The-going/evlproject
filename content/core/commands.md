@@ -26,10 +26,10 @@ evl [-V] [-P <cmddir>] [-h] [<command> [command-args]]
   **test**         for running the EVL test suite
   **trace**        which is a simple front-end to the _ftrace_ interface for EVL
 
-- _-P_ switches to a different installation path for base command
+- `-P` switches to a different installation path for base command
   plugins, which is located at $prefix/libexec by default.
 
-- _-V_ displays the version information then exits. The information is
+- `-V` displays the version information then exits. The information is
   extracted from the `libevl` library the EVL command depends on,
   displayed in the following format:
 
@@ -51,7 +51,7 @@ The information following the double dash may be omitted if the built
 sources were not version-controlled by GIT.
 {{% /notice %}}
 
-- given only _-h_ or without any argument, 'evl' displays this general
+- given only `-h` or without any argument, 'evl' displays this general
 help, along with a short help string for each of the supported
 commands found in **\<cmddir\>**, such as:
 
@@ -181,7 +181,7 @@ each displayed thread:
 The command options allow to select which threads and which data
 should be displayed:
 
-- the _-c_ option filters the output on the CPU the threads are
+- the `-c` option filters the output on the CPU the threads are
   pinned on. The argument is a comma-separated list of CPU
   numbers. Ranges are also supported via the usual dash separator. For
   instance, the following command would report threads pinned on CPU0,
@@ -191,24 +191,24 @@ should be displayed:
 $ evl ps -c 0,3-15
 ```
 
-- _-s_ includes information about the thread state, which is ISW,
+- `-s` includes information about the thread state, which is ISW,
   CTXSW, SYS, RWA and STAT.
 
-- _-t_ includes the thread times, which are TIMEOUT, CPU% and CPUTIME.
+- `-t` includes the thread times, which are TIMEOUT, CPU% and CPUTIME.
 
-- _-p_ includes the scheduling policy information, which is SCHED and
+- `-p` includes the scheduling policy information, which is SCHED and
   PRIO.
 
-- _-l_ enables the long output format, which is a combination of all
+- `-l` enables the long output format, which is a combination of all
   information groups.
 
-- _-n_ selects a numeric output for the **STAT** field, instead of the
+- `-n` selects a numeric output for the **STAT** field, instead of the
   one-letter flags. This actually dumps the 32-bit value representing
   all aspects of a thread status in the EVL core, which contains more
   information than reported by the abbreviated format. EVL hackers
   want that.
 
-- _-S_ sorts the output according to a given sort key in increasing
+- `-S` sorts the output according to a given sort key in increasing
   order. The following sort keys are understood:
 
   * 'c' sorts by **CPU** values
@@ -245,7 +245,7 @@ CPU   PID   TIMEOUT      %CPU   CPUTIME     NAME
  14   2310     -           0.0  00:000.005  rtus6-7:2069
 ```
 
-- _-h_ displays the command help string.
+- `-h` displays the command help string.
 
 ### Controlling the kernel tracer (trace) {#evl-trace-command}
 
@@ -274,32 +274,32 @@ evl trace [-e [-s <buffer_size>]]
 The command options allow for a straightforward use of the function
 tracer:
 
-- _-e_ enables the tracer in the kernel. From this point, FTRACE
+- `-e` enables the tracer in the kernel. From this point, FTRACE
   starts logging information about a set of kernel functions which may
   be traversed while the system executes. By default, this switch only
   enables tracing for out-of-band IRQ events, CPU idling events, and
   all (in-kernel) EVL core routines. If a particular CPU is mentioned
-  with _-c_ along with _-e_, then per-CPU tracing is enabled for
+  with `-c` along with `-e`, then per-CPU tracing is enabled for
   \<cpu\>.
 
-- if _-f_ is mentioned, all kernel functions traversed in the course
+- if `-f` is mentioned, all kernel functions traversed in the course
   of execution are logged, not only the minimal subset enabled by
-  default by _-e_. CAUTION: enabling full tracing may cause a massive
+  default by `-e`. CAUTION: enabling full tracing may cause a massive
   overhead.
 
-- _-s_ changes the size of the FTRACE buffer on each tracing CPU to
-  \<buffer_size\>. If a particular CPU is mentioned with _-c_ along with
-  _-s_, then the change is applied to the snapshot buffer of \<cpu\>
+- `-s` changes the size of the FTRACE buffer on each tracing CPU to
+  \<buffer_size\>. If a particular CPU is mentioned with `-c` along with
+  `-s`, then the change is applied to the snapshot buffer of \<cpu\>
   only.
 
-- _-d_ fully disables the tracer which stops logging events on all
+- `-d` fully disables the tracer which stops logging events on all
   CPUs.
 
-- _-p_ prints out the contents of the trace buffer. If a particular
-  CPU is mentioned with _-c_ along with _-p_, then only the snapshot
+- `-p` prints out the contents of the trace buffer. If a particular
+  CPU is mentioned with `-c` along with `-p`, then only the snapshot
   buffer of \<cpu\> is dumped.
 
-- _-h_ displays the command help string.
+- `-h` displays the command help string.
 
 For instance, the following command starts tracing all kernel
 routines:
@@ -340,7 +340,7 @@ monitor-pi: OK
 ```
 
 You may ask for listing the available tests instead of executing them,
-by using the _-l_ switch:
+by using the `-l` switch:
 
 ```
 $ evl test -l
@@ -361,7 +361,7 @@ $ evl test -L proxy-pipe mapfd
 ```
 
 If some test goes wrong, the command normally stops
-immediately. Passing _-k_ would allow it to keep going until the end
+immediately. Passing `-k` would allow it to keep going until the end
 of the series.
 
 ### Implementing your own EVL commands {#evl-add-plugin}
@@ -399,7 +399,7 @@ C program, or directly dereference those variables from a shell:
 | EVL_SYSDIR | root of the /sysfs hierarchy for EVL devices | /sys/devices/virtual |
 | EVL_TRACEDIR | root of ftrace hierarchy | /sys/kernel/debug/tracing |
 
-(*) may be overriden using the _-P_ option.
+(*) may be overriden using the `-P` option.
 
 ---
 

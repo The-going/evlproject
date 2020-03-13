@@ -355,7 +355,7 @@ in-band following this sequence of actions:
    * the handler is guaranteed to run on the CPU from which the
      request was issued. Because the in-band work will wait until the
      out-of-band activity quiesces on that CPU, this in turn ensures
-     that all other operations we have to carry out from the
+     all other operations we have to carry out from the
      out-of-band stage for preparing the migration are done before the
      task is woken up eventually.
 
@@ -713,7 +713,7 @@ In the flowchart above, [handle_pipelined_syscall()]({{< relref
 "#handle_pipelined_syscall" >}}) should return zero if it wants
 Dovetail to propagate an unhandled system call down the pipeline at
 each of the two possible steps, non-zero if the request was
-handled. Branching to the in-band user mode exit code ensures that any
+handled. Branching to the in-band user mode exit code ensures any
 pending (in-band) signal is delivered to the current task and
 rescheduling opportunities are taken when (in-band) kernel preemption
 is enabled.

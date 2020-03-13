@@ -2,32 +2,95 @@
 title: "The EVL core"
 menuTitle: "Real-time core"
 date: 2019-02-16T16:10:44+01:00
-weight: 10
-pre: "&#9656; "
+weight: 5
+pre: "&#8226; "
 ---
+
+## Pitching the real-time EVL core
+
+For certain types of applications, offloading a particular set of
+time-critical tasks to an autonomous software core embedded into the
+Linux kernel may deliver the best performance at the lowest
+engineering and runtime costs in comparison to imposing real-time
+behavior on the whole kernel logic in order to meet the deadlines
+which only those tasks have, like the [native
+preemption](https://wiki.linuxfoundation.org/realtime/rtl/blog) model
+requires.
+
+In a nutshell, the EVL project is about introducing a simple, scalable
+and dependable dual kernel architecture for Linux, based on the
+[Dovetail interface]({{% relref "dovetail/_index.md" %}}) for coupling
+a high-priority software core to the main kernel. This interface is
+showcased by a real-time core delivering basic services to
+applications via a [straightforward API]({{% relref
+"core/user-api/_index.md" %}}). The EVL core is an ongoing development
+toward a production-ready real-time infrastructure, which can also be a
+starting point for other flavours of dedicated software core embedded
+into the Linux kernel. This work is composed of:
+
+- the [Dovetail]({{% relref "dovetail/_index.md" %}}) interface, which
+  introduces a high-priority execution stage into the main kernel
+  logic, where a functionally-independent software core runs.
+
+- the EVL core which delivers dependable low-latency services to
+  applications which have to meet real-time requirements. Applications
+  are developed using the common Linux programming model.
+
+- an in-depth documentation which covers both Dovetail and the EVL
+  core, with many cross-references between them, so that engineers can
+  use the EVL core to support a real-time application, improve it, or
+  even implement their own software core of choice on top of Dovetail
+  almost by example.
+
+What we are looking for:
+
+- Low engineering and maintenance costs. Working on EVL should only
+  require common kernel development knowledge, and the code footprint
+  and complexity must remain tractable for small development teams
+  (currently about 20 KLOC, which is not even half the size of the
+  [Xenomai](https://xenomai.org/) core).
+
+- Low runtime cost. Reliable, ultra low and bounded response time for
+  the real-time workload including on low-end, single-core hardware
+  with minimum overhead, leaving plenty of CPU cycles for running the
+  general purpose workload concurrently.
+
+- High scalability. From single core to high-end multi-core machines
+  running real-time workloads in parallel with low and bounded
+  latency. Running these workloads on [isolated CPUs]({{< relref
+  "core/caveat.md#isolcpus" >}}) significantly improves the
+  [worst-case latency figure]({{< relref
+  "core/benchmarks/_index.md#stress-load" >}}) in SMP configurations,
+  but if your fixture only has one of them, the EVL core should still
+  be able to deliver on ultra low and bounded latency.
+
+- Low configuration. We want very few to no runtime tweaks at all to
+  be required to ensure the real-time workload is not affected by the
+  regular, general purpose workload. Once enabled in the kernel, the
+  EVL core should be ready to deliver.
 
 ## Make it ordinary, make it simple
 
-The EVL core is an autonomous software core which is hosted by the
-kernel, delivering real-time services to applications having to meet
-stringent timing requirements. This small core is built like any
-ordinary feature of the Linux kernel, not as a foreign extension
-slapped on top of it.  [Dovetail]({{% relref "dovetail/_index.md" %}})
-plays an important part here, as it hides the nitty-gritty details of
-embedding a companion core into the kernel. Its fairly low code
-footprint and limited complexity makes it a good choice as a
-plug-and-forget real-time infrastructure, which can also be used as a
-starting point for custom core implementations:
+The EVL core is a dedicated software core which is embedded into the
+kernel, delivering real-time services to applications with stringent
+timing requirements. This small core is built like any ordinary
+feature of the Linux kernel, not as a foreign extension slapped on top
+of it.  [Dovetail]({{% relref "dovetail/_index.md" %}}) plays an
+important part here, as it hides the nitty-gritty details of embedding
+a companion core into the kernel. Its fairly low code footprint and
+limited complexity makes it a good choice as a plug-and-forget
+real-time infrastructure, which can also be used as a starting point
+for custom core implementations:
 
 ![Alt text](/images/kloc-core.png "EVL kernel code footprint")
 
 The user-space interface to this core is the [EVL library]({{% relref
 "core/user-api/_index.md" %}}) (`libevl.so`), which implements the
 basic system call wrappers, along with the fundamental thread
-synchronization services. No bells and whistles, only the basic
-stuff. The intent is to provide simple mechanisms, complex semantics
-and policies can and should be implemented in high level APIs based on
-this library running in userland.
+synchronization services. No bells and whistles, only the basics. The
+intent is to provide simple mechanisms, complex semantics and policies
+can and should be implemented in high level APIs based on this library
+running in userland.
 
 ![Alt text](/images/kloc-user.png "EVL user code footprint")
 
@@ -52,7 +115,7 @@ core defines five of them:
 
 - clock. We may find platform-specific clock devices in addition to
   the core ones defined by the architecture, for which ad hoc drivers
-  should be written. The clock element ensures that all clock drivers
+  should be written. The clock element ensures all clock drivers
   present the same interface to applications in user-space. In
   addition, this element can export individual software timers to
   applications which comes in handy for running periodic loops or
@@ -143,23 +206,6 @@ dedicated [kernel API]({{%relref "core/kernel-api/_index.md" %}}) for
 implementing real-time I/O operations in common character device
 drivers. In fact, the EVL core is composed of a set of such drivers,
 implementing each class of elements.
-
-## Developing the EVL core
-
-Just like Dovetail, developing the EVL core is customary Linux kernel
-development, with the addition of dual kernel specific background.
-
-The development tip of the EVL core is maintained in the
-_evl/master_ branch of the following GIT repository which tracks
-the [mainline
-kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
-
-  * git://git.evlproject.org/linux-evl.git
-  * https://git.evlproject.org/linux-evl.git
-
-This branch is routinely rebased over Dovetail's [dovetail/master]({{<
-relref "dovetail/_index.md#developing-dovetail" >}}) branch from the
-same repository.
 
 ---
 

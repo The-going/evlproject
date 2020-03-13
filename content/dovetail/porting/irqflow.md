@@ -287,8 +287,8 @@ This change reads as follows:
 
 ## Fixing up the IRQ chip drivers {#irqchip-fixup}
 
-We must make sure that the following handlers exported by `irqchip`
-drivers can operate over the out-of-band context safely:
+We must make sure the following handlers exported by `irqchip` drivers
+can operate over the out-of-band context safely:
 
 - `irq_mask()`
 - `irq_ack()`
@@ -297,7 +297,7 @@ drivers can operate over the out-of-band context safely:
 - `irq_unmask()`
 
 For so-called _device interrupts_, no change is required, because the
-_genirq_ layer ensures that a single CPU at most handles a given IRQ
+_genirq_ layer ensures a single CPU at most handles a given IRQ
 event by holding the per-descriptor `irq_desc::lock` spinlock across
 calls to those `irqchip` handlers, and such lock is automatically
 turned into a [mutable spinlock]({{%relref
@@ -403,12 +403,11 @@ target system is incomplete.
 
 ## Kernel preemption control (CONFIG_PREEMPT)
 
-When pipelining is enabled, Dovetail ensures that
-`preempt_schedule_irq()` reconciles the virtual interrupt state -
-which has not been touched by the assembly level code upon kernel
-entry - with basic assumptions made by the scheduler core, such as
-entering with interrupts virtually disabled (i.e. the in-band stage
-should be stalled).
+When pipelining is enabled, Dovetail ensures `preempt_schedule_irq()`
+reconciles the virtual interrupt state - which has not been touched by
+the assembly level code upon kernel entry - with basic assumptions
+made by the scheduler core, such as entering with interrupts virtually
+disabled (i.e. the in-band stage should be stalled).
 
 ---
 

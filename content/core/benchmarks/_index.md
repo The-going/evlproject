@@ -135,7 +135,7 @@ execution flow:
 When the test completes, the [latmus application]({{< relref
 "core/testing.md#latmus-program" >}}) determines the minimum, worst
 case and average latency values over the whole test duration. Upon
-request by passing the _-g_ option, the [latmus application]({{<
+request by passing the `-g` option, the [latmus application]({{<
 relref "core/testing.md#latmus-program" >}}) dumps an histogram
 showing the frequency distribution of the worst case figures which
 have been observed over time. The output format can be parsed by
@@ -149,7 +149,7 @@ to be loaded into the kernel for the SUT. Therefore
 `CONFIG_EVL_LATMUS` should be enabled in the kernel
 configuration. From the command line, the entire test is controlled by
 the [latmus application]({{< relref "core/testing.md#latmus-program"
->}}) using the _-m_ option, which can be omitted since measuring the
+>}}) using the `-m` option, which can be omitted since measuring the
 response time to timer events is the default test.
 
 > Measuring the response time to timer events
@@ -280,9 +280,10 @@ option]({{< relref "core/testing.md" >}}) may be a good idea.
 
 - _\# vDSO access: architected_
 
-    The type of access the application had to the [kernel clock
-    source]({{< relref "dovetail/porting/clocksource.md" >}}) via the
-    vDSO. The following values are defined:
+    Since kernel v5.5, the core reports the type of access the EVL
+    applications have to the [clock source]({{< relref
+    "dovetail/porting/clocksource.md" >}}) via the vDSO. The following
+    values are defined:
 
   - _architected_ denotes a fast (syscall-less) vDSO access to a
     built-in clock source defined by the architecture itself. This is
@@ -294,7 +295,7 @@ option]({{< relref "core/testing.md" >}}) may be a good idea.
     exported via Dovetail's generic access to MMIO-based devices. This
     is the second best case.
 
-  - _none_ denotes a not-so-fast access to a kernel clock source
+  - _none_ denotes a not-so-fast access to the kernel clock source
     without vDSO support, which is one of the possible [issues with
     legacy x86 hardware]({{< relref "core/caveat.md#x86-caveat" >}}).
     You could also have such value due to an incomplete port of
@@ -417,7 +418,7 @@ to configure according to the settings requested by the user, then
 enters a responder loop which listens to then acknowledges GPIO events
 to the latency monitor using two separate GPIO lines. The period is
 chosen by calling [latmus]({{< relref "core/testing.md#latmus-program"
->}}) using the _-p_ option (which defaults to 1 ms, i.e. 1 Khz
+>}}) using the `-p` option (which defaults to 1 ms, i.e. 1 Khz
 sampling loop). This setting and a few others are passed by
 [latmus]({{< relref "core/testing.md#latmus-program" >}}) to
 [latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
@@ -657,7 +658,7 @@ flashed in, we can run the benchmark tests on the system under test.
 
 This is done by running the [latmus application]({{< relref
 "core/testing.md#latmus-program" >}}) on the SUT, passing either of
-the _-Z_ or _-z_ option switch to select the [execution stage]({{<
+the `-Z` or `-z` option switch to select the [execution stage]({{<
 relref "dovetail/altsched/_index.md#altsched-theory" >}}), depending
 on whether we look for out-of-band response time figures (i.e. using
 EVL) or plain in-band response time figures (i.e. _without_ relying on
@@ -739,7 +740,7 @@ RTS|     38.075|     54.037|     96.108|       0|     0|    00:00:07/00:00:07
 
 - turn off all debug features and tracers in the kernel configuration.
 
-- ensure that all CPUs keep running at maximum frequency by enabling
+- ensure all CPUs keep running at maximum frequency by enabling
   the "performance" CPU_FREQ governor, or disabling CPU_FREQ entirely.
  
 - have a look at the [caveats here]({{< relref "core/caveat.md" >}}).

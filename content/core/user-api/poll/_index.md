@@ -18,9 +18,9 @@ files.
 
 To access the out-of-band polling services, an application first needs
 to obtain a file descriptor on a new _polling set_ by a call to
-({{%relref "#evl_new_poll" %}}). Such descriptor is an access point
-for registering other file descriptors to monitor, then [sensing
-events]({{% relref "#evl_poll" %}}) occurring on them.
+[evl_poll()]({{% relref "#evl_new_poll" %}}). Such descriptor is an
+access point for registering other file descriptors to monitor, then
+[sensing events]({{% relref "#evl_poll" %}}) occurring on them.
 [evl_poll()]({{% relref "#evl_poll" %}}) or [evl_timedpoll()]({{%
 relref "#evl_timedpoll" %}}) fill an array of structures indicating
 which events have been received on each notified file descriptor. The
@@ -39,7 +39,7 @@ monitor such as `POLLIN`, `POLLOUT`, `POLLRDNORM`, `POLLWRNORM` and so
 on. Which event can occur on a given file descriptor is defined by the
 out-of-band driver managing the file it refers to.
 
-<table class="status" style="width:20%">
+<table style="width:10%; text-align: center;">
   <tr>
     <th>Pollable elements</th>
   </tr>

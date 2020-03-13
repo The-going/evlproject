@@ -35,9 +35,9 @@ To this end, the following apply (since ABI revision #19):
   integer starting at 1, incremented by one after each revision.
 
 - the EVL core defines two symbols, namely
-  [EVL_ABI_BASE](https://git.evlproject.org/linux-evl.git/tree/include/uapi/evl/control.h?h=evl/next)
+  [EVL_ABI_BASE](https://git.evlproject.org/linux-evl.git/tree/include/uapi/evl/control.h?h=evl/master)
   and
-  [EVL_ABI_LEVEL](https://git.evlproject.org/linux-evl.git/tree/include/uapi/evl/control.h?h=evl/next),
+  [EVL_ABI_LEVEL](https://git.evlproject.org/linux-evl.git/tree/include/uapi/evl/control.h?h=evl/master),
   which represent the range of ABI revisions the core supports
   (inclusively), from oldest (EVL_ABI_BASE) to current (EVL_ABI_LEVEL)
   respectively. Differing values means that the EVL core honors
@@ -55,7 +55,7 @@ revision.
 
 - [libevl]({{< relref "core/user-api/_index.md" >}}) states the ABI
   revision it follows by defining the
-  [EVL_ABI_PREREQ](https://git.evlproject.org/libevl.git/tree/include/evl/evl.h?h=next)
+  [EVL_ABI_PREREQ](https://git.evlproject.org/libevl.git/tree/include/evl/evl.h?h=master)
   symbol. When [libevl initializes]({{< relref
   "core/user-api/init/_index.md" >}}), this prerequisite is checked
   against the range of ABI revisions the running EVL core
@@ -80,7 +80,7 @@ history of ABI prerequisites in [libevl]({{< relref
 "core/user-api/_index.md" >}}), so that you can map any particular
 point the commit history with the ABI revision it is compatible
 with. For this, you can use a simple script called
-[git-evlabi](https://git.evlproject.org/linux-evl.git/tree/scripts/git-evlabi?h=evl/next),
+[git-evlabi](https://git.evlproject.org/linux-evl.git/tree/scripts/git-evlabi?h=evl/master),
 which is available in the
 [linux-evl](https://git.evlproject.org/linux-evl.git) repository. You
 just need to make sure this script is executable and reachable from
@@ -124,7 +124,7 @@ The output is of the form:
 
 > e.g. asking for all EVL ABI revisions in the kernel tree
 ```
-{rpm@cobalt} cd ~/git/linux-evl && git evlabi evl/next
+{rpm@cobalt} cd ~/git/linux-evl && git evlabi evl/master
 4bc9b71134f0 96c899ef3a6c..bc7ca4ad0b5c  19  
 02ae0b8783cb 7f082bc5bef1..96c899ef3a6c  18  
 c2a51a7e68a7 56e217799766..7f082bc5bef1  17  

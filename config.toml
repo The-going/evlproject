@@ -2,7 +2,7 @@ baseURL = "https://evlproject.org/"
 languageCode = "en-US"
 title = "EVL project"
 theme = "hugo-theme-learn"
-copyright = "Copyright 2019 - The EVL project."
+copyright = "Copyright 2020 - The EVL project."
 enableGitInfo = true
 
 [params]
@@ -13,12 +13,28 @@ disableInlineCopyToClipBoard = true
 disableBreadcrumb = false
 themeVariant = "evl"
 disableShortcutsTitle = true
+evlTrackingKernel = "v5.6-rc6"
+evlLTSBranch = "evl/v5.4"
+evlLTSLatest = "v5.4.26-evl1"
+evlLibLatest = "r11"
 
 [[menu.shortcuts]]
-name = "<i class='fas fa-envelope'></i> Contact"
-identifier = "Contact"
-url = "mailto:Philippe Gerum <rpm@xenomai.org>"
-weight = 20
+name = "<i class='fas fa-home'></i> Home"
+identifier = "Home"
+url = "/"
+weight = 1
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-comments'></i> RIOT channel"
+identifier = "RIOT"
+url = "https://riot.im/app/#/room/#evlproject:matrix.org/"
+weight = 2
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-comment-dots'></i> Mailing list"
+identifier = "ML"
+url = "https://evlproject.org/mailman/listinfo/evl/"
+weight = 3
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]

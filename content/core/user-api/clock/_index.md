@@ -13,7 +13,7 @@ the architected timer found on ARM64 and some ARM-based SoCs. In this
 case, we would need a specific _clock driver_, binding the timer
 hardware to the EVL core.
 
-EVL's clock element ensures that all clock drivers present the same
+EVL's clock element ensures all clock drivers present the same
 interface to applications in user-space. In addition, the clock
 element can export individual software timers to applications which
 comes in handy for running periodic loops or waiting for oneshot

@@ -1,7 +1,7 @@
 ---
 title: "Porting Dovetail"
-pre: "&rsaquo; "
 weight: 80
+pre: "&#9702; "
 ---
 
 Porting the Dovetail interface to a different kernel release, or a

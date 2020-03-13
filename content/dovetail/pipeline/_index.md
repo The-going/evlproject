@@ -1,7 +1,7 @@
 ---
 title: "Interrupt pipeline"
 weight: 10
-pre: "&rsaquo; "
+pre: "&#9702; "
 ---
 
 The autonomous core has to act upon device interrupts with no delay,

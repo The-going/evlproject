@@ -2,24 +2,40 @@
 menuTitle: "Logbook"
 title: "The Evilian Chronicle"
 weight: 30
-pre: "&#9656; "
+pre: "&#8226; "
 ---
+
+### Week 11-12.2020
+
+Two weeks mostly spent working on the documentation, reorganizing the
+GIT tree in the same move to reflect the changes in the [development
+and release processes]({{< relref "/devprocess.md" >}}). As a result
+of these changes, EVL now tracks the latest LTS release from the
+[stable kernel
+tree](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git)
+(currently v5.4.y), in addition to the development tip of the
+[mainline
+kernel](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/). A
+new section about [getting started]({{< relref "/overview/_index.md"
+>}}) with EVL is available.
+
+We are now tracking kernel v5.6-rc6 and v5.4.26 LTS.
 
 ### Week 10.2020
 
 A week mostly spent working on the documentation, such as describing
-how Dovetail helps in tracking [file
-descriptors](https://evlproject.org/dovetail/files/) so that companion
-cores can implement their own file-based interface. In addition, more
-details were added to the description of the [alternate
-scheduling](https://evlproject.org/dovetail/files/)
-interface. Finally, the new [under the
-hood](https://evlproject.org/core/under-the-hood/) section was
+how Dovetail helps in tracking [file descriptors]({{< relref
+"/dovetail/files/_index.md" >}}) so that companion cores can implement
+their own file-based interface. In addition, more details were added
+to the description of the [alternate scheduling]({{< relref
+"/dovetail/altsched.md" >}}) interface. Finally, the new [under the
+hood]({{< relref "/core/under-the-hood/_index.md" >}}) section was
 started, which is intended to help anyone interested in or simply
 curious about the "other path to Linux real-time", whether it is
 useful for developing your own Linux-based dual kernel system,
-contributing to EVL, or educational purpose. EVL is now tracking
-kernel v5.6-rc4.
+contributing to EVL, or educational purpose.
+
+EVL is now tracking kernel v5.6-rc4.
 
 ### Week 9.2020
 
@@ -79,9 +95,9 @@ same process running in the background, as follows:
 - all sibling threads which have been frozen are set to wait on a
   common barrier before they can be released. Such release happens
   once all of them have joined the barrier in out-of-band context,
-  once the stepped thread resumes. This ensures that siblings resume
-  in an orderly (i.e. priority-based) manner from a common point in
-  the timeline, instead of staggered.
+  once the stepped thread resumes. This ensures siblings resume in an
+  orderly (i.e. priority-based) manner from a common point in the
+  timeline, instead of staggered.
 
 Although the implementation differs, this is inspired from the similar
 feature available with [Xenomai 3](https://xenomai.org).
@@ -136,7 +152,7 @@ device. We may allow the device to be reconfigured when the driver is
 not exchanging data with the codec in out-of-band mode and conversely,
 but we do not want both operations to happen concurrently inside the
 Alsa core. Because the application layer may not be able to ensure
-that such operations never overlap (e.g. playing an audio stream with
+such operations never overlap (e.g. playing an audio stream with
 `aplay` while changing the mixer settings from a different context
 using `amixer`), a kernel mechanism which helps in keeping the general
 logic safe is welcome.

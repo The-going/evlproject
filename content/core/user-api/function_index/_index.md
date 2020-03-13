@@ -1,13 +1,21 @@
 ---
-menuTitle: "Index"
-weight: 150
+menuTitle: "Function index"
+title: "libevl function index"
+weight: 1
 ---
 
-## Function index
+### Thread services
 
-#### Thread services
-
-<table class="status" style="width:50%">
+<div>
+<style>
+#usvctable {
+      width: 30%;
+}
+#usvctable td {
+      text-align: center;
+}
+</style>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -51,10 +59,12 @@ weight: 150
     <td>&#10005;</td> 
   </tr>
 </table>
+</div>
 
-#### Scheduler services
+### Scheduler services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -83,10 +93,12 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
-#### Clock services
+### Clock services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -126,10 +138,12 @@ weight: 150
     <td>&#10005;</td> 
   </tr>
 </table>
+</div>
 
-#### Timer services
+### Timer services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -154,10 +168,12 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
-#### Mutex services
+### Mutex services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -217,10 +233,12 @@ weight: 150
     <td>&#9989;</td>
   </tr>
 </table>
+</div>
 
-#### Event services
+### Event services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -275,10 +293,12 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
-#### Flags services
+### Flags services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -333,10 +353,12 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
-#### Semaphore services
+### Semaphore services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -391,10 +413,12 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
-#### Polling services
+### Polling services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -434,10 +458,12 @@ weight: 150
     <td>&#10005;</td> 
   </tr>
 </table>
+</div>
 
-#### Memory heap services
+### Memory heap services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -492,10 +518,12 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
-#### Proxy services
+### Proxy services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -530,10 +558,12 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
 #### Cross-buffer services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -548,10 +578,12 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
-#### I/O services
+### I/O services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -576,10 +608,12 @@ weight: 150
     <td>&#10005;</td> 
   </tr>
 </table>
+</div>
 
-#### Tube services
+### Tube services
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -629,10 +663,12 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
-#### Misc routines
+### Misc routines
 
-<table class="status" style="width:50%">
+<div>
+<table id="usvctable">
   <col width="40%">
   <col width="12%">
   <col width="12%">
@@ -657,6 +693,7 @@ weight: 150
     <td>&#9989;</td> 
   </tr>
 </table>
+</div>
 
 <sup>1</sup> Defines the stage switching behavior for out-of-band
 callers:

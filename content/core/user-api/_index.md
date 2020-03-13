@@ -1,8 +1,8 @@
 ---
 title: "Using libevl"
 menuTitle: "Application interface"
-weight: 10
-pre: "&rsaquo; "
+weight: 7
+pre: "&#9702; "
 ---
 
 ## What is an "EVL application process"? {#evl-application}
@@ -85,7 +85,7 @@ C library and NPTL support you may be using, which enables your
 thread(s) of choice to be scheduled with ultra-low latency guarantee
 by the EVL core. As it should be clear now from the above section, you
 may - and actually have to - use a combination of these libraries into
-a single application, but you must do this in a way that ensures that
+a single application, but you must do this in a way that ensures
 your time-critical code only relies on either:
 
 - `libevl`'s [well-defined set]({{< relref
