@@ -61,21 +61,25 @@ over the time-critical workload to a dedicated component which is
 simple and decoupled enough from the rest of the system for you to
 trust. Typical applications best-served by such infrastructure have to
 acquire data from external devices with only small jitter within a few
-tenths of microseconds once available, process such input over POSIX
-threads which can meet real-time requirements by running on the
-[high-priority stage]({{< relref "dovetail/altsched.md" >}}),
-offloading any non-(time-)critical work to common threads. Generally
-speaking, such approach like the EVL core implements may be a good fit
-for the job in the following cases:
+tenths of microseconds (absolute [worst case]({{< relref
+"core/benchmarks/_index.md#stress-load" >}})) once available, process
+such input over POSIX threads which can meet real-time requirements by
+running on the [high-priority stage]({{< relref "dovetail/altsched.md"
+>}}), offloading any non-(time-)critical work to common
+threads. Generally speaking, such approach like the EVL core
+implements may be a good fit for the job in the following cases:
 
 - if your application needs ultra-low response times and/or strictly
   limited jitter in a reliable fashion. Reliable as in &laquo; not
-  impacted by any valid code the general purpose kernel might run in
-  parallel in a way which could prevent stringent real-time deadlines
-  from being met &raquo;. For instance, a low priority workload can
-  put a strain on the CPU cache subsystem, causing delays for the
-  real-time activities when it resumes for handling some external
-  event:
+  impacted by any valid kernel or user code the general purpose kernel
+  might run in parallel in a way which could prevent stringent
+  real-time deadlines from being met &raquo;. Valid code in this case
+  meaning not causing machine crashes; the companion core of a dual
+  kernel system is not sensitive to slowdowns which might be induced
+  by poorly written general purpose drivers. For instance, a low
+  priority workload can put a strain on the CPU cache subsystem,
+  causing delays for the real-time activities when it resumes for
+  handling some external event:
   
   - if this workload manipulates a large data set continuously,
     causing frequent cache evictions. As the outer cache in the
