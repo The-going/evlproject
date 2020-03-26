@@ -197,7 +197,7 @@ zero on success, otherwise a negated error code is returned:
 ---
 
 {{< proto evl_sched_control >}}
-int evl_sched_control(int policy, union evl_sched_ctlparam *param, union evl_sched_ctlinfo *info, int cpu)
+int evl_sched_control(int policy, const union evl_sched_ctlparam *param, union evl_sched_ctlinfo *info, int cpu)
 {{< /proto >}}
 
 ---
