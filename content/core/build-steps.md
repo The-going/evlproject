@@ -92,6 +92,35 @@ list](https://evlproject.org/mailman/listinfo/evl/) with the relevant
 information.
 {{% /notice %}}
 
+#### Enabling 32-bit support in a 64-bit kernel (`CONFIG_COMPAT`)
+
+Starting from [EVL ABI]({{< relref "core/under-the-hood/abi.md" >}})
+20 in the v5.6 series, the EVL core generally allows 32-bit
+applications to issue system calls to a 64-bit kernel when both the 32
+and 64-bit CPU architectures are supported, such as ARM (aka Aarch32)
+code running over an arm64 (Aarch64) kernel. In the latter case, you
+have to enable support for the 32-bit [vDSO]({{< relref
+"dovetail/porting/clocksource.md" >}}) segment by enabling
+`CONFIG_COMPAT_VDSO` in the kernel configuration in addition to
+`CONFIG_COMPAT`. Next, you have to mention the 32-bit ARM toolchain
+which should be used to compile it by setting the
+`CROSS_COMPILE_COMPAT` environment variable the kernel build system
+expects, as illustrated below:
+
+```
+$ make <your-make-args> ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf-
+```
+
+{{% notice tip %}}
+For instance, if you plan to run EVL over any of the [Raspberry
+PI](https://raspberrypi.org) 64-bit computers, you may find useful to
+use the PI-centric 32-bit Linux distributions readily available such
+as [Raspbian](https://www.raspberrypi.org/downloads/raspbian/). To do
+so, make sure to enable `CONFIG_COMPAT` and `CONFIG_COMPAT_VDSO` for
+your EVL-enabled kernel, building the 32-bit vDSO alongside as
+mentioned earlier.
+{{% /notice %}}
+
 ### Building libevl {#building-libevl}
 
 The generic command for building libevl is:
