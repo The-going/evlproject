@@ -92,6 +92,144 @@ list](https://evlproject.org/mailman/listinfo/evl/) with the relevant
 information.
 {{% /notice %}}
 
+#### All core configuration options {#core-kconfig}
+
+<div>
+<style>
+#kconfig {
+       width: 100%;
+}
+#kconfig th {
+       text-align: center;
+}
+#kconfig td {
+       text-align: left;
+}
+#kconfig tr:nth-child(even) {
+       background-color: #f2f2f2;
+}
+#kconfig td:nth-child(2) {
+       text-align: center;
+}
+</style>
+
+<table id="kconfig">
+  <col width="10%">
+  <col width="5%">
+  <col width="85%">
+  <tr>
+    <th>Symbol name</th>
+    <th>Default</th> 
+    <th>Purpose</th> 
+  </tr>
+  <tr>
+    <td><a href="/core/" target="_blank">CONFIG_EVL</a></td>
+    <td>N</td>
+    <td>Enable the EVL core</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/scheduling/#SCHED_QUOTA" target="_blank">CONFIG_EVL_SCHED_QUOTA</a></td>
+    <td>N</td>
+    <td>Enable the quota-based scheduling policy</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/scheduling/#SCHED_TP" target="_blank">CONFIG_EVL_SCHED_TP</a></td>
+    <td>N</td>
+    <td>Enable the time-partitioning scheduling policy</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/scheduling/#SCHED_TP" target="_blank">CONFIG_EVL_SCHED_TP_NR_PART</a></td>
+    <td>N</td>
+    <td>Number of time partitions for CONFIG_EVL_SCHED_TP</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/thread/#thread-stats" target="_blank">CONFIG_EVL_SCHED_RUNSTATS</a></td>
+    <td>Y</td>
+    <td>Collect runtime statistics about threads</td>
+  </tr>
+  <tr>
+    <td>CONFIG_EVL_COREMEM_SIZE</td>
+    <td>2048</td>
+    <td>Size of the core memory heap (in kilobytes)</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/thread/" target="_blank">CONFIG_EVL_NR_THREADS</a></td>
+    <td>256</td>
+    <td>Maximum number of EVL threads</td>
+  </tr>
+  <tr>
+    <td>CONFIG_EVL_NR_MONITORS</td>
+    <td>512</td>
+    <td>Maximum number of EVL monitors (i.e. mutexes + semaphores + flags + events)</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/clock/" target="_blank">CONFIG_EVL_NR_CLOCKS</a></td>
+    <td>8</td>
+    <td>Maximum number of EVL clocks</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/xbuf/" target="_blank">CONFIG_EVL_NR_XBUFS</a></td>
+    <td>16</td>
+    <td>Maximum number of EVL cross-buffers</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/proxy/" target="_blank">CONFIG_EVL_NR_PROXIES</a></td>
+    <td>64</td>
+    <td>Maximum number of EVL proxies</td>
+  </tr>
+  <tr>
+    <td><a href="/core/runtime-settings" target="_blank">CONFIG_EVL_LATENCY_USER</a></td>
+    <td>0</td>
+    <td>Pre-set core timer gravity value for user threads (0 means use pre-calibrated value)</td>
+  </tr>
+  <tr>
+    <td><a href="/core/runtime-settings" target="_blank">CONFIG_EVL_LATENCY_KERNEL</a></td>
+    <td>0</td>
+    <td>Pre-set core timer gravity value for kernel threads (0 means use pre-calibrated value)</td>
+  </tr>
+  <tr>
+    <td><a href="/core/runtime-settings" target="_blank">CONFIG_EVL_LATENCY_IRQ</a></td>
+    <td>0</td>
+    <td>Pre-set core timer gravity value for interrupt handlers (0 means use pre-calibrated value)</td>
+  </tr>
+  <tr>
+    <td>CONFIG_EVL_DEBUG</td>
+    <td>N</td>
+    <td>Enable debug features</td>
+  </tr>
+  <tr>
+    <td>CONFIG_EVL_DEBUG_CORE</td>
+    <td>N</td>
+    <td>Enable core debug assertions</td>
+  </tr>
+  <tr>
+    <td>CONFIG_EVL_DEBUG_CORE</td>
+    <td>N</td>
+    <td>Enable core debug assertions</td>
+  </tr>
+  <tr>
+    <td>CONFIG_EVL_DEBUG_MEMORY</td>
+    <td>N</td>
+    <td>Enable debug checks in core memory allocator.
+        **This option adds a significant overhead affecting latency figures**</td>
+  </tr>
+  <tr>
+    <td>CONFIG_EVL_DEBUG_WOLI</td>
+    <td>N</td>
+    <td>Enable warn-on-lock-inconsistency checkpoints</td>
+  </tr>
+  <tr>
+    <td>CONFIG_EVL_WATCHDOG</td>
+    <td>Y</td>
+    <td>Enable watchdog timer</td>
+  </tr>
+  <tr>
+    <td>CONFIG_EVL_WATCHDOG_TIMEOUT</td>
+    <td>4</td>
+    <td>Watchdog timeout value (in seconds)</td>
+  </tr>
+</table>
+
 #### Enabling 32-bit support in a 64-bit kernel (`CONFIG_COMPAT`)
 
 Starting from [EVL ABI]({{< relref "core/under-the-hood/abi.md" >}})

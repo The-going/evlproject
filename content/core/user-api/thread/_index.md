@@ -494,7 +494,7 @@ follows:
 	/* skipping checks */
 ```
 
-### Where to look for thread information?
+### Where to look for thread information? {#thread-stats}
 
 #### Using the 'evl ps' command
 

@@ -13,6 +13,9 @@
 #abimap td {
        text-align: center;
 }
+#abimap tr:nth-child(even) {
+       background-color: #f2f2f2;
+}
 </style>
 
 <table id="abimap">
