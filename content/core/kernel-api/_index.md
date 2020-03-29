@@ -24,6 +24,7 @@ struct file_operations {
 	ssize_t (*oob_read) (struct file *, char __user *, size_t);
 	ssize_t (*oob_write) (struct file *, const char __user *, size_t);
 	long (*oob_ioctl) (struct file *, unsigned int, unsigned long);
+	long (*compat_oob_ioctl) (struct file *, unsigned int, unsigned long);
 	__poll_t (*oob_poll) (struct file *, struct oob_poll_wait *);
 	...
 } __randomize_layout;
