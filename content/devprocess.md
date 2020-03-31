@@ -1,6 +1,4 @@
----
-title: "EVL development process"
----
+# EVL development process
 
 The EVL project works on three software components:
 

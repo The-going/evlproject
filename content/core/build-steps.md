@@ -230,7 +230,7 @@ information.
   </tr>
 </table>
 
-#### Enabling 32-bit support in a 64-bit kernel (`CONFIG_COMPAT`)
+#### Enabling 32-bit support in a 64-bit kernel (`CONFIG_COMPAT`) {#enable-kernel-compat-mode}
 
 Starting from [EVL ABI]({{< relref "core/under-the-hood/abi.md" >}})
 20 in the v5.6 series, the EVL core generally allows 32-bit

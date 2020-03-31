@@ -5,6 +5,22 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 13.2020
+
+The EVL core now supports compat mode, which currently allows running
+armv7 binaries on an EVL-enabled armv8 kernel. Typically, if you plan
+to run EVL over any of the [Raspberry PI]({{< relref
+"core/build-steps.md#enable-kernel-compat-mode" >}}) 64-bit computers,
+you are going to like this. Also, the [libevl]({{< relref
+"core/user-api/_index.md" >}}) interface headers became C++
+friendly. A specific suite of compile-time tests was added, notably to
+detect C++ parsing issues early on as `libevl` evolves over time.
+Documentation-wise, the [list of ABI revisions]({{< relref
+"core/abi-list.md" >}}) of the EVL core will be maintained from now
+on.
+
+We are now tracking kernel v5.6-rc7 and v5.4.27 LTS.
+
 ### Week 11-12.2020
 
 Two weeks mostly spent working on the documentation, reorganizing the
