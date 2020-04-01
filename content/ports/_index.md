@@ -97,7 +97,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.6-rc6</td>
+    <td>v5.6</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank">Broadcom BCM2711 (Raspberry PI 4 Model B)</a></td>
@@ -137,7 +137,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.6-rc7</td>
+    <td>v5.6</td>
   </tr>
 </table>
 
@@ -174,7 +174,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.6-rc6</td>
+    <td>v5.6</td>
   </tr>
   <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
@@ -190,7 +190,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.6-rc2</td>
+    <td>v5.6</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">STMicro Cannes2-STiH410 (B2260)</a></td>
@@ -206,7 +206,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.5</td>
+    <td>v5.6</td>
   </tr>
   <tr>
     <td><a href="http://nanopi.io/nanopi-neo.html/" target="_blank">AllWinner H3 (NanoPI NEO)</a></td>
@@ -241,7 +241,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.6-rc7</td>
+    <td>v5.6</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
@@ -249,7 +249,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.6-rc2</td>
+    <td>v5.6</td>
   </tr>
   <tr>
     <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 core i7 quad (DFI SD631)</a></td>
