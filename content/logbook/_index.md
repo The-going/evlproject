@@ -5,6 +5,18 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 14.2020
+
+There is an ongoing work on enabling DMA support and SPI transfers
+from the out-of-band stage based on cyclic DMA transactions. This work
+currently targets DMA and SPI units available with the Raspberry and
+i.MX hardware, but the logic is applicable to any flavour. The goal is
+to make it possible to implement closed-loop control systems running
+at high frequency (10-15 Khz) and/or very low jitter on low-end to
+mid-range hardware, e.g. using the regular spidev interface.
+
+We are now tracking kernel v5.6.
+
 ### Week 13.2020
 
 The EVL core now supports compat mode, which currently allows running
