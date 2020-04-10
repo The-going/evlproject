@@ -85,6 +85,11 @@ approach is said to be _optimistic_ because it is assumed that the
 overhead of maintaining such mechanism should be small as the in-band
 code seldom receives an interrupt while masking them.
 
+This approach was fully described by **Stodolsky**, **Chen** &
+**Bershad** in [_Fast Interrupt Priority Management in Operating
+System Kernels_]
+(https://www.usenix.org/legacy/publications/library/proceedings/micro93/full_papers/stodolsky.txt).
+
 ## Virtual interrupt disabling {#virtual-i-flag}
 
 To this end, a software logic managing a virtual interrupt disable
