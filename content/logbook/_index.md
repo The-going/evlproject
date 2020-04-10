@@ -5,6 +5,21 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 15.2020
+
+Out-of-band SPI transfers are now available with Dovetail, illustrated
+by the [spidev](https://www.kernel.org/doc/Documentation/spi/spidev)
+user-space API which now gives access to the feature. Currently, the
+BCM2835 SPI and DMA controllers available with the Raspberry PIs are
+enabled for out-of-band operations. We are half-way there with NXP's
+i.MX series, the SDMA engine is out-of-band capable already but the
+eCSPI controller is not there yet. This work goes a long way making
+EVL an option for driving closed-control loops with the level of
+performance the dual kernel architecture offers, i.e. very low jitter,
+high-frequency and low overhead.
+
+We are now tracking kernel v5.4.30 on the LTS branch.
+
 ### Week 14.2020
 
 There is an ongoing work on enabling DMA support and SPI transfers
