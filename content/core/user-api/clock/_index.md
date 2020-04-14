@@ -44,7 +44,7 @@ counts of seconds and microseconds since the clock's _epoch_.
 The clock file descriptor, which can be:
 
 - any valid file descriptor received as a result of opening a clock
-  device in _/dev/evl/clock_.
+  device in `/dev/evl/clock`.
 
 - the identifier of a [built-in EVL clock]({{< relref
   "#builtin-clocks" >}}), such as `EVL_CLOCK_MONOTONIC` or
@@ -56,8 +56,8 @@ A pointer to a _timespec_ structure which should receive the time
 stamp.
 {{% /argument %}}
 
-`evl_read_clock()` writes the timestamp to _tp_ then returns zero on
-success, otherwise:
+[evl_read_clock()]({{< relref "#evl_read_clock" >}}) writes the
+timestamp to _tp_ then returns zero on success, otherwise:
 
 - -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
    file descriptor.
@@ -80,7 +80,7 @@ service, for setting the time of a specified EVL clock.
 The clock file descriptor, which can be:
 
 - any valid file descriptor received as a result of opening a clock
-  device in _/dev/evl/clock_.
+  device in `/dev/evl/clock`.
 
 - the identifier of a [built-in EVL clock]({{< relref
   "#builtin-clocks" >}}), such as `EVL_CLOCK_MONOTONIC` or
@@ -92,8 +92,8 @@ A pointer to a _timespec_ structure which should receive the time
 stamp.
 {{% /argument %}}
 
-`evl_set_clock()` returns zero and the clock is set to the specified
-time on success, otherwise:
+[evl_set_clock()]({{< relref "#evl_set_clock" >}}) returns zero and
+the clock is set to the specified time on success, otherwise:
 
 - -EINVAL if the time specification referred to by _ts_ is invalid
    (e.g. `ts->tv_nsec` not in the [0..1e9] range).
@@ -135,7 +135,7 @@ configured.
 The clock file descriptor, which can be:
 
 - any valid file descriptor received as a result of opening a clock
-  device in _/dev/evl/clock_.
+  device in `/dev/evl/clock`.
 
 - the identifier of a [built-in EVL clock]({{< relref
   "#builtin-clocks" >}}), such as `EVL_CLOCK_MONOTONIC` or
@@ -146,8 +146,9 @@ The clock file descriptor, which can be:
 A pointer to a _timespec_ structure which should receive the resolution.
 {{% /argument %}}
 
-`evl_get_clock_resolution()` writes the resolution to _tp_ then
-returns zero on success, otherwise:
+[evl_get_clock_resolution()]({{< relref "#evl_get_clock_resolution"
+>}}) writes the resolution to _tp_ then returns zero on success,
+otherwise:
 
 - -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
    file descriptor.
@@ -173,14 +174,15 @@ int evl_sleep_until(int clockfd, const struct timespec *timeout)
 This call is the EVL equivalent of the POSIX
 [clock_nanosleep(3)](http://man7.org/linux/man-pages/man3/clock_nanosleep.3.html)
 service, for blocking the caller until an arbitrary date expires on a
-specified EVL clock. Unlike its POSIX counterpart, `evl_sleep_until()`
-only accepts absolute timeout specifications though.
+specified EVL clock. Unlike its POSIX counterpart,
+[evl_sleep_until()]({{< relref "#evl_sleep_until" >}}) only accepts
+absolute timeout specifications though.
 
 {{% argument clockfd %}}
 The clock file descriptor, which can be:
 
 - any valid file descriptor received as a result of opening a clock
-  device in _/dev/evl/clock_.
+  device in `/dev/evl/clock`.
 
 - the identifier of a [built-in EVL clock]({{< relref
   "#builtin-clocks" >}}), such as `EVL_CLOCK_MONOTONIC` or
@@ -191,8 +193,9 @@ The clock file descriptor, which can be:
 A pointer to a _timespec_ structure which specifies the wake up date.
 {{% /argument %}}
 
-`evl_sleep_until()` blocks the caller until the wake up date expires
-then returns zero on success, otherwise:
+[evl_sleep_until()]({{< relref "#evl_sleep_until" >}}) blocks the
+caller until the wake up date expires then returns zero on success,
+otherwise:
 
 - -EBADF if _clockfd_ is neither a built-in clock identifier or a valid
    file descriptor.
@@ -211,16 +214,16 @@ int evl_usleep(useconds_t usecs)
 {{< /proto >}}
 
 This call puts the caller to sleep until a count of microseconds has
-elapsed. `evl_usleep()` invokes [evl_sleep_until()]({{< relref
-"#evl_sleep_until" >}}) for sleeping until the delay expires on the
-EVL_CLOCK_MONOTONIC clock.
+elapsed. [evl_usleep()]({{< relref "#evl_usleep" >}}) invokes
+[evl_sleep_until()]({{< relref "#evl_sleep_until" >}}) for sleeping
+until the delay expires on the `EVL_CLOCK_MONOTONIC` clock.
 
 {{% argument usecs %}}
 The count of microseconds to sleep for.
 {{% /argument %}}
 
-`evl_usleep()` blocks the caller until the delay expires then returns
-zero on success, otherwise:
+[evl_usleep()]({{< relref "#evl_usleep" >}}) blocks the caller until
+the delay expires then returns zero on success, otherwise:
 
 - -EINTR if the call was interrupted by an in-band signal, or forcibly
    unblocked by the EVL core.
@@ -235,14 +238,14 @@ identifiers to EVL calls which ask for a clock file descriptor
   clock, which is a monotonically increasing clock that cannot be set
   and represents time since some unspecified starting point (aka _the
   epoch_). This identifier has the same meaning than a file descriptor
-  opened on _/dev/evl/clock/monotonic_.
+  opened on `/dev/evl/clock/monotonic`.
 
 - `EVL_CLOCK_REALTIME` is identical to the `CLOCK_REALTIME` POSIX
   clock, which is a non-monotonic wall clock which can be manually set
   to an arbitrary value with proper privileges, and can also be
   subject to dynamic adjustements by the NTP system. This identifier
   has the same meaning than a file descriptor opened on
-  _/dev/evl/clock/realtime_.
+  `/dev/evl/clock/realtime`.
 
 If you are to measure the elapsed time between two events, you
 definitely want to use `EVL_CLOCK_MONOTONIC`.
