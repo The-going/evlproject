@@ -11,7 +11,7 @@ how long they would have to do so, does not have to be defined or even
 known in advance. For this purpose, `libevl` implements a memory heap
 manager usable from the [out-of-band context]({{< relref
 "dovetail/altsched.md" >}}), from which objects can be allocated or
-released dynamically in a time-bounded fashion.
+released dynamically in a time-bound fashion.
 
 An EVL heap is composed of at least one so-called _memory extent_,
 which is a contiguous RAM area _chunks_ are [allocated]({{< relref
@@ -59,7 +59,7 @@ for each extent of a given heap:
 
 - a free page pool. This pool is maintained in an couple of [AVL
   trees](https://en.wikipedia.org/wiki/AVL_tree) to ensure
-  time-bounded operations on inserting and removing pages (either by
+  time-bound operations on inserting and removing pages (either by
   size or address).
 
 - an array of list of pages used as a fast block cache, where each
