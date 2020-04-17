@@ -83,7 +83,7 @@ weight: 1
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   <tr>
-    <td><a href="/core/user-api/scheduling/index.html#evl_sched_control" target="_blank">evl_sched_control()</a></td>
+    <td><a href="/core/user-api/scheduling/index.html#evl_control_sched" target="_blank">evl_control_sched()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
   </tr>

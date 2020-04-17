@@ -196,8 +196,8 @@ zero on success, otherwise a negated error code is returned:
 
 ---
 
-{{< proto evl_sched_control >}}
-int evl_sched_control(int policy, const union evl_sched_ctlparam *param, union evl_sched_ctlinfo *info, int cpu)
+{{< proto evl_control_sched >}}
+int evl_control_sched(int policy, const union evl_sched_ctlparam *param, union evl_sched_ctlinfo *info, int cpu)
 {{< /proto >}}
 
 ---
@@ -307,7 +307,7 @@ Switching a thread to quota-based scheduling is achieved by calling
 [Creating]({{< relref "#create-quota-group" >}}), [modifying]({{<
 relref "#modify-quota-group" >}}) and [removing]({{< relref
 "#remove-quota-group" >}}) thread groups is achieved by calling
-[evl_sched_control()]({{% relref "#evl_sched_control" %}}).
+[evl_control_sched()]({{% relref "#evl_control_sched" %}}).
 
 ##### Runtime credit and peak quota {#sched-peak-quota}
 
@@ -333,7 +333,7 @@ A thread group is represented by a unique integer returned by the core
 upon creation, aka the _group identifier_.
 
 Creating a new thread group is achieved by calling
-[evl_sched_contol()]({{% relref "#evl_sched_control" %}}). Some
+[evl_sched_contol()]({{% relref "#evl_control_sched" %}}). Some
 information including the new group identifier is returned in the
 ancillary `evl_sched_ctlinfo` structure passed to the request. The
 `evl_sched_ctlparams` control structure should be filled in as
@@ -345,7 +345,7 @@ follows:
 	int ret;
 
 	param.quota.op = evl_quota_add;
-	ret = evl_sched_control(SCHED_QUOTA, &param, &info, <cpu-number>);
+	ret = evl_control_sched(SCHED_QUOTA, &param, &info, <cpu-number>);
 ```
 
 On success, the following information is received from the core
@@ -368,8 +368,8 @@ regarding the new group:
   final value.
 
 - info.quota.quota_sum is the sum of the quota values of all groups
-  assigned to the CPU specified in the [evl_sched_control()]({{%
-  relref "#evl_sched_control" %}}) request. This gives the overall CPU
+  assigned to the CPU specified in the [evl_control_sched()]({{%
+  relref "#evl_control_sched" %}}) request. This gives the overall CPU
   business as far as SCHED_QUOTA is concerned. This sum should not
   exceed 100% for a CPU in a properly configured system.
 
@@ -456,7 +456,7 @@ the minor frames which compose the major one as follows:
 	param.tp.windows[<number_of_minor_frames> - 1].duration = <duration_of_minor_frame>;
 	param.tp.windows[<number_of_minor_frames> - 1].ptid = <assigned_partition_id>;
 
-	ret = evl_sched_control(SCHED_TP, &param, NULL, <cpu-number>);
+	ret = evl_control_sched(SCHED_TP, &param, NULL, <cpu-number>);
 ```
 If the special value `EVL_TP_IDLE` is assigned to a minor time frame
 (_ptid_), no thread undergoing the SCHED_TP policy will run until such
@@ -478,7 +478,7 @@ have to issue this request for activating a TP schedule:
 	int ret;
 
 	param.tp.op = evl_tp_start;
-	ret = evl_sched_control(SCHED_TP, &param, NULL, <cpu-number>);
+	ret = evl_control_sched(SCHED_TP, &param, NULL, <cpu-number>);
 ```
 
 ##### Stopping the TP scheduling on a CPU
@@ -491,7 +491,7 @@ policy on a CPU by the following call:
 	int ret;
 
 	param.tp.op = evl_tp_stop;
-	ret = evl_sched_control(SCHED_TP, &param, NULL, <cpu-number>);
+	ret = evl_control_sched(SCHED_TP, &param, NULL, <cpu-number>);
 ```
 
 Upon success, the target CPU won't be considered for running SCHED_TP
@@ -513,7 +513,7 @@ CPU:
 
 	param.tp.op = evl_tp_get;
 	param.tp.nr_windows = <max_number_of_minor_frames>;
-	ret = evl_sched_control(SCHED_TP, &param, &result.info, <cpu-number>);
+	ret = evl_control_sched(SCHED_TP, &param, &result.info, <cpu-number>);
 ```
 
 `param.nr_windows[]` specifies the maximum number of minor frames the
@@ -622,7 +622,10 @@ placeholder task]({{< relref
 SCHED_IDLE has the lowest priority among policies, its sole task is
 picked for scheduling only when other policies have no runnable task
 on the CPU. A task member of the SCHED_IDLE class cannot block, it is
-always runnable
+always runnable.
+
+This is an internal class, which is neither available to user
+applications nor drivers.
 
 ---
 
