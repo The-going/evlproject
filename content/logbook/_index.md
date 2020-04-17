@@ -43,7 +43,7 @@ you are going to like this. Also, the [libevl]({{< relref
 friendly. A specific suite of compile-time tests was added, notably to
 detect C++ parsing issues early on as `libevl` evolves over time.
 Documentation-wise, the [list of ABI revisions]({{< relref
-"core/abi-list.md" >}}) of the EVL core will be maintained from now
+"core/abi-revs.md" >}}) of the EVL core will be maintained from now
 on.
 
 We are now tracking kernel v5.6-rc7 and v5.4.27 LTS.

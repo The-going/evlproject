@@ -194,7 +194,7 @@ marker it looks for was introduced by that particular revision.
 
 #### List of ABI revisions
 
-[This document]({{< relref "core/abi-list.md" >}}) summarizes the
+[This document]({{< relref "core/abi-revs.md" >}}) summarizes the
 various ABI revisions and their respective purpose, matching them to
 the corresponding [libevl]({{< relref "core/user-api/_index.md" >}})
 release implementing the change.
