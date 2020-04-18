@@ -13,8 +13,8 @@ for the basic operations.
 
 ---
 
-{{< proto evl_new_sem_any >}}
-int evl_new_sem_any(struct evl_sem *sem, int clockfd, init initval,  const char *fmt, ...)
+{{< proto evl_create_sem >}}
+int evl_create_sem(struct evl_sem *sem, int clockfd, init initval, int flags, const char *fmt, ...)
 {{< /proto >}}
 
 This call creates a semaphore, returning a file descriptor
@@ -23,13 +23,15 @@ form; for creating a semaphore with common pre-defined settings, see
 [evl_new_sem()}({{% relref "#evl_new_sem" %}}).
 
 {{% argument sem %}}
-An in-memory semaphore descriptor is constructed by `evl_new_sem_any()`,
+An in-memory semaphore descriptor is constructed by
+[evl_create_sem()]({{< relref "#evl_create_sem" >}}),
 which contains ancillary information other calls will need. _sem_
 is a pointer to such descriptor of type `struct evl_sem`.
 {{% /argument %}}
 
 {{% argument clockfd %}}
-Some semaphore-related calls are timed like `evl_timedwait_sem()`
+Some semaphore-related calls are timed like
+[evl_timedget_sem()]({{< relref "#evl_timedget_sem" >}})
 which receives a timeout value. You can specify the [EVL clock]({{%
 relref "core/user-api/clock/_index.md" %}}) this timeout refers to by
 passing its file descriptor as _clockfd_. [Built-in EVL clocks]({{%
@@ -41,22 +43,35 @@ accepted here.
 The initial value of the semaphore count.
 {{% /argument %}}
 
+{{% argument flags %}}
+A set of creation flags for the new element, defining its
+[visibility]({{< relref "core/user-api/_index.md#element-visibility"
+>}}):
+
+  - `EVL_CLONE_PUBLIC` denotes a public element which is represented
+    by a device file in the [/dev/evl]({{< relref
+    "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy, which
+    makes it visible to other processes for sharing.
+  
+  - `EVL_CLONE_PRIVATE` denotes an element which is private to the
+    calling process. No device file appears for it in the [/dev/evl]({{< relref
+    "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy.
+{{% /argument %}}
+
 {{% argument fmt %}}
-A printf-like format string to generate the semaphore name. A common
-way of generating unique names is to add the calling process's _pid_
-somewhere into the format string as illustrated in the example. The
-generated name is used to form a last part of a pathname, referring to
-the new [monitor element]({{< relref "core/_index.md" >}}) device
-underpinning the semaphore in the file system. So this name must
-contain only valid characters in this context, excluding slashes.
+A [printf](http://man7.org/linux/man-pages/man3/printf.3.html)-like
+format string to generate the semaphore name. See this description of the
+[naming convention]
+({{< relref "core/user-api/_index.md#element-naming-convention" >}}).
 {{% /argument %}}
 
 {{% argument "..." %}}
 The optional variable argument list completing the format.
 {{% /argument %}}
 
-`evl_new_sem_any()` returns the file descriptor of the newly created
-semaphore on success. Otherwise, a negated error code is returned:
+[evl_create_sem()]({{< relref "#evl_create_sem" >}}) returns the file
+descriptor of the newly created semaphore on success. Otherwise, a
+negated error code is returned:
 
 - -EEXIST	The generated name is conflicting with an existing mutex,
 		event, semaphore or flag group name.
@@ -95,7 +110,7 @@ void create_new_sem(void)
 {
 	int fd;
 
-	fd = evl_new_sem_any(sem, EVL_CLOCK_MONOTONIC, 1, "name_of_semaphore");
+	fd = evl_create_sem(sem, EVL_CLOCK_MONOTONIC, 1, EVL_CLONE_PRIVATE, "name_of_semaphore");
 	/* skipping checks */
 	
 	return fd;
@@ -108,59 +123,34 @@ void create_new_sem(void)
 int evl_new_sem(struct evl_sem *sem, const char *fmt, ...)
 {{< /proto >}}
 
-This call creates a zero-initialized semaphore, timed on the built-in [EVL monotonic clock]({{%
-relref "core/user-api/clock/_index.md#builtin-clocks" %}}). It is identical to calling:
-```
-	evl_new_sem_any(sem, EVL_CLOCK_MONOTONIC, 0, fmt, ...);
-```
-
----
-
-{{< proto EVL_SEM_ANY_INITIALIZER >}}
-EVL_SEM_ANY_INITIALIZER(name, clockfd, initval)
-{{< /proto >}}
-
-The static initializer you can use with semaphores. This is the
-generic form; for initializing a semaphore with common pre-defined
-settings, see [EVL_SEM_INITIALIZER]({{% relref "#EVL_SEM_INITIALIZER"
-%}}).
-
-{{% argument name %}}
-A name which is used to form a last part of a pathname, referring to
-the new [monitor element]({{< relref "core/_index.md" >}}) device
-underpinning the semaphore in the file system. So this name must contain
-only valid characters in this context, excluding slashes.
-{{% /argument %}}
-
-{{% argument clockfd %}}
-The [EVL clock]({{% relref "core/user-api/clock/_index.md" %}})
-associated with the semaphore for timed operations. The descriptors of
-[built-in EVL clocks]({{% relref
-"core/user-api/clock/_index.md#builtin-clocks" %}}) are constant
-values which are accepted here.
-{{% /argument %}}
-
-{{% argument initval %}}
-The initial value of the semaphore count.
-{{% /argument %}}
+This call is a shorthand for creating a zero-initialized private
+semaphore, timed on the built-in [EVL monotonic clock]({{% relref
+"core/user-api/clock/_index.md#builtin-clocks" %}}). It is identical
+to calling:
 
 ```
-struct evl_sem sem = EVL_SEM_ANY_INITIALIZER("name_of_semaphore", EVL_CLOCK_MONOTONIC, 1);
+	evl_create_sem(sem, EVL_CLOCK_MONOTONIC, 0, EVL_CLONE_PRIVATE, fmt, ...);
 ```
+
+{{% notice info %}}
+Note that if the [generated name] ({{< relref
+"core/user-api/_index.md#element-naming-convention" >}}) starts with a
+slash ('/') character, `EVL_CLONE_PRIVATE` would be automatically turned
+into `EVL_CLONE_PUBLIC` internally.
+{{% /notice %}}
 
 ---
 
 {{< proto EVL_SEM_INITIALIZER >}}
-EVL_SEM_INITIALIZER(name)
+EVL_SEM_INITIALIZER((const char *) name, (int) clockfd, (int) initval, (int) flags)
 {{< /proto >}}
 
-This is a short-hand initializer specifying a zero init value and the
-built-in [EVL monotonic clock]({{% relref
-"core/user-api/clock/_index.md#builtin-clocks" %}}) for a
-semaphore. It is identical to writing:
+The static initializer you can use with semaphores. All arguments to
+this macro refer to their counterpart in the call to
+[evl_create_sem()]({{< relref "#evl_create_sem" >}}).
 
 ```
-EVL_SEM_ANY_INITIALIZER(name, EVL_CLOCK_MONOTONIC, 0);
+struct evl_sem sem = EVL_SEM_INITIALIZER("name_of_semaphore", EVL_CLOCK_MONOTONIC, 1, EVL_CLONE_PUBLIC);
 ```
 
 ---
@@ -170,10 +160,11 @@ int evl_open_sem(struct evl_sem *sem, const char *fmt, ...)
 {{< /proto >}}
 
 You can open an existing semaphore, possibly from a different
-process, by calling `evl_open_sem()`.
+process, by calling [evl_open_sem()]({{< relref "#evl_open_sem" >}}).
 
 {{% argument sem %}}
-An in-memory semaphore descriptor is constructed by `evl_open_sem()`,
+An in-memory semaphore descriptor is constructed by
+[evl_open_sem()]({{< relref "#evl_open_sem" >}}),
 which contains ancillary information other calls will need. _sem_ is a
 pointer to such descriptor of type `struct evl_sem`. The information
 is retrieved from the existing semaphore which was opened.
@@ -181,16 +172,20 @@ is retrieved from the existing semaphore which was opened.
 
 {{% argument fmt %}}
 A printf-like format string to generate the name of the semaphore to
-open. This name must exist in the EVL device hierachy at
-_/dev/evl/monitor/_.
+open. This name must exist in the EVL device file hierarchy at
+[/dev/evl/monitor]({{< relref
+"core/user-api/_index.md#evl-fs-hierarchy" >}}).
+See this description of the [naming convention]({{<
+relref "core/user-api/_index.md#element-naming-convention" >}}).
 {{% /argument %}}
 
 {{% argument "..." %}}
 The optional variable argument list completing the format.
 {{% /argument %}}
 
-`evl_open_sem()` returns the file descriptor referring to the opened
-semaphore on success, Otherwise, a negated error code is returned:
+[evl_open_sem()]({{< relref "#evl_open_sem" >}}) returns the file
+descriptor referring to the opened semaphore on success, Otherwise, a
+negated error code is returned:
 
 - -EINVAL	The name refers to an existing object, but not to a semaphore.
 
@@ -211,31 +206,34 @@ int evl_get_sem(struct evl_sem *sem)
 This service [decrements a semaphore]({{% relref
 "#synchronizing-on-sema4" %}}) by one.  If the resulting semaphore
 value is negative, the caller is put to sleep by the core until a
-subsequent call to `evl_put_sem()` eventually releases it. Otherwise,
+subsequent call to [evl_put_sem()]({{< relref "#evl_put_sem" >}})
+eventually releases it. Otherwise,
 the caller returns immediately.  Waiters are queued by order of
 [scheduling priority]({{< relref "core/user-api/scheduling/_index.md"
 >}}).
 
 {{% argument sem %}}
 The in-memory semaphore descriptor constructed by
-either `evl_new_sem[_any]()` or `evl_open_sem()`, or statically built
-with [EVL_SEM\[_ANY\]_INITIALIZER]({{% relref "#EVL_SEM_ANY_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_sem_any()` for
+either [evl_create_sem()]({{< relref "#evl_create_sem" >}}) or
+[evl_open_sem()]({{< relref "#evl_open_sem" >}}), or statically built
+with [EVL_SEM_INITIALIZER]({{% relref "#EVL_SEM_INITIALIZER"
+%}}). In the latter case, an implicit call to
+[evl_create_sem()]({{< relref "#evl_create_sem" >}}) for
 _sem_ is issued before a get operation is attempted, which may trigger
 a transition to the in-band execution mode for the caller.
 {{% /argument %}}
 
-`evl_get_sem()` returns zero on success. Otherwise, a negated error
-code may be returned if:
+[evl_get_sem()]({{< relref "#evl_get_sem" >}}) returns zero on
+success. Otherwise, a negated error code may be returned if:
 
 -EINVAL	      _sem_ does not represent a valid in-memory semaphore
 	      descriptor. If that pointer is out of the caller's
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
 
-If _sem_ was statically initialized with [EVL_SEM\[_ANY\]_INITIALIZER]({{%
-relref "#EVL_SEM_ANY_INITIALIZER" %}}), then any error returned by
-[evl_new_sem_any()]({{% relref "#evl_new_sem_any" %}}) may be passed
+If _sem_ was statically initialized with [EVL_SEM_INITIALIZER]({{%
+relref "#EVL_SEM_INITIALIZER" %}}), then any error returned by
+[evl_create_sem()]({{% relref "#evl_create_sem" %}}) may be passed
 back to the caller in case the implicit initialization call fails.
 
 ---
@@ -252,9 +250,11 @@ unblocked by a subsequent call to [evl_put_sem()]({{% relref
 
 {{% argument sem %}}
 The in-memory semaphore descriptor constructed by
-either `evl_new_sem[_any]()` or `evl_open_sem()`, or statically built
-with [EVL_SEM\[_ANY\]_INITIALIZER]({{% relref "#EVL_SEM_ANY_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_sem_any()` is
+either [evl_create_sem()]({{< relref "#evl_create_sem" >}}) or
+[evl_open_sem()]({{< relref "#evl_open_sem" >}}), or statically built
+with [EVL_SEM_INITIALIZER]({{% relref "#EVL_SEM_INITIALIZER"
+%}}). In the latter case, an implicit call to
+[evl_create_sem()]({{< relref "#evl_create_sem" >}}) is
 issued for _sem_ before a get operation is attempted, which may
 trigger a transition to the in-band execution mode for the caller.
 {{% /argument %}}
@@ -262,7 +262,7 @@ trigger a transition to the in-band execution mode for the caller.
 {{% argument timeout %}}
 A time limit to wait for the caller to be unblocked before
 the call returns on error. The clock mentioned in the call to
-[evl_new_sem_any()]({{% relref "#evl_new_sem_any" %}}) will be used for
+[evl_create_sem()]({{% relref "#evl_create_sem" %}}) will be used for
 tracking the elapsed time.
 {{% /argument %}}
 
@@ -285,26 +285,28 @@ thread is sleeping on the semaphore as a result of a previous call to
 heading the wait queue is unblocked.
 
 {{% argument sem %}}
-The in-memory semaphore descriptor constructed by either `evl_new_sem[_any]()`
-or `evl_open_sem()`, or statically built with
-[EVL_SEM\[_ANY\]_INITIALIZER]({{% relref "#EVL_SEM_ANY_INITIALIZER" %}}). In
-the latter case, an implicit call to `evl_new_sem_any()` for _sem_ is
+The in-memory semaphore descriptor constructed by either
+[evl_create_sem()]({{< relref "#evl_create_sem" >}})
+or [evl_open_sem()]({{< relref "#evl_open_sem" >}}), or statically built with
+[EVL_SEM_INITIALIZER]({{% relref "#EVL_SEM_INITIALIZER" %}}). In
+the latter case, an implicit call to
+[evl_create_sem()]({{< relref "#evl_create_sem" >}}) for _sem_ is
 issued before the semaphore is posted, which may trigger a transition to
 the in-band execution mode for the caller.
 {{% /argument %}}
 
-`evl_put_sem()` returns zero upon success. Otherwise, a negated
-error code is returned:
+[evl_put_sem()]({{< relref "#evl_put_sem" >}}) returns zero upon
+success. Otherwise, a negated error code is returned:
 
 -EINVAL	      _sem_ does not represent a valid in-memory semaphore
 	      descriptor. If that pointer is out of the caller's
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
 
-If _sem_ was statically initialized with [EVL_SEM\[_ANY\]_INITIALIZER]({{%
-relref "#EVL_SEM_ANY_INITIALIZER" %}}) but not passed to any
+If _sem_ was statically initialized with [EVL_SEM_INITIALIZER]({{%
+relref "#EVL_SEM_INITIALIZER" %}}) but not passed to any
 semaphore-related call yet, then any error status returned by
-[evl_new_sem_any()]({{% relref "#evl_new_sem_any" %}}) may be passed
+[evl_create_sem()]({{% relref "#evl_create_sem" %}}) may be passed
 back to the caller in case the implicit initialization call fails.
 
 ---
@@ -318,15 +320,17 @@ not lead to a negative count.
 
 {{% argument sem %}}
 The in-memory semaphore descriptor constructed by
-either `evl_new_sem[_any]()` or `evl_open_sem()`, or statically built
-with [EVL_SEM\[_ANY\]_INITIALIZER]({{% relref "#EVL_SEM_ANY_INITIALIZER"
-%}}). In the latter case, an implicit call to `evl_new_sem_any()` for
+either [evl_create_sem()]({{< relref "#evl_create_sem" >}}) or
+[evl_open_sem()]({{< relref "#evl_open_sem" >}}), or statically built
+with [EVL_SEM_INITIALIZER]({{% relref "#EVL_SEM_INITIALIZER"
+%}}). In the latter case, an implicit call to
+[evl_create_sem()]({{< relref "#evl_create_sem" >}}) for
 _sem_ is issued before a wait is attempted, which may trigger a transition
 to the in-band execution mode for the caller.
 {{% /argument %}}
 
-`evl_tryget_sem()` returns zero on success. Otherwise, a negated error
-code may be returned if:
+[evl_tryget_sem()]({{< relref "#evl_tryget_sem" >}}) returns zero on
+success. Otherwise, a negated error code may be returned if:
 
 -EAGAIN       _sem_ count value is zero or negative at the time of the call.
 
@@ -335,9 +339,9 @@ code may be returned if:
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
 
-If _sem_ was statically initialized with [EVL_SEM\[_ANY\]_INITIALIZER]({{%
-relref "#EVL_SEM_ANY_INITIALIZER" %}}), then any error returned by
-[evl_new_sem_any()]({{% relref "#evl_new_sem_any" %}}) may be passed
+If _sem_ was statically initialized with [EVL_SEM_INITIALIZER]({{%
+relref "#EVL_SEM_INITIALIZER" %}}), then any error returned by
+[evl_create_sem()]({{% relref "#evl_create_sem" %}}) may be passed
 back to the caller in case the implicit initialization call fails.
 
 ---
@@ -354,10 +358,12 @@ semaphore is not contended.
 
 {{% argument sem %}}
 The in-memory semaphore descriptor constructed by either
-`evl_new_sem[_any]()` or `evl_open_sem()`, or statically built with
-[EVL_SEM\[_ANY\]_INITIALIZER]({{% relref "#EVL_SEM_ANY_INITIALIZER" %}}). In
-the latter case, the semaphore becomes valid for a call to
-`evl_peek_sem()` only after a put or [try]get operation was issued
+[evl_create_sem()]({{< relref "#evl_create_sem" >}})
+or [evl_open_sem()]({{< relref "#evl_open_sem"
+>}}), or statically built with [EVL_SEM_INITIALIZER]({{%
+relref "#EVL_SEM_INITIALIZER" %}}). In the latter case, the
+semaphore becomes valid for a call to [evl_peek_sem()]({{< relref
+"#evl_peek_sem" >}}) only after a put or [try]get operation was issued
 for it.
 {{% /argument %}}
 
@@ -366,9 +372,9 @@ The address of an integer which contains the semaphore value on
 successful return from the call.
 {{% /argument %}}
 
-`evl_peek_sem()` returns zero on success along with the current
-		 semaphore count.  Otherwise, a negated error code may
-		 be returned if:
+[evl_peek_sem()]({{< relref "#evl_peek_sem" >}}) returns zero on
+success along with the current semaphore count.  Otherwise, a negated
+error code may be returned if:
 
 -EINVAL	      _sem_ does not represent a valid in-memory semaphore
 	      descriptor. If that pointer is out of the caller's
@@ -381,27 +387,27 @@ successful return from the call.
 int evl_close_sem(struct evl_sem *sem)
 {{< /proto >}}
 
-You can use `evl_close_sem()` to dispose of an EVL semaphore,
-releasing the associated file descriptor, at which point _sem_ will
-not be valid for any subsequent operation from the current
-process. However, this semaphore is kept alive in the EVL core until
-all file descriptors opened on it by call(s) to [evl_open_sem()]({{<
-relref "#evl_open_sem" >}}) have been released, whether from the
-current process or any other process.
+You can use [evl_close_sem()]({{< relref "#evl_close_sem" >}}) to
+dispose of an EVL semaphore, releasing the associated file descriptor,
+at which point _sem_ will not be valid for any subsequent operation
+from the current process. However, this semaphore is kept alive in the
+EVL core until all file descriptors opened on it by call(s) to
+[evl_open_sem()]({{< relref "#evl_open_sem" >}}) have been released,
+whether from the current process or any other process.
 
 {{% argument sem %}}
 The in-memory descriptor of the semaphore to dismantle.
 {{% /argument %}}
 
-`evl_close_sem()` returns zero upon success. Otherwise, a negated
-error code is returned:
+[evl_close_sem()]({{< relref "#evl_close_sem" >}}) returns zero upon
+success. Otherwise, a negated error code is returned:
 
 -EINVAL	      _sem_ does not represent a valid in-memory semaphore
 	      descriptor. If that pointer is out of the caller's
 	      address space or points to read-only memory, the
 	      caller bluntly gets a memory access exception.
 
-Closing a [statically initialized]({{< relref "#EVL_SEM_ANY_INITIALIZER"
+Closing a [statically initialized]({{< relref "#EVL_SEM_INITIALIZER"
 >}}) semaphore descriptor which has never been used in get or put
 operations always returns zero.
 

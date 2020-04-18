@@ -25,9 +25,20 @@ weight: 1
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
+    <td><a href="/core/user-api/thread/index.html#evl_attach_thread" target="_blank">evl_attach_thread()</a></td>
+    <td>N/A</td> 
+    <td>&#9989;</td>
+  </tr>
+  <tr>
     <td><a href="/core/user-api/thread/index.html#evl_attach_self" target="_blank">evl_attach_self()</a></td>
     <td>N/A</td> 
-    <td>&#9989;</td> 
+    <td>&#9989;</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/thread/index.html#evl_detach_thread" target="_blank">evl_detach_thread()</a></td>
+    <td>&#9661;</td> 
+    <td>&#10005;</td> 
+  </tr>
   <tr>
     <td><a href="/core/user-api/thread/index.html#evl_detach_self" target="_blank">evl_detach_self()</a></td>
     <td>&#9661;</td> 
@@ -183,7 +194,7 @@ weight: 1
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/mutex/index.html#evl_new_mutex_any" target="_blank">evl_new_mutex_any()</a></td>
+    <td><a href="/core/user-api/mutex/index.html#evl_create_mutex" target="_blank">evl_create_mutex()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
@@ -248,7 +259,7 @@ weight: 1
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/event/index.html#evl_new_event_any" target="_blank">evl_new_event_any()</a></td>
+    <td><a href="/core/user-api/event/index.html#evl_create_event" target="_blank">evl_create_event()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
@@ -308,7 +319,7 @@ weight: 1
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/flags/index.html#evl_new_flags_any" target="_blank">evl_new_flags_any()</a></td>
+    <td><a href="/core/user-api/flags/index.html#evl_create_flags" target="_blank">evl_create_flags()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
@@ -368,7 +379,7 @@ weight: 1
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_new_sem_any" target="_blank">evl_new_sem_any()</a></td>
+    <td><a href="/core/user-api/sem/index.html#evl_create_sem" target="_blank">evl_create_sem()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
@@ -533,6 +544,11 @@ weight: 1
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
+    <td><a href="/core/user-api/proxy/index.html#evl_create_proxy" target="_blank">evl_create_proxy()</a></td>
+    <td>&#9661;</td> 
+    <td>&#9989;</td> 
+  </tr>
+  <tr>
     <td><a href="/core/user-api/proxy/index.html#evl_new_proxy" target="_blank">evl_new_proxy()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
@@ -571,6 +587,11 @@ weight: 1
     <th>Function name</th>
     <th>EVL Switch<sup>1</sup></th> 
     <th>non-EVL<sup>2</sup></th> 
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/xbuf/index.html#evl_create_xbuf" target="_blank">evl_create_xbuf()</a></td>
+    <td>&#9661;</td> 
+    <td>&#9989;</td> 
   </tr>
   <tr>
     <td><a href="/core/user-api/xbuf/index.html#evl_new_xbuf" target="_blank">evl_new_xbuf()</a></td>

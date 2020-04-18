@@ -5,6 +5,25 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 16.2020
+
+At last, the [element visibility attribute]({{< relref
+"core/user-api/_index.md#element-visibility" >}}) was introduced. EVL
+elements created by the user API can be either publically visible to
+other processes, or private to the process which creates them. These
+changes induce both an ABI and API bump. Speaking of which, there is
+now a manifest of [API revisions]({{< relref
+"core/user-api/api-revs.md" >}}) which navigates you to these changes.
+
+On the debugging front, the [SCHED_TP scheduling policy]({{< relref
+"core/user-api/scheduling/_index.md#SCHED_TP" >}}) for temporal
+partitioning has been fixed and delivers as promised.
+
+Many updates to the online documentation all over the map took place
+as well.
+
+We are now tracking kernel v5.7-rc1 and v5.4.32 LTS.
+
 ### Week 15.2020
 
 Out-of-band SPI transfers are now available with Dovetail, illustrated

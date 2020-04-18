@@ -64,8 +64,8 @@ and writing complete messages at each transfer.
 
 ### Cross-buffer services {#xbuf-services}
 
-{{< proto evl_new_xbuf >}}
-int evl_new_xbuf(size_t i_bufsz, size_t o_bufsz,  const char *fmt, ...)
+{{< proto evl_create_xbuf >}}
+int evl_create_xbuf(size_t i_bufsz, size_t o_bufsz, int flags, const char *fmt, ...)
 {{< /proto >}}
 
 This call creates a new cross-buffer, then returns a file descriptor
@@ -93,23 +93,35 @@ zero, the cross-buffer is intended to relay inbound messages
 exclusively, i.e. from the out-of-band to the in-band context.
 {{% /argument %}}
 
+{{% argument flags %}}
+A set of creation flags for the new element, defining its
+[visibility]({{< relref "core/user-api/_index.md#element-visibility"
+>}}):
+
+  - `EVL_CLONE_PUBLIC` denotes a public element which is represented
+    by a device file in the [/dev/evl]({{< relref
+    "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy, which
+    makes it visible to other processes for sharing.
+  
+  - `EVL_CLONE_PRIVATE` denotes an element which is private to the
+    calling process. No device file appears for it in the [/dev/evl]({{< relref
+    "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy.
+ {{% /argument %}}
+
 {{% argument fmt %}}
-A [printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html)-like
-format string to generate the cross-buffer name. A common way of generating
-unique names is to add the calling process's _pid_ somewhere into the
-format string as illustrated in the example. The generated name is
-used to form a last part of a pathname, referring to the new
-[cross-buffer]({{< relref "core/_index.md" >}}) device in the file system. So
-this name must contain only valid characters in this context,
-excluding slashes.
+A [printf](http://man7.org/linux/man-pages/man3/printf.3.html)-like
+format string to generate the cross-buffer name. See this description of the
+[naming convention]
+({{< relref "core/user-api/_index.md#element-naming-convention" >}}).
 {{% /argument %}}
 
 {{% argument "..." %}}
 The optional variable argument list completing the format.
 {{% /argument %}}
 
-`evl_new_xbuf()` returns the file descriptor of the new cross-buffer on
-success. If the call fails, a negated error code is returned instead:
+[evl_create_xbuf()]({{< relref "#evl_create_xbuf" >}}) returns the
+file descriptor of the new cross-buffer on success. If the call fails,
+a negated error code is returned instead:
 
 - -EEXIST	The generated name is conflicting with an existing cross-buffer.
 
@@ -139,6 +151,26 @@ success. If the call fails, a negated error code is returned instead:
   		"core/user-api/init/_index.md#evl_init" >}}). You have
   		to bootstrap the library services in a way or another
   		before creating a cross-buffer.
+
+---
+
+{{< proto evl_new_xbuf >}}
+int evl_new_xbuf(size_t io_bufsz, const char *fmt, ...)
+{{< /proto >}}
+
+This call is a shorthand for creating a private cross-buffer with
+identically-sized I/O buffers. It is identical to calling:
+
+```
+	evl_create_xbuf(io_bufsz, io_bufsz, EVL_CLONE_PRIVATE, fmt, ...);
+```
+
+{{% notice info %}}
+Note that if the [generated name] ({{< relref
+"core/user-api/_index.md#element-naming-convention" >}}) starts with a
+slash ('/') character, `EVL_CLONE_PRIVATE` would be automatically turned
+into `EVL_CLONE_PUBLIC` internally.
+{{% /notice %}}
 
 ---
 

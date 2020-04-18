@@ -39,7 +39,9 @@ hence directly from the out-of-band execution stage.
 {{% notice tip %}}
 Since the EVL core exports each [element]({{< relref
 "core/_index.md#evl-core-elements" >}}) as a character device which
-can be accessed from _/dev/evl_, interacting with EVL elements via
+can be accessed from [/dev/evl]({{< relref
+"core/user-api/_index.md#evl-fs-hierarchy" >}}),
+interacting with EVL elements via
 [libevl]({{< relref "core/user-api/_index.md" >}}) is a actually done
 through the out-of-band I/O interface documented here.
 {{% /notice %}}
@@ -53,7 +55,7 @@ ssize_t oob_read(int efd, void *buf, size_t count)
 This is the strict equivalent to the standard
 [read(2)](http://man7.org/linux/man-pages/man2/read.2.html) system
 call, but for running the request from the out-of-band stage. In other
-words, `oob_read()` attempts to read up to _count_ bytes from file
+words, [oob_read()]({{< relref "#oob_read" >}}) attempts to read up to _count_ bytes from file
 descriptor _fd_ into the buffer starting at _buf_, from the
 out-of-band execution stage.
 
@@ -76,9 +78,9 @@ A buffer to receive the data.
 The number of bytes to read at most, which should fit into _buf_.
 {{% /argument %}}
 
-`oob_read()` returns the actual number of bytes read, copied to _buf_
-on success. Otherwise, -1 is returned, and errno is set to the error
-code:
+[oob_read()]({{< relref "#oob_read" >}}) returns the actual number of
+bytes read, copied to _buf_ on success. Otherwise, -1 is returned, and
+errno is set to the error code:
 
 EBADF	if _fd_ does not refer to a real-time capable driver, or _fd_
 	was not opened for reading.
@@ -99,7 +101,7 @@ ENOBUFS _fd_ is a [cross-buffer]({{< relref
 	is no ring buffer space associated with the outbound traffic
 	(i.e. _o\_bufsz_ parameter was zero when [creating the
 	cross-buffer]({{< relref
-	"core/user-api/xbuf/_index.md#evl_new_xbuf" >}})).
+	"core/user-api/xbuf/_index.md#evl_create_xbuf" >}})).
 
 EINVAL  _fd_ is a [cross-buffer]({{< relref
 	"core/user-api/xbuf/_index.md" >}}) file descriptor, and
@@ -107,7 +109,7 @@ EINVAL  _fd_ is a [cross-buffer]({{< relref
 	with the traffic direction. (i.e. either the _i\_bufsz_ or
 	_o\_bufsz_ parameter given when [creating the
 	cross-buffer]({{< relref
-	"core/user-api/xbuf/_index.md#evl_new_xbuf" >}})).
+	"core/user-api/xbuf/_index.md#evl_create_xbuf" >}})).
 
 ---
 
@@ -118,7 +120,7 @@ ssize_t oob_write(int efd, const void *buf, size_t count)
 This is the strict equivalent to the standard
 [write(2)](http://man7.org/linux/man-pages/man2/write.2.html) system
 call, but for running the request from the out-of-band stage. In other
-words, `oob_write()` attempts to write up to _count_ bytes to file
+words, [oob_write()]({{< relref "#oob_write" >}}) attempts to write up to _count_ bytes to file
 descriptor _fd_ from the buffer starting at _buf_, from the
 out-of-band execution stage.
 
@@ -141,9 +143,9 @@ A buffer containing the data to be written.
 The number of bytes to write starting from _buf_.
 {{% /argument %}}
 
-`oob_write()` returns the actual number of bytes written from _buf_ on
-success. Otherwise, -1 is returned, and errno is set to the error
-code:
+[oob_write()]({{< relref "#oob_write" >}}) returns the actual number
+of bytes written from _buf_ on success. Otherwise, -1 is returned, and
+errno is set to the error code:
 
 EBADF	if _fd_ does not refer to a real-time capable driver, or _fd_ was
 	not opened for writing.
@@ -161,19 +163,19 @@ Other driver-specific error codes may be returned, such as:
 
 EFBIG	_fd_ is a [proxy]({{< relref "core/user-api/proxy/_index.md"
 	>}}) file descriptor, and _count_ is larger than the size of the
-	output buffer as specified in the call to [evl_new_proxy()]
-	({{< relref "core/user-api/proxy/_index.md#evl_new_proxy" >}}).
+	output buffer as specified in the call to [evl_create_proxy()]
+	({{< relref "core/user-api/proxy/_index.md#evl_create_proxy" >}}).
 
 EINVAL	_fd_ is a [proxy]({{< relref "core/user-api/proxy/_index.md"
 	>}}) file descriptor, and _count_ is not a multiple of the
-	output granularity as specified in the call to [evl_new_proxy()]
-	({{< relref "core/user-api/proxy/_index.md#evl_new_proxy" >}}).
+	output granularity as specified in the call to [evl_create_proxy()]
+	({{< relref "core/user-api/proxy/_index.md#evl_create_proxy" >}}).
 
 ENOBUFS _fd_ is a [cross-buffer]({{< relref
 	"core/user-api/xbuf/_index.md" >}}) file descriptor, and there is no
 	ring buffer space associated with the inbound traffic (i.e. _i\_bufsz_
 	parameter was zero when [creating the cross-buffer]({{< relref
-	"core/user-api/xbuf/_index.md#evl_new_xbuf" >}})).
+	"core/user-api/xbuf/_index.md#evl_create_xbuf" >}})).
 
 EINVAL  _fd_ is a [cross-buffer]({{< relref
 	"core/user-api/xbuf/_index.md" >}}) file descriptor, and
@@ -181,7 +183,7 @@ EINVAL  _fd_ is a [cross-buffer]({{< relref
 	with the traffic direction. (i.e. either the _i\_bufsz_ or
 	_o\_bufsz_ parameter given when [creating the
 	cross-buffer]({{< relref
-	"core/user-api/xbuf/_index.md#evl_new_xbuf" >}})).
+	"core/user-api/xbuf/_index.md#evl_create_xbuf" >}})).
 
 ---
 
@@ -192,7 +194,7 @@ int oob_ioctl(int efd, unsigned long request, ...)
 This is the strict equivalent to the standard
 [ioctl(2)](http://man7.org/linux/man-pages/man2/ioctl.2.html) system
 call, but for running the I/O control request from the out-of-band
-stage. In other words, `oob_ioctl()` issues _request_ to file
+stage. In other words, [oob_ioctl()]({{< relref "#oob_ioctl" >}}) issues _request_ to file
 descriptor _fd_ from the out-of-band execution stage.
 
 The caller must be an [EVL thread]({{< relref
@@ -214,8 +216,9 @@ The I/O control request code.
 An optional variable argument list which applies to _request_.
 {{% /argument %}}
 
-`oob_ioctl()` returns zero on success. Otherwise, -1 is returned, and
-errno is set to the error code:
+[oob_ioctl()]({{< relref "#oob_ioctl" >}}) returns zero on
+success. Otherwise, -1 is returned, and errno is set to the error
+code:
 
 EBADF	if _fd_ does not refer to a real-time capable driver.
 

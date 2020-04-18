@@ -5,14 +5,15 @@ weight: 45
 
 ### Waiting for events on file descriptors
 
-Every [EVL core element]({{%relref "core/_index.md#evl-core-elements"
-%}}) is represented by a device file accessible in the _/dev/evl_
-hierarchy, and requests can be sent to any of those elements by
-writing to common file descriptors obtained on the corresponding
-files. Conversely, information is returned to the caller by reading
-from those file descriptors. EVL applications can poll for out-of-band
-events occurring on a set of file descriptors opened on elements, just
-like in-band applications can use
+Every [EVL element]({{%relref "core/_index.md#evl-core-elements" %}})
+is represented by a device file accessible in the [/dev/evl]({{<
+relref "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy,
+and requests can be sent to any of those elements by writing to common
+file descriptors obtained on the corresponding files. Conversely,
+information is returned to the caller by reading from those file
+descriptors. EVL applications can poll for out-of-band events
+occurring on a set of file descriptors opened on elements, just like
+in-band applications can use
 [poll(2)](http://man7.org/linux/man-pages/man2/poll.2.html) with other
 files.
 

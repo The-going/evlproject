@@ -234,7 +234,7 @@ returned:
 
 -	Since `evl_init_heap()` creates a mutex for protecting access to
 	the heap meta-data, any return code returned by
-	[evl_new_mutex()]({{< relref "core/user-api/mutex/_index.md#evl_new_mutex" >}}).
+	[evl_create_mutex()]({{< relref "core/user-api/mutex/_index.md#evl_create_mutex" >}}).
 
 ---
 

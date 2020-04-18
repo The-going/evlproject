@@ -41,12 +41,12 @@ common resources, like opening files, allocating memory buffers and so
 on. At some point later on, this thread calls [evl_attach_self()]({{<
 relref "core/user-api/thread/_index.md#evl_attach_thread" >}}) in
 order to bind itself to the EVL core, which in turn allows it to
-create other EVL objects (e.g. [evl_new_mutex()]({{< relref
-"core/user-api/mutex/_index.md#evl_new_mutex" >}}),
-[evl_new_event()]({{< relref
-"core/user-api/event/_index.md#evl_new_event" >}}),
-[evl_new_xbuf()]({{< relref
-"core/user-api/xbuf/_index.md#evl_new_xbuf" >}})). If the application
+create other EVL objects (e.g. [evl_create_mutex()]({{< relref
+"core/user-api/mutex/_index.md#evl_create_mutex" >}}),
+[evl_create_event()]({{< relref
+"core/user-api/event/_index.md#evl_create_event" >}}),
+[evl_create_xbuf()]({{< relref
+"core/user-api/xbuf/_index.md#evl_create_xbuf" >}})). If the application
 needs more EVL threads, it simply spawns additional POSIX threads
 using
 [pthread_create(3)](http://man7.org/linux/man-pages/man3/pthread_create.3.html),
@@ -114,37 +114,167 @@ Outside of those time-critical sections which require the EVL core to
 guarantee ultra-low latency scheduling for your application threads,
 your code may happily call whatever service from whatever C library.
 
-## What about multi-process applications?
+## What about multi-process applications? {#multi-process-apps}
 
 `libevl` does not impose any policy regarding how you might want to
 organize your application over multiple processes. However, the design
 and implementation of the interface to the EVL core makes sharing EVL
-resources a fairly simple task:
+resources a fairly simple task. EVL elements can be made visible as
+common [devices]({{< relref "core/_index.md#everything-is-a-file"
+>}}), such as [threads]({{< relref "core/user-api/thread/_index.md"
+>}}), [mutexes]({{< relref "core/user-api/mutex/_index.md" >}}),
+[events]({{< relref "core/user-api/event/_index.md" >}}),
+[semaphores]({{< relref "core/user-api/semaphore/_index.md" >}}).
+Therefore, every element you may want to share can be exported to
+other processes, based on a [visibility attribute]({{< relref
+"#element-visibility" >}}) mentioned at creation time.
 
-- most EVL resources are visible as common [devices in the DEVTMPFS
-  file system]({{< relref "core/_index.md#everything-is-a-file"
-  >}}). [Threads]({{< relref "core/user-api/thread/_index.md" >}}),
-  [mutexes]({{< relref "core/user-api/mutex/_index.md" >}}),
-  [events]({{< relref "core/user-api/event/_index.md" >}}),
-  [semaphores]({{< relref "core/user-api/semaphore/_index.md" >}})
-  etc., every resource you might want to share can be accessed by
-  multiple processes as files.
+In addition, EVL provides a couple of additional features which come
+in handy for sharing data between processes:
 
-- the implementation guarantees that any EVL resource which is
-  accessible from the device file system can be safely manipulated by
-  any process which is allowed to get a file descriptor on the
-  corresponding device file. EVL system calls apply to the resource
-  which is eventually referred to by the file descriptor. For
-  instance, if a process may open a device file which path is
-  _"/dev/evl/thread/supervisor"_, then it may send requests to the
-  corresponding thread, regardless of the process it belongs to. Such
-  thread was created by the [evl_attach_self("supervisor")]({{< relref
-  "core/user-api/thread/_index.md#evl_thread_self" >}}) system call.
+- a general memory-sharing mechanism based on the [file proxy]({{<
+relref "core/user-api/proxy/_index.md#proxy-mapping-export" >}}),
+which is used as an anchor point for memory-mappable devices.
 
-In addition, EVL provides a mechanism which come in handy for sharing
-memory between processes, using the [file proxy]({{< relref
-"core/user-api/proxy/_index.md#proxy-mapping-export" >}}) as an anchor
-point for memory-mappable devices.
+- the [tube]({{< relref "core/user-api/tube/_index.md" >}}) data
+structure, which is a lightweight FIFO working locklessly, you can
+also use for [inter-process messaging]({{< relref
+"core/user-api/tube/_index.md#inter-process-tube" >}}).
+
+## Visibility: public and private elements {#element-visibility}
+
+As hinted earlier, EVL elements created by the user API can be either
+publically visible to other processes, or private to the process which
+creates them. This is a choice you make at creation time, by passing
+the proper visibility attribute to any of the `evl_create_*()` system
+calls, either `EVL_CLONE_PUBLIC` or `EVL_CLONE_PRIVATE`.
+
+A public element is represented in the [/dev/evl]({{< relref
+"#evl-fs-hierarchy" >}}) hierarchy by a device file, which is visible
+to any process.  Once a file descriptor is available from
+[opening](http://man7.org/linux/man-pages/man2/open.2.html) such file,
+it can be used to send requests to the element it refers to.
+
+Conversely, a private element has no presence in the `/dev/evl`
+hierarchy. Only the process which created such element receives a file
+descriptor referring to it, directly from the creation call.
+
+## The `/dev/evl` device file hierarchy {#evl-fs-hierarchy}
+
+Because of its [everything-is-a-file]({{< relref
+"core/_index.md#everything-is-a-file" >}}) mantra, EVL exports a
+number of device files in the `/dev/evl` hierarchy, which lives in the
+DEVTMPFS file system. Each device file either represents an active
+[public element]({{< relref "#element-visibility" >}}), or a special
+command device used internally by `libevl`. Element device files are
+organized in directories, one for each [element class]({{< relref
+"core/_index.md#evl-core-elements" >}}): clock, monitor, proxy, thread
+and cross-buffer; general command devices appear at the top level,
+such as _control_, _poll_ and _trace_:
+
+```
+~ # cd /dev/evl
+/dev/evl # ls -l
+total 0
+drwxr-xr-x    2 root     root            80 Jan  1  1970 clock
+crw-rw----    1 root     root      246,   0 Jan  1  1970 control
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 monitor
+crw-rw----    1 root     root      246,   3 Jan  1  1970 poll
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 proxy
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 thread
+crw-rw----    1 root     root      246,   6 Jan  1  1970 trace
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 xbuf
+```
+
+Inside each class directory, the live public elements of that class
+are visible, in addition to the special _clone_ command device. For
+the curious, the role of this special device is documented in the
+[under-the-hood]({{< relref
+"core/under-the-hood/_index.md#hood-element-creation" >}}) section.
+
+```
+/dev/evl/thread # ls -l
+total 0
+crw-rw----    1 root     root      246,   1 Jan  1  1970 clone
+crw-rw----    1 root     root      244,   0 Apr 19 10:45 timer-responder:2562
+```
+
+## Managing access permissions to EVL device files {#device-ownership-and-access}
+
+In some situations, you may want to restrict access to EVL devices
+files present in the [`/dev/evl`]({{< relref "#evl-fs-hierarchy" >}})
+file hierarchy to a particular user or group of users. Because a
+kernel device object is associated to each live EVL element in the
+system, you can attach rules to UDEV events generated for public EVL
+elements or special command devices appearing in the [`/dev/evl`]({{<
+relref "#evl-fs-hierarchy" >}}) file hierarchy, in order to set up
+their ownership and access permissions at creation time.
+
+For [public elements]({{< relref "#element-visibility" >}}) which come
+and go dynamically, EVL enforces a simple rule internally to set the
+initial user and group ownership of any element device file, which is
+to inherit it from the _clone_ device file of the class it belongs
+to. For instance, if you set the ownership of the
+`/dev/evl/thread/clone` device file via some UDEV rule to
+`square.wheel`, all public [EVL threads]({{< relref
+"core/user-api/thread/_index.md" >}}) will belong at creation time to
+user `square`, group `wheel`.
+
+## Element names {#element-naming-convention}
+
+Every `evl_create_*()` call which creates a new element accepts a
+[printf](http://man7.org/linux/man-pages/man3/printf.3.html)-like
+format string to generate the element name. A common way of generating
+unique names is to include the calling process's _pid_ somewhere into
+the format string, so that you may start multiple instances of the
+same application without running into naming conflicts. The
+requirement for a unique name does not depend on the visibility
+attribute: multiple elements cannot share the same name, regarless of
+their visibility. For instance:
+
+```
+#include <unistd.h>
+#include <evl/thread.h>
+
+	 ret = evl_attach_self("a-private-thread:%d", getpid());
+
+~# ls -l /dev/evl/thread
+total 0
+crw-rw----    1 root     root      248,   1 Apr 17 11:59 clone
+```
+
+The generated name is used to create a _/sysfs_ attribute directory
+exporting the state information about the element. For [public
+elements]({{< relref "#element-visibility" >}}), a device file is
+created with the same name in the [/dev/evl]({{< relref
+"#evl-fs-hierarchy" >}}) hierarchy, for accessing the element via the
+[open(2)](http://man7.org/linux/man-pages/man2/open.2.html) system
+call.  Therefore, a name must contain only valid characters in the
+context of a file name.
+
+As a shorthand, `libevl` forces in the `EVL_CLONE_PUBLIC` [visibility
+attribute]({{< relref "#element-visibility" >}}) whenever the element
+name passed to the system call starts with a slash '/' character, in
+which case this leading character will be skipped to form the actual
+element name:
+
+```
+#include <unistd.h>
+#include <evl/thread.h>
+
+	 ret = evl_attach_self("/a-publically-visible-thread:%d", getpid());
+
+~# ls -l /dev/evl/thread
+total 0
+crw-rw----    1 root     root      248,   1 Apr 17 11:59 clone
+crw-rw----    1 root     root      246,   0 Apr 17 11:59 a-publically-visible-thread
+```
+
+Note that when found, such shorthand overrides the `EVL_CLONE_PRIVATE`
+visibility attribute which might be present into the creation flags
+for the same call. The slash character is invalid in any other part of
+the element name, although it would be silently remapped to a
+placeholder for private elements without leading to an API error.
 
 ---
 

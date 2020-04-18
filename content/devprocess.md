@@ -179,7 +179,7 @@ tagged whenever any of the following happens:
   [\_\_EVL\_\_](https://git.evlproject.org/libevl.git/tree/include/evl/evl.h?h=master)
   C macro-definition. This information can also be retrieved at
   runtime by calling the [evl_get_version()]({{ relref
-  "core/user-api/misc/index.html#evl_get_version_index.md" >}})
+  "core/user-api/misc/_index.html#evl_get_version" >}})
   routine.
 
 - each time `evl/master` reaches a **.0** kernel release, if commits

@@ -16,7 +16,7 @@ about the "other path to Linux real-time", whether it is useful for
 developing your own Linux-based dual kernel system, contributing to
 EVL, or educational purpose.
 
-## How do applications request services from the EVL core?
+## How do applications request services from the EVL core? {#hood-syscall-mechanism}
 
 An EVL application interacts with so-called EVL [elements]({{< relref
 "core/_index.md#evl-core-elements" >}}). Each element usually exports
@@ -30,9 +30,10 @@ standard [glibc](https://www.gnu.org/software/libc/) or [libevl]({{<
 relref "core/user-api/_index.md" >}}) whenever there is a real-time
 requirement.
 
-To sum up, an application issues file I/O requests on element devices
-to obtain services from the EVL core. The system calls involved in the
-interface between an application and the EVL core are exclusively
+To sum up, an application (indirectly) issues file I/O requests on
+element devices to obtain services from the EVL core. The system calls
+involved in the interface between an application and the EVL core are
+exclusively
 [open(2)](http://man7.org/linux/man-pages/man2/open.2.html),
 [close(2)](http://man7.org/linux/man-pages/man2/close.2.html),
 [read(2)](http://man7.org/linux/man-pages/man2/read.2.html),
@@ -44,6 +45,10 @@ in-band side, and [oob_ioctl()]({{< relref
 "core/user-api/io/_index.md#oob_read" >}}), [oob_write()]({{< relref
 "core/user-api/io/_index.md#oob_write" >}}) for the out-of-band side.
 
+[libevl]({{< relref "core/user-api/_index.md" >}}) hides the
+nitty-gritty details of forming these I/O requests, presenting a
+high-level API to be used in applications.
+
 ## Where are the EVL core services implemented?
 
 The EVL core can be described as a multi-device driver, each device
@@ -54,7 +59,7 @@ character-based device drivers, one per element type. The core is
 implemented under the [kernel/evl
 hierarchy](https://git.evlproject.org/linux-evl.git/tree/kernel/evl?h=evl/master).
 
-### Element creation
+### Element creation {#hood-element-creation}
 
 The basic operation every element driver implements is _cloning_,
 which creates a new instance of the element type upon request from the

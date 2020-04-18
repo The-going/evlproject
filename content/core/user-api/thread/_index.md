@@ -49,32 +49,35 @@ to the caller when it runs out-of-band.
 
 ---
 
-{{< proto evl_attach_self >}}
-int evl_attach_self(const char *fmt, ...)
+{{< proto evl_attach_thread >}}
+int evl_attach_thread(int flags, const char *fmt, ...)
 {{< /proto >}}
 
 EVL does not actually _create_ threads; instead, it enables a regular
 POSIX thread to invoke its real-time services once this thread has
-attached to the EVL core.  [evl_attach_self()]({{% relref
-"#evl_attach_self" %}}) is the library call which requests such
-attachment. All you need to provide is a _unique_ thread name, which
-will be the name of the device element representing that thread in the
-file system.
+attached to the EVL core.  [evl_attach_thread()]({{% relref
+"#evl_attach_thread" %}}) is the initial service which requests such
+attachment. In most cases, applications would use the
+[evl_attach_self()]({{% relref "#evl_attach_self" %}}) shorthand
+instead, which calls [evl_attach_thread()]({{% relref
+"#evl_attach_thread" %}}) under the hood with the default set of
+creation flags.
 
-There is no requirement as of when [evl_attach_self()]({{% relref
-"#evl_attach_self" %}}) should be called in a thread execution
-flow. You just have to call it before it starts requesting EVL
+There is no requirement as of when [evl_attach_thread()]({{% relref
+"#evl_attach_thread" %}}) (or [evl_attach_self()]({{% relref
+"#evl_attach_self" %}})) should be called in the thread execution
+flow. You just have to call it before it starts requesting other EVL
 services. Note that the main thread of a process is no different from
-any other thread to EVL. It may call [evl_attach_self()]({{% relref
-"#evl_attach_self" %}}) whenever you see fit, or not at all if you
+any other thread to EVL. It may call [evl_attach_thread()]({{% relref
+"#evl_attach_thread" %}}) whenever you see fit, or not at all if you
 don't plan to request EVL services from this context.
 
 As part of the attachment process, the calling thread is also pinned
 on its current CPU. You may change this default affinity by calling
 [sched_setaffinity(2)](http://man7.org/linux/man-pages/man2/sched_setaffinity.2.html)
-as you see fit any time after [evl_attach_self()]({{% relref
-"#evl_attach_self" %}}) has returned, but keep in mind that such
-_libc_ service will trigger a regular Linux system call, which will
+as you see fit any time after [evl_attach_thread()]({{% relref
+"#evl_attach_thread" %}}) has returned, but keep in mind that such
+_libc_ service will trigger a common Linux system call, which will
 cause your thread to switch to [in-band context]({{< relref
 "dovetail/altsched.md#inband-switch" >}}) automatically when doing
 so. So you may want to avoid calling
@@ -82,10 +85,9 @@ so. So you may want to avoid calling
 from your time-critical loop, which would not make much sense anyway
 since this is fundamentally an heavyweight operation kernel-wise.
 
-During the attachment, your thread is given an [out-of-band
-scheduling]({{% relref "core/user-api/scheduling/_index.md" %}}) class
-and priority which have been translated from the in-band scheduling
-settings it had before the call, as follows:
+As part of the attachment process, the in-band scheduling settings
+your thread had before the call is translated to the closest EVL
+counterpart, as follows:
 
 | in-band settings        | out-of-band settings |
 | ------------------      | ------------------   |
@@ -95,27 +97,70 @@ settings it had before the call, as follows:
 | \<other policies\>, prio  |    [SCHED_FIFO]({{% relref "core/user-api/scheduling/_index.md#SCHED_FIFO" %}}), prio  |
 
 As a consequence, the thread would still run in-band on return from
-[evl_attach_self()]({{% relref "#evl_attach_self" %}}) if it was
-originally assigned to the _SCHED_OTHER_, _SCHED_BATCH_ or
-_SCHED_IDLE_ classes. Conversely, the thread would run out-of-band on
-return from [evl_attach_self()]({{% relref "#evl_attach_self" %}}) if
+[evl_attach_thread()]({{% relref "#evl_attach_thread" %}}) if it was
+originally assigned to the `SCHED_OTHER`, `SCHED_BATCH` or
+`SCHED_IDLE` classes. Conversely, the thread would run out-of-band on
+return from [evl_attach_thread()]({{% relref "#evl_attach_thread" %}}) if
 it was originally assigned to any other in-band scheduling class
-(e.g. _SCHED_FIFO_).
+(e.g. `SCHED_FIFO`).
+
+> 
+```
+#include <sys/types.h>
+#include <unistd.h>
+#include <sched.h>
+#include <pthread.h>
+#include <evl/sched.h>
+#include <evl/thread.h>
+
+int main(int argc, char *argv[])
+{
+	struct sched_param param;
+	int ret, tfd;
+
+	param.sched_priority = 8;
+	ret = pthread_setschedparam(pthread_self(), SCHED_FIFO, &param);
+	...
+
+	/* EVL inherits the in-band scheduling params upon attachment. */
+	tfd = evl_attach_self("app-main-thread:%d", getpid());
+
+	/*
+	 * Now main() is running out-of-band, in the EVL SCHED_FIFO
+	 * class at priority 8.
+	 */
+}
+
+```
+
+{{% argument flags %}}
+A set of creation flags for the new element, defining its
+[visibility]({{< relref "core/user-api/_index.md#element-visibility"
+>}}):
+
+  - `EVL_CLONE_PUBLIC` denotes a public element which is represented
+    by a device file in the [/dev/evl]({{< relref
+    "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy, which
+    makes it visible to other processes for sharing.
+  
+  - `EVL_CLONE_PRIVATE` denotes an element which is private to the
+    calling process. No device file appears for it in the
+    [/dev/evl]({{< relref "core/user-api/_index.md#evl-fs-hierarchy" >}})
+    file hierarchy.
+{{% /argument %}}
 
 {{% argument fmt %}}
-A printf-like format string to generate the thread name. A common way
-of generating unique names is to add the calling process's
-_pid_ somewhere into the format string as illustrated in the
-example. The generated name is used to form a file path, referring to
-the new thread element's device in the file system. So this name must
-contain only valid characters in this context, excluding slashes.
+A [printf](http://man7.org/linux/man-pages/man3/printf.3.html)-like
+format string to generate the thread name. See this description of the
+[naming convention]
+({{< relref "core/user-api/_index.md#element-naming-convention" >}}).
 {{% /argument %}}
 
 {{% argument "..." %}}
 The optional variable argument list completing the format.
 {{% /argument %}}
 
-[evl_attach_self()]({{% relref "#evl_attach_self" %}}) returns the
+[evl_attach_thread()]({{% relref "#evl_attach_thread" %}}) returns the
 file descriptor of the newly attached thread on success. You may use
 this _fd_ to submit requests for this thread in any call which asks
 for a thread file descriptor. If the call fails, a negated error code
@@ -170,19 +215,20 @@ static void *byte_crunching_thread(void *arg)
 	int efd;
 
 	/* Attach the current thread to the EVL core. */
-	efd = evl_attach_self("cruncher-%d", getpid());
+	efd = evl_attach_self("/cruncher-%d", getpid());
 	...
 }
 ```
 
 As a result of this call, you should see a new device appear into the
-_/dev/evl/thread_ hierarchy, e.g.:
+[/dev/evl/thread]({{< relref
+"core/user-api/_index.md#evl-fs-hierarchy" >}}) hierarchy, e.g.:
 
 ```
 $ ls -l /dev/evl/thread
 total 0
-crw-rw----    1 root     root      246,   1 Jan  1  1970 clone
-crw-rw----    1 root     root      246,   1 Jan  1  1970 cruncher-2712
+crw-rw----    1 root     root      248,   1 Jan  1  1970 clone
+crw-rw----    1 root     root      246,   0 Jan  1  1970 cruncher-2712
 ```
 
 1. You can revert the attachment to EVL at any time by calling
@@ -210,19 +256,53 @@ descriptors referring to that thread have been closed.
 
 6. The EVL library sets the O_CLOEXEC flag on the file descriptor
 referring to the newly attached thread before returning from
-[evl_attach_self()]({{% relref "#evl_attach_self" %}}).
+[evl_attach_thread()]({{% relref "#evl_attach_thread" %}}).
 
 ---
 
-{{< proto evl_detach_self >}}
-int evl_detach_self(void)
+{{< proto evl_attach_self >}}
+int evl_attach_self(int flags, const char *fmt, ...)
 {{< /proto >}}
 
-[evl_detach_self()]({{% relref "#evl_detach_self" %}}) reverts the action of [evl_attach_self()]({{%
-relref "#evl_attach_self" %}}), detaching the calling thread from the
-EVL core. Once this operation has succeeded, the current thread cannot
-submit EVL requests anymore. This call returns zero on success, or a
-negated error code if something went wrong:
+This call is a shorthand for attaching the calling thread to the EVL
+core, with the private [visibility attribute]({{< relref
+"core/user-api/_index.md#element-visibility" >}}) set. It is identical
+to calling:
+
+```
+	evl_attach_thread(EVL_CLONE_PRIVATE, fmt, ...);
+```
+
+{{% notice info %}}
+Note that if the [generated name] ({{< relref
+"core/user-api/_index.md#element-naming-convention" >}}) starts with a
+slash ('/') character, `EVL_CLONE_PRIVATE` would be automatically turned
+into `EVL_CLONE_PUBLIC` internally.
+{{% /notice %}}
+
+---
+
+{{< proto evl_detach_thread >}}
+int evl_detach_thread(int flags)
+{{< /proto >}}
+
+[evl_detach_thread()]({{% relref "#evl_detach_thread" %}}) reverts the
+action of [evl_attach_thread()]({{% relref "#evl_attach_thread" %}}),
+detaching the calling thread from the EVL core. Once this operation
+has succeeded, the current thread cannot submit EVL requests
+anymore. Applications should use the [evl_detach_self()]({{% relref
+"#evl_detach_self" %}}) shorthand, which calls
+[evl_detach_thread()]({{% relref "#evl_detach_thread" %}}) with
+_flags_ set to zero as recommended.
+
+This call returns zero on success, or a negated error code if
+something went wrong:
+
+{{% argument flags %}}
+This parameter is currently unused and should be passed as zero.
+{{% /argument %}}
+
+-EINVAL		_flags_ is not zero.
 
 -EPERM		The current thread is not attached to the EVL core.
 
@@ -233,29 +313,43 @@ static void *byte_crunching_thread(void *arg)
 {
 	int efd;
 
-	/* Attach the current thread to the EVL core. */
-	efd = evl_attach_self("cruncher-%d", getpid());
+	/* Attach the current thread to the EVL core (using the long call form). */
+	efd = evl_attach_thread(EVL_CLONE_PUBLIC, "cruncher-%d", getpid());
 	...
-	/* Then detach it. */
-	evl_detach_self();
+	/* Then detach it (also with the long call form). */
+	evl_detach_thread(0);
 	...
 }
 ```
 
 1. You can re-attach the detached thread to EVL at any time by calling
-[evl_attach_self()]({{% relref "#evl_attach_self" %}}) again.
+[evl_attach_thread()]({{% relref "#evl_attach_thread" %}}) again (or
+the [evl_attach_self()]({{% relref "#evl_attach_self" %}}) shorthand).
 
 2. If a valid file descriptor is still referring to a detached thread,
 or after the thread has exited, any request submitted for that thread
 using such descriptor would receive -ESTALE.
 
 3. An EVL thread which exits is automatically detached from the EVL
-core, you don't have to call [evl_detach_self()]({{% relref
-"#evl_detach_self" %}}) explicitly before exiting your thread.
+core, you don't have to call [evl_detach_thread()]({{% relref
+"#evl_detach_thread" %}}) explicitly before exiting your thread.
 
 4. The EVL core drops the kernel resources attached to a thread once
 it has detached itself or has exited, and only after all the file
 descriptors referring to that thread have been closed.
+
+---
+
+{{< proto evl_detach_self >}}
+int evl_detach_self(void)
+{{< /proto >}}
+
+This call is a shorthand for detaching the calling thread from the EVL
+core. It is identical to calling:
+
+```
+	evl_detach_thread(0);
+```
 
 ---
 
@@ -265,7 +359,7 @@ int evl_get_self(void)
 
 [evl_get_self()]({{% relref "#evl_get_self" %}}) returns the file
 descriptor obtained for the current thread after a successful call to
-[evl_attach_self()]({{% relref "#evl_attach_self" %}}).  You may use
+[evl_attach_thread()]({{% relref "#evl_attach_thread" %}}).  You may use
 this _fd_ to submit requests for the current thread in other calls
 from the EVL library which ask for a thread file descriptor.  This
 call returns a valid file descriptor referring to the caller on
@@ -291,7 +385,7 @@ static void get_caller_info(void)
 ```
 
 [evl_get_self()]({{% relref "#evl_get_self" %}}) will fail after a
-call to [evl_detach_self()]({{% relref "#evl_detach_self" %}}).
+call to [evl_detach_thread()]({{% relref "#evl_detach_thread" %}}).
 
 ---
 
@@ -422,7 +516,7 @@ success, otherwise a negated error code is returned:
 -EBADF		_efd_ is not a valid thread descriptor.
 
 -ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
-		"#evl_detach_self" >}}).
+		"#evl_detach_thread" >}}).
 
 ---
 
@@ -438,32 +532,33 @@ kthread. For this reason, unlike EVL threads running in user-space,
 **nothing prevents EVL kthreads from calling the in-band kernel
 routines from the wrong context.**
 
-### Where do thread devices live?
+### Where do public thread devices live?
 
-Each time a new thread element is created, it appears into the
-_/dev/evl/thread_ hierarchy, e.g.:
+Each time a new public thread element is created, it appears into the
+[/dev/evl/thread]({{< relref
+"core/user-api/_index.md#evl-fs-hierarchy" >}}) hierarchy, e.g.:
 
 ```
 $ ls -l /dev/evl/threads
 total 0
-crw-rw----    1 root     root      246,   1 Jan  1  1970 clone
-crw-rw----    1 root     root      244,   0 Mar  1 11:26 rtk1@0:1682
-crw-rw----    1 root     root      244,  18 Mar  1 11:26 rtk1@1:1682
-crw-rw----    1 root     root      244,  36 Mar  1 11:26 rtk1@2:1682
-crw-rw----    1 root     root      244,  54 Mar  1 11:26 rtk1@3:1682
-crw-rw----    1 root     root      244,   1 Mar  1 11:26 rtk2@0:1682
-crw-rw----    1 root     root      244,  19 Mar  1 11:26 rtk2@1:1682
-crw-rw----    1 root     root      244,  37 Mar  1 11:26 rtk2@2:1682
-crw-rw----    1 root     root      244,  55 Mar  1 11:26 rtk2@3:1682
+crw-rw----    1 root     root      248,   1 Jan  1  1970 clone
+crw-rw----    1 root     root      246,   0 Mar  1 11:26 rtk1@0:1682
+crw-rw----    1 root     root      246,  18 Mar  1 11:26 rtk1@1:1682
+crw-rw----    1 root     root      246,  36 Mar  1 11:26 rtk1@2:1682
+crw-rw----    1 root     root      246,  54 Mar  1 11:26 rtk1@3:1682
+crw-rw----    1 root     root      246,   1 Mar  1 11:26 rtk2@0:1682
+crw-rw----    1 root     root      246,  19 Mar  1 11:26 rtk2@1:1682
+crw-rw----    1 root     root      246,  37 Mar  1 11:26 rtk2@2:1682
+crw-rw----    1 root     root      246,  55 Mar  1 11:26 rtk2@3:1682
                            (snip)
-crw-rw----    1 root     root      244,   9 Mar  1 11:26 rtus_ufps0-10:1682
-crw-rw----    1 root     root      244,   8 Mar  1 11:26 rtus_ufps0-9:1682
-crw-rw----    1 root     root      244,  27 Mar  1 11:26 rtus_ufps1-10:1682
-crw-rw----    1 root     root      244,  26 Mar  1 11:26 rtus_ufps1-9:1682
-crw-rw----    1 root     root      244,  45 Mar  1 11:26 rtus_ufps2-10:1682
-crw-rw----    1 root     root      244,  44 Mar  1 11:26 rtus_ufps2-9:1682
-crw-rw----    1 root     root      244,  63 Mar  1 11:26 rtus_ufps3-10:1682
-crw-rw----    1 root     root      244,  62 Mar  1 11:26 rtus_ufps3-9:1682
+crw-rw----    1 root     root      246,   9 Mar  1 11:26 rtus_ufps0-10:1682
+crw-rw----    1 root     root      246,   8 Mar  1 11:26 rtus_ufps0-9:1682
+crw-rw----    1 root     root      246,  27 Mar  1 11:26 rtus_ufps1-10:1682
+crw-rw----    1 root     root      246,  26 Mar  1 11:26 rtus_ufps1-9:1682
+crw-rw----    1 root     root      246,  45 Mar  1 11:26 rtus_ufps2-10:1682
+crw-rw----    1 root     root      246,  44 Mar  1 11:26 rtus_ufps2-9:1682
+crw-rw----    1 root     root      246,  63 Mar  1 11:26 rtus_ufps3-10:1682
+crw-rw----    1 root     root      246,  62 Mar  1 11:26 rtus_ufps3-9:1682
 ```
 
 {{% notice info %}}
@@ -473,13 +568,16 @@ request the creation of a thread element. _This is for internal use only_.
 
 ### How to reach a remote EVL thread? {#thread-device-open}
 
-If you need to submit requests for an EVL thread which belongs to a
-different process, you only need to open the device file representing
-this element in _/dev/evl/threads_, then use the file descriptor
-just obtained in the thread-related request you want to send it. For
-instance, we could change the scheduling parameters of an EVL kernel
-thread named rtk1@3:1682 from a companion application in userland as
-follows:
+If you need to submit requests to an EVL thread which belongs to a
+different process, you first need it to have
+[public visibility]({{< relref "core/user-api/_index.md#element-visibility" >}}).
+If so, then you can open the device file representing
+this element in [/dev/evl/thread]({{< relref
+"core/user-api/_index.md#evl-fs-hierarchy" >}}), then use the file
+descriptor just obtained in the thread-related request you want to
+send it. For instance, we could change the scheduling parameters of an
+EVL kernel thread named rtk1@3:1682 from a companion application in
+userland as follows:
 
 ```
 	struct evl_sched_attrs attrs;
@@ -631,7 +729,7 @@ The format of these fields is as follows:
 
 Threads can be sent [out-of-band control requests]({{< relref
 "core/user-api/io/_index.md#oob_ioctl" >}}) using the file descriptor
-either returned by [evl_attach_self()]({{< relref "#evl_attach_self"
+either returned by [evl_attach_thread()]({{< relref "#evl_attach_thread"
 >}}), or received from the
 [open(2)](http://man7.org/linux/man-pages/man2/open.2.html) system
 call for a [thread device]({{< relref "#thread-device-open" >}}).

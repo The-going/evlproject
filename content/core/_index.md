@@ -143,61 +143,30 @@ core defines five of them:
 
 ## Everything is a file {#everything-is-a-file}
 
-The nice thing about the file semantics is that it may solve general
-problems for our embedded real-time core:
+Each resource exported by EVL to applications is represented by a
+file. In addition, each EVL element is associated to a kernel device
+object:
 
-- it can organize resource management for EVL's kernel objects. If
-  every element we export to the user is represented by a file, we can
-  leave the hard work of managing the creation and release process to
-  the
-  [VFS](https://www.kernel.org/doc/Documentation/filesystems/vfs.txt),
-  tracking references to every element from file descriptors.
+- Since all EVL resources are backed by a kernel file internally, the
+  hard work of managing their lifetime, preventing stale references by
+  tracking their users, is left to the
+  [VFS](https://www.kernel.org/doc/Documentation/filesystems/vfs.txt).
 
-- if a file backing some element can be obtained by opening a device
-  present in the file system, we are done with providing applications
-  a way to share this element between multiple processes: these
-  processes would only need to open the same device file for sharing
-  the underlying element.
+- Applications can create [public or private elements]({{< relref
+  "core/user-api/_index.md#element-visibility" >}}). A public element
+  appears in the EVL device [file hierarchy]({{< relref
+  "core/user-api/_index.md#evl-fs-hierarchy" >}}), which enables
+  [multi-process applications]({{< relref
+  "core/user-api/_index.md#multi-process-apps" >}}) to share elements.
 
-- we can benefit from the file permission, monitoring and auditing
-  logic attached to files for our own elements.
+- EVL elements benefit from the permission control, monitoring and
+  auditing logic which come with the file semantics.
 
-Now, one might wonder: since the main kernel would be involved in
-creating and deleting elements, wouldn't this prevent us from doing so
-in mere real-time mode? Short answer: surely it would, and this is
-just fine. Nearly two decades after [Xenomai](https://xenomai.org/)
-v1, I'm still to find the first practical use case which would require
-this. As a matter of fact, those potentially heavyweight operations
-can and should happen when the application is not busy running
-time-critical code.
-
-The above translates as follows in EVL:
-
-- Each time an application creates a new element, a character device
-  appears in the file system hierarchy under a directory named
-  /dev/evl/*element_type*/. By opening the device file, the
-  application receives a file descriptor which can be used for
-  controlling and/or exchanging data with the underlying element. This
-  is definitely a regular file descriptor, on a regular character
-  device.
-
-- Since every element is backed by a kernel device, we may also bind
-  _udev_ rules to events of interest on such element. We may also
-  export the internal state of any element via the /sysfs, which is
-  much better than stuffing /proc with even more ad hoc files for the
-  same purpose.
-
-- Since every file opened on the same device refers to the same EVL
-  element, we have our handle for sharing elements between processes.
-
-- Even local resources created by the EVL core passed to applications
-  which are not elements are also backed by a file, like clock-based
-  individual timers.
-
-- Using file descriptors, the application can monitor _events_
-  occurring on an arbitrary set of elements with a single EVL system
-  call, just like one would do using `poll(2)`, `epoll(7)` or
-  `select(2)`.
+- [`udev` rules]({{< relref
+  "core/user-api/_index.md#device-ownership-and-access" >}}) can be attached to
+  events of interest which might happen for any element. Additionally,
+  the internal kernel state of elements is exported to user space via
+  the `/sys` filesystem.
 
 ## EVL device drivers are (almost) common drivers
 
