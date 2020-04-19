@@ -79,7 +79,8 @@ value of the `__EVL__` macro, or dynamically by calling
 ### rev. 11 ([libevl r14](https://git.evlproject.org/libevl.git/tag/?h=r14))
 
 For naming consistency, evl_sched_control() was renamed
-evl_control_sched().
+[evl_control_sched()]({{< relref
+"core/user-api/scheduling/_index.md#evl_control_sched" >}}).
 
 ---
 
