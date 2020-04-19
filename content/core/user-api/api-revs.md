@@ -1,5 +1,5 @@
 ---
-menuTitle: "API revisions"
+title: "API revisions"
 weight: 100
 ---
 
@@ -8,8 +8,6 @@ You can obtain the current API revision of [libevl]({{< relref
 value of the `__EVL__` macro, or dynamically by calling
 [evl_get_version()]({{< relref
 "core/user-api/misc/_index.md#evl_get_version" >}}).
-
-# API revisions
 
 ### rev. 12 ([libevl r15](https://git.evlproject.org/libevl.git/tag/?h=r15))
 
