@@ -28,14 +28,19 @@
     <th>libevl release</th>
   </tr>
   <tr>
+    <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=7d395582" target="_blank">21</a></td>
+    <td>Introduce element visibility attribute</td>
+    <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r15" target="_blank">r15</a></td>
+  </tr>
+  <tr>
     <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=7af18f8a38ad" target="_blank">20</a></td>
     <td>Add support for compat mode (32-bit exec over 64-bit kernel)</td>
-    <td><a href="https://git.evlproject.org/libevl.git/commit/?id=f518a3c" target="_blank">r12</a></td>
+    <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r12" target="_blank">r12</a></td>
   </tr>
   <tr>
     <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=a142e2e027dc" target="_blank">19</a></td>
     <td>Make y2038 safe</td>
-    <td><a href="https://git.evlproject.org/libevl.git/commit/?id=a9f1e2f" target="_blank">r11</a></td>
+    <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r11" target="_blank">r11</a></td>
   </tr>
   <tr>
     <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=b8351b703ffb" target="_blank">18</a></td>
