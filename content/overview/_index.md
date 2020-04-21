@@ -85,7 +85,7 @@ implements may be a good fit for the job in the following cases:
     causing frequent cache evictions. As the outer cache in the
     hierarchy is shared between CPUs, a ripple effect does exist on
     all of them, including the [isolated
-    ones](https://elinux.org/CPU_Shielding_capability/).
+    ones](https://elinux.org/CPU_Shielding_capability).
 
   - if this workload involves many concurrent threads causing a high
     rate of context switches, which may get even worse if those
@@ -112,7 +112,7 @@ implements may be a good fit for the job in the following cases:
   scheduler.
 
 - if resorting to [CPU
-  isolation](https://elinux.org/CPU_Shielding_capability/) in order to
+  isolation](https://elinux.org/CPU_Shielding_capability) in order to
   mitigate the adverse effect the non real-time workload might have on
   the real-time side is not an option, or once tested, is not good
   enough for your use case. Obviously, using such trick with low-end
