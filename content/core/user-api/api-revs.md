@@ -14,7 +14,7 @@ value of the `__EVL__` macro, or dynamically by calling
 [Element visibility is introduced]({{< relref
 "core/user-api/_index.md#element-visibility" >}}), as a result:
 
-- Each element class provides a new long-form evl\_create\_*() call,
+- Most element classes provides a new long-form evl\_create\_*() call,
   in order to receive creation flags. Currently, the visibility
   attribute of elements is the only flag supported (see
   `EVL_CLONE_PRIVATE`, `EVL_CLONE_PUBLIC`). The additional creation
@@ -29,7 +29,19 @@ value of the `__EVL__` macro, or dynamically by calling
   [evl_create_sem()]({{< relref
   "core/user-api/sem/_index.md#evl_create_sem" >}}) and
   [evl_create_xbuf()]({{< relref
-  "core/user-api/xbuf/_index.md#evl_create_xbuf" >}}).
+  "core/user-api/xbuf/_index.md#evl_create_xbuf" >}}).  Likewise, the
+  new [evl_attach_thread()]({{< relref
+  "core/user-api/thread/_index.md#evl_attach_thread" >}}) and
+  [evl_detach_thread()]({{< relref
+  "core/user-api/thread/_index.md#evl_detach_thread" >}}) calls
+  receive attachment and detachment flags for
+  threads. [evl_attach_self()]({{< relref
+  "core/user-api/thread/_index.md#evl_attach_self" >}}) is now
+  equivalent to attaching a private thread by default, unless the
+  thread name [says otherwise]({{< relref
+  "core/user-api/_index.md#element-naming-convention"
+  >}})). [evl_detach_self()]({{< relref
+  "core/user-api/thread/_index.md#evl_detach_self" >}}) is unchanged.
 
 - All evl\_new\_\*() calls become shorthands to their respective
   evl\_create\_*() counterparts, picking reasonable default creation
