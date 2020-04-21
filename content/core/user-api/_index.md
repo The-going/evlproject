@@ -229,7 +229,7 @@ unique names is to include the calling process's _pid_ somewhere into
 the format string, so that you may start multiple instances of the
 same application without running into naming conflicts. The
 requirement for a unique name does not depend on the visibility
-attribute: multiple elements cannot share the same name, regarless of
+attribute: distinct elements must have distinct names, regardless of
 their visibility. For instance:
 
 ```
