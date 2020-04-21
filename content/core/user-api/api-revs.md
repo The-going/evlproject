@@ -40,7 +40,7 @@ value of the `__EVL__` macro, or dynamically by calling
   equivalent to attaching a private thread by default, unless the
   thread name [says otherwise]({{< relref
   "core/user-api/_index.md#element-naming-convention"
-  >}})). [evl_detach_self()]({{< relref
+  >}}). [evl_detach_self()]({{< relref
   "core/user-api/thread/_index.md#evl_detach_self" >}}) is unchanged.
 
 - All evl\_new\_\*() calls become shorthands to their respective
