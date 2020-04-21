@@ -105,7 +105,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.6-rc2</td>
+    <td>v5.7-rc2</td>
   </tr>
   <tr>
     <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
