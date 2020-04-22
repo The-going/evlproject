@@ -188,13 +188,13 @@ _out-of-band execution stage_.
 
 - In the other case, the current underlying context (task or whatever
   else) may or may not be controlled by the main kernel, but the
-  interrupt pipeline machinery has switched the CPU to out-of-band
-  mode, which means that only interrupts bearing the IRQF_OOB flag are
-  delivered. Typically, [run_oob_call()]({{% relref
-  "dovetail/pipeline/stage_escalation.md" %}}) is a service
-  provided by the interrupt pipeline which executes a function call
-  over this context, without requiring the calling task to be
-  scheduled by the autonomous core.
+  interrupt pipeline machinery has switched the CPU to the out-of-band
+  execution mode, which means that only interrupts bearing the
+  IRQF_OOB flag are delivered. Typically, [run_oob_call()]({{% relref
+  "dovetail/pipeline/stage_escalation.md" %}}) is a service provided
+  by the interrupt pipeline which executes a function call over this
+  context, without requiring the calling task to be scheduled by the
+  autonomous core.
 
 You will also find references to pseudo-routines called
 `core_schedule()`, `core_suspend_task()` or `core_resume_task()` in
@@ -1100,10 +1100,10 @@ struct oob_mm_state *dovetail_mm_state(void)
 In some specific cases, the implementation of your companion core may
 need some thread running in-band to call back before it resumes
 execution of the application code in user mode. For instance, you
-might want to force that thread to switch back to out-of-band mode
-before it leaves the kernel and resumes user mode execution. For this
-to happen, you would need that thread to jump back to the core at that
-point, which would do the right thing from
+might want to force that thread to switch back to the out-of-band
+stage before it leaves the kernel and resumes user mode execution. For
+this to happen, you would need that thread to jump back to the core at
+that point, which would do the right thing from
 there. [dovetail_request_ucall]({{< relref "#dovetail_request_ucall"
 >}}) allows that.
 

@@ -211,13 +211,13 @@ the in-band context, or alternatively run a capture/playback loop via
 the PCM core from the out-of-band context for achieving bounded
 ultra-low latency when exchanging audio samples with the same
 device. We may allow the device to be reconfigured when the driver is
-not exchanging data with the codec in out-of-band mode and conversely,
-but we do not want both operations to happen concurrently inside the
-Alsa core. Because the application layer may not be able to ensure
-such operations never overlap (e.g. playing an audio stream with
-`aplay` while changing the mixer settings from a different context
-using `amixer`), a kernel mechanism which helps in keeping the general
-logic safe is welcome.
+not exchanging data with the codec from the out-of-band stage and
+conversely, but we do not want both operations to happen concurrently
+inside the Alsa core. Because the application layer may not be able to
+ensure such operations never overlap (e.g. playing an audio stream
+with `aplay` while changing the mixer settings from a different
+context using `amixer`), a kernel mechanism which helps in keeping the
+general logic safe is welcome.
 
 ### Week 2.2020
 

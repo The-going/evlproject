@@ -405,8 +405,8 @@ no point in dealing with this manually in applications.
 the rare circumstances where some high-level API based on the EVL core
 library might have to enforce a particular execution stage, based on a
 deep knowledge of how EVL works internally. Entering a syscall-free
-section of code for which the out-of-band mode needs to be guaranteed
-on entry would be the only valid reason to call [evl_switch_oob()]({{%
+section of code for which running out-of-band must be guaranteed on
+entry would be the only valid reason to call [evl_switch_oob()]({{%
 relref "#evl_switch_oob" %}}).  This call returns zero on success, or
 a negated error code if something went wrong:
 
@@ -421,7 +421,7 @@ unless you definitely have to and fully understand the implications of
 it runtime-wise. Bottom line is that **calling a main kernel service
 from within a time-critical code is a clear indication that something
 is wrong** in such code. This invalidates the reason why a
-time-critical code would need to switch back to out-of-band mode
+time-critical code would need to switch back to the out-of-band stage
 eagerly.
 {{% /notice %}}
 
@@ -695,9 +695,10 @@ The format of these fields is as follows:
   * the number of EVL context switches the thread was subject to,
     meaning the number of times the thread was given back the CPU
     after a blocked state (CTXSW). This value _exclusively_ reflects
-    the number of switches performed by EVL for resuming the thread in
-    out-of-band mode, which excludes any context switch of the same
-    thread due to in-band activity.
+    the number of switches performed by EVL as a result of resuming
+    threads aslept on the out-of-band stage (context switches involved
+    in resuming threads aslept on the in-band stage are not _counted_
+    here).
 
   * the number of EVL system calls the thread has issued to the core
     (SYS). Here again, only the EVL system calls are counted, in-band

@@ -278,8 +278,8 @@ from an EVL thread context (i.e. `-u` or `-k`).  Defaults to 0.
 {{% argument "-Z --oob-gpio=<host>" %}}
 Start an out-of-band test measuring the [response time to GPIO
 events]({{< relref
-"core/benchmarks/_index.md#latmus-gpio-response-time" >}}) in
-out-of-band mode, i.e. relying on real-time capabilities of the EVL
+"core/benchmarks/_index.md#latmus-gpio-response-time" >}}) from
+the out-of-band stage, i.e. relying on real-time capabilities of the EVL
 core. The argument is the host name or IPv4 addresses of the remote
 board which monitors the response time from the SUT running
 the

@@ -53,7 +53,7 @@ from _fn()_:
 run_oob_call() is a lightweight operation that switches the CPU to the
 out-of-band interrupt stage for the duration of the call, whatever the
 underlying context may be. This is different from switching a task
-context to the out-of-band mode _indefinitely_ by offloading it to the
+context to the out-of-band stage by offloading it to the
 autonomous core for scheduling. The latter operation would involve [a
 more complex procedure]({{% relref
 "dovetail/altsched.md#oob-switch" %}}).
