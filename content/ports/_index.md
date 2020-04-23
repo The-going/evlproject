@@ -92,7 +92,7 @@ Linux {{< param evlTrackingKernel >}}
     <td>v5.0</td>
   </tr>
   <tr>
-    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">Broadcom BCM2837 (Raspberry 3 Model B)</a></td>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">Broadcom BCM2837 (Raspberry PI 3 Model B)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>

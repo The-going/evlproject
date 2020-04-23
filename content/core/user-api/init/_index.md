@@ -108,17 +108,13 @@ is returned:
 
 - -ENOSYS	The EVL core is not enabled in the running kernel.
 
-- -ENOEXEC      The EVL core in the running kernel exports a different ABI
-  		level than the ABI `libevl.so` was compiled
-  		against. In some not so distant future, the EVL ABI
-  		will be stable enough to provide backward
-  		compatibility in the core to applications using older
-  		ABI revisions, but we are not there yet. To fix this
-  		error in the meantime, you have to rebuild _libevl.so_
-  		against the [UAPI the EVL core exports]({{< relref
-  		"core/build-steps.md#building-evl-prereq" >}}). If in
-  		doubt, rebuild both components, (re-)install the newly
-  		built _libevl.so_ and boot on the rebuilt kernel.
+- -ENOEXEC	The EVL core in the running kernel exports a different [ABI
+  		level]({{< relref "core/under-the-hood/abi.md" >}})
+  		than the ABI `libevl.so` requires. To fix this error,
+  		you need to [rebuild `libevl.so`]({{< relref
+  		"core/build-steps.md#building-libevl" >}}) against
+  		the UAPI exported by the EVL core running on the target
+		system.
 
 ---
 

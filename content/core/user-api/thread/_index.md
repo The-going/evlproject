@@ -195,17 +195,8 @@ is returned instead:
 
 - -ENOSYS	The EVL core is not enabled in the running kernel.
 
-- -ENOEXEC      The EVL core in the running kernel exports a different ABI
-  		level than the ABI `libevl.so` was compiled
-  		against. In some not so distant future, the EVL ABI
-  		will be stable enough to provide backward
-  		compatibility in the core to applications using older
-  		ABI revisions, but we are not there yet. To fix this
-  		error in the meantime, you have to rebuild _libevl.so_
-  		against the [UAPI the EVL core exports]({{< relref
-  		"core/build-steps.md#building-evl-prereq" >}}). If in
-  		doubt, rebuild both components, (re-)install the newly
-  		built _libevl.so_ and boot on the rebuilt kernel.
+- -ENOEXEC      ABI mismatch error, as reported by
+  		[evl_init()]({{< relref "core/user-api/init/_index.md#evl_init" >}}).
 
 ```
 #include <evl/thread.h>
@@ -295,7 +286,7 @@ anymore. Applications should use the [evl_detach_self()]({{% relref
 [evl_detach_thread()]({{% relref "#evl_detach_thread" %}}) with
 _flags_ set to zero as recommended.
 
-This call returns zero on success, or a negated error code if
+This call returns zero on success, otherwise a negated error code if
 something went wrong:
 
 {{% argument flags %}}
@@ -363,7 +354,7 @@ descriptor obtained for the current thread after a successful call to
 this _fd_ to submit requests for the current thread in other calls
 from the EVL library which ask for a thread file descriptor.  This
 call returns a valid file descriptor referring to the caller on
-success, or a negated error code if something went wrong:
+success, otherwise a negated error code if something went wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
 
@@ -407,8 +398,8 @@ library might have to enforce a particular execution stage, based on a
 deep knowledge of how EVL works internally. Entering a syscall-free
 section of code for which running out-of-band must be guaranteed on
 entry would be the only valid reason to call [evl_switch_oob()]({{%
-relref "#evl_switch_oob" %}}).  This call returns zero on success, or
-a negated error code if something went wrong:
+relref "#evl_switch_oob" %}}).  This call returns zero on success,
+otherwise a negated error code if something went wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
 
@@ -447,8 +438,8 @@ on a deep knowledge of how EVL works internally. Entering a
 syscall-free section of code for which the in-band mode needs to be
 guaranteed on entry would be the only valid reason to call
 [evl_switch_inband()]({{% relref "#evl_switch_inband" %}}).  This call
-returns zero on success, or a negated error code if something went
-wrong:
+returns zero on success, otherwise a negated error code if something
+went wrong:
 
 -EPERM		The current thread is not attached to the EVL core.
 
@@ -510,8 +501,155 @@ inheritance/ceiling boost]({{< relref "core/user-api/mutex/_index.md"
 - `statebuf->cpu` is the CPU the target thread runs on at the time of
   the call.
 
+{{% argument efd %}}
+A file descriptor referring to the thread to inquire about.
+{{% /argument %}}
+
+{{% argument statbuf %}}
+A pointer to the information buffer.
+{{% /argument %}}
+
 [evl_get_state()]({{% relref "#evl_get_state" %}}) returns zero on
-success, otherwise a negated error code is returned:
+success, otherwise a negated error code:
+
+-EBADF		_efd_ is not a valid thread descriptor.
+
+-ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
+		"#evl_detach_thread" >}}).
+
+---
+
+{{< proto evl_unblock_thread >}}
+int evl_unblock_thread(int efd)
+{{< /proto >}}
+
+Unblocks the thread referred to by _efd_ if it is currently sleeping
+on some EVL core [monitor element]({{< relref
+"content/core/_index.md#evl-core-elements" >}}), waiting for it to be
+signaled/available. In other words, the blocking system call is forced
+to fail, and as a result the target thread receives the -EINTR error
+on return.
+
+{{% argument efd %}}
+A file descriptor referring to the thread to unblock.
+{{% /argument %}}
+
+[evl_unblock_thread()]({{% relref "#evl_unblock_thread" %}}) returns
+zero on success, otherwise a negated error code:
+
+-EBADF		_efd_ is not a valid thread descriptor.
+
+-ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
+		"#evl_detach_thread" >}}).
+
+---
+
+{{< proto evl_demote_thread >}}
+int evl_demote_thread(int efd)
+{{< /proto >}}
+
+Demotes the thread referred to by _efd_ if it is currently running
+out-of-band with [real-time scheduling]({{< relref
+"core/user-api/scheduling/_index.md" >}}) attributes.
+
+Demoting a thread means to force it out of any real-time scheduling
+class, unblock it like [evl_unblock_thread()]({{< relref
+"#evl_unblock_thread" >}}) would do, and kick it out of the
+out-of-band stage, all in the same move. Once demoted, a thread runs
+in-band and undergoes the [SCHED_WEAK]({{< relref
+"core/user-api/scheduling/_index.md#SCHED_WEAK" >}}) policy.
+[evl_demote_thread()]({{< relref "#evl_unblock_thread" >}}) is a
+pretty big hammer you don't want to use lightly; it should be reserved
+to specific (read: _desperate_) cases when you have to perform some
+aggressive recovery procedure, and/or you want to stop a thread
+running out-of-band from hogging a CPU.
+
+{{% argument efd %}}
+A file descriptor referring to the thread to demote.
+{{% /argument %}}
+
+[evl_demote_thread()]({{% relref "#evl_demote_thread" %}}) returns
+zero on success, otherwise a negated error code:
+
+-EBADF		_efd_ is not a valid thread descriptor.
+
+-ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
+		"#evl_detach_thread" >}}).
+
+---
+
+{{< proto evl_set_thread_mode >}}
+int evl_set_thread_mode(int efd, int mask, int *oldmask)
+{{< /proto >}}
+
+Each EVL thread has a few so-called _mode bits_ which affect its
+behavior depending on whether they are
+set. [evl_set_thread_mode()]({{% relref "#evl_set_thread_mode" %}})
+can set the following flags when present in _mask_:
+
+- T_WOSS: warn on stage switch
+- T_WOLI: warn on locking inconsistency
+- T_WOSX: warn on stage exclusion
+
+{{% argument efd %}}
+A file descriptor referring to the target thread.
+{{% /argument %}}
+
+{{% argument mask %}}
+A bitmask mentioning the mode bits to set. Zero is valid, and leads
+to a no-op. Passing a null _mask_ and a valid _oldmask_ pointer
+allows peeking at the mode bits currently set for a thread without
+changing them.
+{{% /argument %}}
+
+{{% argument oldmask %}}
+The address of a bitmask which should collect the previous set of
+active mode bits for the thread, before the update. NULL
+can be passed to discard this information.
+{{% /argument %}}
+
+[evl_set_thread_mode()]({{% relref "#evl_set_thread_mode" %}}) returns
+zero on success, otherwise a negated error code:
+
+-EINVAL		_mask_ contains invalid bits.
+
+-EBADF		_efd_ is not a valid thread descriptor.
+
+-ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
+		"#evl_detach_thread" >}}).
+
+---
+
+{{< proto evl_clear_thread_mode >}}
+int evl_clear_thread_mode(int efd, int mask, int *oldmask)
+{{< /proto >}}
+
+[evl_clear_thread_mode()]({{% relref "#evl_clear_thread_mode" %}}) is
+the converse call to [evl_set_thread_mode()]({{% relref
+"#evl_set_thread_mode" %}}), clearing the mode bits mentioned in
+_mask_.
+
+{{% argument efd %}}
+A file descriptor referring to the target thread.
+{{% /argument %}}
+
+{{% argument mask %}}
+A bitmask mentioning the mode bits to clear. Zero is valid, and leads
+to a no-op. Passing a null _mask_ and a valid _oldmask_ pointer
+allows peeking at the mode bits currently set for a thread without changing
+them.
+{{% /argument %}}
+
+{{% argument oldmask %}}
+The address of a bitmask which should collect the previous set of
+active mode bits for the thread, before the update. NULL
+can be passed to discard this information.
+{{% /argument %}}
+
+[evl_clear_thread_mode()]({{% relref "#evl_clear_thread_mode" %}}) returns
+zero on success, otherwise a negated error code:
+
+-EINVAL		_mask_ contains invalid bits.
 
 -EBADF		_efd_ is not a valid thread descriptor.
 

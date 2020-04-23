@@ -50,14 +50,14 @@ weight: 1
     <td>&#10005;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/thread/index.html#evl_switch_oob" target="_blank">evl_switch_oob()</a></td>
-    <td>&#9651;</td> 
-    <td>&#10005;</td> 
+    <td><a href="/core/user-api/thread/index.html#evl_get_state" target="_blank">evl_get_state()</a></td>
+    <td>&#9866;</td> 
+    <td>&#9989;</td>
   </tr>
   <tr>
-    <td><a href="/core/user-api/thread/index.html#evl_switch_inband" target="_blank">evl_switch_inband()</a></td>
-    <td>&#9661;</td> 
-    <td>&#10005;</td> 
+    <td><a href="/core/user-api/thread/index.html#evl_get_thread_mode" target="_blank">evl_get_thread_mode()</a></td>
+    <td>&#9866;</td> 
+    <td>&#9989;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/thread/index.html#evl_is_inband" target="_blank">evl_is_inband()</a></td>
@@ -65,9 +65,29 @@ weight: 1
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/thread/index.html#evl_get_state" target="_blank">evl_get_state()</a></td>
+    <td><a href="/core/user-api/thread/index.html#evl_set_thread_mode" target="_blank">evl_set_thread_mode()</a></td>
     <td>&#9866;</td> 
+    <td>&#9989;</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/thread/index.html#evl_switch_inband" target="_blank">evl_switch_inband()</a></td>
+    <td>&#9661;</td> 
     <td>&#10005;</td> 
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/thread/index.html#evl_switch_oob" target="_blank">evl_switch_oob()</a></td>
+    <td>&#9651;</td> 
+    <td>&#10005;</td> 
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/thread/index.html#evl_unblock_thread" target="_blank">evl_unblock_thread()</a></td>
+    <td>&#9651;</td> 
+    <td>&#9989;</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/thread/index.html#evl_demote_thread" target="_blank">evl_demote_thread()</a></td>
+    <td>&#9651;</td> 
+    <td>&#9989;</td>
   </tr>
 </table>
 </div>
@@ -102,6 +122,11 @@ weight: 1
     <td><a href="/core/user-api/scheduling/index.html#evl_get_cpustate" target="_blank">evl_get_cpustate()</a></td>
     <td>&#9866;</td> 
     <td>&#9989;</td> 
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/scheduling/index.html#evl_yield" target="_blank">evl_yield()</a></td>
+    <td>&#9651;</td> 
+    <td>&#10005;</td> 
   </tr>
 </table>
 </div>
@@ -716,19 +741,18 @@ weight: 1
 </table>
 </div>
 
-<sup>1</sup> Defines the stage switching behavior for out-of-band
-callers:
+<sup>1</sup> Defines the stage switching behavior for EVL threads:
 
-- &#9651; the core may switch the caller to the out-of-band execution
+- &#9651; the core may promote the caller to the out-of-band execution
   stage if running in-band at the time of the call.
 
-- &#9661; the core may switch the current stage, demoting the caller
-  to in-band mode if running out-of-band at the time of the call.
+- &#9661; the core may demote the caller to the in-band execution
+  stage if running out-of-band at the time of the call.
 
 - &#9866; the call does not entail any stage switch.
 
 <sup>2</sup> Whether this call is also available to non-EVL threads,
-i.e. threads not [attached]({{< relref
+i.e. threads _not_ [attached]({{< relref
 "core/user-api/thread/_index.md#evl_attach_self" >}}) to the EVL core.
 
 <sup>3</sup> Except if the caller undergoes the [SCHED_WEAK]({{<

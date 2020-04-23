@@ -4,6 +4,11 @@ title: Miscellanea
 weight: 70
 ---
 
+A set of ancillary services which are not directly related to [EVL
+elements]({{< relref "core/user-api/_index.md#evl-core-elements" >}}).
+
+---
+
 {{< proto evl_get_version >}}
 struct evl_version evl_get_version(void)
 {{< /proto >}}

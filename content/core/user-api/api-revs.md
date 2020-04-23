@@ -9,6 +9,25 @@ value of the `__EVL__` macro, or dynamically by calling
 [evl_get_version()]({{< relref
 "core/user-api/misc/_index.md#evl_get_version" >}}).
 
+### rev. 15 ([libevl r16](https://git.evlproject.org/libevl.git/tag/?h=r16))
+
+Adds [evl_set_thread_mode()]({{< relref
+"core/user-api/thread/_index.md#evl_set_thread_mode" >}}) and
+[evl_clear_thread_mode()]({{< relref
+"core/user-api/thread/_index.md#evl_set_clear_mode" >}}).
+
+### rev. 14
+
+Adds [evl_unblock_thread()]({{< relref
+"core/user-api/thread/_index.md#evl_unblock_thread" >}}) and Adds
+[evl_demote_thread()]({{< relref
+"core/user-api/thread/_index.md#evl_demote_thread" >}}).
+
+### rev. 13
+
+Adds [evl_yield()]({{< relref
+"core/user-api/scheduling/_index.md#evl_yield" >}}).
+
 ### rev. 12 ([libevl r15](https://git.evlproject.org/libevl.git/tag/?h=r15))
 
 [Element visibility is introduced]({{< relref

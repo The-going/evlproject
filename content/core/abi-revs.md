@@ -28,12 +28,17 @@
     <th>libevl release</th>
   </tr>
   <tr>
-    <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=7d395582" target="_blank">21</a></td>
+    <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=021a9f1ff570a0ebeb8dc80c1a0dfb4d8317d5b5" target="_blank">22</a></td>
+    <td>Add EVL_THRIOC_UNBLOCK, EVL_THRIOC_DEMOTE and EVL_THRIOC_YIELD, update EVL_THRIOC_*_MODE operations.
+    <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r16" target="_blank">r16</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=7d395582ce98c59a209835db330cbae6dc34f7f8" target="_blank">21</a></td>
     <td>Introduce element visibility attribute</td>
     <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r15" target="_blank">r15</a></td>
   </tr>
   <tr>
-    <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=7af18f8a38ad" target="_blank">20</a></td>
+    <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=7af18f8a38ad68f581cf770819ccb98c29f41586" target="_blank">20</a></td>
     <td>Add support for compat mode (32-bit exec over 64-bit kernel)</td>
     <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r12" target="_blank">r12</a></td>
   </tr>

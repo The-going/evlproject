@@ -53,9 +53,9 @@ In addition to the source code, we need:
 
 - the UAPI headers from the target Linux kernel fit with the EVL
   core. Each UAPI file exports a set of definitions and interface
-  types which are shared with _libevl.so_ running in user-space, so
+  types which are shared with `libevl.so` running in user-space, so
   that the latter can submit well-formed system calls to the
-  former. In other words, to build _libevl.so_, we need access to the
+  former. In other words, to build `libevl.so`, we need access to the
   contents of `include/uapi/asm/` and `include/uapi/evl/` from a
   source kernel tree which contains the EVL core which is going to
   handle the system calls.

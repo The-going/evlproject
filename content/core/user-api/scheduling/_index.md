@@ -37,6 +37,9 @@ core, make sure to enable `CONFIG_EVL_SCHED_QUOTA` or
 `CONFIG_EVL_SCHED_TP` respectively in the kernel configuration if you
 need them.
 
+**Only `SCHED_FIFO`, `SCHED_QUOTA` and `SCHED_TP` are real-time
+scheduling policies.**
+
 {{% notice tip %}}
 Before a thread can be assigned to any EVL class, its has to attach
 itself to the core by a call to [evl_attach_self]({{% relref
@@ -229,6 +232,41 @@ Switching a thread to FIFO scheduling is achieved by calling
 	attrs.sched_priority = <priority>; /* [1-99] */
 
 ```
+
+---
+
+{{< proto evl_yield >}}
+int evl_yield(void)
+{{< /proto >}}
+
+In some cases, EVL threads undergoing real-time policies might need to
+perform manual round-robin, like
+[sched_yield()](http://man7.org/linux/man-pages/man2/sched_yield.2.html)
+allows for plain POSIX threads. [evl_yield()]({{< relref "#evl_yield"
+>}}) can be used for that purpose.
+
+Manual round-robin moves the caller at the end of its priority group,
+yielding the CPU to other threads with the same priority. If there are
+none, then [evl_yield()]({{< relref "#evl_yield" >}}) returns
+immediately with no effect.
+
+{{% notice tip %}}
+Although that would work, calling [evl_yield()]({{< relref
+"#evl_yield" >}}) for a thread undergoing the [SCHED_WEAK]({{< relref
+"#SCHED_WEAK" >}}) policy would make no sense. In that case, the
+caller would be immediately demoted to the in-band stage on return
+from the call, leaving the EVL scheduler right after it was promoted
+to the out-of-band stage for executing [evl_yield()]({{< relref
+"#evl_yield" >}}). Pretty much a useless CPU burner with no upside.
+{{% /notice %}}
+
+On success, [evl_yield()]({{% relref "#evl_yield" %}}) returns
+zero, otherwise a negated error code:
+
+-EPERM		The caller is not
+		[attached]({{< relref "core/user-api/thread/_index.md#evl_attach_thread" >}})
+		to the EVL core.
+	
 ---
 
 #### SCHED_RR {#SCHED_RR}
