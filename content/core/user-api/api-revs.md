@@ -5,8 +5,8 @@ weight: 100
 
 You can obtain the current API revision of [libevl]({{< relref
 "core/user-api/_index.md" >}}) either at compilation time using the
-value of the `__EVL__` macro, or dynamically by calling
-[evl_get_version()]({{< relref
+value of the `__EVL__` macro defined in the `<evl/evl.h>` main header
+file, or dynamically by calling [evl_get_version()]({{< relref
 "core/user-api/misc/_index.md#evl_get_version" >}}).
 
 ### rev. 15 ([libevl r16](https://git.evlproject.org/libevl.git/tag/?h=r16))
