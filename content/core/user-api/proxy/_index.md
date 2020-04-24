@@ -5,7 +5,7 @@ weight: 40
 
 ### Zero-latency output to regular files
 
-A common issue with dual kernel systems stems from the requirement NOT
+A common issue with dual kernel systems stems from the requirement _not_
 to issue [in-band system calls]({{< relref
 "dovetail/altsched.md#inband-switch" >}}) while running time-critical
 code in out-of-band context. Problem is that sometimes, you may need

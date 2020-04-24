@@ -125,7 +125,7 @@ three-step process:
   the _struct clocksource\_user\_mmio_ descriptor, so you may have to
   move the original initializers accordingly. You also need to fix up
   the clock source's `.read()` handler, changing it to one of the
-  helpers _clocksource\_user\_mmio_ knows about. Do **NOT** use any
+  helpers _clocksource\_user\_mmio_ knows about. Do _not_ use any
   other helper outside of the following set, or you would receive
   -EINVAL from `clocksource_user_mmio_init()`:
 

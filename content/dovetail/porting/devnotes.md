@@ -39,7 +39,7 @@ For instance, the following contexts qualify:
 
 ### Checking for out-of-band interrupt property
 
-The `IRQF_OOB` action flag should **NOT** be used for testing whether
+The `IRQF_OOB` action flag should _not_ be used for testing whether
 an interrupt is out-of-band, because out-of-band handling may be
 turned on/off dynamically on an IRQ descriptor using
 `irq_switch_oob()`, which would not translate to `IRQF_OOB` being

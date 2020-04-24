@@ -186,7 +186,7 @@ int retrieve_self_schedparams(void)
 ```
 
 The value returned in `attrs.sched_priority` is the base priority
-level of the thread within its scheduling class, which does NOT
+level of the thread within its scheduling class, which does _not_
 reflect any priority inheritance/ceiling boost that might be ongoing.
 
 [evl_get_schedattr()]({{% relref "#evl_get_schedattr" %}}) returns

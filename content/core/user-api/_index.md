@@ -93,8 +93,8 @@ your time-critical code only relies on either:
   services which operate from the [out-of-band context]({{< relref
   "dovetail/altsched.md#altsched-theory" >}}).
 
-- a (very) small subset of the common C library which are known **NOT
-  to** depend on regular in-band kernel services. In other words,
+- a (very) small subset of the common C library which are known _not_
+  to depend on regular in-band kernel services. In other words,
   routines which won't issue common Linux system calls in any way. For
   instance, routines from the
   [string(3)](http://man7.org/linux/man-pages/man3/string.3.html)

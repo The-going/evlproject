@@ -157,7 +157,7 @@ over the *in-band* interrupt stage) , the interrupt pipelining logic
 virtually turns all device IRQs into NMIs, for running out-of-band
 handlers.
 
-For this reason, out-of-band code may generally **NOT** re-enter
+For this reason, out-of-band code may generally _not_ re-enter
 in-band code, for preventing creepy situations like this one:
 
 ```markdown

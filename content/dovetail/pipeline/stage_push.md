@@ -44,7 +44,7 @@ pipeline. From that point, the interrupt flow is exclusively directed
 to the in-band stage.
 
 {{% notice warning %}}
-This call does **NOT** perform any serialization with ongoing
+This call does _not_ perform any serialization with ongoing
 interrupt handling on remote CPUs whatsoever. The autonomous core must
 synchronize with remote CPUs before calling `disable_oob_stage()` to
 prevent them from running out-of-band handlers while the out-of-band

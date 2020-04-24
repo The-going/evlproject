@@ -61,7 +61,7 @@ repository:
   the [Dovetail interface]({{ relref "dovetail/_index.md" >}}) on top
   of the latest [mainline kernel
   code](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/). Therefore,
-  it is a basic subset of the `evl/master` branch, which does NOT
+  it is a basic subset of the `evl/master` branch, which does _not_
   include the commits related to the EVL core.
 
 > e.g., from the [linux-evl](https://git.evlproject.org/linux-evl.git/) repository:

@@ -351,7 +351,7 @@ int evl_check_block(struct evl_heap *heap, void *block)
 Check if _block_ is an active memory chunk living in _heap_. The
 thoroughness of this test depends on whether `libevl` was compiled
 with the optimizer disabled (i.e. -O0 passed to the compiler, causing
-the `__OPTIMIZE__` macro flag NOT to be defined at build time). If the
+the `__OPTIMIZE__` macro flag _not_ to be defined at build time). If the
 optimizer was enabled, this routine may not be able to detect whether
 _block_ is part of a valid data page. Therefore, you would probably
 rely on this service only with debug builds.

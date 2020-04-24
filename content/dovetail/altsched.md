@@ -1041,7 +1041,7 @@ Dovetail adds the `oob_state` member of type `struct oob_mm_state` to
 the generic `struct mm_struct` descriptor . Because kernel threads can
 only borrow memory contexts temporarily but do not actually own any,
 this Dovetail extension is only available to EVL threads running in
-user-space, **NOT** to threads created by [evl_run_kthread()]({{<
+user-space, _not_ to threads created by [evl_run_kthread()]({{<
 relref "core/kernel-api/kthread/_index.md#evl_run_kthread" >}}).
 
 You may want to fill that structure reserved to out-of-band support
