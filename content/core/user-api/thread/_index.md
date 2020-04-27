@@ -35,11 +35,11 @@ thread attached itself to EVL, it can:
 
 {{% notice info %}}
 A thread which is being scheduled by EVL instead of the main kernel is
-said to be running **out-of-band**, as defined by [Dovetail]({{%
+said to be running _out-of-band_, as defined by [Dovetail]({{%
 relref "dovetail/pipeline/_index.md" %}}). It remains in this mode
 until it asks for a service which the main kernel provides.
 Conversely, a thread which is being scheduled by the main kernel
-instead of EVL is said to be running **in-band**, as defined by
+instead of EVL is said to be running _in-band_, as defined by
 [Dovetail]({{% relref "dovetail/pipeline/_index.md" %}}). It remains
 in this mode until it asks for a service which EVL can only provide
 to the caller when it runs out-of-band.
@@ -147,6 +147,20 @@ A set of creation flags for the new element, defining its
     calling process. No device file appears for it in the
     [/dev/evl]({{< relref "core/user-api/_index.md#evl-fs-hierarchy" >}})
     file hierarchy.
+
+  - `EVL_CLONE_OBSERVABLE` denotes a thread which may be observed for
+    health monitoring purpose. See
+    the [Observable element]({{< relref "core/user-api/observable/_index.md#observable-thread"
+    >}}).
+
+  - Only if `EVL_CLONE_OBSERVABLE` is present in _flags_,
+    `EVL_CLONE_MASTER` may be added to set the Observable associated
+    to the new thread to [master mode]({{< relref
+    "core/user-api/observable/_index.md#evl_create_observable" >}}).
+
+  - `EVL_CLONE_NONBLOCK` sets the file descriptor of the new thread in
+    non-blocking I/O mode (`O_NONBLOCK`). By default, `O_NONBLOCK` is
+    cleared for the file descriptor.
 {{% /argument %}}
 
 {{% argument fmt %}}
@@ -169,9 +183,9 @@ is returned instead:
 - -EEXIST	The generated name is conflicting with an existing thread
 		name.
 
-- -EINVAL	The generated name is badly formed, likely containing
-		invalid character(s), such as a slash. Keep in mind that
-		it should be usable as a basename of a device element's file path.
+- -EINVAL	Either _flags_ is wrong, or the [generated name]
+  		({{< relref "core/user-api/_index.md#element-naming-convention"
+  		>}}) is badly formed.
 
 - -ENAMETOOLONG	The overall length of the device element's file path including
 		the generated name exceeds PATH_MAX.
@@ -590,6 +604,15 @@ can set the following flags when present in _mask_:
 - T_WOSS: warn on stage switch
 - T_WOLI: warn on locking inconsistency
 - T_WOSX: warn on stage exclusion
+- T_HMSIG: enable notification of HM events via the SIGDEBUG signal
+- T_HMOBS: enable notification of HM events via the built-in observable
+
+See the section about the [health monitoring]({{< relref
+"#health-monitoring" >}}) of EVL threads for details about these bits.
+
+If any of T_WOSS, T_WOLI or T_WOSX are present in _mask_ but none of
+T_HMSIG or T_HMOBS is, then T_HMSIG is turned on automatically,
+enabling notification delivery via the SIGDEBUG signal.
 
 {{% argument efd %}}
 A file descriptor referring to the target thread.
@@ -611,7 +634,9 @@ can be passed to discard this information.
 [evl_set_thread_mode()]({{% relref "#evl_set_thread_mode" %}}) returns
 zero on success, otherwise a negated error code:
 
--EINVAL		_mask_ contains invalid bits.
+-EINVAL 	 _mask_ contains invalid mode bits. Setting T_HMOBS for a
+		 thread which was not created with the [EVL_CLONE_OBSERVABLE]({{< relref
+		 "#evl_create_thread" >}}) attribute set is an error.
 
 -EBADF		_efd_ is not a valid thread descriptor.
 
@@ -628,6 +653,10 @@ int evl_clear_thread_mode(int efd, int mask, int *oldmask)
 the converse call to [evl_set_thread_mode()]({{% relref
 "#evl_set_thread_mode" %}}), clearing the mode bits mentioned in
 _mask_.
+
+If all of T_WOSS, T_WOLI and T_WOSX are cleared for the thread as a
+result, T_HMSIG and T_HMOBS are automatically cleared as well by
+[evl_clear_thread_mode()]({{< relref "#evl_clear_thread_mode" >}}).
 
 {{% argument efd %}}
 A file descriptor referring to the target thread.
@@ -657,6 +686,255 @@ zero on success, otherwise a negated error code:
 		"#evl_detach_thread" >}}).
 
 ---
+
+{{< proto evl_subscribe >}}
+int evl_subscribe(int ofd, unsigned int backlog_count, int flags)
+{{< /proto >}}
+
+This service subscribes the current thread to an [Observable]({{<
+relref "core/user-api/observable/_index.md" >}}) element, which makes
+the former an observer of the latter. This thread does not have to be
+[attached]({{< relref "#evl_attach_thread" >}}) to EVL in order to
+subscribe to an Observable. Subscribers are independent from each
+other, the target Observable may vanish while subscriptions are still
+active, observers can come and go freely. In other words, the
+relationship between an Observable and its observers is losely
+coupled. However, a thread can only have a single active subscription
+to a particular Observable, although it can subscribe to any number of
+distinct Observables.
+
+{{% argument ofd %}}
+A file descriptor referring to the Observable to subscribe to.
+{{% /argument %}}
+
+{{% argument backlog_count %}}
+The number of notifications which the core can buffer for this
+subscription. On overflow, the unread events already queued are
+preserved, the new ones are lost for the observer.
+{{% /argument %}}
+
+{{% argument flags %}}
+A mask of ORed operation flags which further
+qualify the type of subscription. If `EVL_NOTIFY_ONCHANGE` is passed,
+the EVL core will merge multiple consecutive notifications for the
+same tag and event values. In other words, the returned _( tag, value
+)_ pairs will be different at every [receipt]({{< relref
+"core/user-api/observable/_index.md#evl_read_observable" >}}). Passing
+zero or `EVL_NOTIFY_ALWAYS` ensures that all notices received by the
+Observable are passed to this subscriber, unfiltered.
+{{% /argument %}}
+
+[evl_subscribe()]({{% relref "#evl_subscribe" %}}) returns
+zero on success, otherwise a negated error code:
+
+- -EINVAL 	 _flags_ contains invalid operations bits. The only
+		 valid bit is `EVL_NOTIFY_ONCHANGE`, or _backlock\_log\_count_
+		 is zero.
+
+- -EBADF	_ofd_ is not a valid file descriptor.
+
+- -EPERM	_ofd_ does not refer to an Observable element.
+
+- -ENOMEM	No memory available for the operation. That is a problem.
+
+---
+
+{{< proto evl_unsubscribe >}}
+int evl_unsubscribe(int ofd)
+{{< /proto >}}
+
+This service unsubscribes the current thread from an [Observable]({{<
+relref "core/user-api/observable/_index.md" >}}) element. This is the
+converse call to [evl_subscribe()]({{< relref "#evl_unsubscribe" >}}).
+
+{{% argument ofd %}}
+A file descriptor referring to the Observable to unsubscribe from.
+{{% /argument %}}
+
+[evl_unsubscribe()]({{% relref "#evl_unsubscribe" %}}) returns
+zero on success, otherwise a negated error code:
+
+- -EBADF	_ofd_ is not a valid file descriptor.
+
+- -EPERM	_ofd_ does not refer to an Observable element.
+
+- -ENOENT	the current thread is not subscribed to the Observable
+		referred to by _ofd.
+
+---
+
+### Health monitoring of threads {#health-monitoring}
+
+The EVL core has some health monitoring (HM) capabilities, which can
+be enabled separately on a per-thread basis using ({{< relref
+"#evl_set_thread_mode" >}}), or global to the system via the kernel
+configuration. They are based on runtime error detection when
+performing user requests which involve threads. Each type of error is
+associated with a diagnostic code, such as:
+
+```
+/* Health monitoring diag codes (via observable or SIGDEBUG). */
+#define EVL_HMDIAG_SIGDEMOTE	1
+#define EVL_HMDIAG_SYSDEMOTE	2
+#define EVL_HMDIAG_EXDEMOTE	3
+#define EVL_HMDIAG_WATCHDOG	4
+#define EVL_HMDIAG_LKDEPEND	5
+#define EVL_HMDIAG_LKIMBALANCE	6
+#define EVL_HMDIAG_LKSLEEP	7
+#define EVL_HMDIAG_STAGEX	8
+```
+
+Each of this code identifies a specific cause of trouble for the
+thread which receives it:
+
+- `EVL_HMDIAG_SIGDEMOTE`, enabled by the [T_WOSS]({{< relref
+  "#evl_set_thread_mode" >}}) mode bit. The thread was demoted to the
+  in-band stage because it received a (POSIX) signal. In such an
+  event, the core had to release the recipient from any blocked state
+  from the out-of-band stage, because handling any pending in-band
+  signal is a requirement for the overall system sanity.
+
+- `EVL_HMDIAG_SYSDEMOTE`, enabled by the [T_WOSS]({{< relref
+  "#evl_set_thread_mode" >}}) mode bit. The thread was demoted to the
+  in-band stage because it issued an in-band Linux syscall, such as
+  those defined in your C library of choice. Requesting the in-band
+  kernel to handle a system call is by definition a reason to switch
+  to in-band execution.
+
+- `EVL_HMDIAG_EXDEMOTE`, enabled by the [T_WOSS]({{< relref
+  "#evl_set_thread_mode" >}}) mode bit. The thread was demoted to the
+  in-band stage because it received a processor exception while
+  running on the out-of-band stage, which it could not handle from
+  there. There are different sources of CPU exceptions, the most
+  common ones involve invalid memory addressing which typically ends
+  up with receiving a SIGSEGV or SIGBUS signal from the kernel as a
+  result. When the exception cannot be handled directly from the
+  out-of-band stage, the EVL core has to demote the faulting thread so
+  that the common (in-band) exception handling code can run safely.
+
+- `EVL_HMDIAG_WATCHDOG`, enabled by [kernel configuration]({{< relref
+  "core/build-steps#core-kconfig" >}}). The thread was kicked out of
+  out-of-band execution because it hogged a CPU for too long without
+  reliquishing it to the in-band stage. The delay applies to the
+  entire period while a CPU executes on the out-of-band stage, so this
+  may involve multiple EVL threads. Only the thread which is running
+  at the time the watchdog expires receives the notification. The
+  longer the detection delay (4s by default), the higher the risk of
+  breaking the whole system since there is a point when the kernel is
+  going to freak out badly if some CPU is unavailable for too long for
+  handling in-band work. The timeout delay can be configured using
+  [CONFIG_EVL_WATCHDOG]({{< relref "core/build-steps#core-kconfig"
+  >}}).
+
+- `EVL_HMDIAG_LKDEPEND`, enabled by the [T_WOLI]({{< relref
+  "#evl_set_thread_mode" >}}) mode bit.  There are two converse
+  conditions causing this error, both due to an incorrect usage of
+  [EVL mutexes]({{< relref "core/user-api/mutex/_index.md" >}})
+  leading to a priority inversion:
+
+  1. if a thread is about to switch in-band while owning an EVL mutex
+  which is awaited by another thread. This situation would cause a
+  priority inversion for the waiter(s), since the latter would depend
+  on a mutex owner who lost any guarantee for real-time execution as a
+  result of switching in-band.
+
+  2. if a thread running out-of-band is about to sleep on an EVL mutex
+  owned by another thread running in-band. Same reasoning as
+  previously, an out-of-band thread would depend on the non real-time
+  scheduling undergone by the current owner of the mutex.
+
+- `EVL_HMDIAG_LKIMBALANCE`, enabled by the [T_WOLI]({{< relref
+  "#evl_set_thread_mode" >}}) mode bit. An attempt to unlock a free
+  [EVL mutex]({{< relref "core/user-api/mutex/_index.md" >}}) was
+  detected.
+
+- `EVL_HMDIAG_LKSLEEP`, enabled by the [T_WOLI]({{< relref
+  "#evl_set_thread_mode" >}}) mode bit. A thread which undergoes the
+  [SCHED_WEAK]({{< relref
+  "core/user-api/scheduling/_index.md#SCHED_WEAK" >}}) which already
+  holds an [EVL mutex]({{< relref "core/user-api/mutex/_index.md" >}})
+  subsequently wants to wait for a different type of EVL resource to
+  be available, i.e. pretty much any EVL synchronization mechanism
+  which may block the caller except EVL mutexes. Such pattern is a bad
+  idea: a weakly scheduled thread (EVL-wise, that is) has neither
+  real-time requirements nor capabilities, and some real-time thread
+  may well wait for it to release the mutex it holds. Therefore,
+  waiting for an undefined amount of time for an event to - maybe -
+  occur before the mutex can be released eventually is logically
+  flawed.
+
+- `EVL_HMDIAG_STAGEX`, enabled by the [T_WOSX]({{< relref
+  "#evl_set_thread_mode" >}}) mode bit. A thread is performing an
+  out-of-band [I/O operation]({{< relref "core/user-api/io/_index.md"
+  >}}) which is blocked on a [stage exclusion lock]({{< relref
+  "core/kernel-api/stax/_index.md" >}}) waiting for all in-band tasks
+  to leave the section guarded by that lock. This issue leads to a
+  priority inversion. [Real-time I/O drivers]({{< relref
+  "core/oob-drivers/_index.md" >}}) using stage exclusion should
+  provide an interface to applications which enforces a clear
+  separation between in-band and out-of-band runtime modes, so that
+  this does not normally happen. Blocking on a stax from the
+  out-of-band stage might be fine in some circumstances in case
+  portions of code are to be shared between in-band and out-of-band
+  threads without risking priority inversions, this is the reason why
+  such locks exist in the first place. However, this behavior has to
+  be specifically allowed by the driver implementation. If
+  [T_WOSX]({{< relref "#evl_set_thread_mode" >}}) is set for the
+  thread, then such event must be unexpected.
+
+#### `SIGDEBUG` and HM notifications via the observable {#hm-notification-methods}
+
+Once an error condition is detected, the EVL core can notify the
+faulting thread by sending it a regular POSIX signal (aka `SIGDEBUG`,
+which is `SIGXCPU` in disguise), and/or pushing a notification to the
+[observable]({{< relref
+"core/user-api/observable/_index.md#observable-thread" >}}) component
+of the thread if enabled. Both options are cumulative.
+
+##### Signal-based HM notifications
+
+`SIGDEBUG` is enabled by setting the [T_HMSIG]({{< relref
+"#evl_set_thread_mode" >}}) mode bit for the thread. A signal handler
+should have been installed for receiving them, otherwise the process
+would be killed. The macro `sigdebug_cause()` retrieves the diag code
+(`EVL_HMDIAG_xxx`) from the SIGDEBUG information block. Checking that
+SIGDEBUG was actually sent by the EVL core is recommended, using the
+`sigdebug_marked()` macro as illustrated below. If this macro returns
+_false_ when passed the signal information block, then your thread has
+received `SIGXCPU` from another source, this is _not_ a HM event sent
+by the EVL core.
+
+```
+#include <signal.h>
+#include <evl/thread.h>
+
+/* A basic SIGDEBUG (aka SIGXCPU) handler which only prints out the cause. */
+
+static void sigdebug_handler(int sig, siginfo_t *si, void *context)
+{
+	if (!sigdebug_marked(si)) {	/* Is this from EVL? */
+		you_should_handle_sigxcpu(sig, si, context);
+		return;
+	}
+
+	/* This is a HM event, handle it. */
+	you_should_handle_the_hm_event(sigdebug_cause(si));
+}
+
+void install_sigdebug_handler(void)
+{
+	struct sigaction sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_sigaction = sigdebug_handler;
+	sa.sa_flags = SA_SIGINFO;
+	sigaction(SIGDEBUG, &sa, NULL);
+}
+```
+
+`libevl` defines the [evl_sigdebug_handler()]({{< relref
+"core/user-api/misc/_index.md" >}}) routine which simply prints out
+the diagnostics to _stdout_ then returns.
 
 ### Can EVL threads run in kernel space?
 
@@ -767,12 +1045,14 @@ total 0
 -r--r--r--    1 root     root          4096 Mar  1 12:01 state
 -r--r--r--    1 root     root          4096 Mar  1 12:01 stats
 -r--r--r--    1 root     root          4096 Mar  1 12:01 timeout
+-r--r--r--    1 root     root          4096 Mar  1 12:01 observable
 
-# cat pid sched state stats timeout
+# cat pid sched state stats timeout observable
 2140
 0 90 90 rt
 0x8002
 1 311156 311175 0 46999122352 0
+0
 0
 ```
 
@@ -863,6 +1143,13 @@ The format of these fields is as follows:
   timeout. EVL starts a timer when a thread enters a timed wait on
   some kernel resource; _timeout_ reports the time to go until this
   timer fires.
+
+- _observable_ is a boolean value denoting the [observability]({{<
+  relref "core/user-api/observable/_index.md#observable-thread" >}})
+  of the thread. Non-zero indicates that [EVL_CLONE_OBSERVABLE]({{<
+  relref "#evl_create_thread" >}}) was set for this thread, typically
+  for [health monitoring]({{< relref "#health_monitoring" >}})
+  purpose, which made it observable to itself or to other threads.
 
 ### Thread-specific I/O control requests {#thread-ioctl}
 

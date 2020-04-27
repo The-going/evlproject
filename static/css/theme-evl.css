@@ -167,7 +167,20 @@ code {
 }
 
 .mixed-grid-container > div {
-  text-align: left;
+  text-align: justify;
+  padding: 0px 0;
+}
+
+.mixed-grid-right-container {
+  display: grid;
+  grid-template-areas: 'mixed_area mixed_area';
+  grid-template-columns: 800px 600px;
+  grid-gap: 0px;
+  padding: 0px;
+}
+
+.mixed-grid-right-container > div {
+  text-align: justify;
   padding: 0px 0;
 }
 

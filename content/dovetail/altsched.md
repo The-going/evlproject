@@ -854,9 +854,11 @@ whether the in-band stage is stalled or not is undefined.
 
 The last set of notifications involves pure in-band events which the
 autonomous core may need to know about, as they may affect its own
-task management. Except for `INBAND_PROCESS_CLEANUP` which is called for
-*any* exiting user-space task, all other notifications are only issued
-for tasks bound to the core (which may involve kthreads).
+task management. Except for `INBAND_TASK_EXIT` and
+`INBAND_PROCESS_CLEANUP` which are called for *any* exiting user-space
+task, other notifications are only issued for tasks for which
+dovetailing is enabled (see [dovetail_start_altsched()]({{< relref
+"#dovetail_start_altsched" >}})).
 
 The notification is delivered to the [handle_inband_event()]({{<
 relref "#handle_inband_event" >}}) handler. The execution context of

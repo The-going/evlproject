@@ -12,25 +12,25 @@ which can be obtained on any existing [EVL clock]({{< relref
 "core/user-api/clocks/_index.md" >}}). EVL timers support synchronous
 delivery, there is no asynchronous notification mechanism of clock
 events. This means that a client thread must explicitly wait for the
-next expiry by either [reading]({{< relref "core/user-api/io#oob_read"
->}}) or [polling]({{< relref "#timer-poll-events" >}}) for such event.
-Would you choose to [poll]({{< relref "#timer-poll-events" >}}) for
-clock events on a timer, you would still have to collect these events
-once they have occurred by [reading]({{< relref
-"core/user-api/io#oob_read" >}}) the timer file descriptor.
+next expiry by either [reading]({{< relref
+"core/user-api/io/_index.md#oob_read" >}}) or [polling]({{< relref
+"#timer-poll-events" >}}) for such event.  Would you choose to
+[poll]({{< relref "#timer-poll-events" >}}) for clock events on a
+timer, you would still have to collect these events once they have
+occurred by [reading]({{< relref "core/user-api/io/_index.md#oob_read"
+>}}) the timer file descriptor.
 
 Each EVL timer is referred to by a file descriptor. The way you would
 use those timers mimics the usage of the [timerfd
 API](http://man7.org/linux/man-pages/man2/timerfd_create.2.html) for
 the most part, which consists of:
 
-1. creating a timer
-2. setting up a timeout date, either oneshot or recurring
-3. waiting for the (next) timeout to elapse by calling
-   [oob_read()]({{< relref "core/user-api/io#oob_read" >}}) for the
-   timer file descriptor. The value collected by reading a timer is the
-   number of elapsed ticks since the last readout. Therefore, any
-   value greater than 1 would denote an overrun condition.
+1. creating a timer 2. setting up a timeout date, either oneshot or
+recurring 3. waiting for the (next) timeout to elapse by calling
+[oob_read()]({{< relref "core/user-api/io/_index.md#oob_read" >}}) for
+the timer file descriptor. The value collected by reading a timer is
+the number of elapsed ticks since the last readout. Therefore, any
+value greater than 1 would denote an overrun condition.
 
 > A simple periodic loop using an EVL timer
 

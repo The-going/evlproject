@@ -9,6 +9,48 @@ value of the `__EVL__` macro defined in the `<evl/evl.h>` main header
 file, or dynamically by calling [evl_get_version()]({{< relref
 "core/user-api/misc/_index.md#evl_get_version" >}}).
 
+### rev. 17 ([libevl r17](https://git.evlproject.org/libevl.git/tag/?h=r17))
+
+Enables HM support for threads. Since [ABI 23]({{< relref
+"core/abi-revs.md" >}}), the core is able to channel T_WOSS, T_WOLI
+and T_WOSX error notifications (SIGDEBUG_xxx) through the [thread
+observable]({{< relref
+"core/user-api/thread/_index.md#evl_create_thread" >}}) component if
+present. Introduce the T_HMSIG and T_HMOBS mode bits for configuring
+the HM notification source(s) of a thread with
+[evl_set_thread_mode()]({{< relref
+"core/user-api/thread/_index.md#evl_set_thread_mode" >}}).
+    
+SIGDEBUG_xxx codes are renamed to [EVL_HMDIAG_xxx diag codes]({{<
+relref "core/user-api/thread/_index.md#health-monitoring" >}}), so
+that we have a single nomenclature for these errors regardless of
+whether threads are notified via SIGDEBUG or their observable
+component.
+
+### rev. 16 ([libevl r17](https://git.evlproject.org/libevl.git/tag/?h=r17))
+
+Introduces the API changes for supporting the new Observable element:
+
+- adds [evl_subscribe()]({{< relref
+  "core/user-api/thread/_index.md#evl_subscribe" >}}) and
+  [evl_unsubscribe()]({{< relref
+  "core/user-api/thread/_index.md#evl_unsubscribe" >}}) to the thread
+  API.
+
+- adds the [evl_create_observable()]({{< relref
+  "core/user-api/observable/_index.md#evl_create_observable" >}}),
+  [evl_update_observable()]({{< relref
+  "core/user-api/observable/_index.md#evl_update_observable" >}}) and
+  [evl_read_observable()]({{< relref
+  "core/user-api/observable/_index.md#evl_read_observable" >}}) services
+  for the new Observable API.
+
+- allows to pass an opaque data to [evl_add_pollfd()]({{< relref
+  "core/user-api/poll/_index.md#evl_add_pollfd" >}}) and
+  [evl_mode_pollfd()]({{< relref
+  "core/user-api/poll/_index.md#evl_mode_pollfd" >}}), which is
+  returned into the `struct evl_poll_event` descriptor.
+
 ### rev. 15 ([libevl r16](https://git.evlproject.org/libevl.git/tag/?h=r16))
 
 Adds [evl_set_thread_mode()]({{< relref
@@ -19,7 +61,7 @@ Adds [evl_set_thread_mode()]({{< relref
 ### rev. 14
 
 Adds [evl_unblock_thread()]({{< relref
-"core/user-api/thread/_index.md#evl_unblock_thread" >}}) and Adds
+"core/user-api/thread/_index.md#evl_unblock_thread" >}}) and
 [evl_demote_thread()]({{< relref
 "core/user-api/thread/_index.md#evl_demote_thread" >}}).
 

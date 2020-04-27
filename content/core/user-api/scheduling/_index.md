@@ -591,7 +591,7 @@ included, which maps to in-band SCHED_OTHER (0), SCHED_FIFO and
 SCHED_RR (1-99) priority ranges.
 
 A thread scheduled in the SCHED_WEAK class may invoke any EVL service,
-including blocking ones for waiting for out-of-band notifications
+including blocking ones for waiting for out-of-band events
 (e.g. depleting a semaphore), which will certainly switch it to the
 out-of-band execution stage. Before returning from the EVL system
 call, the thread will be automatically switched back to the in-band

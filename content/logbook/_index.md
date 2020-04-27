@@ -5,6 +5,13 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 17.2020
+
+The Observable element was added to the EVL core, as a building block
+for implementing the observer design pattern in applications. See
+[this document]({{< relref "core/user-api/observable/_index.md" >}})
+for more.
+
 ### Week 16.2020
 
 At last, the [element visibility attribute]({{< relref

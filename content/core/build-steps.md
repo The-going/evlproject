@@ -178,6 +178,11 @@ information.
     <td>Maximum number of EVL proxies</td>
   </tr>
   <tr>
+    <td><a href="/core/user-api/proxy/" target="_blank">CONFIG_EVL_NR_OBSERVABLES</a></td>
+    <td>64</td>
+    <td>Maximum number of EVL observables (does not include threads)</td>
+  </tr>
+  <tr>
     <td><a href="/core/runtime-settings" target="_blank">CONFIG_EVL_LATENCY_USER</a></td>
     <td>0</td>
     <td>Pre-set core timer gravity value for user threads (0 means use pre-calibrated value)</td>
@@ -226,7 +231,7 @@ information.
   <tr>
     <td>CONFIG_EVL_WATCHDOG_TIMEOUT</td>
     <td>4</td>
-    <td>Watchdog timeout value (in seconds)</td>
+    <td>Watchdog timeout value (in seconds).
   </tr>
 </table>
 

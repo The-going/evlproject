@@ -56,6 +56,10 @@ A set of creation flags for the new element, defining its
   - `EVL_CLONE_PRIVATE` denotes an element which is private to the
     calling process. No device file appears for it in the [/dev/evl]({{< relref
     "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy.
+
+  - `EVL_CLONE_NONBLOCK` sets the file descriptor of the new semaphore in
+    non-blocking I/O mode (`O_NONBLOCK`). By default, `O_NONBLOCK` is
+    cleared for the file descriptor.
 {{% /argument %}}
 
 {{% argument fmt %}}

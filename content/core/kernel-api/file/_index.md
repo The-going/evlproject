@@ -6,9 +6,9 @@ weight: 2
 An [OOB-capable driver]({{< relref
 "core/kernel-api/_index.md#evl-driver-definiton" >}}) is a device
 driver which implements low latency operations on files like
-[oob_read()]({{< relref "core/user-api/io#oob_read" >}}),
-[oob_write()]({{< relref "core/user-api/io#oob_write" >}}) and
-[oob_ioctl()]({{< relref "core/user-api/io#oob_ioctl" >}}), in
+[oob_read()]({{< relref "core/user-api/io/_index.md#oob_read" >}}),
+[oob_write()]({{< relref "core/user-api/io/_index.md#oob_write" >}}) and
+[oob_ioctl()]({{< relref "core/user-api/io/_index.md#oob_ioctl" >}}), in
 addition to a set of common in-band operations such as
 [open(2)](http://man7.org/linux/man-pages/man2/open.2.html),
 [close(2)](http://man7.org/linux/man-pages/man2/close.2.html),
@@ -26,7 +26,7 @@ EVL files are kernel file objects (`struct file`) which have been
 advertised by an OOB-capable driver as supporting these [out-of-band
 I/O operations]({{< relref "core/user-api/io" >}}), in addition to
 common in-band requests. For instance, [oob_ioctl()]({{< relref
-"core/user-api/io#oob_ioctl" >}}) requests may be issued for an EVL
+"core/user-api/io/_index.md#oob_ioctl" >}}) requests may be issued for an EVL
 file, like
 [ioctl(2)](http://man7.org/linux/man-pages/man2/ioctl.2.html) may as
 well. Such advertisement usually happens in the `open()` operation
@@ -140,9 +140,9 @@ asynchronously, some [out-of-band I/O operations]({{< relref
 "core/user-api/io" >}}) - which the in-band kernel does not know about
 - might still be pending for _efilp_ when the `release()` handler is
 invoked by the in-band kernel. For instance, some application which
-issued an [oob_read()]({{< relref "core/user-api/io#oob_read" >}})
-request might still be waiting for data in the `oob_read()` operation
-handler of the driver, sleeping on an EVL wait queue or a
+issued an [oob_read()]({{< relref "core/user-api/io/_index.md#oob_read"
+>}}) request might still be waiting for data in the `oob_read()`
+operation handler of the driver, sleeping on an EVL wait queue or a
 [semaphore]({{< relref "core/kernel-api/semaphore/_index.md" >}}),
 when some other thread of the program
 [closes](http://man7.org/linux/man-pages/man2/close.2.html) all the

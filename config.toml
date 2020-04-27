@@ -16,7 +16,7 @@ disableShortcutsTitle = true
 evlTrackingKernel = "v5.7-rc2"
 evlLTSBranch = "evl/v5.4"
 evlLTSLatest = "v5.4.32-evl2"
-evlLibLatest = "r16"
+evlLibLatest = "r17"
 
 [[menu.shortcuts]]
 name = "<i class='fas fa-home'></i> Home"

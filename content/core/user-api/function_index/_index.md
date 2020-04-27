@@ -45,6 +45,11 @@ weight: 1
     <td>&#10005;</td> 
   </tr>
   <tr>
+    <td><a href="/core/user-api/thread/index.html#evl_demote_thread" target="_blank">evl_demote_thread()</a></td>
+    <td>&#9866;</td> 
+    <td>&#9989;</td>
+  </tr>
+  <tr>
     <td><a href="/core/user-api/thread/index.html#evl_get_self" target="_blank">evl_get_self()</a></td>
     <td>&#9866;</td> 
     <td>&#10005;</td> 
@@ -70,6 +75,11 @@ weight: 1
     <td>&#9989;</td>
   </tr>
   <tr>
+    <td><a href="/core/user-api/thread/index.html#evl_subscribe" target="_blank">evl_subscribe()</a></td>
+    <td>&#9661;</td> 
+    <td>&#10005;</td> 
+  </tr>
+  <tr>
     <td><a href="/core/user-api/thread/index.html#evl_switch_inband" target="_blank">evl_switch_inband()</a></td>
     <td>&#9661;</td> 
     <td>&#10005;</td> 
@@ -81,13 +91,13 @@ weight: 1
   </tr>
   <tr>
     <td><a href="/core/user-api/thread/index.html#evl_unblock_thread" target="_blank">evl_unblock_thread()</a></td>
-    <td>&#9651;</td> 
+    <td>&#9866;</td> 
     <td>&#9989;</td>
   </tr>
   <tr>
-    <td><a href="/core/user-api/thread/index.html#evl_demote_thread" target="_blank">evl_demote_thread()</a></td>
-    <td>&#9651;</td> 
-    <td>&#9989;</td>
+    <td><a href="/core/user-api/thread/index.html#evl_unsubscribe" target="_blank">evl_unsubscribe()</a></td>
+    <td>&#9661;</td> 
+    <td>&#10005;</td> 
   </tr>
 </table>
 </div>
@@ -451,6 +461,41 @@ weight: 1
 </table>
 </div>
 
+### Observable services
+
+<div>
+<table id="usvctable">
+  <col width="40%">
+  <col width="12%">
+  <col width="12%">
+  <tr>
+    <th>Function name</th>
+    <th>EVL Switch<sup>1</sup></th> 
+    <th>non-EVL<sup>2</sup></th> 
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/observable/index.html#evl_create_observable" target="_blank">evl_create_observable()</a></td>
+    <td>&#9661;</td> 
+    <td>&#9989;</td> 
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/observable/index.html#evl_new_observable" target="_blank">evl_new_observable()</a></td>
+    <td>&#9661;</td> 
+    <td>&#9989;</td> 
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/observable/index.html#evl_read_observable" target="_blank">evl_read_observable()</a></td>
+    <td>&#9651;</td> 
+    <td>&#9989;</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/observable/index.html#evl_update_observable" target="_blank">evl_update_observable()</a></td>
+    <td>&#9651;</td> 
+    <td>&#9989;</td>
+  </tr>
+</table>
+</div>
+
 ### Polling services
 
 <div>
@@ -639,17 +684,17 @@ weight: 1
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/io/index.html#oob_read" target="_blank">oob_read()</a></td>
+    <td><a href="/core/user-api/io/_index.html#oob_read" target="_blank">oob_read()</a></td>
     <td>&#9651;</td> 
     <td>&#10005;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/io/index.html#oob_write" target="_blank">oob_write()</a></td>
+    <td><a href="/core/user-api/io/_index.html#oob_write" target="_blank">oob_write()</a></td>
     <td>&#9651;</td> 
     <td>&#10005;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/io/index.html#oob_ioctl" target="_blank">oob_ioctl()</a></td>
+    <td><a href="/core/user-api/io/_index.html#oob_ioctl" target="_blank">oob_ioctl()</a></td>
     <td>&#9651;</td> 
     <td>&#10005;</td> 
   </tr>

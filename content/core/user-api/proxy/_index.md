@@ -253,13 +253,15 @@ the output written to the proxy file descriptor returned by
 {{% argument bufsz %}}
 The size in bytes of the ring buffer where the output data is kept
 until the in-band worker has relayed it to the destination file.
-Out-of-band writers may block attempting to write to a proxy file
-descriptor if the output buffer is full, waiting to be depleted by the in-band
-worker thread, unless the proxy descriptor is set to [non-blocking mode
+_bufsz_ must not exceed 2^30. If _granularity_ is non-zero, _bufsz_
+must be a multiple of this value. Out-of-band writers may block
+attempting to write to a proxy file descriptor if the output buffer is
+full, waiting to be depleted by the in-band worker thread, unless the
+proxy descriptor is set to [non-blocking mode
 (O_NONBLOCK)](http://man7.org/linux/man-pages/man2/fcntl.2.html). Zero
-is an acceptable value if you plan to use this
-proxy exclusively for exporting a shared memory mapping, in which case
-there is no point in reserving an output buffer.
+is an acceptable value if you plan to use this proxy exclusively for
+exporting a shared memory mapping, in which case there is no point in
+reserving an output buffer.
 {{% /argument %}}
 
 {{% argument granularity %}}
@@ -291,6 +293,10 @@ A set of creation flags for the new element, defining its
   - `EVL_CLONE_PRIVATE` denotes an element which is private to the
     calling process. No device file appears for it in the [/dev/evl]({{< relref
     "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy.
+
+  - `EVL_CLONE_NONBLOCK` sets the file descriptor of the new proxy in
+    non-blocking I/O mode (`O_NONBLOCK`). By default, `O_NONBLOCK` is
+    cleared for the file descriptor.
  {{% /argument %}}
 
 {{% argument fmt %}}
@@ -308,14 +314,11 @@ The optional variable argument list completing the format.
 file descriptor of the new proxy on success. If the call fails, a
 negated error code is returned instead:
 
-- -EEXIST	The generated name is conflicting with an existing proxy.
+- -EEXIST	The generated name is conflicting with an existing proxy name.
 
-- -EINVAL	Either _bufsz_ and/or _granularity_ are wrong, or the
-  		generated proxy name is badly formed, likely containing
-		invalid character(s), such as a slash. Keep in mind that
-		it should be usable as a basename of a device file path.
-		_bufsz_ must not exceed 2^30. If _granularity_ is non-zero,
-		_bufsz_ must be a multiple of this value.
+- -EINVAL	Either _flags_ is wrong,  _bufsz_ and/or _granularity_ are wrong,
+  		or the [generated name]({{< relref "core/user-api/_index.md#element-naming-convention"
+  		>}}) is badly formed. 
 
 - -EBADF	_targetfd_ is not a valid file descriptor.
 

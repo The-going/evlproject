@@ -80,7 +80,11 @@ important part here, as it hides the nitty-gritty details of embedding
 a companion core into the kernel. Its fairly low code footprint and
 limited complexity makes it a good choice as a plug-and-forget
 real-time infrastructure, which can also be used as a starting point
-for custom core implementations:
+for custom core implementations. The following figures have been
+obtained from the [CLOC](https://github.com/AlDanial/cloc) tool
+counting the lines of source code from the [RTAI](http://rtai.org),
+[Xenomai](https://xenomai.org) and [EVL](https://evlproject.org) core
+implementation respectively:
 
 ![Alt text](/images/kloc-core.png "EVL kernel code footprint")
 

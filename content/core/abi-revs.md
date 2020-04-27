@@ -28,6 +28,11 @@
     <th>libevl release</th>
   </tr>
   <tr>
+    <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=a0afcbc06f23d1918703770e5755410a7f8a042e" target="_blank">23</a></td>
+    <td>Add the Observable element, and thread observability.
+    <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r17" target="_blank">r17</a></td>
+  </tr>
+  <tr>
     <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=021a9f1ff570a0ebeb8dc80c1a0dfb4d8317d5b5" target="_blank">22</a></td>
     <td>Add EVL_THRIOC_UNBLOCK, EVL_THRIOC_DEMOTE and EVL_THRIOC_YIELD, update EVL_THRIOC_*_MODE operations.
     <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r16" target="_blank">r16</a></td>

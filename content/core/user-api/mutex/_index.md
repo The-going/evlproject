@@ -86,6 +86,10 @@ A set of creation flags ORed in a mask which defines the new mutex type and
     calling process. No device file appears for it in the
     [/dev/evl]({{< relref "core/user-api/_index.md#evl-fs-hierarchy"
     >}}) file hierarchy.
+   
+  - `EVL_CLONE_NONBLOCK` sets the file descriptor of the new mutex in
+    non-blocking I/O mode (`O_NONBLOCK`). By default, `O_NONBLOCK` is
+    cleared for the file descriptor.
 {{% /argument %}}
 
 {{% argument fmt %}}
@@ -105,10 +109,9 @@ mutex on success. Otherwise, a negated error code is returned:
 - -EEXIST	The generated name is conflicting with an existing mutex,
 		event, semaphore or flag group name.
 
-- -EINVAL	Either _clockfd_ does not refer to a valid EVL clock, or the
-  		generated mutex name is badly formed, likely containing
-		invalid character(s), such as a slash. Keep in mind that
-		it should be usable as a basename of a device element's file path.
+- -EINVAL	Either _flags_ is wrong, _clockfd_ does not refer to a valid EVL clock,
+  		or the [generated name]({{< relref "core/user-api/_index.md#element-naming-convention"
+  		>}}) is badly formed.
 
 - -ENAMETOOLONG	The overall length of the device element's file path including
 		the generated name exceeds PATH_MAX.

@@ -85,12 +85,14 @@ used for accessing the channel from the in-band stage.
 The size in bytes of the ring buffer conveying inbound traffic. If
 zero, the cross-buffer is intended to relay outbound messages
 exclusively, i.e. from the in-band to the out-of-band context.
+_i\_bufsz_ must not exceed 2^30.
 {{% /argument %}}
 
 {{% argument o_bufsz %}}
 The size in bytes of the ring buffer conveying outbound traffic. If
 zero, the cross-buffer is intended to relay inbound messages
 exclusively, i.e. from the out-of-band to the in-band context.
+_i\_bufsz_ must not exceed 2^30.
 {{% /argument %}}
 
 {{% argument flags %}}
@@ -106,6 +108,10 @@ A set of creation flags for the new element, defining its
   - `EVL_CLONE_PRIVATE` denotes an element which is private to the
     calling process. No device file appears for it in the [/dev/evl]({{< relref
     "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy.
+
+  - `EVL_CLONE_NONBLOCK` sets the file descriptor of the new cross-buffer in
+    non-blocking I/O mode (`O_NONBLOCK`). By default, `O_NONBLOCK` is
+    cleared for the file descriptor.
  {{% /argument %}}
 
 {{% argument fmt %}}
@@ -123,13 +129,11 @@ The optional variable argument list completing the format.
 file descriptor of the new cross-buffer on success. If the call fails,
 a negated error code is returned instead:
 
-- -EEXIST	The generated name is conflicting with an existing cross-buffer.
+- -EEXIST	The generated name is conflicting with an existing cross-buffer name.
 
-- -EINVAL	Either _i\_bufsz_ and/or _o\_bufsz_ are wrong, or the
-  		generated cross-buffer name is badly formed, likely containing
-		invalid character(s), such as a slash. Keep in mind that
-		it should be usable as a basename of a device file path.
-		Any buffer size must not exceed 2^30.
+- -EINVAL	Either _flags_ is wrong,  _i\_bufsz_ and/or _o\_bufsz_ are wrong,
+  		or the [generated name]({{< relref "core/user-api/_index.md#element-naming-convention"
+  		>}}) is badly formed.
 
 - -ENAMETOOLONG	The overall length of the device element's file path including
 		the generated name exceeds PATH_MAX.
