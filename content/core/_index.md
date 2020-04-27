@@ -100,42 +100,54 @@ As the name suggests, _elements_ are the basic features we may require
 from the EVL core for supporting real-time applications in this dual
 kernel environment. Also, only the kernel could provide such features
 in an efficient way, pure user-space code could not deliver. The EVL
-core defines five of them:
+core defines six elements:
 
-- thread. As the basic execution unit, we want it to be runnable
-  either in real-time mode or regular GPOS mode alternatively, which
-  exactly maps to [Dovetail's]({{% relref
-  "dovetail/pipeline/_index.md" %}}) out-of-band and in-band contexts.
+- [Thread]({{< relref "core/user-api/thread/_index.md" >}}). As the
+  basic execution unit, we want it to be runnable either in real-time
+  mode or regular GPOS mode alternatively, which exactly maps to
+  [Dovetail's]({{% relref "dovetail/pipeline/_index.md" %}}) out-of-band
+  and in-band contexts.
 
-- monitor. This element has the same purpose than the main kernel's
+- Monitor. This element has the same purpose than the main kernel's
   _futex_, which is about providing an integrated - although much
-  simpler - set of fundamental thread synchronization features. It is
-  used by the EVL library to implement mutexes, condition variables,
-  event flag groups and semaphores in user-space.
+  simpler - set of fundamental thread synchronization features. Monitors
+  are used internally by the EVL library to implement mutexes, [condition
+  variables]({{< relref "core/user-api/event/_index.md" >}}), [event
+  flag groups]({{< relref "core/user-api/flags/_index.md"
+  >}}) and [semaphores]({{< relref "core/user-api/semaphore/_index.md"
+  >}}) in user-space.
 
-- clock. We may find platform-specific clock devices in addition to
-  the core ones defined by the architecture, for which ad hoc drivers
-  should be written. The clock element ensures all clock drivers
-  present the same interface to applications in user-space. In
-  addition, this element can export individual software timers to
-  applications which comes in handy for running periodic loops or
-  waiting for oneshot events on a specific time base.
+- [Clock]({{< relref "core/user-api/clock/_index.md" >}}). We may find
+  platform-specific clock devices in addition to the core ones defined
+  by the architecture, for which ad hoc drivers should be written. The
+  clock element ensures all clock drivers present the same interface to
+  applications in user-space. In addition, this element can export
+  individual software timers to applications which comes in handy for
+  running periodic loops or waiting for oneshot events on a specific
+  time base.
 
-- cross-buffer. A cross-buffer (aka _xbuf_) is a bi-directional
-  communication channel for exchanging data between out-of-band and
-  in-band thread contexts, without impacting the real-time performance
-  on the out-of-band side.  Any kind of thread (EVL or regular) can
-  wait/poll for input from the other side. Cross-buffers serve the
-  same purpose than Xenomai's _message pipes_ implemented by the
-  _XDDP_ socket protocol.
+- [Observable]({{< relref "core/user-api/observable/_index.md"
+  >}}). This element is the building block event-driven applications
+  can use for implementing the [observer design
+  pattern](https://en.wikipedia.org/wiki/Observer_pattern), in which
+  any number of observer threads can be notified of updates to any
+  number of observable subjects, in a loosely coupled fashion.
 
-- file proxy. Linux-based dual kernel systems are nasty by design: the
-  huge set of GPOS features is always visible to applications but they
-  should not to use it when they carry out real-time work with the
-  help of the autonomous core, or risk unbounded response
-  time. Because of such exclusion, manipulating files created by the
-  main kernel such as calling
-  [printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html)
+- [Cross-buffer]({{< relref "core/user-api/xbuf/_index.md" >}}). A
+  cross-buffer (aka _xbuf_) is a bi-directional communication channel
+  for exchanging data between out-of-band and in-band thread contexts,
+  without impacting the real-time performance on the out-of-band side.
+  Any kind of thread (EVL or regular) can wait/poll for input from the
+  other side. Cross-buffers serve the same purpose than Xenomai's
+  _message pipes_ implemented by the _XDDP_ socket protocol.
+
+- [File proxy]({{< relref "core/user-api/proxy/_index.md"
+  >}}). Linux-based dual kernel systems are nasty by design: the huge
+  set of GPOS features is always visible to applications but they should
+  not to use it when they carry out real-time work with the help of the
+  autonomous core, or risk unbounded response time. Because of such
+  exclusion, manipulating files created by the main kernel such as
+  calling [printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html)
   should not be done directly from time-critical loops. A file proxy
   solves this type of issue by channeling the output it receives to an
   arbitrary file descriptor, keeping the writer on the out-of-band
