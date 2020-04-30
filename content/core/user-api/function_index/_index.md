@@ -485,12 +485,12 @@ weight: 1
   </tr>
   <tr>
     <td><a href="/core/user-api/observable/index.html#evl_read_observable" target="_blank">evl_read_observable()</a></td>
-    <td>&#9651;</td> 
+    <td>&#9651;<sup>5</sup></td> 
     <td>&#9989;</td>
   </tr>
   <tr>
     <td><a href="/core/user-api/observable/index.html#evl_update_observable" target="_blank">evl_update_observable()</a></td>
-    <td>&#9651;</td> 
+    <td>&#9651;<sup>5</sup></td> 
     <td>&#9989;</td>
   </tr>
 </table>
@@ -812,6 +812,14 @@ statically initialized (`EVL_*_INITIALIZER()`), this routine may
 switch the caller to the in-band stage in order to finalize the
 construction before carrying out the requested operation. This is
 required only once in the object's lifetime.
+
+<sup>5</sup> If the caller undergoes the [SCHED_WEAK]({{< relref
+"core/user-api/scheduling/_index.md#SCHED_WEAK" >}}) policy, or is not
+[attached]({{< relref
+"core/user-api/thread/_index.md#evl_attach_thread" >}}) to the core,
+this system call is directly handled from the in-band stage. In all
+other cases, the caller may be switched to the out-of-band execution
+stage.
 
 ---
 
