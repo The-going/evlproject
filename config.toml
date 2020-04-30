@@ -15,7 +15,7 @@ themeVariant = "evl"
 disableShortcutsTitle = true
 evlTrackingKernel = "v5.7-rc2"
 evlLTSBranch = "evl/v5.4"
-evlLTSLatest = "v5.4.32-evl2"
+evlLTSLatest = "v5.4.36-evl1"
 evlLibLatest = "r17"
 
 [[menu.shortcuts]]

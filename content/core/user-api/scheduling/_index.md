@@ -203,6 +203,8 @@ zero on success, otherwise a negated error code is returned:
 int evl_control_sched(int policy, const union evl_sched_ctlparam *param, union evl_sched_ctlinfo *info, int cpu)
 {{< /proto >}}
 
+![Alt text](/images/wip.png "To be continued")
+
 ---
 
 ### Scheduling policies
