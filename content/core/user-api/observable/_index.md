@@ -32,7 +32,7 @@ worker would be picked on a round-robin basis so as to implement a
 naive load-balancing strategy.  Setting the Observable in the
 so-called _master mode_ (see [EVL_CLONE_MASTER]({{< relref
 "core/user-api/observable/_index.md#evl_create_observable" >}})) at
-creation time enables this behavior :
+creation time enables this behavior:
 {{% /mixedgrid-right %}}
 
 ### Creating an Observable

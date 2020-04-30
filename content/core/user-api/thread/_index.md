@@ -766,11 +766,12 @@ zero on success, otherwise a negated error code:
 ### Health monitoring of threads {#health-monitoring}
 
 The EVL core has some health monitoring (HM) capabilities, which can
-be enabled separately on a per-thread basis using ({{< relref
-"#evl_set_thread_mode" >}}), or global to the system via the kernel
-configuration. They are based on runtime error detection when
-performing user requests which involve threads. Each type of error is
-associated with a diagnostic code, such as:
+be enabled separately on a per-thread basis using
+[evl_set_thread_mode()]({{< relref "#evl_set_thread_mode" >}}), or
+global to the system via the kernel configuration. They are based on
+runtime error detection when performing user requests which involve
+threads. Each type of error is associated with a diagnostic code, such
+as:
 
 ```
 /* Health monitoring diag codes (via observable or SIGDEBUG). */
