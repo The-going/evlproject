@@ -45,4 +45,22 @@ struct evl_version {
 
 ---
 
+{{< proto evl_sigdebug_handler >}}
+void evl_sigdebug_handler(int sig, siginfo_t *si, void *ctxt)
+{{< /proto >}}
+
+This routine is a basic signal handler for the [SIGDEBUG]({{< relref
+"core/user-api/thread/_index.md#hm-sigdebug" >}}) signal which simply
+prints out the HM diagnostics received to _stdout_ then returns.
+
+`libevl` does _not_ install this handler by default, this is up to
+your application to do so if need be.
+
+_sig_, _si_ and _ctxt_ correspond to the parameters received by the
+_sa\_sigaction_ handler which your application should install using
+[sigaction()](http://man7.org/linux/man-pages/man2/sigaction.2.html)
+(`SA_SIGINFO` must be set in the action flags).
+
+---
+
 {{<lastmodified>}}

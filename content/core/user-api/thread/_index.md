@@ -892,7 +892,7 @@ which is `SIGXCPU` in disguise), and/or pushing a notification to the
 "core/user-api/observable/_index.md#observable-thread" >}}) component
 of the thread if enabled. Both options are cumulative.
 
-##### Signal-based HM notifications
+##### Signal-based HM notifications {#hm-sigdebug}
 
 `SIGDEBUG` is enabled by setting the [T_HMSIG]({{< relref
 "#evl_set_thread_mode" >}}) mode bit for the thread. A signal handler
@@ -934,8 +934,8 @@ void install_sigdebug_handler(void)
 ```
 
 `libevl` defines the [evl_sigdebug_handler()]({{< relref
-"core/user-api/misc/_index.md" >}}) routine which simply prints out
-the diagnostics to _stdout_ then returns.
+"core/user-api/misc/_index.md#evl_sigdebug_handler" >}}) routine which
+simply prints out the diagnostics to _stdout_ then returns.
 
 ### Can EVL threads run in kernel space?
 
