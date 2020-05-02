@@ -333,6 +333,36 @@ void receive_notification(int ofd)
 
 ---
 
+### Events pollable from an Observable {#observable-poll-events}
+
+The [evl_poll()]({{< relref "core/user-api/poll/_index.md" >}}) and
+[poll(2)](http://man7.org/linux/man-pages/man2/poll.2.html) interfaces
+can monitor the following events occurring on an Observable:
+
+- `POLLIN` and `POLLRDNORM` are set whenever at least one notification
+  is pending for the calling [observer thread]({{< relref
+  "core/user-api/thread/_index.md#evl_subscribe" >}}). This means that
+  a subsequent call to [evl_read_observable()]({{< relref
+  "#evl_read_observable" >}}) by the same thread would return at least
+  one valid notification immediately.
+
+- `POLLOUT` and `POLLWRNORM` are set whenever at least one observer
+  [subscribed]({{< relref
+  "core/user-api/thread/_index.md#evl_subscribe" >}}) to the
+  Observable has enough room in its backlog to receive at least one
+  notice. This means that a subsequent call to
+  [evl_update_observable()]({{< relref "#evl_read_observable" >}})
+  would succeed in queuing at least one notice to one observer. In
+  case multiple threads may update the Observable concurrently, which
+  thread might succeed in doing so cannot be determined (typically,
+  there would be no such guarantee for the caller of [evl_poll()]({{<
+  relref "core/user-api/poll/_index.md" >}}) and
+  [poll(2)](http://man7.org/linux/man-pages/man2/poll.2.html).
+
+In addition to these flags, `POLLERR` might be returned in case the
+caller did not [subscribe]({{< relref
+"core/user-api/thread/_index.md#evl_subscribe" >}}) to the Observable.
+
 ### Observing EVL threads {#observable-thread}
 
 An EVL thread is in and of itself an Observable element. Observability
@@ -355,3 +385,7 @@ relref "core/user-api/thread/_index.md#health-monitoring" >}})
 information to subscribers. An observable thread can also do
 introspection, by subscribing to itself then reading the
 HM diagnostics it has received.
+
+---
+
+{{<lastmodified>}}
