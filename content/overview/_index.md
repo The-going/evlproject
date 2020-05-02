@@ -23,12 +23,12 @@ In order to achieve this, the EVL project works on three components:
 "dovetail/_index.md" >}}) - which acts as an interface between the
 companion core and the general purpose kernel. This layer introduces a
 [high-priority execution stage]({{< relref
-"dovetail/pipeline/_index.md#two-stage-pipeline" >}}) where tasks with
-real-time requirements should run. In other words, with the Dovetail
-code in, the Linux kernel can plan for running out-of-band tasks in a
-separate execution context which is not subject to the common forms of
-serialization the general purpose work has to abide by (e.g. interrupt
-masking, spinlocks).
+"dovetail/pipeline/_index.md#two-stage-pipeline" >}}) on which tasks
+with real-time requirements should run. In other words, with the
+Dovetail code in, the Linux kernel can plan for running out-of-band
+tasks in a separate execution context which is not subject to the
+common forms of serialization the general purpose work has to abide by
+(e.g. interrupt masking, spinlocks).
 
 - a compact and scalable [real-time core]({{< relref "core/_index.md"
 >}}), which is intended to serve as a reference implementation for

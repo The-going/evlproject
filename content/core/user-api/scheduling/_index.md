@@ -3,7 +3,7 @@ menutitle: "Scheduling"
 weight: 52
 ---
 
-### The out-of-band scheduler
+## The out-of-band scheduler
 
 EVL defines five scheduling policies for running out-of-band threads.
 These policies are hierarchized: every time the core needs to pick the
@@ -42,11 +42,11 @@ scheduling policies.**
 
 {{% notice tip %}}
 Before a thread can be assigned to any EVL class, its has to attach
-itself to the core by a call to [evl_attach_self]({{% relref
-"core/user-api/thread/_index.md#evl_attach_self" %}}).
+itself to the core by a call to [evl_attach_thread]({{% relref
+"core/user-api/thread/_index.md#evl_attach_thread" %}}).
 {{% /notice %}}
 
-### Scheduler services {#sched-services}
+## Scheduler services {#sched-services}
 
 {{< proto evl_set_schedattr >}}
 int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)
@@ -57,8 +57,8 @@ by _efd_ in the EVL core.
 
 {{% argument efd %}}
 A file descriptor referring to the target thread, as returned by
-[evl_attach_self()]({{% relref
-"core/user-api/thread/_index.md#evl_attach_self" %}}),
+[evl_attach_thread()]({{% relref
+"core/user-api/thread/_index.md#evl_attach_thread" %}}),
 [evl_get_self()]({{% relref
 "core/user-api/thread/_index.md#evl_get_self" %}}), or opening a
 thread element device in _/dev/evl/thread_ using
@@ -95,8 +95,8 @@ individual time quantum before the CPU is given to the next thread.
   expense of briefly switching to the out-of-band execution stage on
   demand.
 
-[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) returns zero on success, otherwise a negated
-error code is returned:
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) returns
+zero on success, otherwise a negated error code is returned:
 
 -EBADF		_efd_ is not a valid thread descriptor.
 
@@ -107,23 +107,10 @@ error code is returned:
 -ESTALE		_efd_ refers to a stale thread, see these [notes]({{< relref
 		"core/user-api/thread/_index.md#evl_detach_self" >}}).
 
-```
-#include <evl/thread.h>
-
-int change_self_schedparams(void)
-{
-	struct evl_sched_attrs attrs;
-
-	attrs.sched_policy = SCHED_FIFO;
-	attrs.sched_priority = 90;
-	return evl_set_schedattr(evl_get_self(), &attrs);
-}
-```
-
 [evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) immediately
 changes the scheduling attributes the EVL core uses for the target
 thread when it runs in out-of-band context. Later on, the next time
-such thread transitions from out-of-band to in-band context, the main
+such thread transitions from out-of-band to in-band context, the in-band
 kernel will apply an extrapolated version of those changes to its own
 scheduler as well.
 
@@ -145,7 +132,7 @@ Calling
 [pthread_setschedparam(3)](http://man7.org/linux/man-pages/man3/pthread_setschedparam.3.html)
 from the C library does not affect the scheduling attributes of an EVL
 thread. It only affects the scheduling parameters of such thread from
-the standpoint of the main kernel. Because the C library may cache the
+the standpoint of the in-band kernel. Because the C library may cache the
 current scheduling attributes for the in-band context of a thread -
 _glibc_ does so typically - the cached value may not reflect the
 actual scheduling attributes of the thread after this call.
@@ -162,8 +149,8 @@ the thread referred to by _efd_.
 
 {{% argument efd %}}
 A file descriptor referring to the target thread, as returned by
-[evl_attach_self()]({{< relref
-"core/user-api/thread/_index.md#evl_attach_self" >}}),
+[evl_attach_thread()]({{< relref
+"core/user-api/thread/_index.md#evl_attach_thread" >}}),
 [evl_get_self()]({{< relref
 "core/user-api/thread/_index.md#evl_get_self" >}}), or opening a
 thread element device in _/dev/evl/thread_ using `open(2)`.
@@ -175,6 +162,7 @@ scheduling attributes.
 {{% /argument %}}
 
 ```
+#include <evl/sched.h>
 #include <evl/thread.h>
 
 int retrieve_self_schedparams(void)
@@ -203,37 +191,49 @@ zero on success, otherwise a negated error code is returned:
 int evl_control_sched(int policy, const union evl_sched_ctlparam *param, union evl_sched_ctlinfo *info, int cpu)
 {{< /proto >}}
 
-![Alt text](/images/wip.png "To be continued")
+Some policies require specific configuration for each CPU,
+[evl_control_sched()]({{< relref "#evl_control_sched" >}}) passes such
+information to the core. Which parameters should be filled into the
+_param_ union depends on the _policy_. For instance, you would need to
+call this routine for defining the [SCHED_TP]({{< relref "#SCHED_TP"
+>}}) schedule on a given CPU.
 
----
+{{% argument policy %}}
+Either `SCHED_QUOTA` or `SCHED_TP`.
+{{% /argument %}}
 
-### Scheduling policies
+{{% argument param %}}
+A pointer to the scheduling parameters which should
+be applied to _cpu_ for the _policy_ mentioned. These parameters
+are described in the [SCHED_QUOTA]({{< relref "#managing-quota-groups" >}})
+and [SCHED_TP]({{< relref "#setting-tp-information" >}}) documentation.
+{{% /argument %}}
 
-#### SCHED_FIFO {#SCHED_FIFO}
+{{% argument info %}}
+A pointer to a control information block where the core may write some
+useful data about the current settings. Except for the _get_
+operations, this pointer is optional and may be passed as NULL.
+{{% /argument %}}
 
-The first-in, first-out policy, fixed priority, preemptive scheduling
-policy. If you really need a refresher about this one, you can still
-have a look at this inspirational piece of post-modern poetry for
-[background info](
-https://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_08.html).
-Or you can just go for the short version: with SCHED_FIFO, the
-scheduler always picks the runnable thread with the highest priority
-which spent the longest time waiting for the CPU to be available.
+{{% argument cpu %}}
+A CPU which belongs to the set of CPUs EVL runs out-of-band activity
+on (see the `evl.oobcpus` kernel parameter).
+{{% /argument %}}
 
-EVL provides 99 fixed priority levels starting a 1, which maps 1:1 to
-the main kernel's SCHED_FIFO implementation as well.
+This call returns zero on success, or a negated error code:
 
-Switching a thread to FIFO scheduling is achieved by calling
-[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
-`evl_sched_attrs` attribute structure should be filled in as follows:
+- -EINVAL	Either _policy_, _cpu_, or some information
+  		in _param_ is wrong.
 
-```
-	struct evl_sched_attrs attrs;
+- -EFAULT	Either _param_ or _info_ are invalid addresses.
 
-	attrs.sched_policy = SCHED_FIFO;
-	attrs.sched_priority = <priority>; /* [1-99] */
+- -ENOMEM	The core could not allocate memory for carrying
+  		out the operation. Scary.
 
-```
+- -EOPNOTSUPP _policy_ is valid but not available from the
+  	      core. `CONFIG_EVL_SCHED_TP` or `CONFIG_EVL_SCHED_QUOTA`
+  	      are likely disabled in the [kernel configuration]({{<
+  	      relref "core/build-steps.md#core-kconfig" >}}).
 
 ---
 
@@ -241,8 +241,8 @@ Switching a thread to FIFO scheduling is achieved by calling
 int evl_yield(void)
 {{< /proto >}}
 
-In some cases, EVL threads undergoing real-time policies might need to
-perform manual round-robin, like
+In some cases, EVL threads undergoing the `SCHED_FIFO` or `SCHED_RR`
+policies might need to perform manual round-robin, like
 [sched_yield()](http://man7.org/linux/man-pages/man2/sched_yield.2.html)
 allows for plain POSIX threads. [evl_yield()]({{< relref "#evl_yield"
 >}}) can be used for that purpose.
@@ -268,10 +268,46 @@ zero, otherwise a negated error code:
 -EPERM		The caller is not
 		[attached]({{< relref "core/user-api/thread/_index.md#evl_attach_thread" >}})
 		to the EVL core.
-	
+
 ---
 
-#### SCHED_RR {#SCHED_RR}
+## Scheduling policies
+
+### SCHED_FIFO policy {#SCHED_FIFO}
+
+The first-in, first-out policy, fixed priority, preemptive scheduling
+policy. If you really need a refresher about this one, you can still
+have a look at this inspirational piece of post-modern poetry for
+[background info](
+https://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_08.html).
+Or you can just go for the short version: with SCHED_FIFO, the
+scheduler always picks the runnable thread with the highest priority
+which spent the longest time waiting for the CPU to be available.
+
+EVL provides 99 fixed priority levels starting a 1, which maps 1:1 to
+the in-band kernel's SCHED_FIFO implementation as well.
+
+#### Setting the SCHED_FIFO parameters {#sched-fifo-parameters}
+
+Switching a thread to FIFO scheduling is achieved by calling
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) with the
+file descriptor of the target thread. The `evl_sched_attrs` attribute
+structure should be filled in as follows:
+
+```
+#include <evl/sched.h>
+
+	struct evl_sched_attrs attrs;
+	int ret;
+
+	attrs.sched_policy = SCHED_FIFO;
+	attrs.sched_priority = <priority>; /* [1-99] */
+	ret = evl_set_schedattr(efd, &attrs);
+```
+
+---
+
+### SCHED_RR policy {#SCHED_RR}
 
 The round-robin policy is based on SCHED_FIFO
 internally. Additionally, it limits the execution time of its members
@@ -280,17 +316,23 @@ current timeslice to the tail of the scheduling queue for its priority
 level. This is designed as a simple way to prevent threads from
 over-consuming the CPU within their own priority level.
 
-Unlike the main kernel which defines a global timeslice value for all
+Unlike the in-band kernel which defines a global timeslice value for all
 members of the SCHED_RR class, EVL defines a per-thread quantum
 instead. Since EVL is tickless, this quantum may be any valid
 duration, and may differ among threads from the same priority group.
 
+#### Setting the SCHED_RR parameters {#sched-rr-parameters}
+
 Switching a thread to round-robin scheduling is achieved by calling
-[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
-`evl_sched_attrs` attribute structure should be filled in as follows:
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) with the
+file descriptor of the target thread. The `evl_sched_attrs` attribute
+structure should be filled in as follows:
 
 ```
+#include <evl/sched.h>
+
 	struct evl_sched_attrs attrs;
+	int ret;
 
 	attrs.sched_policy = SCHED_RR;
 	attrs.sched_priority = <priority>; /* [1-99] */
@@ -298,21 +340,22 @@ Switching a thread to round-robin scheduling is achieved by calling
 			       .tv_sec = <seconds>,
 			       .tv_nsec = <nanoseconds>,
 			       };
-
+	ret = evl_set_schedattr(efd, &attrs);
 ```
----
 
-#### SCHED_QUOTA {#SCHED_QUOTA}
+### SCHED_QUOTA policy {#SCHED_QUOTA}
 
+{{% mixedgrid-right src="/images/quota_scheduling.png" %}}
 The quota-based policy enforces a limitation on the CPU consumption of
 threads over a fixed period of time, known as the global quota
 period. Threads undergoing this policy are pooled in groups, with each
 group being given a share of the period (expressed as a
-percentage). The rules of the SCHED_FIFO policy apply among all
-threads regardless of their group.
+percentage). Within a SCHED_QUOTA group, the SCHED_FIFO policy
+applies to all its members.
+{{% /mixedgrid-right %}}
 
 For instance, say that we have five distinct thread groups, each of
-which is given a runtime credit which represents a portion of the
+which is given a runtime budget which represents a portion of the
 global period: 35%, 25%, 15%, 10% and finally 5% of a global period
 set to one second. The first group would be allotted 350 milliseconds
 over a second, the second group would get 250 milliseconds from the
@@ -320,9 +363,9 @@ same period and so on.
 
 Every time a thread undergoing the SCHED_QUOTA policy is given the
 CPU, the time it consumes is charged to the group it belongs
-to. Whenever the group as a whole reaches the alloted time credit, all
+to. Whenever the group as a whole reaches the alloted time budget, all
 its members stall until the next period starts, at which point the
-runtime credit of every group is replenished for the next round of
+runtime budget of every group is replenished for the next round of
 execution, resuming all its members in the process.
 
 You may attach as many threads as you need to a single group, and the
@@ -330,36 +373,24 @@ number of threads may vary among groups. The alloted runtime quota for
 a group is decreased by the execution time of every thread in that
 group. Therefore, a group with no thread does not consume its quota.
 
-![Alt text](/images/quota_scheduling.png "Quota-based scheduling")
-
-Switching a thread to quota-based scheduling is achieved by calling
-[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
-`evl_sched_attrs` attribute structure should be filled in as follows:
-
-```
-	struct evl_sched_attrs attrs;
-
-	attrs.sched_policy = SCHED_QUOTA;
-	attrs.sched_priority = <priority>; /* [1-99] */
-	attrs.sched_quota_group = <grpid>; /* Quota group id. */
-```
-
-[Creating]({{< relref "#create-quota-group" >}}), [modifying]({{<
-relref "#modify-quota-group" >}}) and [removing]({{< relref
-"#remove-quota-group" >}}) thread groups is achieved by calling
-[evl_control_sched()]({{% relref "#evl_control_sched" %}}).
-
-##### Runtime credit and peak quota {#sched-peak-quota}
+#### Runtime budget and peak quota {#sched-peak-quota}
 
 Each thread group is given its full quota every time the global period
 starts, according to the [configuration set]({{< relref
 "#modify-quota-group" >}}) for this group. If the group did not
 consume its quota entirely by the end of the current period, the
-remaining credit is added to the group's quota for the next period, up
-to a limit defined as the _peak quota_. If the accumulated credit
+remaining budget is added to the group's quota for the next period, up
+to a limit defined as the _peak quota_. If the accumulated budget
 would cause the quota to exceed the peak value, the extra time is
-spread over multiple subsequent periods until the credit is fully
+spread over multiple subsequent periods until the budget is fully
 consumed.
+
+#### Managing quota scheduling groups {#managing-quota-groups}
+
+[Creating]({{< relref "#create-quota-group" >}}), [modifying]({{<
+relref "#modify-quota-group" >}}) and [removing]({{< relref
+"#remove-quota-group" >}}) thread groups is achieved by calling
+[evl_control_sched()]({{% relref "#evl_control_sched" %}}).
 
 ##### Creating a quota group {#create-quota-group}
 
@@ -380,6 +411,8 @@ ancillary `evl_sched_ctlinfo` structure passed to the request. The
 follows:
 
 ```
+#include <evl/sched.h>
+
 	union evl_sched_ctlparam param;
 	union evl_sched_ctlinfo info;
 	int ret;
@@ -402,7 +435,7 @@ regarding the new group:
   percentage_]({{< relref "#sched-peak-quota" >}}) of the global
   period allotted to the new group, which is also set to 100% at
   creation time. This means that by default, a new group might double
-  its quota value by accumulating runtime credit, consuming up to 100%
+  its quota value by accumulating runtime budget, consuming up to 100%
   of the CPU time during the next period. Likewise, you may want to
   [change it]({{< relref "#modify-quota-group" >}}) to reflect the
   final value.
@@ -417,10 +450,31 @@ regarding the new group:
 
 ##### Removing a quota group {#remove-quota-group}
 
+#### Setting the SCHED_QUOTA parameters {#sched-quota-parameters}
+
+Switching a thread to quota-based scheduling is achieved by calling
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) with the
+file descriptor of the target thread, in order to attach such thread
+to a quota group along with setting its priority. To do so, the
+`evl_sched_attrs` attribute structure should be filled in as follows:
+
+```
+#include <evl/sched.h>
+
+	struct evl_sched_attrs attrs;
+	int ret;
+
+	attrs.sched_policy = SCHED_QUOTA;
+	attrs.sched_priority = <priority>; /* [1-99] */
+	attrs.sched_quota_group = <grpid>; /* Quota group id. */
+	ret = evl_set_schedattr(efd, &attrs);
+```
+
 ---
 
-#### SCHED_TP {#SCHED_TP}
+### SCHED_TP policy {#SCHED_TP}
 
+{{% mixedgrid-right src="/images/temporal_partitioning.png" %}}
 This policy enforces a so-called _temporal partitioning_, which is a
 way to schedule thread activities on a given CPU so that they cannot
 overlap time-wise. To this end, the policy defines a global, _major_
@@ -436,19 +490,16 @@ global time frame to a group of thread called a _partition_.  The
 maximum number of partitions in the system is defined by
 `CONFIG_EVL_TP_NR_PART` in the kernel configuration. Each thread
 undergoing this policy is attached to one of such _partitions_.
+{{% /mixedgrid-right %}}
 
 When a minor frame elapses on a CPU, the threads attached to its
 partition are immediately suspended, and threads from the partition
 assigned to the next minor frame may be picked for scheduling. When
 the last minor frame elapses, the process repeats from the minor frame
-leading the major time frame.
-
-You may assign as many threads as you need to a single partition, and
-the number of threads may vary among partitions. A partition with no
-thread simply runs no SCHED_TP thread until the next minor frame
-assigned a non-empty partition starts.
-
-![Alt text](/images/temporal_partitioning.png "Temporal partitioning")
+leading the major time frame. You may assign as many threads as you
+need to a single partition, and the number of threads may vary among
+partitions. A partition with no thread simply runs no SCHED_TP thread
+until the next minor frame assigned a non-empty partition starts.
 
 {{% notice tip %}}
 Valid partition numbers range from 0 to `CONFIG_EVL_TP_NR_PART -
@@ -458,25 +509,7 @@ assigning it to a minor frame, creating a time hole in the schedule
 which will not run any SCHED_TP thread until this minor frame elapses.
 {{% /notice %}}
 
-Switching a thread to temporal partitioning is achieved by calling
-[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
-`evl_sched_attrs` attribute structure should be filled in as follows:
-
-```
-	struct evl_sched_attrs attrs;
-
-	attrs.sched_policy = SCHED_TP;
-	attrs.sched_priority = <priority>; /* [1-99] */
-	attrs.sched_tp_partition = <ptid>; /* Partition id. */
-```
-
-_ptid_ should be a valid partition identifier between 0 and
-`CONFIG_EVL_TP_NR_PART` - 1.
-
-Within a minor time frame, threads undergo the SCHED_FIFO policy
-according to their fixed _priority_ value.
-
-##### Setting the temporal partitioning information for a CPU
+#### Setting the temporal partitioning information for a CPU {#setting-tp-information}
 
 Temporal partitioning is defined on a per-CPU basis, you have to
 configure each CPU involved in this policy independently, enumerating
@@ -498,6 +531,7 @@ the minor frames which compose the major one as follows:
 
 	ret = evl_control_sched(SCHED_TP, &param, NULL, <cpu-number>);
 ```
+
 If the special value `EVL_TP_IDLE` is assigned to a minor time frame
 (_ptid_), no thread undergoing the SCHED_TP policy will run until such
 frame elapses. This is a way to create a _time hole_ within the major
@@ -505,13 +539,17 @@ time frame.
 
 This operation implicitly overrides the previous TP settings for the
 CPU, leaving the TP scheduling in stopped state. Generally speaking,
-once a TP schedule is installed for a CPU, it is left in standby mode
+once a TP scheduling plan is installed for a CPU, it is left in standby mode
 until explicitly started.
 
-##### Starting the TP scheduling on a CPU
+No information is passed back by the core when installing a TP
+schedule, you may pass the _info_ parameter as NULL to
+[evl_control_sched()]({{< relref "#evl_control_sched" >}}).
+
+#### Starting the TP scheduling on a CPU
 
 The following request enables the TP scheduler for the given CPU; you
-have to issue this request for activating a TP schedule:
+have to issue this request for activating a TP scheduling plan:
 
 ```
 	union evl_sched_ctlparam param;
@@ -521,7 +559,11 @@ have to issue this request for activating a TP schedule:
 	ret = evl_control_sched(SCHED_TP, &param, NULL, <cpu-number>);
 ```
 
-##### Stopping the TP scheduling on a CPU
+No information is passed back by the core when starting a TP
+scheduling plan, you may pass the _info_ parameter as NULL to
+[evl_control_sched()]({{< relref "#evl_control_sched" >}}).
+
+#### Stopping the TP scheduling on a CPU
 
 You can disable the scheduling of threads undergoing the SCHED_TP
 policy on a CPU by the following call:
@@ -538,7 +580,11 @@ Upon success, the target CPU won't be considered for running SCHED_TP
 threads, until the converse request `evl_tp_start` is received for
 that CPU.
 
-##### Retrieving the temporal partitioning information from a CPU
+No information is passed back by the core when stopping a TP
+scheduling plan, you may pass the _info_ parameter as NULL to
+[evl_control_sched()]({{< relref "#evl_control_sched" >}}).
+
+#### Retrieving the temporal partitioning information from a CPU
 
 The following request fetches the current scheduling plan for a given
 CPU:
@@ -566,16 +612,41 @@ The minor frames active for the target CPU are readable from the
 `result.windows[]` array, up to `param.nr_windows[]` . The number of
 valid elements in this array is given by `result.info.nr_windows[]`.
 
-##### Removing the temporal partitioning information from a CPU
+#### Removing the temporal partitioning information from a CPU
 
 This is the converse operation to `evl_tp_install`, removing temporal
 partitioning support for the target CPU, releasing all related
 resources. This request implicitly stops the TP scheduling on such CPU
 prior to uninstalling.
 
+#### Setting the SCHED_TP parameters {#sched-tp-parameters}
+
+Switching a thread to temporal partitioning is achieved by calling
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) with the
+file descriptor of the target thread. The `evl_sched_attrs` attribute
+structure should be filled in as follows:
+
+```
+#include <evl/sched.h>
+
+	struct evl_sched_attrs attrs;
+	int ret;
+
+	attrs.sched_policy = SCHED_TP;
+	attrs.sched_priority = <priority>; /* [1-99] */
+	attrs.sched_tp_partition = <ptid>; /* Partition id. */
+	ret = evl_set_schedattr(efd, &attrs);
+```
+
+_ptid_ should be a valid partition identifier between 0 and
+`CONFIG_EVL_TP_NR_PART` - 1.
+
+Within a minor time frame, threads undergo the SCHED_FIFO policy
+according to their fixed _priority_ value.
+
 ---
 
-#### SCHED_WEAK {#SCHED_WEAK}
+### SCHED_WEAK policy {#SCHED_WEAK}
 
 You may want to run some POSIX threads in-band most of the time,
 except when they need to call some EVL services
@@ -641,19 +712,23 @@ allowed calling contexts for each EVL service from `libevl`
 [there]({{% relref "core/user-api/function_index/_index.md" %}}).
 
 Switching a thread to SCHED_WEAK is achieved by calling
-[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}). The
-`evl_sched_attrs` attribute structure should be filled in as follows:
+[evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) with the
+file descriptor of the target thread. The `evl_sched_attrs` attribute
+structure should be filled in as follows:
 
 ```
+#include <evl/thread.h>
+
 	struct evl_sched_attrs attrs;
+	int ret;
 
 	attrs.sched_policy = SCHED_WEAK;
 	attrs.sched_priority = <priority>; /* [0-99] */
-
+	ret = evl_set_schedattr(efd, &attrs);
 ```
 ---
 
-#### SCHED_IDLE {#SCHED_IDLE}
+### SCHED_IDLE policy {#SCHED_IDLE}
 
 The idle class has a single task on each CPU: the [low priority
 placeholder task]({{< relref
