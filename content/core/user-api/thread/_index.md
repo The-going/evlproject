@@ -1152,17 +1152,6 @@ The format of these fields is as follows:
   for [health monitoring]({{< relref "#health_monitoring" >}})
   purpose, which made it observable to itself or to other threads.
 
-### Thread-specific I/O control requests {#thread-ioctl}
-
-Threads can be sent [out-of-band control requests]({{< relref
-"core/user-api/io/_index.md#oob_ioctl" >}}) using the file descriptor
-either returned by [evl_attach_thread()]({{< relref "#evl_attach_thread"
->}}), or received from the
-[open(2)](http://man7.org/linux/man-pages/man2/open.2.html) system
-call for a [thread device]({{< relref "#thread-device-open" >}}).
-
-![Alt text](/images/wip.png "To be continued")
-
 ---
 
 {{<lastmodified>}}
