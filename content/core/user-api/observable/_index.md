@@ -233,6 +233,9 @@ error code is returned on error:
 - -EBADF	_efd_ is not a valid file descriptor.
 
 - -EPERM	_efd_ does not refer to an Observable element.
+  		This may happen if _efd_ refers to a valid EVL thread
+		which was not [created]({{< relref "#evl_attach_thread" >}})
+		with the `EVL_CLONE_OBSERVABLE` flag.
 
 - -EINVAL	Some notice has an invalid tag.
 
@@ -312,6 +315,9 @@ code is returned on error:
 - -EBADF	_efd_ is not a valid file descriptor.
 
 - -EPERM	_efd_ does not refer to an Observable element.
+  		This may happen if _efd_ refers to a valid EVL thread
+		which was not [created]({{< relref "#evl_attach_thread" >}})
+		with the `EVL_CLONE_OBSERVABLE` flag.
 
 - -ENXIO	the calling thread is not [subscribed]({{< relref
   		"core/user-api/thread/_index.md#evl_subscribe" >}}) to
@@ -361,17 +367,20 @@ can monitor the following events occurring on an Observable:
 
 In addition to these flags, `POLLERR` might be returned in case the
 caller did not [subscribe]({{< relref
-"core/user-api/thread/_index.md#evl_subscribe" >}}) to the Observable.
+"core/user-api/thread/_index.md#evl_subscribe" >}}) to the Observable,
+or some file descriptor from the polled set refer to an EVL thread
+which was not [created]({{< relref "#evl_attach_thread" >}}) with the
+`EVL_CLONE_OBSERVABLE` flag.
 
 ### Observing EVL threads {#observable-thread}
 
 An EVL thread is in and of itself an Observable element. Observability
 of a thread can be enabled by passing the [EVL_CLONE_OBSERVABLE]({{<
-relref "core/user-api/thread/_index.md#evl_create_thread" >}}) flag at
+relref "core/user-api/thread/_index.md#evl_attach_thread" >}}) flag at
 creation time. In this case, the file descriptor of the new thread may
 be subsequently used in any Observable-related operation. In addition,
 if such thread was also made public ([EVL_CLONE_PUBLIC]({{< relref
-"core/user-api/thread/_index.md#evl_create_thread" >}})), then there
+"core/user-api/thread/_index.md#evl_attach_thread" >}})), then there
 is a way for remote processes to
 [open(2)](http://man7.org/linux/man-pages/man2/open.2.html) the device
 created in the [/dev/evl/thread]({{< relref

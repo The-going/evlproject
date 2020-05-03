@@ -15,7 +15,7 @@ Enables HM support for threads. Since [ABI 23]({{< relref
 "core/abi-revs.md" >}}), the core is able to channel T_WOSS, T_WOLI
 and T_WOSX error notifications (SIGDEBUG_xxx) through the [thread
 observable]({{< relref
-"core/user-api/thread/_index.md#evl_create_thread" >}}) component if
+"core/user-api/thread/_index.md#evl_attach_thread" >}}) component if
 present. Introduce the T_HMSIG and T_HMOBS mode bits for configuring
 the HM notification source(s) of a thread with
 [evl_set_thread_mode()]({{< relref

@@ -156,7 +156,9 @@ A set of creation flags for the new element, defining its
   - Only if `EVL_CLONE_OBSERVABLE` is present in _flags_,
     `EVL_CLONE_MASTER` may be added to set the Observable associated
     to the new thread to [master mode]({{< relref
-    "core/user-api/observable/_index.md#evl_create_observable" >}}).
+    "core/user-api/observable/_index.md#evl_create_observable"
+    >}}). Passing `EVL_CLONE_MASTER` for a non-observable thread causes
+    the attachment to fail with -EINVAL.
 
   - `EVL_CLONE_NONBLOCK` sets the file descriptor of the new thread in
     non-blocking I/O mode (`O_NONBLOCK`). By default, `O_NONBLOCK` is
@@ -636,7 +638,7 @@ zero on success, otherwise a negated error code:
 
 -EINVAL 	 _mask_ contains invalid mode bits. Setting T_HMOBS for a
 		 thread which was not created with the [EVL_CLONE_OBSERVABLE]({{< relref
-		 "#evl_create_thread" >}}) attribute set is an error.
+		 "#evl_attach_thread" >}}) attribute set is an error.
 
 -EBADF		_efd_ is not a valid thread descriptor.
 
@@ -1148,7 +1150,7 @@ The format of these fields is as follows:
 - _observable_ is a boolean value denoting the [observability]({{<
   relref "core/user-api/observable/_index.md#observable-thread" >}})
   of the thread. Non-zero indicates that [EVL_CLONE_OBSERVABLE]({{<
-  relref "#evl_create_thread" >}}) was set for this thread, typically
+  relref "#evl_attach_thread" >}}) was set for this thread, typically
   for [health monitoring]({{< relref "#health_monitoring" >}})
   purpose, which made it observable to itself or to other threads.
 
