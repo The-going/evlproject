@@ -29,8 +29,8 @@ type of this structure is as follows:
 
 ```
 struct evl_poll_event {
-	__u32 fd;
-	__u32 events;
+	int32_t fd;
+	int32_t events;
 };
 ```
 
