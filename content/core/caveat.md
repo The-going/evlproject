@@ -113,17 +113,21 @@ clocksource and [directly accessible from the vDSO]({{< relref
 "dovetail/porting/clocksource.md#time-vdso-access" >}}), which speeds
 up timestamping operations. If the TSC on your hardware is known to be
 fine and face this issue nevertheless, you may want to pass
-`tsc=nowatchdog` to the kernel to prevent it, or even
-`tsc=reliable` if all TSCs are reliable enough to be synchronized
-across CPUs.  If the TSC is really unstable on some legacy hardware
-and you cannot ignore the watchdog alert, you can still leave it to
-other clocksources such as _acpi\_pm_. Calls to [evl_read_clock()]({{<
+`tsc=nowatchdog` to the kernel to prevent it, or even `tsc=reliable`
+if all TSCs are reliable enough to be synchronized across CPUs.  If
+the TSC is really unstable on some legacy hardware and you cannot
+ignore the watchdog alert, you can still leave it to other
+clocksources such as _acpi\_pm_. Calls to [evl_read_clock()]({{<
 relref "core/user-api/clock/_index.md#evl_read_clock" >}}) would be
-significantly slower compared to a direct readout from the vDSO, but
-the EVL core would manage to get timestamps from its [built-in
-clocks]({{< relref "core/user-api/clock/_index.md#builtin-clocks" >}})
-from the out-of-band stage at the expense of a system call, without
-involving the in-band stage.
+slower compared to a direct syscall-less readout from the vDSO, but
+the EVL core would nevertheless manage to get timestamps from its
+[built-in clocks]({{< relref
+"core/user-api/clock/_index.md#builtin-clocks" >}}) at the expense of
+an out-of-band system call, without involving the in-band stage
+though. You definitely want to make sure everything is right on your
+platform with respect to reading timestamps by running the
+[latmus]({{< relref "core/testing.md#latmus-program" >}}) test, which
+can detect any related issue.
 
   	You can retrieve the current clocksource used by the kernel as follows:
 
