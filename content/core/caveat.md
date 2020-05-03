@@ -74,6 +74,12 @@ options, starting with CONFIG_SMP.
 
 ### x86 {#x86-caveat}
 
+- GCC 10.x might generate code causing the SMP boot process to break
+  early, as reported [by this
+  post](https://lkml.org/lkml/2020/3/14/186). As a work-around, you
+  can disable `CONFIG_STACKPROTECTOR_STRONG` from your kernel
+  configuration.
+
 - CONFIG_ACPI_PROCESSOR_IDLE may increase the latency upon wakeup on
   IRQ from idle on some SoC (up to 30 us observed) on x86. This option
   is implicitly selected by the following configuration chain:
