@@ -9,22 +9,25 @@ The EVL core provides a simple yet flexible support for implementing
 the [observer design
 pattern](https://en.wikipedia.org/wiki/Observer_pattern) in your
 application, based on the [Observable]({{< relref
-"core/_index.md#evl-core-elements" >}}) element.
+"core/_index.md#evl-core-elements" >}}) element.  The Observable
+receives a stream of so-called _notices_, which may be events, state
+changes or any data which fits within a 64bit word, delivering them as
+_notifications_ (with additional meta-data) to subscribed threads
+called _observers_, when they ask for it. Subscribers do not have to
+be [attached]({{< relref
+"core/user-api/thread/_index.md#evl_attach_thread" >}}) to the EVL
+core, any thread can observe an Observable element. Whether the
+threads which produce the events, the Observable and the observers
+live in the same or different processes is transparent.
 
 {{% mixedgrid-right src="/images/observable-bcast.png" %}}
-The Observable receives a stream of so-called _notices_, which may be events,
-state changes or any data which fits within a 64bit word, delivering them
-as _notifications_ (with additional meta-data) to subscribed threads called
-_observers_, when they ask for it. Subscribers do not have to be [attached]
-({{< relref "core/user-api/thread/_index.md#evl_attach_thread" >}}) to the
-EVL core, any thread can observe an Observable element. Whether the threads
-which produce the events, the Observable and the observers live in the same or
-different processes is transparent. By default, an Observable sends a
-copy of every event it receives to every observer which is subscribed
-to it, implementing broadcast mode as illustrated:
+#### Broadcast mode
+By default, an Observable broadcasts a copy of every event it receives to
+every subscribed observer:
 {{% /mixedgrid-right %}}
 
 {{% mixedgrid-right src="/images/observable-master.png" %}}
+#### Master mode
 In some cases, you may want to use an Observable to dispatch work
 submitted as events to the set of observers which forms a pool of
 worker threads.  Each message would be sent to a single worker, each
