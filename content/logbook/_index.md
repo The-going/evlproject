@@ -5,6 +5,12 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 18.2020
+
+Bug fixes for the most part, some documentation fixups as well.
+
+We are now tracking kernel v5.7-rc4 and v5.4.36 LTS.
+
 ### Week 17.2020
 
 The Observable element was added to the EVL core, as a building block
