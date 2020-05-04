@@ -222,7 +222,9 @@ user `square`, group `wheel`.
 
 ## Element names {#element-naming-convention}
 
-Every `evl_create_*()` call which creates a new element accepts a
+Every `evl_create_*()` call which creates a new element, along with
+[evl_attach_thread]({{< relref
+"core/user-api/thread/_index.md#evl_attach_thread" >}}) accepts a
 [printf](http://man7.org/linux/man-pages/man3/printf.3.html)-like
 format string to generate the element name. A common way of generating
 unique names is to include the calling process's _pid_ somewhere into
@@ -243,7 +245,7 @@ total 0
 crw-rw----    1 root     root      248,   1 Apr 17 11:59 clone
 ```
 
-The generated name is used to create a _/sysfs_ attribute directory
+The generated name is used to create a `/sysfs` attribute directory
 exporting the state information about the element. For [public
 elements]({{< relref "#element-visibility" >}}), a device file is
 created with the same name in the [/dev/evl]({{< relref
@@ -271,9 +273,9 @@ crw-rw----    1 root     root      246,   0 Apr 17 11:59 a-publically-visible-th
 ```
 
 Note that when found, such shorthand overrides the `EVL_CLONE_PRIVATE`
-visibility attribute which might be present into the creation flags
-for the same call. The slash character is invalid in any other part of
-the element name, although it would be silently remapped to a
+visibility attribute which might have been mentioned in the creation
+flags for the same call. The slash character is invalid in any other
+part of the element name, although it would be silently remapped to a
 placeholder for private elements without leading to an API error.
 
 ---
