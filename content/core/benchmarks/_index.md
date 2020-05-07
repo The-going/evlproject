@@ -323,53 +323,51 @@ option]({{< relref "core/testing.md" >}}) may be a good idea.
 
 - _\# thread priority: 90_
 
-      The priority of the responder thread in the out-of-band
-      [SCHED_FIFO]({{< relref "core/user-api/scheduling#SCHED_FIFO"
-      >}}) class. By definition, any legit value starting from 1 and
-      on gives the responder thread higher priority than any in-band
-      task running in the system, including kernel threads of any
-      sort.
+  The priority of the responder thread in the out-of-band
+[SCHED_FIFO]({{< relref "core/user-api/scheduling#SCHED_FIFO" >}})
+class. By definition, any legit value starting from 1 and on gives the
+responder thread higher priority than any in-band task running in the
+system, including kernel threads of any sort.
 
 - _\# thread affinity: CPU1_
 
-      The processor affinity of the responder thread. If the CPU
-      id. is suffixed by **-noisol**, then the responder was not
-      running on an isolated processor during the test, which most
-      likely entailed higher latency values compared to isolating this
-      CPU - unless you did not [stress]({{< relref "#stress-load" >}})
-      the SUT enough or at all while measuring, which would make the
-      figures obtained quite flawed and probably worthless anyway.
+  The processor affinity of the responder thread. If the CPU id. is
+suffixed by **-noisol**, then the responder was not running on an
+isolated processor during the test, which most likely entailed higher
+latency values compared to isolating this CPU - unless you did not
+[stress]({{< relref "#stress-load" >}}) the SUT enough or at all while
+measuring, which would make the figures obtained quite flawed and
+probably worthless anyway.
 
 - _\# C-state restricted_
 
-      Whether the processor C-State was restricted to the shallowest
-      level, preventing it to enter deeper sleep states which are
-      known to induce extra latency.
+  Whether the processor C-State was restricted to the shallowest
+level, preventing it to enter deeper sleep states which are known to
+induce extra latency.
 
 - _\# duration (hhmmss): 00:01:12_
 
-      How long the test ran (according to the wall clock).
+  How long the test ran (according to the wall clock).
 
 - _\# peak (hhmmss): 00:00:47_
 
-      When the worst case value was observed, relatively to the
-      beginning of the test.
+  When the worst case value was observed, relatively to the beginning of the test.
 
 - _\# min latency: 0.205_
 
-      The best/shortest latency value observed throughout the test.
+  The best/shortest latency value observed throughout the test.
 
 - _\# avg latency: 3.097_
 
-      The average latency value observed, accounting for all
-      measurement samples collected during the test.
+  The average latency value observed, accounting for all measurement
+  samples collected during the test.
 
 - _\# max latency: 25.510_
 
-      The maximum value observed throughout the test. This is the
-      **worst case** value we should definitely care about,
-      **[provided the stress load and test duration are
-      meaningful]({{< relref "#stress-load" >}})**.
+  The maximum value observed throughout the test. This is the **worst
+  case** value we should definitely care about, **[provided the stress
+  load and test duration are meaningful]({{< relref "#stress-load"
+  >}})**.
 
 ### Measuring the response time to GPIO events {#latmus-gpio-response-time}
 
@@ -508,8 +506,7 @@ $ patch -p1 < ~/libevl/benchmarks/zephyr/frdm_k64f-enable-EVL-latency-monitor.pa
 4. An [OpenSDA J-Link Onboard Debug
 Probe](https://docs.zephyrproject.org/1.14.0/guides/debugging/probes.html#opensda-daplink-onboard-debug-probe)
 is present on the FRDM-K64F, which can be used to flash the board. On
-your development system, the [OpenOCD]
-(https://docs.zephyrproject.org/1.14.0/guides/debugging/host-tools.html#openocd-debug-host-tools)
+your development system, the [OpenOCD](https://docs.zephyrproject.org/1.14.0/guides/debugging/host-tools.html#openocd-debug-host-tools)
 suite provides GDB remote debugging and flash programming support
 compatible with this probe over USB. In most cases, a binary OpenOCD
 package should be readily available from your favorite Linux
