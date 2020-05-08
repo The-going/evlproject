@@ -231,7 +231,12 @@ information.
   <tr>
     <td>CONFIG_EVL_WATCHDOG_TIMEOUT</td>
     <td>4</td>
-    <td>Watchdog timeout value (in seconds).
+    <td>Watchdog timeout value (in seconds).</td>
+  </tr>
+  <tr>
+    <td>CONFIG_GPIOLIB_OOB</td>
+    <td>n</td>
+    <td>Enable support for out-of-band GPIO line handling requests.</td>
   </tr>
 </table>
 

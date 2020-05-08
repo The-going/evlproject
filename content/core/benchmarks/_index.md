@@ -875,11 +875,28 @@ In addition to the [latmus]({{< relref
 utilities described ealier in this document, the following software
 will be used in the test scenarios:
 
-- The [dd(1)](http://man7.org/linux/man-pages/man1/dd.1.html) command.
+- The [dd(1)](http://man7.org/linux/man-pages/man1/dd.1.html)
+  command. This apparently dull utility may become your worst
+  nightmare as a real-time developer if you actually plan to assess
+  the worst-case latency with your system. e.g. run this stupid
+  workload in parallel to your favourite latency benchmark:
 
-- The _cyclictest_ and _hackbench_ programs as available from the
+```
+$ dd if=/dev/zero of=/dev/null bs=128M &
+```
+
+Using a block factor of 128M is to make sure the loop will be
+disturbing the caches enough.
+
+- The `cyclictest` and `hackbench` programs as available from the
   [PREEMPT-RT test
-  suite](https://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git).
+  suite](https://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git). Adding
+  a `hackbench` loop to the `dd` loop mentioned earlier while
+  measuring the response time with [latmus]({{< relref
+  "core/testing.md##latmus-program" >}}) and
+  [cyclictest](https://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git)
+  may give you an illustration of what _tickling the dragon's tail_
+  is all about.
 
 - The [stress-ng tests suite](https://github.com/ColinIanKing/stress-ng.git).
 
