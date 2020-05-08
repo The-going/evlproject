@@ -147,8 +147,8 @@ side of the channel as follows:
 
 	void inband_sleeper(int evntfd)
 	{
-		uint64 val = 1;
 		ssize_t ret;
+		uint64 val;
 		
 		for (;;) {
 		    /* Wait for the next wakeup signal. */
