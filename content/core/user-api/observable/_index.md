@@ -295,7 +295,7 @@ struct evl_notification {
 The meta-data is defined as follows:
 
 - _serial_ is a monotonically increasing counter of notices sent by
-  the Observable referred to by _ofd_. In broadcast mode, this serial
+  the Observable referred to by _efd_. In broadcast mode, this serial
   number is identical in every copy of a given original notice
   forwarded to the observers present.
 
