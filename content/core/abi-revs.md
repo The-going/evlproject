@@ -1,4 +1,6 @@
-# ABI revisions
+---
+title: ABI revisions
+---
 
 <div>
 <style>
@@ -148,6 +150,7 @@
     <td>-</td>
   </tr>
 </table>
+</div>
 
 ---
 

@@ -1,27 +1,28 @@
-+++
-headless = true
-title = "homepage"
-+++
+---
+headless: true
+title: homepage
+---
 
 <div class="home-grid-container">
 
-  <div class="home-item1">
+  <div class="signature-item">
        <a href="#">{{< homeimg src="images/signature.png" alt="" >}}</a>
   </div>
 
-  <div>
+  <div class="overview-item">
       {{% homebutton href="/overview/" icon="fas fa-play" %}}Get started{{% /homebutton %}}
   </div>
  
-  <div>
+  <div class="repo-table-item">
       <style>
       #coderef {
-	       width: 100%;
+	       width: 600px;
       }
       #coderef td {
       	       border-style: none;
 	       padding: 2px;
   	       color: #fff;
+  	       text-align: center;
       }
       #coderef th {
 	       padding: 8px;
@@ -43,9 +44,9 @@ title = "homepage"
       }
       </style>
       <table id="coderef">
-	<col width="55%">
+	<col width="40">
       	<col width="25%">
-      	<col width="20%">
+      	<col width="35%">
       <tr>
         <th>Repository</th>
         <th>Branch</th>

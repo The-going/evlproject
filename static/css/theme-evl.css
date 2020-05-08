@@ -137,14 +137,25 @@ code {
     padding: 0px 2px;
 }
 
-.home-item1 {
-    grid-area: home_area;
+.signature-item {
+    grid-area: evl_signature_area;
+}
+
+.overview-item {
+    grid-area: overview_button_area;
+}
+
+.repo-table-item {
+    grid-area: repo_table_area;
+    justify-self: center;
 }
 
 .home-grid-container {
   display: grid;
-  grid-template-areas: 'home_area home_area home_area';
-  grid-template-columns: auto auto auto;
+  grid-template-areas:	    "evl_signature_area"
+			    "overview_button_area"
+			    "repo_table_area" ;
+  grid-template-columns: auto;
   grid-template-rows: 320px 120px auto;
   grid-gap: 50px;
   background-color: #0084ba;
