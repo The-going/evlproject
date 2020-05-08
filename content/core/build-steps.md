@@ -178,7 +178,7 @@ information.
     <td>Maximum number of EVL proxies</td>
   </tr>
   <tr>
-    <td><a href="/core/user-api/proxy/" target="_blank">CONFIG_EVL_NR_OBSERVABLES</a></td>
+    <td><a href="/core/user-api/observable/" target="_blank">CONFIG_EVL_NR_OBSERVABLES</a></td>
     <td>64</td>
     <td>Maximum number of EVL observables (does not include threads)</td>
   </tr>
