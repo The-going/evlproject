@@ -163,7 +163,7 @@ side of the channel as follows:
 EVL proxies can be also be used for carrying over memory mapping
 requests to a final device which actually serves the mapping.  The
 issuer of such request does not have to know which device driver will
-be actually handling that request: the proxy acts as an anchor point
+actually be handling that request: the proxy acts as an anchor point
 agreed between peer processes in order to locate a particular
 memory-mappable resource, and the proxy simply redirects the mapping
 requests it receives to the device driver handling the target file it
@@ -474,10 +474,12 @@ The [evl_poll()]({{< relref "core/user-api/poll/_index.md" >}})
 interface can monitor the following events occurring on a proxy file
 descriptor:
 
-- _POLLOUT_ and _POLLWRNORM_ are set whenever the output ring buffer
+- `POLLOUT` and `POLLWRNORM` are set whenever the output ring buffer
   the file descriptor refers to is empty AND allocated, which means
   that a proxy initialized with a zero-sized output buffer never
-  raises these events.
+  raises these events. You would typically monitor the `POLLOUT`
+  condition in order to wait for all of the buffered output to have
+  been sent to the target file.
 
 ---
 
