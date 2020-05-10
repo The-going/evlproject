@@ -5,6 +5,11 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 19.2020
+
+More documentation (e.g. the [out-of-band GPIO]({{< relref
+"core/oob-drivers/gpio.md" >}}) interface).
+
 ### Week 18.2020
 
 Bug fixes for the most part, some documentation fixups as well.

@@ -3,35 +3,44 @@ title: "File proxy"
 weight: 40
 ---
 
-### Zero-latency output to regular files
+### Zero-latency I/O to in-band files
 
-A common issue with dual kernel systems stems from the requirement _not_
-to issue [in-band system calls]({{< relref
+{{% mixedgrid-right src="/images/proxy.png" %}}
+A common issue with dual kernel systems stems from the requirement
+_not_ to issue [in-band system calls]({{< relref
 "dovetail/altsched.md#inband-switch" >}}) while running time-critical
-code in out-of-band context. Problem is that sometimes, you may need
-to write to regular files such as logging information to the console
-or elsewhere from an out-of-band work loop. Doing so by calling common
+code in out-of-band context. Problem is that sometimes, you may need -
+for instance - to write to regular files such as for logging
+information to the console or elsewhere from an out-of-band work
+loop. Doing so by calling common
 [stdio(3)](http://man7.org/linux/man-pages/man3/stdio.3.html) routines
 directly is therefore not an option for latency reasons.
 
 The EVL core solves this problem with the _file proxy_ feature, which
-can channel the output sent through a proxy file descriptor to some
-arbitrary destination file descriptor associated with the former,
-keeping the caller on the out-of-band execution stage. This works by
-buffering the output in a circular buffer, offloading the actual write
-to an internal worker thread running in-band which relays the content
-of this ring buffer to the target file represented by the destination
-descriptor. For this reason, such output can be delayed until the
-in-band stage resumes on the current CPU.  For instance,
-[evl_printf()]({{< relref "#evl_printf" >}}) formats then emits the
-resulting string to _fileno(stdout)_ via an internal proxy created by
-`libevl.so` at initialization.
+can push data to an arbitrary target file, and/or conversely read data
+pulled from such target file, providing an [out-of-band I/O
+interface]({{< relref "core/user-api/io/_index.md" >}}) to the data
+producer and consumer threads. This works by offloading the I/O
+transfers to internal worker threads running in-band which relay the
+data to/from the target file. For this reason, I/O transfers may be
+delayed until the in-band stage resumes on a worker's CPU.  For
+instance, [evl_printf()]({{< relref "#evl_printf" >}}) formats then
+emits the resulting string to _fileno(stdout)_ via an internal proxy
+created by `libevl.so` at [initialization]({{< relref
+"core/user-api/init/_index.md" >}}).
+{{% /mixedgrid-right %}}
 
-Typically, out-of-band writers send data through the proxy file
+{{% mixedgrid src="/images/proxy-read.png" %}}
+Typically, out-of-band writers would send data through the proxy file
 descriptor using EVL's [oob_write()]({{< relref
 "core/user-api/io/_index.md#oob_write" >}}) system call, which in-band
-readers can receive using the
+readers could receive using the
 [read(2)](http://man7.org/linux/man-pages/man2/read.2.html) system
+call. Conversely, out-of-band readers would receive data through the
+proxy file descriptor using EVL's [oob_read()]({{< relref
+"core/user-api/io/_index.md#oob_read" >}}) system call, which in-band
+writers could send using the
+[write(2)](http://man7.org/linux/man-pages/man2/write.2.html) system
 call. You can associate any type of file with a proxy, including a
 [socket(2)](http://man7.org/linux/man-pages/man2/socket.2.html),
 [eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html),
@@ -46,12 +55,9 @@ call, like
 [eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html) and
 [signalfd(2)](http://man7.org/linux/man-pages/man2/signalfd.2.html).
 
-The proxy also handles output from callers running on the in-band stage
-transparently. In this case, a regular
-[write(2)](http://man7.org/linux/man-pages/man2/write.2.html) can be
-used to channel the data to the target file.
-
-![Alt text](/images/proxy.png "File proxy")
+The proxy also handles input and output operations from callers
+running on the in-band stage transparently.
+{{% /mixedgrid %}}
 
 #### Logging debug messages via a proxy {#proxy-logging-example}
 
@@ -118,8 +124,8 @@ call:
 
 	evntfd = eventfd(0, EFD_SEMAPHORE);
 	...
-	/* Create the proxy, allow up to 3 notifications to pile up. */
-	proxyfd = evl_create_proxy(evntfd, sizeof(uint64_t) * 3, sizeof(uint64_t), "event-relay");
+	/* Create a private proxy for output, allow up to 3 notifications to pile up. */
+	proxyfd = evl_create_proxy(evntfd, sizeof(uint64_t) * 3, sizeof(uint64_t), 0, "event-relay");
 	...
 ```
 
@@ -239,51 +245,64 @@ significantly more logic in both peers than using a proxy.
 int evl_create_proxy(int targetfd, size_t bufsz, size_t granularity, int flags, const char *fmt, ...)
 {{< /proto >}}
 
-This call creates a new proxy, then returns a file descriptor
-representing the new object upon success. [oob_write()]({{< relref
+This call creates a new proxy to the target file referred to by
+_targetfd_, then returns a file descriptor for accessing the proxy
+upon success. [oob_write()]({{< relref
 "core/user-api/io/_index.md#oob_write" >}}) should be used to send
-data through the proxy for zero-latency output to regular files.
+data through the proxy to the target file. Conversely,
+[oob_read()]({{< relref "core/user-api/io/_index.md#oob_read" >}})
+should be used to receive data through the proxy from the target file.
 
 {{% argument targetfd %}}
-A descriptor referring to the destination file which should receive
-the output written to the proxy file descriptor returned by
-[evl_create_proxy()]({{< relref "#evl_create_proxy" >}}).
+A file descriptor referring to the target file which should
+be associated with the proxy.
 {{% /argument %}}
 
 {{% argument bufsz %}}
-The size in bytes of the ring buffer where the output data is kept
-until the in-band worker has relayed it to the destination file.
-_bufsz_ must not exceed 2^30. If _granularity_ is non-zero, _bufsz_
-must be a multiple of this value. Out-of-band writers may block
-attempting to write to a proxy file descriptor if the output buffer is
-full, waiting to be depleted by the in-band worker thread, unless the
-proxy descriptor is set to [non-blocking mode
+The size in bytes of the I/O ring buffer where the relayed data is
+kept.  _bufsz_ must not exceed 2^30. A ring is allocated for each
+direction enabled in _flags_ (see `EVL_CLONE_OUTPUT`,
+`EVL_CLONE_INPUT`). If _granularity_ is non-zero, _bufsz_ must be a
+multiple of this value. Out-of-band readers/writers may block on an
+out-of-band file operation if the buffer is either full on output or
+empty on input, unless the proxy descriptor is set to [non-blocking
+mode
 (O_NONBLOCK)](http://man7.org/linux/man-pages/man2/fcntl.2.html). Zero
 is an acceptable value if you plan to use this proxy exclusively for
 exporting a shared memory mapping, in which case there is no point in
-reserving an output buffer.
+reserving I/O ring buffers.
 {{% /argument %}}
 
 {{% argument granularity %}}
 In some cases, the target file may have special semantics, which
-requires a fixed amount of data to be submitted at each write
+requires a fixed amount of data to be submitted at each read/write
 operation, like the
 [eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html) file
-which requires 64-bit words to be written to it at each transfer. When
-granularity is zero, the proxy is free to pull as many bytes as
-available from the output ring buffer for sending them in one go to the
-target file. Conversely, any non-zero granularity value is used as the
-exact count of bytes which is written to the destination file by the
-in-band worker at each transfer. For instance, in the
-[eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html) use case,
-we would use sizeof(uint64_t). You may pass zero for a memory mapping
-proxy since no granularity is applicable in this case.
+which requires 64-bit words to be read or written from/to it at each
+transfer. When granularity is less than 2, the proxy is free to read
+or write as many bytes as possible from/to the target file at each
+transfer performed by the worker. Conversely, a granularity value
+greater than 1 is used as the exact count of bytes which may be read
+from or written to the target file by the in-band worker at each
+transfer. For instance, in the
+[eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html) use
+case, we would use sizeof(uint64_t). You may pass zero for a memory
+mapping proxy since no granularity is applicable in this case.
 {{% /argument %}}
 
 {{% argument flags %}}
-A set of creation flags for the new element, defining its
-[visibility]({{< relref "core/user-api/_index.md#element-visibility"
->}}):
+A set of creation flags for the new element, defining how it should be
+operated, along with its [visibility]({{< relref
+"core/user-api/_index.md#element-visibility" >}}):
+
+  - `EVL_CLONE_OUTPUT` enables the output side of the proxy, so that
+    writing to the proxy file descriptor pushes data to _targetfd_. If
+    _busfz_ is non-zero and _flags_ does not mention
+    `EVL_CLONE_INPUT`, `EVL_CLONE_OUTPUT` is assumed (default
+    behavior).
+
+  - `EVL_CLONE_INPUT` enables the input side of the proxy, so that
+    reading from the proxy file descriptor pulls data from _targetfd_.
 
   - `EVL_CLONE_PUBLIC` denotes a public element which is represented
     by a device file in the [/dev/evl]({{< relref
@@ -318,7 +337,10 @@ negated error code is returned instead:
 
 - -EINVAL	Either _flags_ is wrong,  _bufsz_ and/or _granularity_ are wrong,
   		or the [generated name]({{< relref "core/user-api/_index.md#element-naming-convention"
-  		>}}) is badly formed. 
+  		>}}) is badly formed.
+
+- -EINVAL	_bufsz_ is zero but _flags_ mentions any of `EVL_CLONE_INPUT`
+  		or `EVL_CLONE_OUTPUT`.
 
 - -EBADF	_targetfd_ is not a valid file descriptor.
 
@@ -354,6 +376,9 @@ write granularity. It is identical to calling:
 ```
 	evl_create_proxy(targetfd, bufsz, 0, EVL_CLONE_PRIVATE, fmt, ...);
 ```
+
+If _bufsz_ is non-zero, the output side of the proxy is implicitly
+enabled. If _busfz_ is zero, then a mapping-only proxy is created.
 
 {{% notice info %}}
 Note that if the [generated name] ({{< relref
@@ -475,11 +500,19 @@ interface can monitor the following events occurring on a proxy file
 descriptor:
 
 - `POLLOUT` and `POLLWRNORM` are set whenever the output ring buffer
-  the file descriptor refers to is empty AND allocated, which means
-  that a proxy initialized with a zero-sized output buffer never
+  some polled file descriptor refers to is empty AND allocated, which
+  means that a proxy initialized with a zero-sized output buffer never
   raises these events. You would typically monitor the `POLLOUT`
   condition in order to wait for all of the buffered output to have
   been sent to the target file.
+
+- `POLLIN` and `POLLRDNORM` are set whenever some polled file
+  descriptor refers to a proxy for which data is available on input.
+
+- `POLLERR` is returned whenever some polled file descriptor refers to
+  a proxy which may not be either read or written (see
+  `EVL_CLONE_OUTPUT`, `EVL_CLONE_INPUT` from ({{< relref
+  "#evl_create_proxy" >}})).
 
 ---
 

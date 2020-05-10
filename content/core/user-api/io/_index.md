@@ -111,6 +111,11 @@ EINVAL  _fd_ is a [cross-buffer]({{< relref
 	cross-buffer]({{< relref
 	"core/user-api/xbuf/_index.md#evl_create_xbuf" >}})).
 
+ENXIO	_fd_ is a [proxy]({{< relref "core/user-api/proxy/_index.md"
+	>}}) file descriptor which is not available for input. See
+	[EVL_CLONE_INPUT]({{< relref
+	"core/user-api/proxy/_index.md#evl_create_proxy" >}}).
+
 ---
 
 {{< proto oob_write >}}
@@ -184,6 +189,11 @@ EINVAL  _fd_ is a [cross-buffer]({{< relref
 	_o\_bufsz_ parameter given when [creating the
 	cross-buffer]({{< relref
 	"core/user-api/xbuf/_index.md#evl_create_xbuf" >}})).
+
+ENXIO	_fd_ is a [proxy]({{< relref "core/user-api/proxy/_index.md"
+	>}}) file descriptor which is not available for output. See
+	[EVL_CLONE_OUTPUT]({{< relref
+	"core/user-api/proxy/_index.md#evl_create_proxy" >}}).
 
 ---
 

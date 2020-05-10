@@ -150,12 +150,11 @@ core defines six elements:
   set of GPOS features is always visible to applications but they should
   not to use it when they carry out real-time work with the help of the
   autonomous core, or risk unbounded response time. Because of such
-  exclusion, manipulating files created by the main kernel such as
-  calling [printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html)
-  should not be done directly from time-critical loops. A file proxy
-  solves this type of issue by channeling the output it receives to an
-  arbitrary file descriptor, keeping the writer on the out-of-band
-  execution stage.
+  exclusion, issuing I/O file requests such as calling
+  [printf(3)](http://man7.org/linux/man-pages/man3/printf.3.html) should
+  not be done directly from time-critical loops. A file proxy solves
+  such issue by offloading I/O operations on in-band files to dedicated
+  workers, keeping the caller on the out-of-band execution stage.
 
 ## Everything is a file {#everything-is-a-file}
 

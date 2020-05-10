@@ -30,6 +30,11 @@ title: ABI revisions
     <th>libevl release</th>
   </tr>
   <tr>
+    <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=d9aed312cc9858ddf7b1b4b976c84e6778839274" target="_blank">24</a></td>
+    <td>Add proxy read side.
+    <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r19" target="_blank">r19</a></td>
+  </tr>
+  <tr>
     <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=a0afcbc06f23d1918703770e5755410a7f8a042e" target="_blank">23</a></td>
     <td>Add the Observable element, and thread observability.
     <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r17" target="_blank">r17</a></td>
