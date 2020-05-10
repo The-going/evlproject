@@ -46,7 +46,7 @@ call. You can associate any type of file with a proxy, including a
 [eventfd(2)](http://man7.org/linux/man-pages/man2/eventfd.2.html),
 [signalfd(2)](http://man7.org/linux/man-pages/man2/signalfd.2.html),
 [pipe(2)](http://man7.org/linux/man-pages/man7/pipe.7.html) and so on
-(see also the discussion below about the write [granularity]({{<
+(see also the discussion below about the transfer [granularity]({{<
 relref "#evl_create_proxy" >}})). This means that you could also use a
 proxy for signaling an in-band object from the out-of-band context, if
 doing so can be done using a regular
@@ -370,8 +370,8 @@ negated error code is returned instead:
 int evl_new_proxy(int targetfd, size_t bufsz, const char *fmt, ...)
 {{< /proto >}}
 
-This call is a shorthand for creating a private proxy with no specific
-write granularity. It is identical to calling:
+This call is a shorthand for creating a private proxy with no particular
+transfer granularity. It is identical to calling:
 
 ```
 	evl_create_proxy(targetfd, bufsz, 0, EVL_CLONE_PRIVATE, fmt, ...);
