@@ -7,6 +7,10 @@ pre: "&#8226; "
 
 ### Week 19.2020
 
+The EVL [proxy element]({{< relref "core/user-api/proxy/_index.md"
+>}}) gained a read-side, which makes it suitable for relaying read and
+write operations from/to an in-band file.
+
 More documentation (e.g. the [out-of-band GPIO]({{< relref
 "core/oob-drivers/gpio.md" >}}) interface).
 
