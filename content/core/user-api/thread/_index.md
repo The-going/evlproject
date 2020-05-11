@@ -185,9 +185,8 @@ is returned instead:
 - -EEXIST	The generated name is conflicting with an existing thread
 		name.
 
-- -EINVAL	Either _flags_ is wrong, or the [generated name]
-  		({{< relref "core/user-api/_index.md#element-naming-convention"
-  		>}}) is badly formed.
+- -EINVAL	Either _flags_ is wrong, or the [generated name]({{< relref
+  		"core/user-api/_index.md#element-naming-convention" >}}) is badly formed.
 
 - -ENAMETOOLONG	The overall length of the device element's file path including
 		the generated name exceeds PATH_MAX.
@@ -281,7 +280,7 @@ to calling:
 ```
 
 {{% notice info %}}
-Note that if the [generated name] ({{< relref
+Note that if the [generated name]({{< relref
 "core/user-api/_index.md#element-naming-convention" >}}) starts with a
 slash ('/') character, `EVL_CLONE_PRIVATE` would be automatically turned
 into `EVL_CLONE_PUBLIC` internally.
@@ -507,7 +506,7 @@ struct evl_thread_state {
 };
 ```
 
-- unlike ({{< relref
+- unlike [evl_get_schedattr()]({{< relref
 "core/user-api/scheduling/_index.md#evl_get_schedattr" >}}), the value
 returned in `statebuf->attrs.sched_priority` by [evl_get_state()]({{%
 relref "#evl_get_state" %}}) may reflect an ongoing [priority
