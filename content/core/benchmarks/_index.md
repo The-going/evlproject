@@ -4,7 +4,7 @@ title: "Running benchmarks"
 weight: 6
 ---
 
-### Measuring the response time to interrupts {#measuring-irq-response-time}
+### Measuring response time to interrupts {#measuring-irq-response-time}
 
 Since the real-time infrastructure has to deliver reliable response
 times to external events - as in _strictly bounded_ - whatever the
@@ -90,7 +90,7 @@ vs native preemption approach: all of them bite the same way
 regardless.
 {{% /notice %}}
 
-### Measuring the response time to timer events {#latmus-timer-response-time}
+### Measuring response time to timer events {#latmus-timer-response-time}
 
 A real-time system normally comes with a way to measure the latency of
 its threads on timer events.
@@ -152,7 +152,7 @@ the [latmus application]({{< relref "core/testing.md#latmus-program"
 >}}) using the `-m` option, which can be omitted since measuring the
 response time to timer events is the default test.
 
-> Measuring the response time to timer events
+> Measuring response time to timer events
 ```
 # latmus
 warming up on CPU1...
@@ -369,7 +369,7 @@ induce extra latency.
   load and test duration are meaningful]({{< relref "#stress-load"
   >}})**.
 
-### Measuring the response time to GPIO events {#latmus-gpio-response-time}
+### Measuring response time to GPIO events {#latmus-gpio-response-time}
 
 In addition to timer events, you will likely need to get a sense of
 the worst case response time to common device interrupts you may
@@ -686,7 +686,7 @@ monitor goes back waiting for another connection.
 [00:04:24.879,000] <inf> latency_monitor: waiting for connection...
 ```
 
-> Measuring the out-of-band response time to GPIO events (on the SUT)
+> Measuring out-of-band response time to GPIO events (on the SUT)
 ```
 /*
  * Caution: the following output was produced by running the test only
@@ -707,7 +707,7 @@ RTD|     13.958|     15.647|     26.075|       0|     0|      1.791|     30.950
 ---|-----------|-----------|-----------|--------|------|-------------------------
 RTS|      1.791|     15.606|     30.950|       0|     0|    00:00:05/00:00:05
 ```
-> Measuring the in-band response time to GPIO events (on the SUT)
+> Measuring in-band response time to GPIO events (on the SUT)
 ```
 /*
  * Caution: the following output was produced by running the test only
