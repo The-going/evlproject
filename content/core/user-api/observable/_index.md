@@ -366,7 +366,7 @@ can monitor the following events occurring on an Observable:
   thread might succeed in doing so cannot be determined (typically,
   there would be no such guarantee for the caller of [evl_poll()]({{<
   relref "core/user-api/poll/_index.md" >}}) and
-  [poll(2)](http://man7.org/linux/man-pages/man2/poll.2.html).
+  [poll(2)](http://man7.org/linux/man-pages/man2/poll.2.html)).
 
 In addition to these flags, `POLLERR` might be returned in case the
 caller did not [subscribe]({{< relref
@@ -378,17 +378,15 @@ which was not [created]({{< relref "#evl_attach_thread" >}}) with the
 ### Observing EVL threads {#observable-thread}
 
 An EVL thread is in and of itself an Observable element. Observability
-of a thread can be enabled by passing the [EVL_CLONE_OBSERVABLE]({{<
-relref "core/user-api/thread/_index.md#evl_attach_thread" >}}) flag at
-creation time. In this case, the file descriptor of the new thread may
-be subsequently used in any Observable-related operation. In addition,
-if such thread was also made public ([EVL_CLONE_PUBLIC]({{< relref
+of a thread can be enabled by passing the `EVL_CLONE_OBSERVABLE` flag
+when attaching a thread to the EVL core. In this case, the file
+descriptor obtained from [evl_attach_thread()]({{< relref
+"core/user-api/thread/_index.md#evl_attach_thread" >}}) may be
+subsequently used in Observable-related operations. If the thread was
+also made public ([EVL_CLONE_PUBLIC]({{< relref
 "core/user-api/thread/_index.md#evl_attach_thread" >}})), then there
-is a way for remote processes to
-[open(2)](http://man7.org/linux/man-pages/man2/open.2.html) the device
-created in the [/dev/evl/thread]({{< relref
-"core/user-api/_index.md#evl-fs-hierarchy" >}}) hierarchy which
-represents that thread, in order to monitor it.
+is a way for remote processes to monitor it via an access to [its
+device]({{< relref "core/user-api/_index.md#evl-fs-hierarchy" >}}).
 
 Threads can monitor events sent to an observable thread element by
 [subscribing]({{< relref "core/user-api/thread/_index.md#evl_subscribe" >}})
