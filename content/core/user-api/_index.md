@@ -12,7 +12,7 @@ running along with any number of regular POSIX threads.
 
 - an EVL thread is initially a plain regular POSIX thread spawned by a call to
 [pthread_create(3)](http://man7.org/linux/man-pages/man3/pthread_create.3.html)
-or the `main()` context) which has issued the [evl_attach_self()]({{<
+or the `main()` context which has issued the [evl_attach_self()]({{<
 relref "core/user-api/thread/_index.md#evl_attach_thread" >}}) system
 call. This service binds the caller to the EVL core, which enables it
 to invoke the real-time, ultra-low latency services the latter
@@ -21,17 +21,16 @@ delivers.
 - once attached, such thread may call EVL core services, until it
 detaches from the core by a call to [evl_detach_self()]({{< relref
 "core/user-api/thread/_index.md#evl_detach_thread" >}}), or exits,
-whichever comes first. It may still call routines from the common C
-library such as _glibc_, except when real-time guarantees are
-required.
+whichever comes first.
 
-- whenever an EVL thread requires real-time guarantees, it must use
-the proper services provided by `libevl` exclusively. If such thread
-invokes a common C library service while in the middle of a
+- whenever an EVL thread has to meet real-time requirements, it must
+rely on the services provided by `libevl` exclusively. If such a
+thread invokes a common C library service while in the middle of a
 time-critical code, the EVL core does keep the system safe by
 transparently demoting the caller to [in-band context]({{< relref
-"dovetail/altsched.md#altsched-theory" >}}).  However, the **calling
-thread** obviously **lost any real-time guarantee** in the process.
+"dovetail/altsched.md#altsched-theory" >}}).  However, the calling
+thread would loose any real-time guarantee in the process, meaning
+that unwanted jitter would happen.
 
 To sum up, the lifetime of an EVL application usually looks like this:
 
@@ -94,21 +93,21 @@ your time-critical code only relies on either:
   "dovetail/altsched.md#altsched-theory" >}}).
 
 - a (very) small subset of the common C library which are known _not_
-  to depend on regular in-band kernel services. In other words,
-  routines which won't issue common Linux system calls in any way. For
-  instance, routines from the
+  to depend on regular in-band kernel services. In other words, only
+  routines which won't issue common Linux system calls in any way are
+  fine in a time-critical execution context. For instance, routines
+  from the
   [string(3)](http://man7.org/linux/man-pages/man3/string.3.html)
-  section come to mind in this case, like
+  section may be fine in a time-critical code, like
   [strcpy(3)](http://man7.org/linux/man-pages/man3/strcpy.3.html),
   [memcpy(3)](http://man7.org/linux/man-pages/man3/memcpy.3.html) and
-  friends. At the opposite, any call which directly or indirectly
-  might call
+  friends. At the opposite, any routine which may directly or
+  indirectly invoke
   [malloc(3)](http://man7.org/linux/man-pages/man3/malloc.3.html) must
-  be banned from your time-critical code (think about most
-  [stdio(3)](http://man7.org/linux/man-pages/man3/stdio.3.html) calls,
-  C++ default constructors which rely on
-  [malloc(3)](http://man7.org/linux/man-pages/man3/malloc.3.html)
-  etc).
+  be banned from your time-critical code, which includes
+  [stdio(3)](http://man7.org/linux/man-pages/man3/stdio.3.html)
+  routines, or C++ default constructors which rely on the standard
+  memory allocator.
 
 Outside of those time-critical sections which require the EVL core to
 guarantee ultra-low latency scheduling for your application threads,
@@ -125,8 +124,8 @@ common [devices]({{< relref "core/_index.md#everything-is-a-file"
 >}}), [mutexes]({{< relref "core/user-api/mutex/_index.md" >}}),
 [events]({{< relref "core/user-api/event/_index.md" >}}),
 [semaphores]({{< relref "core/user-api/semaphore/_index.md" >}}).
-Therefore, every element you may want to share can be exported to
-other processes, based on a [visibility attribute]({{< relref
+Therefore, every element you may want to share can be exported to the
+device file system, based on a [visibility attribute]({{< relref
 "#element-visibility" >}}) mentioned at creation time.
 
 In addition, EVL provides a couple of additional features which come
@@ -140,6 +139,12 @@ which is used as an anchor point for memory-mappable devices.
 structure, which is a lightweight FIFO working locklessly, you can
 also use for [inter-process messaging]({{< relref
 "core/user-api/tube/_index.md#inter-process-tube" >}}).
+
+- the [Observable]({{< relref "core/user-api/observable/_index.md"
+>}}) element which gives your application a built-in support for
+implementing the [observer design
+pattern](https://en.wikipedia.org/wiki/Observer_pattern) among one or
+more processes transparently.
 
 ## Visibility: public and private elements {#element-visibility}
 
@@ -179,6 +184,7 @@ total 0
 drwxr-xr-x    2 root     root            80 Jan  1  1970 clock
 crw-rw----    1 root     root      246,   0 Jan  1  1970 control
 drwxr-xr-x    2 root     root            60 Apr 18 17:38 monitor
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 observable
 crw-rw----    1 root     root      246,   3 Jan  1  1970 poll
 drwxr-xr-x    2 root     root            60 Apr 18 17:38 proxy
 drwxr-xr-x    2 root     root            60 Apr 18 17:38 thread
