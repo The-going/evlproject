@@ -171,11 +171,22 @@ Because of its [everything-is-a-file]({{< relref
 number of device files in the `/dev/evl` hierarchy, which lives in the
 DEVTMPFS file system. Each device file either represents an active
 [public element]({{< relref "#element-visibility" >}}), or a special
-command device used internally by `libevl`. Element device files are
-organized in directories, one for each [element class]({{< relref
-"core/_index.md#evl-core-elements" >}}): clock, monitor, proxy, thread
-and cross-buffer; general command devices appear at the top level,
-such as _control_, _poll_ and _trace_:
+command device used internally by `libevl`.
+
+In [opening](http://man7.org/linux/man-pages/man2/open.2.html) a
+public element device, an application receives a file descriptor which
+can be used to submit requests to the underlying element. For
+instance, the scheduling parameters of a thread running in _process A_
+could be changed by a thread running in _process B_ by a call to
+[evl_set_schedattr()]({{< relref
+"core/user-api/scheduling/_index.md#evl_set_schedattr" >}}) using the
+proper file descriptor.
+
+Element device files are organized in directories, one for each
+[element class]({{< relref "core/_index.md#evl-core-elements" >}}):
+clock, monitor, proxy, thread and cross-buffer; general command
+devices appear at the top level, such as _control_, _poll_ and
+_trace_:
 
 ```
 ~ # cd /dev/evl

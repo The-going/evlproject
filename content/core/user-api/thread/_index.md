@@ -1076,7 +1076,7 @@ The format of these fields is as follows:
 
   - the base priority level of the thread within its scheduling class,
     *not* reflecting any priority boost. This is the value that you last
-    set with [evl_set_schedattr]({{< relref
+    set with [evl_set_schedattr()]({{< relref
     "core/user-api/scheduling/_index.md#evl_set_schedattr" >}}) when
     assigning the thread its scheduling class.
 
