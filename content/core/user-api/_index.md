@@ -229,7 +229,7 @@ user `square`, group `wheel`.
 ## Element names {#element-naming-convention}
 
 Every `evl_create_*()` call which creates a new element, along with
-[evl_attach_thread]({{< relref
+[evl_attach_thread()]({{< relref
 "core/user-api/thread/_index.md#evl_attach_thread" >}}) accepts a
 [printf](http://man7.org/linux/man-pages/man3/printf.3.html)-like
 format string to generate the element name. A common way of generating
