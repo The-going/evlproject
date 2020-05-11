@@ -62,25 +62,25 @@ for each extent of a given heap:
   time-bound operations on inserting and removing pages (either by
   size or address).
 
-- an array of list of pages used as a fast block cache, where each
-  entry links pages occupied by chunks of the same size. Since the
-  base page is 512 bytes long, the chunk size may range from 2^4 to
-  2^8 bytes, which gives five entries. Within a single page, up to 32
-  chunks of 16 bytes each are available, 16 chunks for 32 bytes chunks
-  and so on, up to 2 chunks of 256 bytes.
+- an array of lists of free pages used as a fast block cache.  Each
+  entry in the array links pages which are available for storing
+  chunks of the same size. The chunk size may range from 2^4 to 2^8
+  bytes, which gives an array of five entries for representing all the
+  possible sizes we may allocate from the fast cache. Within a single
+  page of 512 bytes, up to 32 chunks of 16 bytes each are available,
+  16 chunks for 32 bytes and so on, down to 2 chunks of 256 bytes.
 
 The allocation strategy is as follows, for each available extent until
 the request is satisfied or impossible to satisfy by any extent:
 
 - if the application requests a chunk which is not larger than half
   the size of a page (i.e. 2^8 or 256 bytes), then the fast block
-  cache of the current extent is first searched for a free chunk. For
+  cache of the current extent is searched for a free chunk. For
   instance, a request for allocating 24 bytes would cause a lookup
-  into the fast cache for a free 32-byte long chunk. If no free chunk
-  is available from the cache for that requested size, a new page is
-  pulled from the free pool, added to the cache for the corresponding
-  size, and the allocation proceeds from there, returning one chunk
-  from the newly allocated page to the caller.
+  into the fast cache for a free chunk of 32 bytes. If no free chunk
+  is available from the cache for that size, a new page is pulled from
+  the free pool, added to the free page list for the corresponding
+  size, and the allocation is tried again.
 
 - if the size of requested chunk rounded up to the next power of 2 is
   larger than half the size of a page (i.e. >= 2^9 bytes), a set of
