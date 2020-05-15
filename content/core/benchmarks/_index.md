@@ -572,80 +572,83 @@ to accept incoming connections from the [latmus application]({{< relref
 The GPIO response time of the standard or
 [PREEMPT_RT](https://wiki.linuxfoundation.org/realtime/rtl/blog)
 kernel may be delayed by [threading the GPIO
-interrupt](https://www.kernel.org/doc/htmldocs/kernel-api/API-request-threaded-irq.html),
-since this behavior is built in the generic GPIOLIB driver. The
-overhead involved in waiting for a context switch to be performed to
-the threaded handler definitely shows badly in the figures, especially
-under stress load.
-
-Unfortunately, disabling IRQ threading entirely in a single kernel
+interrupt](https://www.kernel.org/doc/htmldocs/kernel-api/API-request-threaded-irq.html)
+the [latmus application]({{< relref "core/testing.md#latmus-program"
+>}}) monitors, since this behavior is built in the generic GPIOLIB
+driver. The overhead involved in waiting for a context switch to be
+performed to the threaded handler increases the latency under stress
+load. Disabling IRQ threading entirely in a single kernel
 configuration (i.e. without EVL) would be the wrong option though,
-making the latency figures even worse. The following patch allows to
-disable IRQ threading on demand, only for GPIO chip drivers which
-cannot (more precisely: do not have to) sleep when accessing the chip
-registers. Once patched in, the kernel can be passed the
-**gpiolib.nothread** option at boot, which disables IRQ threading
-whenever possible for handling GPIO interrupts.
+making the latency figures generally really bad. However, you can
+raise the priority of the IRQ thread serving the latency pulse above
+any activity which should not be in its way, so that it is not delayed
+even further.
 
-**You definitely do not need this patch when running EVL, there is no
-such IRQ threading in the EVL-enabled GPIOLIB driver.**
+In order to do this, you first need to locate the IRQ thread which
+handles the GPIO pulse interrupts. A simple way to achieve this is to
+check the output of `/proc/interrupts` once the test runs, looking for
+the GPIO consumer called _latmon-pulse_. For instance, the following
+output was obtained from a PREEMPT_RT kernel running on an i.MX8M SoM:
 
-{{% notice warning %}}
-The following code is a **hack**, originally written on top of
-v5.4.5-rt3 only for the purpose of running comparable test cases
-between EVL and native preemption systems when it comes to measuring
-their response time to GPIO events. It is not intended to be a
-canonical solution to this problem.
+```
+~ # cat /proc/interrupts 
+           CPU0       CPU1       CPU2       CPU3       
+  3:     237357      90193     227077     224949     GICv3  30 Level     arch_timer
+  6:          0          0          0          0     GICv3  79 Level     timer@306a0000
+  7:          0          0          0          0     GICv3  23 Level     arm-pmu
+  8:          0          0          0          0     GICv3 128 Level     sai
+  9:          0          0          0          0     GICv3  82 Level     sai
+ 20:          0          0          0          0     GICv3 110 Level     30280000.watchdog
+ 21:          0          0          0          0     GICv3 135 Level     sdma
+ 22:          0          0          0          0     GICv3  66 Level     sdma
+...
+ 52:    1355491          0          0          0  gpio-mxc  12 Edge      latmon-pulse   <<< The one we look for
+ 55:          0          0          0          0  gpio-mxc  15 Edge      ds1337
+ 80:          0          0          0          0  gpio-mxc   8 Edge      bd718xx-irq
+ 84:          0          0          0          0  gpio-mxc  12 Edge      30b50000.mmc cd
+...
+```
+
+With this information, we can now figure out which IRQ thread is
+handling the pulse events monitored by [latmus]({{< relref
+"core/testing.md#latmus-program" >}}), raising its priority as
+needed. By default, all IRQ threads are normally set to priority 50 in
+the SCHED_FIFO class. Typically, you may want to raise the priority of
+this particular IRQ handler so that it does not have to compete with
+other handlers. For instance, continuing the previous example we would
+raise the priority of the kernel thread handling IRQ52 to 90:
+
+{{% notice tip %}}
+You can refine even futher the runtime configuration of a kernel threading
+its interrupts by locking the [SMP
+affinity](https://www.kernel.org/doc/Documentation/IRQ-affinity.txt)
+of the IRQ threads on particular CPUs, in order to either optimize the wake
+up time of processes waiting for such events, or reduce the jitter in
+processing the real-time workload. Whether you should move
+an IRQ thread to the isolated CPU also running the real-time workload
+in order to favour locality, or keeping them spatially separate in
+order to reduce the disturbance of interrupt handling on the workload
+is something you may have to determine on a case-by-case basis.
 {{% /notice %}}
 
 ```
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 104ed299d5ea..77f78fda96f1 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -35,6 +35,10 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/gpio.h>
- 
-+static bool nothread;
-+module_param(nothread, bool, 0444);
-+MODULE_PARM_DESC(nothread, "Do not thread GPIO interrupt events");
-+
- /* Implementation infrastructure for GPIO interfaces.
-  *
-  * The GPIO programming interface allows for inlining speed-critical
-@@ -866,6 +870,11 @@ static irqreturn_t lineevent_irq_thread(int irq, void *p)
- 	return IRQ_HANDLED;
- }
- 
-+static inline bool lineevent_no_thread(struct lineevent_state *le)
-+{
-+	return nothread && !le->gdev->chip->can_sleep;
-+}
-+
- static irqreturn_t lineevent_irq_handler(int irq, void *p)
- {
- 	struct lineevent_state *le = p;
-@@ -875,6 +884,8 @@ static irqreturn_t lineevent_irq_handler(int irq, void *p)
- 	 * close in time as possible to the actual event.
- 	 */
- 	le->timestamp = ktime_get_real_ns();
-+	if (lineevent_no_thread(le))
-+		return lineevent_irq_thread(irq, p);
- 
- 	return IRQ_WAKE_THREAD;
- }
-@@ -971,7 +982,8 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
- 	/* Request a thread to read the events */
- 	ret = request_threaded_irq(le->irq,
- 			lineevent_irq_handler,
--			lineevent_irq_thread,
-+			lineevent_no_thread(le) ? NULL :
-+				lineevent_irq_thread,
- 			irqflags,
- 			le->label,
- 			le);
+~# pgrep irq/52
+345
+~# chrt -f -p 90 345
+pid 345's current scheduling policy: SCHED_FIFO
+pid 345's current scheduling priority: 50
+pid 345's new scheduling policy: SCHED_FIFO
+pid 345's new scheduling priority: 90
 ```
+
+{{% notice warning %}}
+In a single kernel configuration, the IRQ thread process varies
+between runs of the [latmus application]({{< relref
+"core/testing.md#latmus-program" >}}) for the GPIO test, because the
+interrupt descriptor is released at the end of each execution by
+GPIOLIB. Make sure to apply the procedure explained above each time
+you spawn a new test.
+{{% /notice %}}
 
 #### Running the GPIO-based test
 
