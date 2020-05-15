@@ -195,6 +195,19 @@ code {
   padding: 0px 0;
 }
 
+.mixed-grid-small-container {
+  display: grid;
+  grid-template-areas: 'mixed_area mixed_area';
+  grid-template-columns: 400px 500px;
+  grid-gap: 30px;
+  padding: 0px;
+}
+
+.mixed-grid-small-container > div {
+  text-align: justify;
+  padding: 0px 0;
+}
+
 .bigbutton {
   background-color: #0084ba;
   border: none;

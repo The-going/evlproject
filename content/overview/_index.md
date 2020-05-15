@@ -167,6 +167,62 @@ services in kernel space is the [kthread]({{< relref
 "core/kernel-api/kthread/_index.md" >}}), which is a common Linux
 kthread on EVL steroids.
 
+### What is the dual kernel code footprint?
+
+All figures reported in the charts below below have been determined by
+[CLOC](https://github.com/AlDanial/cloc), only retaining C and
+assembly source files in the comparisons.
+
+{{% mixedgrid-small src="/images/cloc-dovetail.png" %}}
+> **Dovetail footprint on kernel code.** The code footprint of the
+Dovetail interface is 7.8 Kloc added to the kernel as of v5.7-rc5.
+Most changes happen in the generic kernel and driver code, which amount
+for 73% of the total. The rest is split into ARM, arm64 and x86-specific code.
+An architecture-specific port represents less than 10% of the total on
+average.
+{{% /mixedgrid-small %}}
+
+{{% mixedgrid-small src="/images/cloc-evl.png" %}}
+> **EVL core footprint on kernel code.** The EVL core on top of
+Dovetail is 15.2 Kloc. 97% of this code is architecture-agnostic. Each
+architecture port amounts for 1% of the rest, which is 163 lines of
+code on average. This shows that Dovetail is actually responsible for
+the overwhelming majority of the architecture-specific support a
+companion core should need.
+{{% /mixedgrid-small %}}
+
+{{% mixedgrid-small src="/images/cloc-evl-in-kernel.png" %}}
+> **Overall dual kernel code footprint.** The overall footprint of
+the EVL dual kernel system amounts to 26 Kloc, which includes Dovetail,
+the EVL core and its out-of-band capable drivers so far. This is 0.13% of
+the total kernel code base as of v5.7-rc5.
+{{% /mixedgrid-small %}}
+
+{{% mixedgrid-small src="/images/cloc-ipipe.png" %}}
+> **Comparing I-pipe and Dovetail footprints.** These figures compare
+the latest [I-pipe implementation](https://gitlab.denx.de/Xenomai/xenomai/wikis/home)
+available to date based on kernel
+v4.19.x with Dovetail for v5.7-rc5. Dovetail provides additional core
+services such as built-in out-of-band task scheduling support which,
+as a consequence companion cores don't have to implement for each CPU
+architecture. The ARM-specific code is notably smaller
+for Dovetail, thanks to a better integration of the
+[interrupt pipeline]({{< relref "dovetail/pipeline/_index.md" >}}) logic
+within the mainline kernel.
+{{% /mixedgrid-small %}}
+
+{{% mixedgrid-small src="/images/cloc-evl-vs-xenomai.png" %}} >
+> **Comparing Cobalt and the EVL core footprints.** These figures
+compare Xenomai 3.1 with EVL for kernel v5.7-rc5. The drastic
+reduction of the code footprint EVL shows is mainly due to focusing on
+a simpler yet flexible [feature set]({{< relref "core/_index.md#evl-core-elements" >}})
+and reusing the [common driver
+model]({{< relref "core/oob-drivers/_index.md" >}}).  Besides, most of
+the architecture-specific code is handled by Dovetail, unlike Cobalt
+which still has to deal with the nitty-gritty details of task
+switching, like FPU management.
+{{% /mixedgrid-small %}}
+
 ### Porting Dovetail
 
 If you intend to port Dovetail to:
