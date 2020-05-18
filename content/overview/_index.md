@@ -282,15 +282,15 @@ building the EVL core and libevl.
 "core/user-api/_index.md" >}}). You may find the following bits
 useful, particularly when discovering the system:
 
-       - what does [initializing an EVL application]({{< relref
-         "core/user-api/init/_index.md" >}}) entail.
+	- what does [initializing an EVL application]({{< relref
+"core/user-api/init/_index.md" >}}) entail.
 
-       - how to have [POSIX threads run on the high-priority
-       stage]({{< relref "core/user-api/thread/_index.md" >}}).
+	- how to have [POSIX threads run on the high-priority stage]({{< relref
+ "core/user-api/thread/_index.md" >}}).
 
-       - which is the proper [calling context]({{< relref
-       "core/user-api/function_index/_index.md" >}}) for each EVL
-       service from this API.
+	- which is the proper [calling context]({{< relref
+ "core/user-api/function_index/_index.md" >}}) for each EVL service
+ from this API.
 
 4. [calibrate]({{< relref "core/runtime-settings.md" >}}) and
    [test]({{< relref "core/testing.md" >}}) the system.
