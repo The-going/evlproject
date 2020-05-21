@@ -121,7 +121,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.2</td>
+    <td>v5.4.40</td>
   </tr>
   <tr>
     <td><a href="https://www.variscite.com/product/system-on-module-som/cortex-a53-krait/dart-mx8m-mini-nxp-i-mx8m-mini/" target="_blank">NXP i.MX8M Mini (Variscite DART-MX8M-MINI)</a></td>
