@@ -219,7 +219,7 @@ information.
         **This option adds a significant overhead affecting latency figures**</td>
   </tr>
   <tr>
-    <td>CONFIG_EVL_DEBUG_WOLI</td>
+    <td><a href="/core/user-api/thread/#health-monitoring" target="_blank">CONFIG_EVL_DEBUG_WOLI</a></td>
     <td>N</td>
     <td>Enable warn-on-lock-inconsistency checkpoints</td>
   </tr>
@@ -234,7 +234,7 @@ information.
     <td>Watchdog timeout value (in seconds).</td>
   </tr>
   <tr>
-    <td>CONFIG_GPIOLIB_OOB</td>
+    <td><a href="/core/oob-drivers/gpio" target="_blank">CONFIG_GPIOLIB_OOB</a></td>
     <td>n</td>
     <td>Enable support for out-of-band GPIO line handling requests.</td>
   </tr>
