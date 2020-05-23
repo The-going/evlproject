@@ -155,6 +155,11 @@ translates the configuration-related information gathered in the [caveat section
 CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE=y if CONFIG_CPU_FREQ
 CONFIG_DEBUG_HARD_LOCKS=n
 CONFIG_ACPI_PROCESSOR_IDLE=n
+CONFIG_LOCKDEP=n
+CONFIG_DEBUG_LIST=n
+CONFIG_DEBUG_VM=n
+CONFIG_DEBUG_PER_CPU_MAPS=n
+CONFIG_KASAN=n
 ```
 
 The command returns the following information:
