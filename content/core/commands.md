@@ -22,6 +22,7 @@ evl [-V] [-P <cmddir>] [-h] [<command> [command-args]]
 ```
 
 - \<command\> may be any command word listed by 'evl -h', such as:
+  **check**        which checks a kernel configuration for common issues
   **ps**           which reports a snapshot of the current EVL threads
   **test**         for running the EVL test suite
   **trace**        which is a simple front-end to the _ftrace_ interface for EVL
@@ -64,10 +65,112 @@ usage: evl [options] [<command> [<args>]]
 
 available commands:
 
+check        check kernel configuration
 gdb          debug EVL command plugin with GDB
 ps           report a snapshot of the current EVL threads
 test         run EVL tests
 trace        ftrace control front-end for EVL
+```
+
+### Checking a kernel configuration (check) {#evl-check-command}
+
+`evl check` may be the very first `evl` command you should run from a
+newly installed target system which is going to run the EVL core. This
+command checks a kernel configuration for common issues which may
+increase latency. The general syntax is as follows:
+
+```
+$ evl check [-f --file=<.config>]
+      	    [-L --check-list=<file>]
+      	    [-a --arch=<cpuarch>]
+	    [-H --hash-size=<N>]
+	    [-q --quiet]
+	    [-h --help]
+```
+
+The kernel configuration to verify is a regular `.config` file which
+contains all the settings for building a kernel image. If none is
+specified using the `-f` option, the command defaults to reading
+`/proc/config.gz` on the current machine. If this fails because any of
+`CONFIG_IKCONFIG` or `CONFIG_IKCONFIG_PROC` was disabled in the
+running kernel, the command fails.
+
+The check list contains a series of single-line assertions which are
+tested against the contents of the kernel configuration. You can
+override the default check list stored at
+`$prefix/libexec/kconf-checklist.evl` with our own set of checks with
+the `-L` option.  Each assertion follows the BNF-like syntax below:
+
+```
+assertion   : expr conditions
+            | "!" expr conditions
+
+expr        : symbol /* matches =y and =m */
+            | symbol "=" tristate
+
+tristate  : "y"
+          | "m"
+          | "n"
+
+conditions  : dependency
+            | dependency arch
+
+dependency  : "if" symbol       /* true if set as y/m */
+
+arch        : "on" cputype
+
+cputype     : $(uname -m)
+```
+
+For instance:
+
+- _CONFIG\_FOO must be set whenever CONFIG\_BAR is unset_ can
+be written as `CONFIG_FOO if !CONFIG_BAR`.
+
+- _CONFIG\_FOO must not be set_ can be written as `!CONFIG_FOO`, or
+  conversely `CONFIG_FOO=n`.
+
+- _CONFIG\_FOO must be built as module on aarch32 or aarch64_ can be
+written as `CONFIG_FOO=m on aarch`.
+
+- _CONFIG\_FOO must not be built-in on aarch64 if CONFIG\_BAR is set_
+can be written as `!CONFIG_FOO=y if CONFIG_BAR on aarch`.
+
+Assertions in the check list may apply to a particular CPU
+architecture. Normally, the command should be able to figure out which
+architecture the kernel configuration file applies to by inspecting
+the first lines, looking for the "Linux/<arch>" pattern. However, you
+might have to specify this information manually to the command using
+the `-a` option if the file referred to by the `-f` option does not
+contain such information. The architecture name (_cputype_) should
+match the output of $(uname -m) or some abbreviated portion of
+it. However, _arm64_ and _arm_ are automatically translated to
+_aarch64_ and _aarch32_ when found in an assertion or passed to the
+`-a` option.
+
+The [default check list](https://git.evlproject.org/libevl.git/tree/utils/kconf-checklist.evl)
+translates the configuration-related information gathered in the [caveat section]({{< relref
+"core/caveat.md" >}}) as follows:
+```
+CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE=y if CONFIG_CPU_FREQ
+CONFIG_DEBUG_HARD_LOCKS=n
+CONFIG_ACPI_PROCESSOR_IDLE=n
+```
+
+The command returns the following information:
+
+- the wrong settings detected in the kernel configuration are written
+  to stdout, unless the quiet `-q` option was given.
+
+- the number of failed assertions is returned via the shell exit
+  code ($?).
+
+> Example: checking the current kernel configuration
+```
+~ # evl check
+CONFIG_ACPI_PROCESSOR_IDLE=y
+~ # echo $?
+1
 ```
 
 ### Reporting a snapshot of the current EVL threads (ps) {#evl-ps-command}

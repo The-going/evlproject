@@ -312,7 +312,18 @@ graph LR;
     style A fill:#99ccff;
     B --> C["Boot target"]
     style C fill:#ffffcc;
-    C --> D["Run unit tests"]
+
+    C --> U["Run evl check"]
+    style U fill:#ffffcc;
+    click U "/core/commands#evl-check-command"
+    U --> UU{OK?}
+    style UU fill:#fff;
+    UU -->|Yes| D["Run unit tests"]
+    UU -->|No| R[Fix Kconfig]
+    click R "/core/caveat"
+    style R fill:#99ccff;
+    R --> A
+
     style D fill:#ffffcc;
     click D "/core/testing#evl-unit-testing"
     D --> L{OK?}
@@ -335,12 +346,8 @@ graph LR;
     G --> N{OK?}
     style N fill:#fff;
     N -->|Yes| O["Go celebrate"]
-    N -->|No| R{Kconfig issue?}
+    N -->|No| Z
     style O fill:#33cc66;
-    style R fill:#fff;
-    click R "/core/caveat"
-    R -->|Yes| A
-    R -->|No| Z
 {{< /mermaid >}}
 
 Once the EVL core runs on your target system, you can go directly to
