@@ -632,9 +632,19 @@ is something you may have to determine on a case-by-case basis.
 {{% /notice %}}
 
 ```
-~# pgrep irq/52
+~ # pgrep irq/52
 345
-~# chrt -f -p 90 345
+~ # chrt -f -p 90 345
+pid 345's current scheduling policy: SCHED_FIFO
+pid 345's current scheduling priority: 50
+pid 345's new scheduling policy: SCHED_FIFO
+pid 345's new scheduling priority: 90
+```
+
+Which can be shortened as:
+
+```
+~ # chrt -f -p 90 $(pgrep irq/52)
 pid 345's current scheduling policy: SCHED_FIFO
 pid 345's current scheduling priority: 50
 pid 345's new scheduling policy: SCHED_FIFO
