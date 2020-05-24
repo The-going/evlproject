@@ -4,6 +4,19 @@ title: "Running benchmarks"
 weight: 6
 ---
 
+The issue of proper benchmarking is sisyphean, a never ending
+conversation which reboots as technology and user requirements
+change. Every benchmark has an agenda of some sort; that is ok
+provided it does not take the reader for a fool. For these reasons,
+this section is a work-in-progress by design, which only discusses
+test cases for which the source code is fully available, which does
+not require any black-box, so as to allow you to verify and reproduce
+them fairly easily.
+
+Any [comments](https://evlproject.org/mailman/listinfo/evl/) and other
+contributions improving this section and/or EVL in general are
+welcome.
+
 ### Measuring response time to interrupts {#measuring-irq-response-time}
 
 Since the real-time infrastructure has to deliver reliable response
@@ -20,7 +33,7 @@ real-time applications, such test going wrong would clearly be a
 showstopper. No doubt that every real-time infrastructure out there
 wants to shine on that one. To measure the response time to interrupts
 in different contexts, EVL provides the [latmus]({{< relref
-"core/testing.md##latmus-program" >}}) utility. The following figure
+"core/testing.md#latmus-program" >}}) utility. The following figure
 illustrates the potential delays which may exist between the moment an
 interrupt request is raised by a device, and the time a responder
 thread running in the application space can act upon it:
@@ -199,6 +212,7 @@ RTD|      1.158|      1.275|      2.974|       0|     0|      1.135|      4.188
 # min latency: 0.205
 # avg latency: 3.097
 # max latency: 25.510
+# sample count: 71598
 0 95
 1 25561
 2 18747
@@ -368,6 +382,14 @@ induce extra latency.
   case** value we should definitely care about, **[provided the stress
   load and test duration are meaningful]({{< relref "#stress-load"
   >}})**.
+
+- _\# sample count: 71598_
+
+  The number of samples collected. The larger, the better (71598
+  samples in this example is obviously way too small for drawing any
+  meaningful conclusion). Running a test for a period of 24 hours
+  [under significant stress load]({{< relref "#stress-workloads" >}}) is
+  common practice to get reliable results.
 
 ### Measuring response time to GPIO events {#latmus-gpio-response-time}
 
@@ -761,9 +783,13 @@ RTS|     38.075|     54.037|     96.108|       0|     0|    00:00:07/00:00:07
   reserve CPU1 for this purpose, by passing **isolcpus=1** on the
   kernel command line at boot.
 
+- verify your kernel configuration either offline or online using the
+  [evl check]({{< relref "core/commands.md#evl-check-command" >}})
+  command.
+
 #### Specific hints to configure a native preemption kernel
 
-- enable maximum preemption (CONFIG_PREEMPT_RT_FULL if available).
+- enable maximum preemption (`CONFIG_PREEMPT_RT_FULL` if available).
 
 - check that no common thread can compete with the responder thread on
   the same priority level. Some kernel threads will, but regular
@@ -778,11 +804,13 @@ RTS|     38.075|     54.037|     96.108|       0|     0|    00:00:07/00:00:07
 
 #### Specific hints to configure an EVL-enabled kernel
 
-- turn on CONFIG_EVL in the configuration.
+- turn on [CONFIG_EVL]({{< relref "core/build-steps.md#core-kconfig"
+  >}}) in the configuration.
 
-- turn off all features from the CONFIG_EVL_DEBUG section. The cost of
-  leaving the watchdog enabled should be marginal on the latency
-  figures though.
+- turn off all features from the [CONFIG_EVL_DEBUG]({{< relref
+  "core/build-steps.md#core-kconfig" >}}) section. The cost of leaving
+  the watchdog enabled should be marginal on the latency figures
+  though.
 
 ### The issue of proper stress load {#stress-load}
 
@@ -899,12 +927,25 @@ relevant over time when it comes to observing the worst case latency:
   24 hours uninterrupted seems to deliver a worst case value we can
   trust.
 
-#### Defining the stress workloads
+#### Defining the stress workloads {#stress-workloads}
+
+---
+
+**A WORD OF CAUTION:** several stress workloads mentioned in this
+  section are likely to ignite the CPUs of your test machine(s) quite
+  badly. Before any attempt is made at running any stress workload,
+  you do have to check for potential thermal issues with your hardware
+  _first_. Typically, the Raspberry PI 4B was known to suffer from
+  overheating until [a firmware
+  revision](https://www.raspberrypi.org/blog/thermal-testing-raspberry-pi-4/)
+  greatly improved the situation.
+
+---
 
 Using Linux for running real-time workloads means that we have to meet
 contradictory requirements on a shared hardware, maximum throughtput
-and guaranteed response time at the same time, which on the face of
-it, looks pretty insane, therefore interesting. Whichever real-time
+and guaranteed response time at the same time, which on the face of it
+looks pretty insane, therefore interesting. Whichever real-time
 infrastructure we consider, we have to assess how badly non real-time
 applications might hurt the performances of real-time ones. With this
 information, we can decide which is best for supporting a particular
@@ -924,16 +965,20 @@ following stress workloads are applied when running benchmarks:
    loops to a continuous
    [dd(1)](http://man7.org/linux/man-pages/man1/dd.1.html) copy from
    `/dev/zero` to `/dev/null` with a large block size (128Mb). This
-   workload usually causes the worst latency spots on any platform for
+   workload usually causes the worst latency spots on a platform for
    any type of real-time infrastructure, dual kernel and native
    preemption (PREEMPT_RT). As it pounds the CPU caches quite badly,
    it reveals the inertia of the real-time infrastructure when it has
    to ramp up quickly from an idle state in order to handle an
-   external event. The shell commands to start this work are:
+   external event. The more complex the code code paths involved in
+   doing so, the longer the response time. Do not expect ugly figures
+   on Big Irons and other high-end x86 though, however this workload
+   is likely to thrash common embedded systems. The shell commands to
+   start this workload are:
 
    ```
    ~ # while :; do hackbench; done &
-   ~ # dd if=/dev/zero of=/dev/null bs=128M&
+   ~ # dd if=/dev/zero of=/dev/null bs=128M &
    ```
 
 3. The _Pesky Neighbour_ workload is based on the [stress-ng test
@@ -943,60 +988,94 @@ following stress workloads are applied when running benchmarks:
    real-time infrastructure is to the pressure non real-time
    applications might put on the system by using common kernel
    interfaces. Given the ability some `stress-ng` stressors have to
-   thrash and break the system, we limit the amount of damage they can
-   do with specific settings, so that the machine stays responsive
-   throughout long-running tests. Those settings depend on the compute
-   power of the test machine. On a Raspberry PI 4B, this workload is
-   started as follows:
+   thrash and even break the system, we limit the amount of damage
+   they can do with specific settings, so that the machine stays
+   responsive throughout long-running tests. With this workload, we
+   generally focus on stressors which affect the scheduler and the
+   memory subsystem.
 
-   ```
-   ~ # stress-ng --class cpu-cache --class scheduler \
-       --sched other --taskset 0,2-$(nproc) \
-       --sequential 1 --clone 1 --clone-max 200 --vm 3 --vm-bytes=64M \
-       --exclude vforkmany --oomable
-   ```
+### Basic set up rules for all benchmarks
 
-   There are a few points to notice:
+- The kernel configuration is double-checked for features which may
+  have an [adverse impact]({{< relref "core/caveat.md" >}}) on the
+  latency figures. Typically, for benchmarking purpose only, all debug
+  options are turned off for both types of real-time infrastructures,
+  dual kernel like EVL or native preemption (PREEMPT_RT).
+  [evl check]({{< relref "core/commands.md#evl-check-command" >}}) can be
+  used to verify a kernel configuration.
 
-   - `stress-ng` defines classes of stressors as shorthands one can
-     use to refer to all of them implicitly. We focus on stressors
-     which affect the scheduler and memory subsystems.
+- On a multi-core system, we always reserve CPU1 for running the test
+  code which is monitored for response time, since native preemption
+  requires some CPU(s) to be dedicated to the real-time workload for
+  best results. This implies that `isolcpus=1 evl.oobcpus=1` are
+  passed to the kernel as boot options. With `stress-ng`, we also
+  restrict the CPUs usable for running the stress load using the
+  `--taskset` option. Assuming CPU1 is the only isolated CPU running a
+  test, this shell expression should produce the correct CPU set for
+  that option: `0,2-$(nproc)`.
 
-   - On a multi-core system, we always reserve CPU1 for running the
-     test code which is monitored for response time, since native
-     preemption requires some CPU(s) to be dedicated to the real-time
-     workload for best results. This implies that **isolcpus=1
-     evl.oobcpus=1** are passed to the kernel as boot options. For
-     `stress-ng`, we also have to restrict the CPUs usable for running
-     the stress load using the `--taskset` option. Assuming CPU1 is
-     the only CPU isolated, this shell expression should produce the
-     correct CPU set for that option: `0,2-$(nproc)`.
+- Specifically for testing a native preemption kernel, if a particular
+  test involves responding to a device interrupt such as the [GPIO
+  response test]({{< relref "#latmus-gpio-response-time" >}}) served
+  by a threaded handler, we make sure to raise the task priority of
+  such handler above all others. This rule does not apply to a dual
+  kernel infrastructure like EVL, which always processes IRQ events
+  immediately from the interrupt context.
 
-   - Some limits should be put on what `stress-ng` is allowed to do,
-     in order to avoid bringing the machine down to a complete stall,
-     or triggering OOM situations which may have unwanted outcomes
-     such as wrecking the test entirely. Of course, those limits
-     depend on the compute power of your test hardware.  With tiny
-     embedded SoCs such as those from the
-     [Raspberry](https://raspberrypi.org) family, you may have to cap
-     the number of worker threads the `clone` stressor can run
-     concurrently, and the number of clones such worker can create in
-     turn. Likewise, the number of worker threads and the amount of
-     virtual memory each of them maps should be kept within bounds for
-     the `vm` stressor.
+- Some limits should be put on what the [stress workload]({{< relref
+  "#stress-workloads" >}}) is allowed to do, in order to avoid
+  bringing the machine down to a complete stall, or triggering OOM
+  situations which may have unwanted outcomes such as wrecking the
+  test (or even the machine) entirely. Since we are not in the
+  business of crash testing, we need to set these limits depending on
+  the compute power of the test hardware.
 
-   - All threads running some stress workload should belong to the
-     [SCHED_OTHER](http://man7.org/linux/man-pages/man7/sched.7.html)
-     scheduling class. They should NOT compete with the real-time
-     threads whose response time is being monitored during the
-     test. Although this would have actually no impact on the
-     real-time performances of a dual kernel system, this would lead
-     to an unfair comparison with a native preemption system such as
-     PREEMPT_RT which is sensitive to this issue by design.
+- All threads running some stress workload should belong to the
+  [SCHED_OTHER](http://man7.org/linux/man-pages/man7/sched.7.html)
+  scheduling class. They should NOT compete with the real-time threads
+  whose response time is being monitored during the test. Although
+  this would have actually no impact on the real-time performances of
+  a dual kernel system, this would lead to an unfair comparison with a
+  native preemption system such as PREEMPT_RT which is sensitive to
+  this issue by design. For instance, we ensure this with `stress-ng`
+  by excluding all stressors implicitly involving the `SCHED_FIFO` or
+  `SCHED_RR` policies, setting the `--sched` parameter to `other` for
+  good measure.
 
-### The benchmarks we do
+### The benchmark scenarios
 
-![Alt text](/images/wip.png "To be continued")
+We want to characterize the following aspects of a real-time
+infrastructure:
+
+- its response time to external interrupts in the worst (observed)
+  case when the GPOS side of the system is under stress. From this
+  information we should be able to get a clear picture of the typical
+  applications such infrastructure can best support, in terms of low
+  latency and jitter requirements. We will be using the following test
+  programs to do so, for measuring the response time to timer and GPIO
+  events respectively:
+
+  - for EVL, the [latmus]({{< relref "core/testing.md#latmus-program"
+    >}}) program in [timer response mode]({{< relref
+    "#latmus-timer-response-time" >}}) and [GPIO response mode]({{<
+    relref "#latmus-gpio-response-time" >}}).
+
+  - for PREEMPT_RT, the
+    [cyclictest](https://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git)
+    program, and the [latmus]({{< relref
+    "core/testing.md#latmus-program" >}}) program in [GPIO response
+    mode]({{< relref "#latmus-gpio-response-time" >}}) which can run
+    without EVL support.
+
+- the overhead it adds to the GPOS side as a result of running the
+  in-kernel real-time machinery. Because we aim at sharing a single
+  hardware between GPOS and RTOS activities, we need hints about the
+  actual cost of running the real-time infrastructure on the overall
+  system. In many cases, especially in the embedded space, the ability
+  to downsize the compute power required for running mixed
+  applications is valuable. There is no test program ready for this
+  part yet. Any thought about the way to best do this, contribution of
+  any sort is welcome.
 
 ---
 

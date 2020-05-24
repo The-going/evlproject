@@ -10,9 +10,9 @@ pre: "&#8226; "
 Defining the benchmarking rules on Raspberry 4 and i.MX8 Mini, with
 detailed information about the stress workload which is going to be
 applied to every upcoming benchmark series published [there]({{<
-relref "core/benchmarks/_index.md" >}}). More is still to come about
-the benchmark scenarios, then we may get figures from tests anyone can
-reproduce, discuss and verify.
+relref "core/benchmarks/_index.md#stress-workloads" >}}). More is
+still to come about the benchmark scenarios, then we may get figures
+from tests anyone can reproduce, discuss and verify.
 
 We are now tracking kernel v5.7-rc6.
 
