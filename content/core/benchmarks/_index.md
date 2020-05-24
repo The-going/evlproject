@@ -833,7 +833,7 @@ of issues we would like to trigger, and what follows does not pretend
 to exhaustiveness. This said, these few aspects have proved to be
 relevant over time when it comes to observing the worst case latency:
 
-- each time the kernel needs to switch between tasks which belong to
+- Each time the kernel needs to switch between tasks which belong to
   distinct user address spaces, some MMU operations have to be
   performed in order to change the active memory context, which might
   also include costly cache maintenance in some cases. Those
@@ -843,7 +843,7 @@ relevant over time when it comes to observing the worst case latency:
   the higher the task switch rate, the more likely such extended
   interrupt masking may delay the response time to an external event.
  
-- how the response time of the real-time infrastructure is affected by
+- How the response time of the real-time infrastructure is affected by
   unfavourable cache situations is important. While no real-time work
   is pending, the real-time infrastructure just sleeps until the next
   event to be processed arrives. In the meantime, GPOS (as in
@@ -863,7 +863,26 @@ relevant over time when it comes to observing the worst case latency:
   GPOS activities from the standpoint of the real-time work, then you
   may get closer to the actual worst case latency figures.
 
-- a real-time application system is unlikely to be only composed of a
+  In this respect, the - apparently - dull
+  [dd(1)](http://man7.org/linux/man-pages/man1/dd.1.html) utility may
+  become your worst nightmare as a real-time developer if you actually
+  plan to assess the worst-case latency with your system. For
+  instance, you may want to run this stupid workload in parallel to
+  your favourite latency benchmark (hint: CPU isolation for the
+  real-time workload won't save the day on most platforms):
+
+  ```
+  $ dd if=/dev/zero of=/dev/null bs=128M &
+  ```
+
+  {{% notice warning %}}
+  Using a block factor of 128M is to make sure the loop will be
+  disturbing the CPU caches enough. Too small a value here would only
+  create a mild load, barely noticeable in the latency figures
+  on many platforms.
+  {{% /notice %}}
+
+- A real-time application system is unlikely to be only composed of a
   single time-critical responder thread. We may have more real-time
   threads involved, likely at a lower priority though. So we need to
   assess the ability of the real-time infrastructure to schedule all
@@ -873,46 +892,109 @@ relevant over time when it comes to observing the worst case latency:
   serialization of these threads within a CPU and between CPUs is
   key.
 
-- since we have to follow a probabilistic approach for determining the
+- Since we have to follow a probabilistic approach for determining the
   worst case latency, we ought to run the test long enough in order to
   increase the likeliness of exercizing the code path(s) which might
   cause the worst jitter. Practically, running the test under load for
   24 hours uninterrupted seems to deliver a worst case value we can
   trust.
 
-#### Defining the stressing toolkit
+#### Defining the stress workloads
 
-In addition to the [latmus]({{< relref
-"core/testing.md##latmus-program" >}}) and
-[latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
-utilities described ealier in this document, the following software
-will be used in the test scenarios:
+Using Linux for running real-time workloads means that we have to meet
+contradictory requirements on a shared hardware, maximum throughtput
+and guaranteed response time at the same time, which on the face of
+it, looks pretty insane, therefore interesting. Whichever real-time
+infrastructure we consider, we have to assess how badly non real-time
+applications might hurt the performances of real-time ones. With this
+information, we can decide which is best for supporting a particular
+real-time application on a particular hardware. To this end, the
+following stress workloads are applied when running benchmarks:
 
-- The [dd(1)](http://man7.org/linux/man-pages/man1/dd.1.html)
-  command. This apparently dull utility may become your worst
-  nightmare as a real-time developer if you actually plan to assess
-  the worst-case latency with your system. e.g. run this stupid
-  workload in parallel to your favourite latency benchmark:
+1. As its name suggests, the _Mark Time_ workload is no workload at
+   all. Under such conditions, the response time of the real-time
+   system to some event (i.e. timer or GPIO interrupt) is measured
+   while the GPOS is doing nothing in particular except waiting for
+   something to do. The purpose is to get a sense of the best case we
+   might achieve with a particular hardware and software
+   configuration, unimpeded by GPOS activities.
 
-```
-$ dd if=/dev/zero of=/dev/null bs=128M &
-```
+2. The _Scary Grinder_ workload combines
+   [hackbench](https://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git)
+   loops to a continuous
+   [dd(1)](http://man7.org/linux/man-pages/man1/dd.1.html) copy from
+   `/dev/zero` to `/dev/null` with a large block size (128Mb). This
+   workload usually causes the worst latency spots on any platform for
+   any type of real-time infrastructure, dual kernel and native
+   preemption (PREEMPT_RT). As it pounds the CPU caches quite badly,
+   it reveals the inertia of the real-time infrastructure when it has
+   to ramp up quickly from an idle state in order to handle an
+   external event. The shell commands to start this work are:
 
-Using a block factor of 128M is to make sure the loop will be
-disturbing the caches enough.
+   ```
+   ~ # while :; do hackbench; done &
+   ~ # dd if=/dev/zero of=/dev/null bs=128M&
+   ```
 
-- The `cyclictest` and `hackbench` programs as available from the
-  [PREEMPT-RT test
-  suite](https://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git). Adding
-  a `hackbench` loop to the `dd` loop mentioned earlier while
-  measuring the response time with [latmus]({{< relref
-  "core/testing.md##latmus-program" >}}) and
-  [cyclictest](https://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git)
-  may give you an illustration of what _tickling the dragon's tail_
-  is all about.
+3. The _Pesky Neighbour_ workload is based on the [stress-ng test
+   suite](https://github.com/ColinIanKing/stress-ng.git). Several
+   "stressors" imposing specific loads on various kernel subsystems
+   are run sequentially. The goal is to assess how sensitive the
+   real-time infrastructure is to the pressure non real-time
+   applications might put on the system by using common kernel
+   interfaces. Given the ability some `stress-ng` stressors have to
+   thrash and break the system, we limit the amount of damage they can
+   do with specific settings, so that the machine stays responsive
+   throughout long-running tests. Those settings depend on the compute
+   power of the test machine. On a Raspberry PI 4B, this workload is
+   started as follows:
 
-- The [stress-ng tests suite](https://github.com/ColinIanKing/stress-ng.git).
+   ```
+   ~ # stress-ng --class cpu-cache --class scheduler \
+       --sched other --taskset 0,2-$(nproc) \
+       --sequential 1 --clone 1 --clone-max 200 --vm 3 --vm-bytes=64M \
+       --exclude vforkmany --oomable
+   ```
 
+   There are a few points to notice:
+
+   - `stress-ng` defines classes of stressors as shorthands one can
+     use to refer to all of them implicitly. We focus on stressors
+     which affect the scheduler and memory subsystems.
+
+   - On a multi-core system, we always reserve CPU1 for running the
+     test code which is monitored for response time, since native
+     preemption requires some CPU(s) to be dedicated to the real-time
+     workload for best results. This implies that **isolcpus=1
+     evl.oobcpus=1** are passed to the kernel as boot options. For
+     `stress-ng`, we also have to restrict the CPUs usable for running
+     the stress load using the `--taskset` option. Assuming CPU1 is
+     the only CPU isolated, this shell expression should produce the
+     correct CPU set for that option: `0,2-$(nproc)`.
+
+   - Some limits should be put on what `stress-ng` is allowed to do,
+     in order to avoid bringing the machine down to a complete stall,
+     or triggering OOM situations which may have unwanted outcomes
+     such as wrecking the test entirely. Of course, those limits
+     depend on the compute power of your test hardware.  With tiny
+     embedded SoCs such as those from the
+     [Raspberry](https://raspberrypi.org) family, you may have to cap
+     the number of worker threads the `clone` stressor can run
+     concurrently, and the number of clones such worker can create in
+     turn. Likewise, the number of worker threads and the amount of
+     virtual memory each of them maps should be kept within bounds for
+     the `vm` stressor.
+
+   - All threads running some stress workload should belong to the
+     [SCHED_OTHER](http://man7.org/linux/man-pages/man7/sched.7.html)
+     scheduling class. They should NOT compete with the real-time
+     threads whose response time is being monitored during the
+     test. Although this would have actually no impact on the
+     real-time performances of a dual kernel system, this would lead
+     to an unfair comparison with a native preemption system such as
+     PREEMPT_RT which is sensitive to this issue by design.
+
+### The benchmarks we do
 
 ![Alt text](/images/wip.png "To be continued")
 
