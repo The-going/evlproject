@@ -5,6 +5,29 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 21.2020
+
+Defining the benchmarking rules on Raspberry 4 and i.MX8 Mini, with
+detailed information about the stress workload which is going to be
+applied to every upcoming benchmark series published [there]({{<
+relref "core/benchmarks/_index.md" >}}). More is still to come about
+the benchmark scenarios, then we may get figures from tests anyone can
+reproduce, discuss and verify.
+
+We are now tracking kernel v5.7-rc6.
+
+### Week 20.2020
+
+Started a side branch with a [refactored commit
+stack](https://git.evlproject.org/linux-evl.git/log/?h=dovetail/squashed)
+for Dovetail, reordering and merging related changes. This branch
+tracks
+[dovetail/master](https://git.evlproject.org/linux-evl.git/log/?h=dovetail/master),
+reorganizing and tidying up its contents. By definition, this branch
+needs to be rebased routinely.
+
+We are now tracking kernel v5.4.40 LTS.
+
 ### Week 19.2020
 
 The EVL [proxy element]({{< relref "core/user-api/proxy/_index.md"
