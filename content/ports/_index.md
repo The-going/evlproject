@@ -141,7 +141,8 @@ Linux {{< param evlTrackingKernel >}}
   </tr>
 </table>
 
-<sup>*</sup> Mainline kernel with SoC-specific bits picked from the vendor tree.
+<sup>*</sup> Mainline kernel with  SoC-specific bits picked from the vendor tree.
+
 
 > ARM SoC
 
