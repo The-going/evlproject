@@ -21,22 +21,23 @@ welcome.
 
 Since the real-time infrastructure has to deliver reliable response
 times to external events - as in _strictly bounded_ - whatever the
-system may be running when they happen, we have to measure the jitter
+system may be running when they happen, we have to measure the latency
 between the ideal delivery date of such event, and the actual moment
-the application starts processing it. With Linux running on the
-hardware, reliable means that an upper bound to such jitter can be
-determined, although we are using a non-formal, probabilistic method
-through countless hours of testing under a significant stress
-load. Although the outcome of such test is not by itself
-representative of the overall capability of a system to support
-real-time applications, such test going wrong would clearly be a
-showstopper. No doubt that every real-time infrastructure out there
-wants to shine on that one. To measure the response time to interrupts
-in different contexts, EVL provides the [latmus]({{< relref
-"core/testing.md#latmus-program" >}}) utility. The following figure
-illustrates the potential delays which may exist between the moment an
-interrupt request is raised by a device, and the time a responder
-thread running in the application space can act upon it:
+the application starts processing it. Then we may assess the jitter as
+the variation in latency. With Linux running on the hardware, reliable
+means that an upper bound to such latency can be determined, although
+we are using a non-formal, probabilistic method through countless
+hours of testing under a significant stress load. Although the outcome
+of such test is not by itself representative of the overall capability
+of a system to support real-time applications, such test going wrong
+would clearly be a showstopper. No doubt that every real-time
+infrastructure out there wants to shine on that one. To measure the
+response time to interrupts in different contexts, EVL provides the
+[latmus]({{< relref "core/testing.md#latmus-program" >}}) utility. The
+following figure illustrates the potential delays which may exist
+between the moment an interrupt request is raised by a device, and the
+time a responder thread running in the application space can act upon
+it:
 
 ![Alt text](/images/irq-response-measurement.png "Response time to IRQ")
 
@@ -168,8 +169,7 @@ response time to timer events is the default test.
 > Measuring response time to timer events
 ```
 # latmus
-warming up on CPU1...
-RTT|  00:00:01  (user, 1000 us period, priority 90, CPU1)
+RTT|  00:00:01  (user, 1000 us period, priority 98, CPU1)
 RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
 RTD|      1.211|      1.325|      2.476|       0|     0|      1.211|      2.476
 RTD|      1.182|      1.302|      3.899|       0|     0|      1.182|      3.899
@@ -186,8 +186,7 @@ RTS|      1.182|      1.316|      3.899|       0|     0|    00:00:08/00:00:08
 
 > Collecting plottable histogram data (timer test)
 ```
-warming up on CPU1...
-RTT|  00:00:01  (user, 1000 us period, priority 90, CPU1)
+RTT|  00:00:01  (user, 1000 us period, priority 98, CPU1)
 RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
 RTD|      1.156|      1.273|      1.786|       0|     0|      1.156|      1.786
 RTD|      1.170|      1.288|      4.188|       0|     0|      1.156|      4.188
@@ -204,7 +203,7 @@ RTD|      1.158|      1.275|      2.974|       0|     0|      1.135|      4.188
 # clocksource: tsc
 # vDSO access: architected
 # context: user
-# thread priority: 90
+# thread priority: 98
 # thread affinity: CPU1
 # C-state restricted
 # duration (hhmmss): 00:01:12
@@ -335,7 +334,7 @@ option]({{< relref "core/testing.md" >}}) may be a good idea.
     - _inband-gpio_ for regular (non-EVL) threads running in
       user-space waiting for GPIO events.
 
-- _\# thread priority: 90_
+- _\# thread priority: 98_
 
   The priority of the responder thread in the out-of-band
 [SCHED_FIFO]({{< relref "core/user-api/scheduling#SCHED_FIFO" >}})
@@ -395,25 +394,27 @@ induce extra latency.
 
 In addition to timer events, you will likely need to get a sense of
 the worst case response time to common device interrupts you may
-expect from EVL, as perceived by an application thread running in
-user-space. This test mode is also available from the [latmus]({{<
-relref "core/testing.md#latmus-program" >}}) program, when paired with
-a [Zephyr-based](https://zephyproject.org) application which monitors
-the response time from a remote system to the GPIO events it
-sends.
+expect from EVL. Since you want the common programming model to be
+available for developing real-time applications, the responder has to
+be a thread running in user space. This test mode is also available
+from the [latmus]({{< relref "core/testing.md#latmus-program" >}})
+program, when paired with a [Zephyr-based](https://zephyrproject.org)
+application which monitors the response time from a remote system to
+the GPIO events it sends.
 
 {{% notice warning %}}
 From the perspective of the monitor system, we will measure the
 time it takes the SUT to not only receive the incoming event, but
 also to respond to it by sending a converse GPIO acknowledge. Therefore
 we expect the worst case figures to be higher than those reported by a
-plain [response to timer test]({{< relref "#measuring-irq-response-time" >}}) .
+plain [timer test]({{< relref "#latmus-timer-response-time" >}}) which
+only gets a timestamp on wake up.
 {{% /notice %}}
 
 For implementing this test, we need:
 
 - a small development board which supports the [Zephyr
-RTOS](https://zephyproject.org), and offers external GPIO pins. This
+RTOS](https://zephyrproject.org), and offers external GPIO pins. This
 GPIO test was originally developed on a
 [FRDM-K64F](https://www.nxp.com/design/development-boards/freedom-development-boards/mcu-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F)
 board, a low-cost development platform from
@@ -486,9 +487,16 @@ illustrates this execution flow:
 
 ![Alt text](/images/gpio-response-test.png "Response time to GPIO events")
 
-#### Quick recipe: monitoring the [Raspberry PI 3](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/) with the [FRDM-K64F](https://www.nxp.com/design/development-boards/freedom-development-boards/mcu-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F)
+#### Quick recipe: monitoring a [Raspberry PI](https://www.raspberrypi.org/products/) board with the [FRDM-K64F](https://www.nxp.com/design/development-boards/freedom-development-boards/mcu-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F)
 
-1. Build and install EVL on the Raspberry 3 as [described in this
+This recipe works with any Raspberry PI board featuring a 40-pin GPIO
+header. It has been successfully used for monitoring the response time
+to GPIO events from models
+[2B](https://www.raspberrypi.org/products/raspberry-pi-2-model-b/),
+[3B](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/) and
+[4B](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/).
+
+1. Build and install EVL on your Raspberry PI as [described in this
 document]({{< relref "core/build-steps.md" >}}).
 
 2. Install the [Zephyr
@@ -516,14 +524,6 @@ $ patch -p1 < ~/libevl/benchmarks/zephyr/frdm_k64f-enable-EVL-latency-monitor.pa
 
    - GPIO25 on the FRDM-K64F (ack signal) should be wired to GPIO24
      on the RPI3 (pulse signal, BCM numbering).
-
-	{{% notice info %}}
-   This GPIO wiring can also be used for testing the [Raspberry PI
-   2](https://www.raspberrypi.org/products/raspberry-pi-2-model-b/) and
-   [Raspberry PI
-   4](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/) the
-   same way, since the GPIO pinout is identical.
-   {{% /notice %}}
 
 4. An [OpenSDA J-Link Onboard Debug
 Probe](https://docs.zephyrproject.org/1.14.0/guides/debugging/probes.html#opensda-daplink-onboard-debug-probe)
@@ -587,7 +587,7 @@ the serial console of the FRDM-K64F:
 
 From that point, the latency monitor running on the FRDM-K64F is ready
 to accept incoming connections from the [latmus application]({{< relref
-"core/testing.md#latmus-program" >}}) running on the Raspberry PI 3 (SUT).
+"core/testing.md#latmus-program" >}}) running on the Raspberry PI (SUT).
 
 #### Native preemption and IRQ threading
 
@@ -597,8 +597,9 @@ kernel may be delayed by [threading the GPIO
 interrupt](https://www.kernel.org/doc/htmldocs/kernel-api/API-request-threaded-irq.html)
 the [latmus application]({{< relref "core/testing.md#latmus-program"
 >}}) monitors, since this behavior is built in the generic GPIOLIB
-driver. The overhead involved in waiting for a context switch to be
-performed to the threaded handler increases the latency under stress
+driver, and forced by PREEMPT_RT for most interrupts anyway. The
+overhead involved in waiting for a context switch to be performed to
+the threaded handler increases the latency under stress
 load. Disabling IRQ threading entirely in a single kernel
 configuration (i.e. without EVL) would be the wrong option though,
 making the latency figures generally really bad. However, you can
@@ -638,14 +639,14 @@ needed. By default, all IRQ threads are normally set to priority 50 in
 the SCHED_FIFO class. Typically, you may want to raise the priority of
 this particular IRQ handler so that it does not have to compete with
 other handlers. For instance, continuing the previous example we would
-raise the priority of the kernel thread handling IRQ52 to 90:
+raise the priority of the kernel thread handling IRQ52 to 99:
 
 {{% notice tip %}}
 You can refine even futher the runtime configuration of a kernel threading
 its interrupts by locking the [SMP
 affinity](https://www.kernel.org/doc/Documentation/IRQ-affinity.txt)
-of the IRQ threads on particular CPUs, in order to either optimize the wake
-up time of processes waiting for such events, or reduce the jitter in
+of the device IRQ threads on particular CPUs, in order to either optimize
+the wake up time of processes waiting for such events, or reduce the jitter in
 processing the real-time workload. Whether you should move
 an IRQ thread to the isolated CPU also running the real-time workload
 in order to favour locality, or keeping them spatially separate in
@@ -656,21 +657,21 @@ is something you may have to determine on a case-by-case basis.
 ```
 ~ # pgrep irq/52
 345
-~ # chrt -f -p 90 345
+~ # chrt -f -p 99 345
 pid 345's current scheduling policy: SCHED_FIFO
 pid 345's current scheduling priority: 50
 pid 345's new scheduling policy: SCHED_FIFO
-pid 345's new scheduling priority: 90
+pid 345's new scheduling priority: 99
 ```
 
 Which can be shortened as:
 
 ```
-~ # chrt -f -p 90 $(pgrep irq/52)
+~ # chrt -f -p 99 $(pgrep irq/52)
 pid 345's current scheduling policy: SCHED_FIFO
 pid 345's current scheduling priority: 50
 pid 345's new scheduling policy: SCHED_FIFO
-pid 345's new scheduling priority: 90
+pid 345's new scheduling priority: 99
 ```
 
 {{% notice warning %}}
@@ -726,12 +727,12 @@ monitor goes back waiting for another connection.
 /*
  * Caution: the following output was produced by running the test only
  * a few seconds on an idle EVL-enabled system: the results displayed do not
- * reflect the worst case latency (which is higher) on this platform.
+ * reflect the worst case latency (which is higher) on this platform when
+ * the test runs long enough under proper stress load.
  */
 # latmus -Z zephyr -I gpiochip0,23 -O gpiochip0,24
-warming up on CPU1...
 connecting to latmon at 192.168.3.60:2306...
-RTT|  00:00:02  (oob-gpio, 1000 us period, priority 90, CPU1)
+RTT|  00:00:02  (oob-gpio, 1000 us period, priority 98, CPU1)
 RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
 RTD|     11.541|     15.627|     18.125|       0|     0|     11.541|     18.125
 RTD|     10.916|     15.617|     30.950|       0|     0|     10.916|     30.950
@@ -747,13 +748,13 @@ RTS|      1.791|     15.606|     30.950|       0|     0|    00:00:05/00:00:05
 /*
  * Caution: the following output was produced by running the test only
  * a few seconds on an idle PREEMPT_RT-enabled system: the results displayed do
- * not reflect the worst case latency (which is higher) on this platform.
+ * not reflect the worst case latency (which is higher) on this platform when
+ * the test runs long enough under proper stress load.
  */
-# latmus -z zephyr -I gpiochip0,23 -O gpiochip0,24 -P 99
-warming up on CPU1...
+# latmus -z zephyr -I gpiochip0,23 -O gpiochip0,24
 connecting to latmon at 192.168.3.60:2306...
 CAUTION: measuring in-band response time (no EVL there)
-RTT|  00:00:02  (inband-gpio, 1000 us period, priority 99, CPU1)
+RTT|  00:00:02  (inband-gpio, 1000 us period, priority 98, CPU1)
 RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
 RTD|     38.075|     52.401|     93.733|       0|     0|     38.075|     93.733
 RTD|     39.700|     53.289|     91.608|       0|     0|     38.075|     93.733
@@ -792,8 +793,15 @@ RTS|     38.075|     54.037|     96.108|       0|     0|    00:00:07/00:00:07
 - enable maximum preemption (`CONFIG_PREEMPT_RT_FULL` if available).
 
 - check that no common thread can compete with the responder thread on
-  the same priority level. Some kernel threads will, but regular
-  threads should not.
+  the same priority level. Some kernel housekeeping threads might, but
+  regular threads should not. For latency measurement, setting the
+  scheduling parameters of the responder thread to [SCHED_FIFO, 98] is
+  recommended. Setting the responder to priority 99 would work for
+  this purpose as well (with no observable gain actually), however it
+  is not recommended to allow real-world application threads to
+  compete with threaded IRQ handlers and other critical housekeeping
+  tasks running in kernel space, since the latter might assume that no
+  user code may preempt in tricky corner cases.
  
 - switch to a non-serial terminal (ssh, telnet). Although this problem
   is being worked on upstream, significant output to a serial device
@@ -923,8 +931,8 @@ relevant over time when it comes to observing the worst case latency:
 - Since we have to follow a probabilistic approach for determining the
   worst case latency, we ought to run the test long enough in order to
   increase the likeliness of exercizing the code path(s) which might
-  cause the worst jitter. Practically, running the test under load for
-  24 hours uninterrupted seems to deliver a worst case value we can
+  cause the worst latency. Practically, running the test under load
+  for 24 hours uninterrupted may deliver a worst case value we can
   trust.
 
 #### Defining the stress workloads {#stress-workloads}
@@ -952,7 +960,7 @@ information, we can decide which is best for supporting a particular
 real-time application on a particular hardware. To this end, the
 following stress workloads are applied when running benchmarks:
 
-1. As its name suggests, the _Mark Time_ workload is no workload at
+1. As its name suggests, the _Idler_ workload is no workload at
    all. Under such conditions, the response time of the real-time
    system to some event (i.e. timer or GPIO interrupt) is measured
    while the GPOS is doing nothing in particular except waiting for
