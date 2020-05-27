@@ -84,7 +84,7 @@ Linux {{< param evlTrackingKernel >}}
     <td>v5.1-rc3</td>
   </tr>
   <tr>
-    <td><a href="https://developer.qualcomm.com/hardware/dragonboard-410c" target="_blank">Qualcomm DragonBoard 410c</a></td>
+    <td><a href="https://developer.qualcomm.com/hardware/dragonboard-410c" target="_blank">Qualcomm Snapdragon 410E (DragonBoard 410c)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
