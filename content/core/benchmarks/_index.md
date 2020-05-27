@@ -973,8 +973,8 @@ following stress workloads are applied when running benchmarks:
    loops to a continuous
    [dd(1)](http://man7.org/linux/man-pages/man1/dd.1.html) copy from
    `/dev/zero` to `/dev/null` with a large block size (128Mb). This
-   workload usually causes the worst latency spots on a platform for
-   any type of real-time infrastructure, dual kernel and native
+   workload most often causes the worst latency spots on a platform
+   for any type of real-time infrastructure, dual kernel and native
    preemption (PREEMPT_RT). As it pounds the CPU caches quite badly,
    it reveals the inertia of the real-time infrastructure when it has
    to ramp up quickly from an idle state in order to handle an
