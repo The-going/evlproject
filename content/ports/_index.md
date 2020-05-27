@@ -201,7 +201,15 @@ Linux {{< param evlTrackingKernel >}}
     <td>v5.2-rc7</td>
   </tr>
   <tr>
-    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">Broadcom BCM2636 (Raspberry PI 2 Model B)</a></td>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-zero/" target="_blank">Broadcom BCM2835 (Raspberry PI Zero)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.7-rc6</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">Broadcom BCM2836 (Raspberry PI 2 Model B)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
