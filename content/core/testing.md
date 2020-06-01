@@ -116,7 +116,14 @@ RTD|           1|        1311|        5926
 
 ## latmus: the litmus test for latency {#latmus-program}
 
-- With the sole `-m` option or without any argument, the
+{{% notice tip %}}
+If you plan for measuring the worst case latency on your target
+system, you should run the [evl check]({{< relref
+"core/commands.md#evl-check-command" >}}) command on such system in
+order to detect any obvious misconfiguration of the kernel early on.
+{{% /notice %}}
+
+With the sole `-m` option or without any argument, the
 [latmus](https://git.evlproject.org/libevl.git/tree/benchmarks/latmus.c)
 application runs a 1Khz sampling loop, collecting the min, max and
 average latency values obtained for an EVL thread running in
@@ -126,15 +133,15 @@ basic latency benchmark which does not require any additional
 interrupt source beyond the on-chip hardware timer readily available
 to the kernel.
 
-- In addition, you can use this application to measure the response time
+In addition, you can use this application to measure the response time
 of a thread running in user-space to external interrupts, specifically
 to [GPIO events]({{< relref
 "core/benchmarks/_index.md#latmus-timer-response-time" >}}). This
 second call form is selected by the `-Z` and `-z` option switches.
 
-- Finally, passing `-t` starts a [calibration of the EVL core
-timer]({{< relref "core/runtime-settings.md" >}}), finding the best
-configuration values.
+Finally, passing `-t` starts a [calibration of the EVL core timer]({{<
+relref "core/runtime-settings.md" >}}), finding the best configuration
+values.
 
 {{% notice tip %}}
 Unless you only plan to measure [in-band response time to GPIO
@@ -169,6 +176,18 @@ a kernel-based EVL thread.
 Collect latency figures or tune the EVL core timer from the context of
 an EVL thread running in user-space. This is the default mode, in
 absence of `-i` and `-k`.
+{{% /argument %}}
+
+{{% argument "-s --sirq" %}}
+Measure the delay between the moment a [synthetic interrupt]({{<
+relref "dovetail/pipeline/synthetic.md" >}}) is posted from the
+out-of-band stage and when it is eventually received by its in-band
+handler. When measured under significant workload pressure, this gives
+the worst case interrupt latency experienced by the **in-band kernel** due
+to local interrupt disabling (i.e. _stalling_ the in-band pipeline
+stage). Therefore, this has nothing to do with the much shorter and
+bounded interrupt latency observed from the out-of-band stage by EVL
+applications.
 {{% /argument %}}
 
 {{% argument "-r --reset" %}}

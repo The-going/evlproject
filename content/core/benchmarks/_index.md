@@ -452,10 +452,10 @@ during the setup phase via the TCP/IP connection they share.
   system under test.
 
 - a network connection between both systems so that [latmus]({{<
-relref "core/testing.md#latmus-program" >}}) can establish a TCP/IP
-stream with the remote
-[latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
-application.
+  relref "core/testing.md#latmus-program" >}}) can establish a TCP/IP
+  stream with the remote
+  [latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
+  application.
 
 - a DHCP server reachable from the Zephyr board running on your
   LAN. The latency monitor asks for its IPv4 address by issuing a DHCP
@@ -589,7 +589,7 @@ From that point, the latency monitor running on the FRDM-K64F is ready
 to accept incoming connections from the [latmus application]({{< relref
 "core/testing.md#latmus-program" >}}) running on the Raspberry PI (SUT).
 
-#### Native preemption and IRQ threading
+#### Native preemption and IRQ threading {#irq-threading}
 
 The GPIO response time of the standard or
 [PREEMPT_RT](https://wiki.linuxfoundation.org/realtime/rtl/blog)
@@ -743,6 +743,7 @@ RTD|     13.958|     15.647|     26.075|       0|     0|      1.791|     30.950
 ---|-----------|-----------|-----------|--------|------|-------------------------
 RTS|      1.791|     15.606|     30.950|       0|     0|    00:00:05/00:00:05
 ```
+
 > Measuring in-band response time to GPIO events (on the SUT)
 ```
 /*
@@ -792,6 +793,12 @@ RTS|     38.075|     54.037|     96.108|       0|     0|    00:00:07/00:00:07
 
 - enable maximum preemption (`CONFIG_PREEMPT_RT_FULL` if available).
 
+- The [GPIO response test]({{< relref "#latmus-gpio-response-time"
+>}}) over PREEMPT_RT involves a threaded interrupt handler for
+processing GPIO events. This interrupt thread must have higher
+scheduling priority than other interrupt threads. See this
+[illustration]({{< relref "#irq-threading" >}}) for more.
+
 - check that no common thread can compete with the responder thread on
   the same priority level. Some kernel housekeeping threads might, but
   regular threads should not. For latency measurement, setting the
@@ -819,6 +826,15 @@ RTS|     38.075|     54.037|     96.108|       0|     0|    00:00:07/00:00:07
   "core/build-steps.md#core-kconfig" >}}) section. The cost of leaving
   the watchdog enabled should be marginal on the latency figures
   though.
+
+- if you plan to measure the [response time to GPIO interrupts]({{<
+  relref "#latmus-gpio-response-time" >}}), you will need
+  `CONFIG_GPIOLIB` and `CONFIG_GPIOLIB_OOB` to be enabled in the
+  [kernel configuration]({{< relref "core/build-steps#core-kconfig"
+  >}}). You will also need to enable the GPIO pin control driver for
+  your hardware platform, which must be GPIOLIB-compliant (most are
+  these days), and [out-of-band capable]({{< relref
+  "core/oob-drivers/_index.md#oob-driver-list" >}}).
 
 ### The issue of proper stress load {#stress-load}
 
@@ -1002,7 +1018,7 @@ following stress workloads are applied when running benchmarks:
    generally focus on stressors which affect the scheduler and the
    memory subsystem.
 
-### Basic set up rules for all benchmarks
+### Common set up rules for all benchmarks
 
 - The kernel configuration is double-checked for features which may
   have an [adverse impact]({{< relref "core/caveat.md" >}}) on the
@@ -1021,14 +1037,6 @@ following stress workloads are applied when running benchmarks:
   `--taskset` option. Assuming CPU1 is the only isolated CPU running a
   test, this shell expression should produce the correct CPU set for
   that option: `0,2-$(nproc)`.
-
-- Specifically for testing a native preemption kernel, if a particular
-  test involves responding to a device interrupt such as the [GPIO
-  response test]({{< relref "#latmus-gpio-response-time" >}}) served
-  by a threaded handler, we make sure to raise the task priority of
-  such handler above all others. This rule does not apply to a dual
-  kernel infrastructure like EVL, which always processes IRQ events
-  immediately from the interrupt context.
 
 - Some limits should be put on what the [stress workload]({{< relref
   "#stress-workloads" >}}) is allowed to do, in order to avoid
@@ -1049,6 +1057,24 @@ following stress workloads are applied when running benchmarks:
   by excluding all stressors implicitly involving the `SCHED_FIFO` or
   `SCHED_RR` policies, setting the `--sched` parameter to `other` for
   good measure.
+
+### PREEMPT_RT specific tweaks for benchmarking
+
+- With native preemption, if a particular test involves responding to
+  a device interrupt such as the [GPIO response test]({{< relref
+  "#latmus-gpio-response-time" >}}) served by a threaded handler, we
+  make sure to raise the task priority of such handler above all
+  others. This rule does not apply to a dual kernel infrastructure
+  like EVL, which always processes IRQ events immediately from the
+  interrupt context.
+
+- on x86, PREEMPT_RT v5.6.10-rt5 may trigger a BUG() assertion then
+  crash as a result of `stress-ng` injecting a memory error via the
+  [madvise(2)](https://www.man7.org/linux/man-pages/man2/madvise.2.html)
+  interface if `CONFIG_MEMORY_FAILURE` is enabled in the kernel
+  configuration. This is typically something the _Pesky_ workload we
+  apply while monitoring latency would do, so you need to disable
+  `CONFIG_MEMORY_FAILURE` to prevent this.
 
 ### The benchmark scenarios
 

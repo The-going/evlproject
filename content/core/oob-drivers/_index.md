@@ -255,19 +255,21 @@ infrastructure is ready:
   </tr>
   <tr>
     <td>GPIO <sup>*</sup></td>
-    <td>bcm2835-gpio</td> 
+    <td>gpio-bcm2835</td> 
+    <td>gpio-mxc</td> 
   </tr>
 </table>
 </div>
 
-<sup>*</sup> In theory, any GPIO controller based on the generic
+<sup>*</sup> In theory, any GPIO pin controller based on the generic
 GPIOLIB services should be real-time ready since the latter implements
-the out-of-band interface for all of them. In practice, each
-controller we may want to use in such context should still be audited
-though, in order to make sure that no in-band service is called under
-the hood in its `->get()` and `->set()` pin state handlers. Only the
-controllers which have been audited and tested are listed in the
-table.
+the out-of-band interface for all of them, at the exception of
+controllers which can sleep from their `->get()` and `->set()` pin
+state handlers. In practice, each controller we may want to use in
+such context should still be audited though, in order to make sure
+that no in-band service (e.g. common non-raw spinlocks) is called
+under the hood by these handlers. Only the controllers which are known
+to work in out-of-band mode are listed in the table.
 
 ---
 
