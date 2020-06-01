@@ -13,10 +13,10 @@ disableInlineCopyToClipBoard = true
 disableBreadcrumb = false
 themeVariant = "evl"
 disableShortcutsTitle = true
-evlTrackingKernel = "v5.7-rc7"
+evlTrackingKernel = "v5.7"
 evlLTSBranch = "evl/v5.4"
 evlLTSLatest = "v5.4.40-evl2"
-evlLibLatest = "r20"
+evlLibLatest = "r21"
 
 [markup]
   [markup.goldmark]

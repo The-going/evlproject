@@ -30,6 +30,11 @@ title: ABI revisions
     <th>libevl release</th>
   </tr>
   <tr>
+    <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=a8aa18f663feaabde73285bad3b000e02e0c2332" target="_blank">25</a></td>
+    <td>Add latmus request for measuring in-band response time to synthetic interrupt latency.
+    <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r21" target="_blank">r21</a></td>
+  </tr>
+  <tr>
     <td><a href="https://git.evlproject.org/linux-evl.git/commit/?id=d9aed312cc9858ddf7b1b4b976c84e6778839274" target="_blank">24</a></td>
     <td>Add proxy read side.
     <td><a href="https://git.evlproject.org/libevl.git/tag/?h=r19" target="_blank">r19</a></td>
