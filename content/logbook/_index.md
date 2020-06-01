@@ -5,6 +5,20 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 22.2020
+
+A week mainly spent at looking for options for implementing a simple
+low-latency network stack for EVL (support for raw packet interface
+and UDP basically), which would be friendly to real-time audio
+networking systems particularly on low-end hardware, reusing the NIC
+drivers of the mainline kernel. It looks like there may be a way.
+
+Also, dovetail/master was reset to dovetail/squashed, and this will
+repeat at each major kernel release so as to maintain the smallest
+possible patchset for Dovetail over time.
+
+We are now tracking kernel v5.7. libevl r21 is out too.
+
 ### Week 21.2020
 
 Defining the benchmarking rules on Raspberry 4 and i.MX8 Mini, with
