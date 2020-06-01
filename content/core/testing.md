@@ -119,7 +119,7 @@ RTD|           1|        1311|        5926
 {{% notice tip %}}
 If you plan for measuring the worst case latency on your target
 system, you should run the [evl check]({{< relref
-"core/commands.md#evl-check-command" >}}) command on such system in
+"core/commands#evl-check-command" >}}) command on such system in
 order to detect any obvious misconfiguration of the kernel early on.
 {{% /notice %}}
 

@@ -346,7 +346,7 @@ in-band following this sequence of actions:
    the standpoint of the main kernel scheduler, since it is sleeping
    in `TASK_INTERRUPTIBLE` state there. Typically, the
    [_irq\_work_]({{% relref
-   "dovetail/pipeline/pipeline_inject.md#irq-work" %}}) mechanism can
+   "dovetail/pipeline/pipeline_inject#irq-work" %}}) mechanism can
    be used for this, because:
 
    * as extended by the interrupt pipeline support, this interface can

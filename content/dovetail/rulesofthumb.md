@@ -25,10 +25,10 @@ the in-band code which accesses the same data. This is required to
 prevent dirty reads and dirty writes:
 
 - one the same CPU, by [disabling interrupts in the CPU]({{% relref
-  "dovetail/pipeline/interrupt_protection.md#hard-irq-protection" %}}).
+  "dovetail/pipeline/interrupt_protection#hard-irq-protection" %}}).
 
 - from different CPUs, by using [hard or mutable spinlocks]({{% relref
-  "dovetail/pipeline/locking.md#new-spinlocks" %}}).
+  "dovetail/pipeline/locking#new-spinlocks" %}}).
 
 ## Check that the pipeline torture tests pass
 
@@ -106,7 +106,7 @@ early enough to preserve your mental health.
 ## Careful with disabling interrupts in the CPU
 
 When pipelining is enabled, use [hard interrupt protection]({{% relref
-"dovetail/pipeline/interrupt_protection.md#hard-irq-protection" %}}) with
+"dovetail/pipeline/interrupt_protection#hard-irq-protection" %}}) with
 caution, especially from in-band code. Not only this might send
 latency figures over the top, but this might even cause random lockups
 would a rescheduling happen while interrupts are hard disabled.

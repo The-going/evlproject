@@ -15,7 +15,7 @@ controlled by the core to have access to the POSIX-defined
 `CLOCK_MONOTONIC` and `CLOCK_REALTIME` clocks from the out-of-band
 context, using a vDSO call, with no execution and response time
 penalty involved in invoking an [in-band syscall] ({{< relref
-"dovetail/altsched.md#inband-switch" >}}).
+"dovetail/altsched#inband-switch" >}}).
 
 ### Reading timestamps via the vDSO in a nutshell {#time-vdso-access}
 
@@ -50,9 +50,9 @@ timekeeping by the kernel from a non-privileged environement:
 For several CPU architectures Linux supports, reading the
 CLOCK_MONOTONIC and CLOCK_REALTIME clocks is already possible via vDSO
 calls, including from tasks [running out-of-band]({{< relref
-"dovetail/altsched.md#altsched-theory" >}}) without incurring
+"dovetail/altsched#altsched-theory" >}}) without incurring
 any [execution stage switch]({{< relref
-"dovetail/altsched.md#stage-migration" >}}).
+"dovetail/altsched#stage-migration" >}}).
 
 For ARM, the situation is clumsy: the mainline kernel implementation
 supports reading timestamps directly from the vDSO **only** for the
@@ -312,14 +312,14 @@ can read them directly from the vDSO might not be an option, typically
 because reading them would require supervisor privileges in the CPU,
 which the vDSO context excludes by definition.  For these almost desperate
 situations, there is still the option for your companion core to
-[intercept system calls]({{< relref "dovetail/altsched.md#syscall-events" >}}) to
+[intercept system calls]({{< relref "dovetail/altsched#syscall-events" >}}) to
 [clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
 from the out-of-band handler, handling them directly from that spot.
 This would be slower compared to a direct readout from the
 vDSO, but the core would manage to get timestamps for `CLOCK_MONOTONIC`
 and `CLOCK_REALTIME` clocks at least without involving the in-band stage.
 EVL solves a limitation with clock sources on [legacy x86
-hardware]({{< relref "core/caveat.md#x86-caveat" >}}) this way.
+hardware]({{< relref "core/caveat#x86-caveat" >}}) this way.
 {{% /notice %}}
 
 ---

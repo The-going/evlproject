@@ -28,7 +28,7 @@ tenths of microseconds.
 When `CONFIG_DEBUG_HARD_LOCKS` is enabled, the lock dependency engine
 (`CONFIG_LOCKDEP`) which helps in tracking down deadlocks and other
 locking-related issues is also enabled for Dovetail's [hard
-locks]({{% relref "dovetail/pipeline/locking.md#new-spinlocks" %}}),
+locks]({{% relref "dovetail/pipeline/locking#new-spinlocks" %}}),
 which underpins most of the serialization mechanisms the EVL core
 uses.
 
@@ -110,7 +110,7 @@ options, starting with `CONFIG_SMP`.
 
 	This is a problem because the TSC is the best-rated
 clocksource and [directly accessible from the vDSO]({{< relref
-"dovetail/porting/clocksource.md#time-vdso-access" >}}), which speeds
+"dovetail/porting/clocksource#time-vdso-access" >}}), which speeds
 up timestamping operations. If the TSC on your hardware is known to be
 fine and face this issue nevertheless, you may want to pass
 `tsc=nowatchdog` to the kernel to prevent it, or even `tsc=reliable`
@@ -126,7 +126,7 @@ the EVL core would nevertheless manage to get timestamps from its
 an out-of-band system call, without involving the in-band stage
 though. You definitely want to make sure everything is right on your
 platform with respect to reading timestamps by running the
-[latmus]({{< relref "core/testing.md#latmus-program" >}}) test, which
+[latmus]({{< relref "core/testing#latmus-program" >}}) test, which
 can detect any related issue.
 
   	You can retrieve the current clocksource used by the kernel as follows:

@@ -251,7 +251,7 @@ each displayed thread:
     threads running on different CPUs were to synchronize on an [EVL
     event]({{< relref "core/user-api/event" >}}). Waking up a remote
     thread entails sending an [inter-processor interrupt]({{< relref
-    "dovetail/pipeline/pipeline_inject.md#oob-ipi" >}}) to the CPU
+    "dovetail/pipeline/pipeline_inject#oob-ipi" >}}) to the CPU
     that thread sleeps on for kicking the rescheduling procedure,
     which entails more overhead than a local wakeup. If this counter
     increases like crazy when your application runs, you might want to
@@ -364,7 +364,7 @@ in a way which is EVL-aware.
 
 In order to use this tracer, make sure to enable the following
 features in your [kernel build]({{< relref
-"core/build-steps.md#building-evl-core" >}}):
+"core/build-steps#building-evl-core" >}}):
 
 - CONFIG_TRACER_SNAPSHOT
 - CONFIG_TRACER_SNAPSHOT_PER_CPU_SWAP
@@ -419,7 +419,7 @@ $ evl trace -ef
 ### Running the test suite (test) {#evl-test-command}
 
 This command is a short-hand for running the [EVL test suite]({{<
-relref "core/testing.md#evl-unit-testing" >}}). The usage is as
+relref "core/testing#evl-unit-testing" >}}). The usage is as
 follows:
 
 ```

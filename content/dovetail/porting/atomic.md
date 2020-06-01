@@ -26,7 +26,7 @@ accessed from both stages.  A common way to revert such virtualization
 involves substituting calls to the - virtualized - `local_irq_save()`,
 `local_irq_restore()` API with their hard, [non-virtualized
 counterparts]({{% relref
-"dovetail/pipeline/interrupt_protection.md#hard-irq-protection"
+"dovetail/pipeline/interrupt_protection#hard-irq-protection"
 %}}).
 
 > Restoring strict serialization for operations on generic atomic counters

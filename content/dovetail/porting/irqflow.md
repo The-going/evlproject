@@ -119,7 +119,7 @@ A couple of notes reading this code:
 
 - How IPIs differentiate from other IRQs, which handler should be
   called for them is an [arch-specific implementation]({{< relref
-  "dovetail/porting/arch.md#dealing-with-ipis" >}}) you
+  "dovetail/porting/arch#dealing-with-ipis" >}}) you
   should provide in porting Dovetail. In the code example above, the
   IPI handling routine is named `__handle_IPI()`.
 
@@ -301,7 +301,7 @@ _genirq_ layer ensures a single CPU at most handles a given IRQ
 event by holding the per-descriptor `irq_desc::lock` spinlock across
 calls to those `irqchip` handlers, and such lock is automatically
 turned into a [mutable spinlock]({{%relref
-"dovetail/pipeline/locking.md#new-spinlocks" %}}) when
+"dovetail/pipeline/locking#new-spinlocks" %}}) when
 pipelining interrupts. In other words, those handlers are properly
 serialized, running with interrupts disabled in the CPU as their
 non-pipelined implementation expects it.
@@ -321,7 +321,7 @@ drivers for serializing access to a common interrupt controller
 hardware for _distinct_ IRQs being handled by multiple CPUs
 concurrently. Adapting such spinlocked sections found in `irqchip`
 drivers to support interrupt pipelining may involve [converting the
-related spinlocks]({{%relref "dovetail/rulesofthumb.md#spinlock-rule"
+related spinlocks]({{%relref "dovetail/rulesofthumb#spinlock-rule"
 %}}) to hard spinlocks.
 
 Other section of code which were originally serialized by common

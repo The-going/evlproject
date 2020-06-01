@@ -80,7 +80,7 @@ for this interrupt.
 
 `irq_inject_pipeline()` fully emulates the receipt of a hardware
 event, which means that the common [interrupt pipelining logic]({{<
-relref "dovetail/porting/irqflow.md#genirq-flow" >}}) applies
+relref "dovetail/porting/irqflow#genirq-flow" >}}) applies
 to the new event:
 
 - first, any [out-of-band handler]({{< relref

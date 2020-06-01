@@ -27,7 +27,7 @@ For instance, the following contexts qualify:
 - `clockevents_handle_event()`, which should either be called from the
   oob stage - therefore `STAGE_MASK` is set - when the [proxy tick
   device is active] ({{% relref
-  "dovetail/porting/timer.md#proxy-tick-logic" %}}) on the CPU,
+  "dovetail/porting/timer#proxy-tick-logic" %}}) on the CPU,
   and/or from the in-band stage playing a timer interrupt event from the
   corresponding device.
 
@@ -121,14 +121,14 @@ spots for bugs:
   "dovetail/porting/timer.md" %}}) for interposing on the
   timer. Being wrong here means performing actions which are not legit
   from [such a context]({{% relref
-  "dovetail/rulesofthumb.md#safe-inband-code" %}}).
+  "dovetail/rulesofthumb#safe-inband-code" %}}).
 
 - the _irqchip_ driver managing the interrupt event for the timer tick
   is wrong somehow, causing such interrupt to stay masked or stuck for
   some reason whenever it is switched to [out-of-band mode]({{% relref
   "dovetail/pipeline/irq_handling.md" %}}). You need to
   double-check the implementation of the [chip handlers]({{% relref
-  "dovetail/porting/irqflow.md#irqchip-fixups" %}}),
+  "dovetail/porting/irqflow#irqchip-fixups" %}}),
   considering the effects and requirements of interrupt pipelining.
 
 - power management (CONFIG_CPUIDLE) gets in the way, often due to the
