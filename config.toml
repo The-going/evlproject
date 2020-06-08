@@ -15,7 +15,7 @@ themeVariant = "evl"
 disableShortcutsTitle = true
 evlTrackingKernel = "v5.7"
 evlLTSBranch = "evl/v5.4"
-evlLTSLatest = "v5.4.40-evl2"
+evlLTSLatest = "v5.4.45-evl1"
 evlLibLatest = "r21"
 
 [markup]
