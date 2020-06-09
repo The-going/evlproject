@@ -97,7 +97,7 @@ the virtual state enabled, since the latter is a pre-requisite for
 running such code.
 {{% /notice %}}
 
-## Losing the timer tick
+### Losing the timer tick
 
 The symptom of a common issue in a Dovetail port is losing the timer
 interrupt when the autonomous core takes control over the [tick
@@ -190,6 +190,14 @@ static inline notrace void arch_local_irq_restore(unsigned long flags)
 }
 
 ```
+
+### RCU and out-of-band context
+
+The out-of-band context is semantically equivalent to the NMI context,
+therefore the current CPU cannot be in an extended quiescent state
+RCU-wise if running oob. CAUTION: the converse assertion is **NOT**
+true (i.e. a CPU running code on the in-band stage may be idle
+RCU-wise).
 
 ## ARM
 
