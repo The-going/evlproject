@@ -246,17 +246,15 @@ Starting from [EVL ABI]({{< relref "core/under-the-hood/abi.md" >}})
 20 in the v5.6 series, the EVL core generally allows 32-bit
 applications to issue system calls to a 64-bit kernel when both the 32
 and 64-bit CPU architectures are supported, such as ARM (aka Aarch32)
-code running over an arm64 (Aarch64) kernel. In the latter case, you
-have to enable support for the 32-bit [vDSO]({{< relref
-"dovetail/porting/clocksource.md" >}}) segment by enabling
-`CONFIG_COMPAT_VDSO` in the kernel configuration in addition to
-`CONFIG_COMPAT`. Next, you have to mention the 32-bit ARM toolchain
-which should be used to compile it by setting the
-`CROSS_COMPILE_COMPAT` environment variable the kernel build system
-expects, as illustrated below:
+code running over an arm64 (Aarch64) kernel. For arm64, you need to
+turn on `CONFIG_COMPAT` and `CONFIG_COMPAT_VDSO` in the kernel
+configuration. To be allowed to change the latter, the
+`CROSS_COMPILE_COMPAT` environment variable should be set to the
+prefix of the 32-bit ARMv7 toolchain which should be used to compile
+the vDSO (yes, this is quite convoluted). For instance:
 
 ```
-$ make <your-make-args> ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf-
+$ make <your-make-args> ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- (x|g|menu)config
 ```
 
 {{% notice tip %}}
