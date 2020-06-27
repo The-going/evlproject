@@ -5,6 +5,18 @@ weight: 30
 pre: "&#8226; "
 ---
 
+### Week 26.2020
+
+Porting EVL to kernel v5.8-rc1 has started. A massive code churn took
+place upstream for this one, particularly on the x86 side of the
+universe (as often), but not enough to be a real issue for
+Dovetail. The EVL core barely noticed the switch from v5.7.
+
+### Week 24-25.2020
+
+The groundwork for implementing a (very simple) network stack
+available to EVL apps was laid.
+
 ### Week 22.2020
 
 A week mainly spent at looking for options for implementing a simple
