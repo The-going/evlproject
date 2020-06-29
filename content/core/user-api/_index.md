@@ -184,8 +184,8 @@ proper file descriptor.
 
 Element device files are organized in directories, one for each
 [element class]({{< relref "core/_index.md#evl-core-elements" >}}):
-clock, monitor, proxy, thread and cross-buffer; general command
-devices appear at the top level, such as _control_, _poll_ and
+clock, monitor, proxy, thread, cross-buffer and observable; general
+command devices appear at the top level, such as _control_, _poll_ and
 _trace_:
 
 ```
