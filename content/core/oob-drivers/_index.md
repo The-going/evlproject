@@ -255,7 +255,6 @@ infrastructure is ready:
   </tr>
   <tr>
     <td>GPIO <sup>*</sup></td>
-    <td>gpio-bcm2835</td> 
     <td>gpio-mxc</td> 
   </tr>
 </table>
@@ -269,7 +268,8 @@ state handlers. In practice, each controller we may want to use in
 such context should still be audited though, in order to make sure
 that no in-band service (e.g. common non-raw spinlocks) is called
 under the hood by these handlers. Only the controllers which are known
-to work in out-of-band mode are listed in the table.
+to work in out-of-band mode _at the time of this writing_ are listed
+in the table.
 
 ---
 
