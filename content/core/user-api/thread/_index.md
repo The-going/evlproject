@@ -381,7 +381,7 @@ static void get_caller_info(void)
 	struct evl_thread_state statebuf;
 	int efd, ret;
 
-	/* Fetch the current thread's _fd_. */
+	/* Fetch the current thread's fd. */
 	efd = evl_get_self();
 	...
 	/* Retrieve the caller's state information. */
