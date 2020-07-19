@@ -723,7 +723,7 @@ architecture-dependent. Some architectures may use the
 most-significant bit in a syscall number as a differentiator
 (i.e. regular if cleared, foreign if set), others may use a different
 system call prefix to distinguish from the valid in-band call prefix.
-See how `__EVL_SYSCALL_BIT` and `__ARM_NR_dovetail` are used for this
+See how `__EVL_SYSCALL_BIT` is used for this
 purpose in the [libevl]({{< relref "core/user-api/_index.md" >}})
 implementation for arm64/x86 and ARM respectively.
 
