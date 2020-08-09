@@ -360,7 +360,14 @@ CPU   PID   TIMEOUT      %CPU   CPUTIME     NAME
 The **trace** command provides a simple front-end for controlling the
 function tracer which is part of the [FTRACE kernel
 framework](https://www.kernel.org/doc/Documentation/trace/ftrace.txt),
-in a way which is EVL-aware.
+in a way which is Dovetail-aware.
+
+{{% notice info %}}
+For the reason above, there is no Dovetail (or EVL-specific)
+tracer. Latency can be traced using the regular _function_ tracer,
+which reports additional information about the current execution stage
+and interrupt state.
+{{% /notice %}}
 
 In order to use this tracer, make sure to enable the following
 features in your [kernel build]({{< relref
@@ -414,6 +421,31 @@ routines:
 
 ```
 $ evl trace -ef
+```
+
+#### Interpreting the Dovetail-specific trace information
+
+The Dovetail-specific information is about:
+
+- whether the in-band stage is stalled and/or irqs are disabled in the
+  CPU. 'd' appears in the entry state flags if the in-band stage is
+  stalled while hard irqs are enabled in the CPU, 'D' denotes an
+  unstalled in-band stage with hard irqs off in the CPU, and '*'
+  denotes a combined stalled in-band stage and hard irqs off in the
+  CPU.
+
+- whether we are running on the out-of-band stage, if '~' appears in
+  in the entry flags.
+
+For instance:
+
+```
+/* hard irqs off, running in-band */
+<...>-4164  [003] D...   122.047972: do_syscall_64 <-entry_SYSCALL_64_after_hwframe
+/* in-band stalled and hard irqs off, running out-of-band */
+<...>-4164  [003] *.~.   122.048021: __evl_schedule <-run_oob_call
+/* in-band stalled, hard irqs on, running in-band */
+<...>-4164  [003] d...   122.048082: rcu_lockdep_current_cpu_online <-rcu_read_lock_sched_held
 ```
 
 ### Running the test suite (test) {#evl-test-command}
