@@ -360,13 +360,16 @@ CPU   PID   TIMEOUT      %CPU   CPUTIME     NAME
 The **trace** command provides a simple front-end for controlling the
 function tracer which is part of the [FTRACE kernel
 framework](https://www.kernel.org/doc/Documentation/trace/ftrace.txt),
-in a way which is Dovetail-aware.
+in a way which is Dovetail-aware. We typically use this tracer to
+analyze high latency spots during the course of the [latmus]({{<
+relref "core/testing.md#latmus-program" >}}) program execution.
 
 {{% notice info %}}
-For the reason above, there is no Dovetail (or EVL-specific)
-tracer. Latency can be traced using the regular _function_ tracer,
-which reports additional information about the current execution stage
-and interrupt state.
+There is no Dovetail (or EVL-specific) tracer. Latency spots can be analyzed using
+the common kernel _function_ tracer, which reports additional information about
+the current execution stage and interrupt state. Trace snapshots are automatically taken
+at appropriate times by the [latmus]({{< relref "core/testing.md#latmus-program" >}})
+utility in order to help in such analysis.
 {{% /notice %}}
 
 In order to use this tracer, make sure to enable the following
@@ -437,6 +440,12 @@ The Dovetail-specific information is about:
 - whether we are running on the out-of-band stage, if '~' appears in
   in the entry flags.
 
+{{% notice tip %}}
+You may want to read [this document]({{< relref
+"dovetail/pipeline/_index.md#two-stage-pipeline" >}}) for details on
+the notion of interrupt stage Dovetail implements.
+{{% /notice %}}
+
 For instance:
 
 ```
@@ -448,6 +457,69 @@ For instance:
 <...>-4164  [003] d...   122.048082: rcu_lockdep_current_cpu_online <-rcu_read_lock_sched_held
 ```
 
+In addition to this basic information, [latmus]({{< relref
+"core/testing.md#latmus-program" >}}) emits a special tracepoint named
+_evl\_latspot_ in the trace event log before taking a trace snapshot,
+each time the observed maximum latency increases. The frozen trace is
+visible in the corresponding per-CPU snapshot buffer. From that point,
+you may be able to backtrack to the source(s) of the extra latency. A
+typical debug session would look like this:
+
+```
+~ # evl trace -ef
+tracing enabled
+
+~ # latmus
+warming up on CPU1...
+RTT|  00:00:01  (user, 1000 us period, priority 98, CPU1)
+RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
+RTD|     26.675|     26.951|     27.826|       0|     0|     26.675|     27.826
+RTD|     26.712|     27.067|     31.204|       0|     0|     26.675|     31.204
+RTD|     26.653|     26.961|     29.160|       0|     0|     26.653|     31.204
+RTD|     26.678|     27.067|     29.285|       0|     0|     26.653|     31.204
+RTD|     26.759|     27.051|     29.542|       0|     0|     26.653|     31.204
+RTD|     26.770|     27.079|     29.266|       0|     0|     26.653|     31.204
+^C---|-----------|-----------|-----------|--------|------|-------------------------
+RTS|     10.119|     27.029|     31.204|       0|     0|    00:00:06/00:00:06
+
+~ # evl trace -c 1
+ ...
+          <idle>-0     [001] *.~.   135.363256: do_trace_write_msr <-__switch_to
+          <idle>-0     [001] *.~.   135.363256: write_msr: c0000100, value 7ff90973e700
+ timer-responder-234   [001] *.~.   135.363256: switch_fpu_return <-dovetail_context_switch
+ timer-responder-234   [001] *.~.   135.363257: do_raw_spin_unlock <-__evl_schedule
+ timer-responder-234   [001] *.~.   135.363257: do_raw_spin_lock <-evl_wait_schedule
+ timer-responder-234   [001] *.~.   135.363258: do_raw_spin_unlock <-evl_wait_schedule
+ timer-responder-234   [001] *.~.   135.363258: do_raw_spin_lock <-latmus_oob_ioctl
+ timer-responder-234   [001] *.~.   135.363258: do_raw_spin_unlock <-latmus_oob_ioctl
+ timer-responder-234   [001] d.~.   135.363259: evl_oob_sysexit: result=0
+ timer-responder-234   [001] d.~.   135.363262: pipeline_syscall <-do_syscall_64
+ timer-responder-234   [001] d.~.   135.363262: handle_oob_syscall <-pipeline_syscall
+ timer-responder-234   [001] d.~.   135.363263: do_oob_syscall <-handle_oob_syscall
+ timer-responder-234   [001] d.~.   135.363263: evl_oob_sysentry: syscall=oob_ioctl
+ timer-responder-234   [001] d.~.   135.363264: EVL_ioctl <-do_oob_syscall
+ timer-responder-234   [001] d.~.   135.363264: evl_get_file <-EVL_ioctl
+ timer-responder-234   [001] *.~.   135.363264: do_raw_spin_lock <-evl_get_file
+ timer-responder-234   [001] *.~.   135.363265: do_raw_spin_unlock <-evl_get_file
+ timer-responder-234   [001] d.~.   135.363265: latmus_oob_ioctl <-EVL_ioctl
+ timer-responder-234   [001] d.~.   135.363266: add_measurement_sample <-latmus_oob_ioctl
+ timer-responder-234   [001] d.~.   135.363266: evl_latspot: ** latency peak: 31.204 us **
+```
+
+In the [latmus]({{< relref "core/testing.md#latmus-program" >}}) case,
+part of this analysis would include estimating the delay between the
+latest tick date programmed in the hardware and the actual receipt of
+the timer interrupt. When tracing is enabled, this information is
+automatically produced in the trace log:
+
+```
+/* This is when the timer chip is programmed for the next tick. */
+<idle>-0     [001] *.~.   135.362244: evl_timer_shot: latmus_pulse_handler at 135.363228 (delay: 984 us, 196195 cycles
+...
+/* This is when the corresponding timer interrupt is received by Dovetail. */
+<idle>-0     [001] *.~.   135.363233: irq_handler_entry: irq=4354 name=Out-of-band LAPIC timer interrupt
+```
+	  
 ### Running the test suite (test) {#evl-test-command}
 
 This command is a short-hand for running the [EVL test suite]({{<
