@@ -438,7 +438,7 @@ The Dovetail-specific information is about:
   CPU.
 
 - whether we are running on the out-of-band stage, if '~' appears in
-  in the entry flags.
+  the entry flags.
 
 {{% notice tip %}}
 You may want to read [this document]({{< relref
