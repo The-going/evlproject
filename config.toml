@@ -16,7 +16,7 @@ disableShortcutsTitle = true
 evlTrackingKernel = "v5.8"
 evlLTSBranch = "evl/v5.4"
 evlLTSLatest = "v5.4.51-evl1"
-evlLibLatest = "r21"
+evlLibLatest = "r22"
 
 [markup]
   [markup.goldmark]
