@@ -37,12 +37,12 @@ that:
   based on.
 
 The typical way to implement such a driver is to start from a copy of
-a mainline kernel driver avilable for the target device, amending the
+a mainline kernel driver available for the target device, amending the
 sources heavily in order to use the real-time core API instead of the
 common kernel API, dropping any code which would not be required for
 supporting the real-time applications in the same move. At the end of
 the day, such real-time variant of a driver has diverged into an
-almost inreconciliable fork of the original code.
+almost irreconcilable fork of the original code.
 
 Unfortunately, after two decades using this model in the
 [RTAI](http://rtai.org) and [Xenomai](https://xenomai.org) projects,
