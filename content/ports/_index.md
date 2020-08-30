@@ -266,7 +266,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.7-rc1</td>
+    <td>v5.8</td>
   </tr>
   <tr>
     <td><a href="https://ark.intel.com/content/www/us/en/ark/products/34687/intel-desktop-board-dq45cb.html" target="_blank">Intel Desktop Board DQ45CB</a></td>
