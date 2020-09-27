@@ -118,15 +118,16 @@ your code may happily call whatever service from whatever C library.
 `libevl` does not impose any policy regarding how you might want to
 organize your application over multiple processes. However, the design
 and implementation of the interface to the EVL core makes sharing EVL
-resources a fairly simple task. EVL elements can be made visible as
-common [devices]({{< relref "core/_index.md#everything-is-a-file"
->}}), such as [threads]({{< relref "core/user-api/thread/_index.md"
->}}), [mutexes]({{< relref "core/user-api/mutex/_index.md" >}}),
-[events]({{< relref "core/user-api/event/_index.md" >}}),
-[semaphores]({{< relref "core/user-api/semaphore/_index.md" >}}).
-Therefore, every element you may want to share can be exported to the
-device file system, based on a [visibility attribute]({{< relref
-"#element-visibility" >}}) mentioned at creation time.
+resources between processes a fairly simple task. EVL elements can be
+made visible as common [devices]({{< relref
+"core/_index.md#everything-is-a-file" >}}), such as [threads]({{<
+relref "core/user-api/thread/_index.md" >}}), [mutexes]({{< relref
+"core/user-api/mutex/_index.md" >}}), [events]({{< relref
+"core/user-api/event/_index.md" >}}), [semaphores]({{< relref
+"core/user-api/semaphore/_index.md" >}}).  Therefore, every element
+you may want to share can be exported to the device file system, based
+on a [visibility attribute]({{< relref "#element-visibility" >}})
+mentioned at creation time.
 
 In addition, EVL provides a couple of additional features which come
 in handy for sharing data between processes:

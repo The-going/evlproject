@@ -786,7 +786,7 @@ as:
 #define EVL_HMDIAG_STAGEX	8
 ```
 
-Each of this code identifies a specific cause of trouble for the
+Each of these codes identifies a specific cause of trouble for the
 thread which receives it:
 
 - `EVL_HMDIAG_SIGDEMOTE`, enabled by the [T_WOSS]({{< relref
