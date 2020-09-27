@@ -65,6 +65,21 @@ stax-lock: OK
 fpu-preload: OK
 ```
 
+A few tests from the test suite may fail in case some kernel support
+is missing in order to support them, like:
+
+```
+sched-quota-accuracy.c:213: FAILED: evl_control_sched(44, &p, &q, test_cpu) (=Operation not supported)
+sched-quota-accuracy: no kernel support
+```
+
+In the example above, _sched-quota-accuracy_ failed because
+[CONFIG_EVL_SCHED_QUOTA]({{< relref "core/build-steps#core-kconfig"
+>}}) was not set in the kernel configuration. Likewise,
+_sched-tp-accuracy_ requires [CONFIG_EVL_SCHED_TP]({{< relref
+"core/build-steps#core-kconfig" >}}) to be enabled in the kernel
+configuration.
+
 {{% notice tip %}}
 The test loop aborts immediately upon a test failure. You may disable
 this behavior by running `evl test -k` (i.e. _keep going_) instead.
