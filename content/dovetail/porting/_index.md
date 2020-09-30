@@ -46,7 +46,7 @@ document]({{< relref "dovetail/pipeline/_index.md" >}}). You need to
 follow [this procedure]({{< relref "dovetail/porting/arch.md" >}}) for
 implementing such virtualization.
 
-### ATOMIC OPS
+### Atomic OPS
 
 Once the IRQFLAGS have been adapted to interrupt pipelining, the
 original atomic operations which rely on explicitly disabling the
@@ -93,7 +93,18 @@ need the following set of changes:
   which checks for in-band-specific conditions, such as opportunities
   for userr task rescheduling or/and kernel preemption.
 
-![Alt text](/images/wip.png "To be continued")
+- system calls are a particular type of synchronous traps, voluntarily
+  triggerred by application code in order to have the kernel perform
+  some action for them. [Dovetail routes system calls]({{< relref
+  "dovetail/porting/syscall.md" >}}) issued by tasks for which
+  [alternate scheduling]({{< relref "dovetail/altsched.md" >}}) is
+  enabled to the companion core.  Most architectures Dovetail supports
+  handle system calls from C code these days (such as x86 and
+  arm64). A few may still do this from a low level assembly section
+  though (e.g. ARM), in which case Dovetail's routing logic takes
+  place from there. There is a clear trend in the mainline kernel to
+  move most syscall handling code from assembly to a (generic) C
+  implementation, which Dovetail benefits from already.
 
 ---
 

@@ -182,7 +182,7 @@ cannot delay out-of-band events.
 {{% notice tip %}}
 The logic behind masking interrupt lines until events are processed at
 some point later - out of the original interrupt context - applies
-exactly the same to the threaded interrupt model
+exactly the same way to the threaded interrupt model
 (i.e. `IRQF_THREAD`). In this case, interrupt lines may be masked
 until the IRQ thread is scheduled in, after the interrupt handler
 clears the event cause eventually.
@@ -318,7 +318,7 @@ cause an [invalid context re-entry]({{%relref
 
 - there may be inner spinlocks locally defined by some `irqchip`
 drivers for serializing access to a common interrupt controller
-hardware for _distinct_ IRQs being handled by multiple CPUs
+hardware for _distinct_ IRQs which are handled by multiple CPUs
 concurrently. Adapting such spinlocked sections found in `irqchip`
 drivers to support interrupt pipelining may involve [converting the
 related spinlocks]({{%relref "dovetail/rulesofthumb#spinlock-rule"
