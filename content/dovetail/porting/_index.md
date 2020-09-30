@@ -71,9 +71,9 @@ required]({{< relref "dovetail/porting/arch.md#dealing-with-ipis"
 rescheduling IPI Dovetail defines in order to force a remote core to
 reschedule its tasks.
 
-### System entry
+### Kernel entry
 
-The system entry starts with low level assembly code receiving
+A kernel entry starts with low level assembly code receiving
 interrupts, traps/exceptions and system calls. For this reason, we
 need the following set of changes:
 
