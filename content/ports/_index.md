@@ -137,11 +137,12 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.9-rc7</td>
+    <td>v5.9-rc8</td>
   </tr>
 </table>
 
 <sup>*</sup> Mainline kernel with  SoC-specific bits picked from the vendor tree.
+
 
 
 > ARM SoC
@@ -170,7 +171,7 @@ Linux {{< param evlTrackingKernel >}}
     <td>v5.8</td>
   </tr>
   <tr>
-    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">NXP i.MX6qp (SabreSD)</a></td>
+    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">NXP i.MX6QP (SabreSD)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
@@ -178,12 +179,20 @@ Linux {{< param evlTrackingKernel >}}
     <td>v5.9-rc7</td>
   </tr>
   <tr>
+    <td><a href="https://www.phytec.eu/product-eu/single-board-computer/phyboard-mira/" target="_blank">NXP i.MX6Q (phyBOARD-Mira)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.9-rc8</td>
+  </tr>
+  <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.8</td>
+    <td>v5.9-rc8</td>
   </tr>
   <tr>
     <td><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">Altera Cyclone V SoC FPGA (DevKit)</a></td>
@@ -250,7 +259,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.9-rc7</td>
+    <td>v5.9-rc8</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
