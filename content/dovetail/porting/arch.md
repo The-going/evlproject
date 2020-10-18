@@ -813,8 +813,8 @@ Interrupts](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.den0024a
 
 After the Dovetail rework, all pre-existing in-band IPIs are now
 multiplexed over SGI0, which leaves seven SGIs available for adding
-the out-of-band IPI messages we need, from which we only need two. The
-resulting mapping is as follows:
+out-of-band IPI messages, from which we only need two in the current
+implementation. The resulting mapping is as follows:
 
 |      IPI Message     |        Logical IPI number            |  Physical SGI number | Pipelined IRQ number |
 | :------------------: | :----------------------------------: | :------------------: |:------------------: |
@@ -830,7 +830,7 @@ resulting mapping is as follows:
 |   RESCHEDULE_OOB_IPI  |   9  | 2  | 2057  |
 
 The implementation of the IPI multiplexing for ARM takes place in
-_arch/arm/kernel/smp.c_. The logic - as illustrated below - is fairly
+`arch/arm/kernel/smp.c`. The logic - as illustrated below - is fairly
 straightforward:
 
 - on the issuer side, if the IPI we need to send belongs to the
@@ -862,7 +862,7 @@ void send_IPI_message(const struct cpumask *target, unsigned int ipinr)
 			set_bit(ipinr, &per_cpu(ipi_messages, cpu));
 		smp_mb();
 		sgi = 0;
-	} else	/* out-of-band IPI (SGI1-3). */
+	} else	/* out-of-band IPI (SGI1-2). */
 		sgi = ipinr - NR_IPI + 1;
 
 	__smp_cross_call(target, sgi);
@@ -874,7 +874,7 @@ void handle_IPI_pipelined(int sgi, struct pt_regs *regs)
 	unsigned int ipinr, irq;
 	unsigned long *pmsg;
 
-	if (sgi) {		/* SGI1-3 */
+	if (sgi) {		/* SGI1-2 */
 		irq = sgi + NR_IPI - 1 + OOB_IPI_BASE;
 		generic_pipeline_irq(irq, regs);
 		return;
