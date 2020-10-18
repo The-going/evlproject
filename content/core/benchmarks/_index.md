@@ -123,7 +123,7 @@ easily the latency directly from there.
 EVL implements this test with the help of the [latmus
 driver](https://git.evlproject.org/linux-evl.git/tree/drivers/evl/latmus.c?h=evl/master)
 which sends a wake up event to an [EVL-enabled responder thread]({{<
-relref "core/thread/_index.md" >}}) created by the [latmus
+relref "core/user-api/thread/_index.md" >}}) created by the [latmus
 application]({{< relref "core/testing.md#latmus-program" >}}) each
 time a new timer interrupt occurs. The responder thread gets a
 timestamp from EVL's [monotonic clock]({{< relref
@@ -467,7 +467,7 @@ running on the monitor board periodically raises a GPIO pulse event on
 the TX wire, which causes the SUT to receive an interrupt. By calling
 into the [EVL-enabled gpiolib]
 (https://git.evlproject.org/linux-evl.git/tree/drivers/gpio/gpiolib.c?h=evl/master)
-driver, the [responder thread]({{< relref "core/thread/_index.md" >}})
+driver, the [responder thread]({{< relref "core/user-api/thread/_index.md" >}})
 created by the [latmus application]({{< relref
 "core/testing.md#latmus-program" >}}) waits for such interrupt by
 monitoring edges on the GPIO pulse signal. Upon receipt, it
