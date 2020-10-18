@@ -390,8 +390,9 @@ static void get_caller_info(void)
 }
 ```
 
-[evl_get_self()]({{% relref "#evl_get_self" %}}) will fail after a
-call to [evl_detach_thread()]({{% relref "#evl_detach_thread" %}}).
+[evl_get_self()]({{% relref "#evl_get_self" %}}) fails with -EPERM
+after a call to [evl_detach_thread()]({{% relref "#evl_detach_thread"
+%}}).
 
 ---
 
