@@ -76,6 +76,22 @@ Linux {{< param evlTrackingKernel >}}
     <th>Test kernel</th>
   </tr>
   <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank">Broadcom BCM2711 (Raspberry PI 4 Model B)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.9</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">Broadcom BCM2837 (Raspberry PI 3 Model B)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.7-rc7</td>
+  </tr>
+  <tr>
     <td><a href="https://www.qualcomm.com/products/qcs404/" target="_blank">Qualcomm QCS404</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
@@ -92,36 +108,12 @@ Linux {{< param evlTrackingKernel >}}
     <td>v5.0</td>
   </tr>
   <tr>
-    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">Broadcom BCM2837 (Raspberry PI 3 Model B)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>v5.7-rc7</td>
-  </tr>
-  <tr>
-    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank">Broadcom BCM2711 (Raspberry PI 4 Model B)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>v5.9-rc7</td>
-  </tr>
-  <tr>
     <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td>v5.5-rc7</td>
-  </tr>
-  <tr>
-    <td><a href="https://www.xilinx.com/support/documentation/boards_and_kits/zcu102/ug1182-zcu102-eval-bd.pdf" target="_blank">Xilinx Zynq UltraScale+ (ZCU102)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>v5.4.40</td>
   </tr>
   <tr>
     <td><a href="https://www.variscite.com/product/system-on-module-som/cortex-a53-krait/dart-mx8m-mini-nxp-i-mx8m-mini/" target="_blank">NXP i.MX8M Mini (Variscite DART-MX8M-MINI)</a></td>
@@ -138,6 +130,14 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td>v5.9-rc8</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.xilinx.com/support/documentation/boards_and_kits/zcu102/ug1182-zcu102-eval-bd.pdf" target="_blank">Xilinx Zynq UltraScale+ (ZCU102)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.4.40</td>
   </tr>
 </table>
 
@@ -163,52 +163,12 @@ Linux {{< param evlTrackingKernel >}}
     <th>Test kernel</th>
   </tr>
   <tr>
-    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-7dual-applications-processors:MCIMX7SABRE" target="_blank">NXP i.MX7D (SabreSD)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>v5.8</td>
-  </tr>
-  <tr>
-    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">NXP i.MX6QP (SabreSD)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>v5.9-rc7</td>
-  </tr>
-  <tr>
-    <td><a href="https://www.phytec.eu/product-eu/single-board-computer/phyboard-mira/" target="_blank">NXP i.MX6Q (phyBOARD-Mira)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>v5.9-rc8</td>
-  </tr>
-  <tr>
     <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td>v5.9-rc8</td>
-  </tr>
-  <tr>
-    <td><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">Altera Cyclone V SoC FPGA (DevKit)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>v5.7-rc5</td>
-  </tr>
-  <tr>
-    <td><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">STMicro Cannes2-STiH410 (B2260)</a></td>
-    <td><img src="/images/checked.png"></td> 
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td><img src="/images/checked.png"></td>
-    <td>v5.2-rc7</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-zero/" target="_blank">Broadcom BCM2835 (Raspberry PI Zero)</a></td>
@@ -227,12 +187,60 @@ Linux {{< param evlTrackingKernel >}}
     <td>v5.8</td>
   </tr>
   <tr>
+    <td><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">STMicro Cannes2-STiH410 (B2260)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.2-rc7</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">Altera Cyclone V SoC FPGA (DevKit)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.7-rc5</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.samsung.com/semiconductor/minisite/exynos/products/mobileprocessor/exynos-5-octa-5422/#:~:text=The%20Exynos%205422%20released%20in,(Heterogeneous%20Multi%2DProcessing)." target="_blank">Exynos 5422 (Odroid XU4Q)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.9</td>
+  </tr>
+  <tr>
     <td><a href="http://nanopi.io/nanopi-neo.html/" target="_blank">AllWinner H3 (NanoPI NEO)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td>v5.5-rc2</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">NXP i.MX6QP (SabreSD)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.9</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.phytec.eu/product-eu/single-board-computer/phyboard-mira/" target="_blank">NXP i.MX6Q (phyBOARD-Mira)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.9</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-7dual-applications-processors:MCIMX7SABRE" target="_blank">NXP i.MX7D (SabreSD)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.8</td>
   </tr>
 </table>
 
