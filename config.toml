@@ -13,15 +13,16 @@ disableInlineCopyToClipBoard = true
 disableBreadcrumb = false
 themeVariant = "evl"
 disableShortcutsTitle = true
+disableLandingPageButton = true
 evlTrackingKernel = "v5.9"
 evlLTSBranch = "evl/v5.4"
 evlLTSLatest = "v5.4.72-evl2"
 evlLibLatest = "r22"
 
 [markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
 
 [[menu.shortcuts]]
 name = "<i class='fas fa-home'></i> Home"
