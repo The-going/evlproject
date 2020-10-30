@@ -5,6 +5,25 @@ weight: 20
 pre: "&#8226; "
 ---
 
+The table below summarizes the current status of the EVL ports to
+particular SoCs which we are aware of. It is definitely not meant to
+be exhaustive: many SoCs which are not listed here may just work out
+of the box with a recent EVL-enabled kernel release, especially in the
+x86 and arm64 ecosystems (arm32 might require more work in some
+cases). New SoCs sporting interrupt chip controllers, timer or clock
+sources which have not been made pipeline-aware yet may need the
+corresponding kernel drivers to be marginally fixed up for that
+purpose. See the [porting guide]({{< relref
+"dovetail/porting/_index.md" >}}) for more.
+
+If you are interested in porting your own autonomous core to a
+particular kernel release Dovetail supports, you certainly need the
+_IRQ pipeline_ column matching the target platform to be checked, and
+likely the _Alternate scheduling_ column as well. Running the EVL core
+requires both features to be available. If you ported EVL to a SoC
+which does not appear in this list and want to let people know about
+it, please drop me a note at <rpm@xenomai.org>.
+
 {{% notice info %}}
 The EVL project primarily tracks the [mainline Linux
 kernel](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git). In
@@ -33,16 +52,6 @@ underlying CPU architecture and platform. A port boils down to
 resolving the address of the
 [clock_gettime(3)](http://man7.org/linux/man-pages/man3/clock_gettime.3.html)
 in the vDSO.
-
-The table below summarizes the current status of the EVL ports to
-particular SoCs which we are aware of. If you are interested in
-porting your own autonomous core to a particular kernel release
-Dovetail supports, you certainly need the _IRQ pipeline_ column
-matching the target platform to be checked, and likely the _Alternate
-scheduling_ column as well. Running the EVL core requires both
-features to be available. If you ported EVL to a SoC which does not
-appear in this list and want to let people know about it,
-please drop me a note at <rpm@xenomai.org>.
 
 > Current target kernel release
 
