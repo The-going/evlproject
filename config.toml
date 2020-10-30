@@ -16,7 +16,7 @@ disableShortcutsTitle = true
 disableLandingPageButton = true
 evlTrackingKernel = "v5.9"
 evlLTSBranch = "evl/v5.4"
-evlLTSLatest = "v5.4.72-evl2"
+evlLTSLatest = "v5.4.73-evl1"
 evlLibLatest = "r22"
 
 [markup]
