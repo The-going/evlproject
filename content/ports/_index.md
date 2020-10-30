@@ -294,7 +294,7 @@ Linux {{< param evlTrackingKernel >}}
     <td>v5.9-rc4</td>
   </tr>
   <tr>
-    <td><a href="https://ark.intel.com/content/www/us/en/ark/products/34687/intel-desktop-board-dq45cb.html" target="_blank">(Legacy) Intel Desktop Board DQ45CB</a></td>
+    <td><a href="https://ark.intel.com/content/www/us/en/ark/products/34687/intel-desktop-board-dq45cb.html" target="_blank">Intel Desktop Board DQ45CB (Legacy)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
