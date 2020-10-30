@@ -76,6 +76,14 @@ Linux {{< param evlTrackingKernel >}}
     <th>Test kernel</th>
   </tr>
   <tr>
+    <td><a href="https://www.hardkernel.com/shop/odroid-c4/" target="_blank">Amlogic S905X3 (Odroid C4)</a></td>
+    <td><img src="/images/checked.png"></td> 
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td><img src="/images/checked.png"></td>
+    <td>v5.9</td>
+  </tr>
+  <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank">Broadcom BCM2711 (Raspberry PI 4 Model B)</a></td>
     <td><img src="/images/checked.png"></td> 
     <td><img src="/images/checked.png"></td>
