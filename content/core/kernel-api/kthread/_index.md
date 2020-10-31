@@ -112,15 +112,94 @@ apply to [evl_run_kthread_on_cpu()]({{% relref
 
 ---
 
+{{< proto evl_stop_kthread >}}
+void evl_stop_kthread(struct evl_kthread *kthread)
+{{< /proto >}}
+
+This call requests the EVL _kthread_ to exit at the first
+opportunity. It may be called from any stage, but only from a kernel
+thread context, regular in-band or EVL.
+
+This is an advisory method for stopping EVL kernel threads, which
+requires _kthread_ to call [evl_kthread_should_stop()]({{%
+relref "#evl_kthread_should_stop" %}}) as part of its regular work
+loop, exiting when such test returns _true_.  In other words,
+[evl_stop_kthread()]({{% relref "#evl_stop_kthread" %}}) raises the
+condition which [evl_kthread_should_stop()]({{% relref
+"#evl_kthread_should_stop" %}}) returns to its caller.
+
+[evl_stop_kthread()]({{% relref "#evl_stop_kthread" %}}) first
+unblocks _kthread_ from any blocking call, then waits for _kthread_ to
+actually exit before returning to the caller. Therefore, an EVL kernel
+thread which receives a request for termination while sleeping on some
+EVL call unblocks with -EINTR as a result.
+
+{{% notice tip %}}
+There is no way to forcibly terminate kernel threads since this
+would potentially leave the kernel system in a broken, unstable state.
+Both the requestor and the subject kernel thread must cooperate for the
+later to follow an orderly process for exiting. The
+in-band equivalent is achieved with
+[kthread_stop()](https://www.kernel.org/doc/html/latest/driver-api/basics.html#c.kthread_stop),
+[kthread_should_stop()](https://www.kernel.org/doc/html/latest/driver-api/basics.html#c.kthread_should_stop).
+{{% /notice %}}
+
+{{% argument kthread %}}
+The EVL kernel thread to send a stop request to. If _kthread_ represents the calling
+context (i.e. self-termination), the call does not return and the caller is
+exited immediately. Otherwise, the stop request is left pending until _kthread_
+eventually calls [evl_kthread_should_stop()]({{% relref "#evl_kthread_should_stop"
+%}}), at which point it should act upon this event by exiting.
+{{% /argument %}}
+
+---
+
+{{< proto evl_kthread_should_stop >}}
+bool evl_kthread_should_stop(void)
+{{< /proto >}}
+
+This call is paired with [evl_stop_kthread()]({{% relref
+"#evl_stop_kthread" %}}). It should be called by any EVL kernel thread
+which intends to accept termination requests from other threads.
+
+Whenever [evl_kthread_should_stop()]({{% relref
+"#evl_kthread_should_stop" %}}) returns _true_, the caller should plan
+for exiting as soon as possible, typically by returning from its entry
+routine (_threadfn_ argument to [evl_run_kthread()]({{% relref
+"#evl_run_kthread" %}})). Otherwise, it may continue.
+
+A typical usage pattern is as follows:
+
+```
+
+#include <evl/thread.h>
+#include <evl/flag.h>
+
+static DEFINE_EVL_FLAG(some_flag);
+
+void some_kthread(struct evl_kthread *kthread)
+{
+	int ret;
+
+	for (;;) {
+		if (evl_kthread_should_stop())
+			break;
+
+		/* wait for the next processing signal */
+		ret = evl_wait_flag(&some_flag);
+		if (ret == -EINTR)
+		    	break;
+
+		/* do some useful stuff */
+	}
+
+	/* about to leave, do some cleanup */
+}
+```
+
+---
+
 ![Alt text](/images/wip.png "To be continued")
-
----
-
-#### void evl_cancel_kthread(struct evl_kthread *kthread)
-
----
-
-#### int evl_kthread_should_stop(void)
 
 ---
 
