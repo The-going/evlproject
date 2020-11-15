@@ -59,6 +59,15 @@ The proxy also handles input and output operations from callers
 running on the in-band stage transparently.
 {{% /mixedgrid %}}
 
+{{% notice warning %}}
+Starting from [kernel v5.10](https://lkml.org/lkml/2020/9/3/555), a
+restricted set of file types supports proxying compared to earlier
+releases, specifically those for which the corresponding driver
+implements the `read_iter()`, `write_iter()` file operations. Regular
+files, sockets, pipes, tty and eventfd can still be used as proxy
+targets though.
+{{% /notice %}}
+
 #### Logging debug messages via a proxy {#proxy-logging-example}
 
 For instance, you may want your application to dump debug information
