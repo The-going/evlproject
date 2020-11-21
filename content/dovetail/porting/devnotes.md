@@ -165,6 +165,26 @@ stuck into a buffer, never reaching the console driver before the
 board hangs eventually.
 {{% /notice %}}
 
+### Hard interrupt masking in clock chip handlers
+
+The only valid way of sharing a clock tick device between the in-band
+and out-of-band stages is to access it through [the tick
+proxy]({{%relref "dovetail/porting/timer.md" %}}). For this reason, we
+don't need to enforce [hard interrupt masking]({{%relref
+"dovetail/pipeline/interrupt-protection.md" %}}) in clock chip
+handlers to make them pipeline-safe, because once proxying is active
+for a tick device, hardware interrupts are off across calls to its
+handlers when applicable. As a result, either all accesses to the
+clock chip handlers are proxied and proper masking is already in
+place, or there is no proxy, which means the in-band kernel is still
+controlling the device, in which case there is no way we might
+conflict with out-of-band accesses.
+
+Obviously, this fact does not preclude why we would still want to
+serialize CPUs when accessing shared data there, in which case [hard
+locking]({{%relref "dovetail/pipeline/locking.md" %}}) should be in
+place to ensure this.
+
 ### Make no assumption in virtualizing arch_local_irq_restore()
 
 Do not make any assumption with respect to the current interrupt state
