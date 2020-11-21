@@ -297,14 +297,14 @@ can operate over the out-of-band context safely:
 - `irq_unmask()`
 
 For so-called _device interrupts_, no change is required, because the
-_genirq_ layer ensures a single CPU at most handles a given IRQ
-event by holding the per-descriptor `irq_desc::lock` spinlock across
-calls to those `irqchip` handlers, and such lock is automatically
-turned into a [mutable spinlock]({{%relref
-"dovetail/pipeline/locking#new-spinlocks" %}}) when
-pipelining interrupts. In other words, those handlers are properly
-serialized, running with interrupts disabled in the CPU as their
-non-pipelined implementation expects it.
+_genirq_ layer ensures a single CPU at most handles a given IRQ event
+by holding the per-descriptor `irq_desc::lock` spinlock across calls
+to those `irqchip` handlers, and such lock is automatically turned
+into an [hybrid spinlock]({{%relref
+"dovetail/pipeline/locking#new-spinlocks" %}}) when pipelining
+interrupts. In other words, those handlers are properly serialized,
+running with interrupts disabled in the CPU as their non-pipelined
+implementation expects it.
 
 Unlike for device interrupts, per-CPU interrupt handling does not need
 to be serialized this way, since by definition, there cannot be

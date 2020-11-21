@@ -19,7 +19,7 @@ interrupt masking, therefore can be used to serialize with out-of-band
 activities, including from the in-band kernel code. At any rate, those
 sections ought to be quite short, for keeping latency low.
 
-+ *mutable* spinlocks are used internally by the pipeline core to
++ *hybrid* spinlocks are used internally by the pipeline core to
   protect access to IRQ descriptors (`struct irq_desc::lock`), so that
   we can keep the original locking scheme of the generic IRQ core
   unmodified for handling out-of-band interrupts.
@@ -35,7 +35,7 @@ lock is not meant to be used in any other situation.
 The lock validator automatically reconciles the real and virtual
 interrupt states, so it can deliver proper diagnosis for locking
 constructs defined in both in-band and out-of-band contexts. This
-means that *hard* and *mutable* spinlocks are included in the
+means that *hard* and *hybrid* spinlocks are included in the
 validation set when LOCKDEP is enabled.
 
 {{% notice warning %}}

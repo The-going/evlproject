@@ -27,7 +27,7 @@ prevent dirty reads and dirty writes:
 - one the same CPU, by [disabling interrupts in the CPU]({{% relref
   "dovetail/pipeline/interrupt_protection#hard-irq-protection" %}}).
 
-- from different CPUs, by using [hard or mutable spinlocks]({{% relref
+- from different CPUs, by using [hard or hybrid spinlocks]({{% relref
   "dovetail/pipeline/locking#new-spinlocks" %}}).
 
 ## Check that the pipeline torture tests pass
