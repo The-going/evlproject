@@ -171,7 +171,7 @@ The only valid way of sharing a clock tick device between the in-band
 and out-of-band stages is to access it through [the tick
 proxy]({{%relref "dovetail/porting/timer.md" %}}). For this reason, we
 don't need to enforce [hard interrupt masking]({{%relref
-"dovetail/pipeline/interrupt-protection.md" %}}) in clock chip
+"dovetail/pipeline/interrupt_protection.md" %}}) in clock chip
 handlers to make them pipeline-safe, because once proxying is active
 for a tick device, hardware interrupts are off across calls to its
 handlers when applicable. As a result, either all accesses to the
