@@ -178,20 +178,21 @@ in-band code, for preventing creepy situations like this one:
 
 Even in absence of an attempt to get a spinlock recursively, the outer
 in-band code in the example above is entitled to assume that no access
-race can occur on the current CPU while interrupts are
-masked. Re-entering in-band code from an out-of-band handler would
-invalidate this assumption.
+race can occur on the current CPU while interrupts are (virtually)
+masked for the in-band stage. Re-entering in-band code from an
+out-of-band handler would invalidate this assumption.
 
 In rare cases, we may need to fix up the in-band kernel routines in
-order to allow out-of-band handlers to call them. Typically, atomic
-helpers are such routines, which serialize in-band and out-of-band
-callers.
+order to allow out-of-band handlers to call them. Typically, generic
+atomic helpers are such routines, which serialize in-band and
+out-of-band callers.
 
 For all other cases, the [IRQ work API]({{%relref
 "dovetail/pipeline/pipeline_inject.md#irq-work" %}}) is available for
-scheduling the execution of a routine from the out-of-band stage, which will
-be invoked later from the in-band stage as soon as it gets back in
-control on the current CPU.
+scheduling the execution of a routine from the out-of-band stage,
+which will be invoked later from a safe place on the in-band stage as
+soon as it gets back in control on the current CPU (i.e. typically
+when in-band interrupts are allowed again).
 
 ---
 
