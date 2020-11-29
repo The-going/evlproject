@@ -684,9 +684,9 @@ delivering them to one of these handlers the core should override:
 - the call is delivered to the [handle_oob_syscall()]({{< relref
 "#handle_oob_syscall" >}}) handler if the system call number is not in
 the valid range for the in-band kernel - i.e. it has to belong to the
-core instead -, and the caller issued the request from the out-of-band
-context. This is the fast path, when a task running out-of-band is
-requesting a service the core provides.
+core instead -, *and* the caller is currently running on the
+out-of-band stage. This is the fast path, when a task running
+out-of-band is requesting a service the core provides.
 
 - otherwise the slow path is taken, in which
 [handle_pipelined_syscall()]({{< relref "#handle_pipelined_syscall"
@@ -719,13 +719,12 @@ rescheduling opportunities are taken when (in-band) kernel preemption
 is enabled.
 
 What makes a system call number out-of-range for the in-band kernel is
-architecture-dependent. Some architectures may use the
-most-significant bit in a syscall number as a differentiator
-(i.e. regular if cleared, foreign if set), others may use a different
-system call prefix to distinguish from the valid in-band call prefix.
-See how `__EVL_SYSCALL_BIT` is used for this
-purpose in the [libevl]({{< relref "core/user-api/_index.md" >}})
-implementation for arm64/x86 and ARM respectively.
+architecture-dependent. All architectures currently use the
+most-significant bit in the syscall number as a differentiator
+(i.e. regular if MSB cleared, foreign if LSB set).  See how
+`__EVL_SYSCALL_BIT` is used for this purpose in the [libevl]({{<
+relref "core/user-api/_index.md" >}}) implementation for arm64, x86
+and ARM respectively.
 
 Interrupts are always **enabled** in the CPU when any of these
 handlers is called.
@@ -792,7 +791,7 @@ unstalled. Whether the in-band stage accepts interrupts is undefined.
 ---
 
 {{< proto handle_pipelined_syscall >}}
-__weak void handle_pipelined_syscall(struct pt_regs *regs)
+__weak void handle_pipelined_syscall(struct irq_stage *stage, struct pt_regs *regs)
 {{< /proto >}}
 
 This handler is called by Dovetail whenever a system call is detected
@@ -809,6 +808,15 @@ relref "#dovetail_start_altsched" >}}) was enabled.
 system call numbers, which means that a companion core might be able
 to handle it (if not eventually, such a request would cause the caller
 to receive -ENOSYS).
+
+{{% argument stage %}}
+The descriptor address of the calling stage, either _oob\_stage_ or
+_inband\_stage_.
+{{% /argument %}}
+
+{{% argument regs %}}
+The register file at the time of the system call.
+{{% /argument %}}
 
 The handler should write the error code of the request to the
 in-memory storage of the proper CPU register in _regs_, as defined by
