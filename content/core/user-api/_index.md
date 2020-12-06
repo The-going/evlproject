@@ -92,11 +92,11 @@ your time-critical code only relies on either:
   services which operate from the [out-of-band context]({{< relref
   "dovetail/altsched.md#altsched-theory" >}}).
 
-- a (very) small subset of the common C library which are known _not_
+- a (very) small subset of the common C library which is known _not_
   to depend on regular in-band kernel services. In other words, only
-  routines which won't issue common Linux system calls in any way are
-  fine in a time-critical execution context. For instance, routines
-  from the
+  routines which do not issue common Linux system calls directly or
+  indirectly are fine in a time-critical execution context. For
+  instance, routines from the
   [string(3)](http://man7.org/linux/man-pages/man3/string.3.html)
   section may be fine in a time-critical code, like
   [strcpy(3)](http://man7.org/linux/man-pages/man3/strcpy.3.html),
