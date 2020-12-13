@@ -673,6 +673,31 @@ routine to interrupt pipelining:
  }
 ```
 
+## Mapping descriptor-less per-CPU IRQs to pipelined IRQ numbers
+
+Some architecture ports may not assign interrupt descriptors
+(i.e. `struct irq_desc`) to per-CPU interrupts. Instead, those per-CPU
+events are immediately handled by arch-specific code, instead of being
+channeled through the common generic IRQ layer for delivery to their
+respective handler. With Dovetail, we do generally need all interrupts
+to have a valid interrupt descriptor, including per-CPU events, so
+that we can request them to be handled on the out-of-band stage using
+the [generic IRQ API]({{< relref "dovetail/pipeline/irq_handling.md"
+>}}), like we would request any regular device interrupt.
+
+The easiest way to achieve this mapping is to create a new synthetic
+interrupt domain for IPIs, which are in essence per-CPU
+events. Therefore, the flow handler for interrupts from this domain
+should be `handle_synthetic_irq()`.
+
+Prior to kernel v5.10-rc6, all Dovetail ports (x86, ARM and arm64)
+required a synthetic interrupt domain for the purpose of mapping
+descriptor-less per-CPU interrupts. Since v5.10-rc6 and the
+introduction of a native mapping of each IPI to a common interrupt
+descriptor for ARM and arm64, only Dovetail/x86 still needs to
+implement a specific interrupt domain in order to map the APIC system
+interrupts.
+
 ## Dealing with IPIs {#dealing-with-ipis}
 
 Although the pipeline does not directly use inter-processor interrupts
@@ -692,30 +717,17 @@ implementation must provide support for two operations:
   "dovetail/porting/irqflow#arch-do-irq" >}}) to their
   respective in-band handler upon request from the Dovetail core.
 
-### Mapping IPI numbers to pipelined IRQ numbers
+#### Prior to kernel v5.10-rc6
 
-Without Dovetail, Linux architecture ports do not assign interrupt
-descriptors (i.e. `struct irq_desc`) to IPIs. Instead, IPI receipt is
-handled separately from device IRQs, where those events are not
-channeled through the common generic IRQ layer but rather immediately
-handled by arch-specific code. With Dovetail, we do generally need
-IPIs to have a valid interrupt descriptor, so that we can request the
-out-of-band IPIs using the [generic IRQ API]({{< relref
-"dovetail/pipeline/irq_handling.md" >}}), exactly as we can
-request device interrupts.
+Until v5.10-rc6, the ARM and arm64 implementations would register IPIs
+from a synthetic IPI interrupt domain, from IRQ2048 (`OOB_IPI_BASE`)
+and on.
 
-The easiest way to achieve this mapping is to create a new interrupt
-domain for IPIs, which are in essence per-CPU events. Interrupts from
-this domain need no [generic flow handling code]({{< relref
-"dovetail/porting/irqflow#irqchip-fixup" >}}) since this
-part is directly handled from the arch-specific code, therefore a
-dummy interrupt chip controller can be associated to this domain. For
-instance, the ARM implementation installs all IPIs in such a domain,
-from IRQ2048 (`OOB_IPI_BASE`) and on. Since the arch-specific
-implementation of `handle_IPI()` in a Dovetail-enabled kernel should
-generate a interrupt from the IPI domain by software each time we
-receive an IPI event from the hardware, `handle_synthetic_irq()` is
-the proper flow handler for IPI interrupts.
+The arch-specific implementation of `handle_IPI()` in a
+Dovetail-enabled kernel should generate IRQs from this IPI domain each
+time an IPI event is received from the hardware, by calling
+[generic_pipeline_irq()]({{< relref
+"dovetail/porting/irqflow#genirq-flow" >}}).
 
 > IPI domain for ARM
 ```
@@ -780,24 +792,29 @@ the `arch_irq_pipeline_init()` handler, which Dovetail calls while
 setting up the interrupt pipelining machinery early at kernel boot.
 {{% /notice %}}
 
+#### Since kernel v5.10-rc6
+
+Since v5.10-rc6, the ARM and arm64 implementations assign a common
+interrupt descriptor to each IPI, therefore we need no synthetic
+interrupt domain for that purpose anymore.
+
 ### Short of IPI vectors? Multiplex!
 
-The main issue you may face with these requirements stands in the
-limitation your hardware may have with respect to the number of
-distinct IPI signals available from the interrupt
-controller. Typically, the ARM generic interrupt controller (aka
-_GIC_) available with the Cortex CPU series provides 16 distinct IPIs,
-half of which should be reserved to the firmware, which leaves only 8
-IPIs available to the kernel. Since all of them are already in use for
-in-band work in the mainline implementation, we are short of available
-IPI vectors for adding the two additional signals we need.  For this
-reason, the Dovetail ports for ARM and ARM64 have reshuffled the way
-IPI signaling is implemented.
+Your hardware may be limited with respect to the number of distinct
+IPI signals available from the interrupt controller. Typically, the
+ARM generic interrupt controller (aka _GIC_) available with the Cortex
+CPU series provides 16 distinct IPIs, half of which should be reserved
+to the firmware, which leaves only 8 IPIs available to the
+kernel. Since all of them are already in use for in-band work in the
+mainline implementation, we are short of available IPI vectors for
+adding the two additional interrupts we need.  For this reason, the
+Dovetail ports for ARM and ARM64 have reshuffled the way IPI signaling
+is implemented.
 
-Before this rework, a 1:1 mapping exists between the logical IPI
-numbers used by the kernel to refer to inter-processor messages, and
-the physical, so-called _SGI_ numbers which stands for [Software
-Generated
+In the upstream kernel implementation, a 1:1 mapping exists between
+the logical IPI numbers used by the kernel to refer to inter-processor
+messages, and the physical, so-called _SGI_ numbers which stands for
+[Software Generated
 Interrupts](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.den0024a/CEGIDCIC.html):
 
 |      IPI Message     |        Logical IPI number            |  Physical SGI number |
@@ -811,10 +828,14 @@ Interrupts](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.den0024a
 |   IPI_COMPLETION      |   6  | 6  |
 |   IPI_CPU_BACKTRACE   |   7  | 7  |
 
-After the Dovetail rework, all pre-existing in-band IPIs are now
-multiplexed over SGI0, which leaves seven SGIs available for adding
-out-of-band IPI messages, from which we only need two in the current
-implementation. The resulting mapping is as follows:
+After the introduction of IPI multiplexing by Dovetail, all
+pre-existing in-band IPIs are now multiplexed over SGI0, which leaves
+seven SGIs available for adding out-of-band IPI messages, from which
+we only need two in the current implementation.
+
+#### Prior to kernel v5.10-rc6
+
+The resulting mapping is as follows:
 
 |      IPI Message     |        Logical IPI number            |  Physical SGI number | Pipelined IRQ number |
 | :------------------: | :----------------------------------: | :------------------: |:------------------: |
@@ -842,10 +863,11 @@ straightforward:
 - upon receipt, if we received SGI0, iterate over the pending in-band
   IPIs by reading the per-CPU bitmask (`ipi_messages`) demultiplexing
   the logical IPI numbers as we go before pushing the corresponding
-  IRQ event to the pipeline entry (`generic_pipeline_irq()`). If SGI1
-  or SGI2 were received instead, remap the incoming signal to either
-  TIMER_OOB_IPI or RESCHEDULE_OOB_IPI before feeding the pipeline with
-  the corresponding IRQ event, which is either 2056 or 2057.
+  IRQ event to the pipeline entry, see [generic_pipeline_irq()]({{<
+  relref "dovetail/porting/irqflow#genirq-flow" >}}).  If SGI1 or SGI2
+  are received instead, the incoming event is remapped to either
+  TIMER_OOB_IPI or RESCHEDULE_OOB_IPI before it is fed into the
+  pipeline (i.e. IRQ2056 or IRQ2057).
 
 ```
 static DEFINE_PER_CPU(unsigned long, ipi_messages);
@@ -901,9 +923,90 @@ pipelined IRQ number, with anything in the range
 Since out-of-band IPI messages are supposed to be exclusively handled
 by [out-of-band handlers]({{< relref
 "dovetail/pipeline/irq_handling.md" >}}), `__handle_IPI()` is
-not required to handle them specifically. However, this is good
-practice to detect them, at least for debugging purpose during the
-early stage of the Dovetail port.
+not required to handle them specifically.
+
+#### Since kernel v5.10-rc6
+
+The resulting mapping is as follows:
+
+|      IPI Message     |        Logical IPI number            |  Physical SGI number | Pipelined IRQ number |
+| :------------------: | :----------------------------------: | :------------------: |:------------------: |
+|   IPI_WAKEUP          |   0  | 0  | ipi_irq_base  |
+|   IPI_TIMER           |   1  | 0  | ipi_irq_base  |
+|   IPI_RESCHEDULE      |   2  | 0  | ipi_irq_base  |
+|   IPI_CALL_FUNC       |   3  | 0  | ipi_irq_base  |
+|   IPI_CPU_STOP        |   4  | 0  | ipi_irq_base  |
+|   IPI_IRQ_WORK        |   5  | 0  | ipi_irq_base  |
+|   IPI_COMPLETION      |   6  | 0  | ipi_irq_base  |
+|   IPI_CPU_BACKTRACE   |   7  | 0  | ipi_irq_base  |
+|   TIMER_OOB_IPI       |   x  | 1  | ipi_irq_base + 1  |
+|   RESCHEDULE_OOB_IPI  |   x  | 2  | ipi_irq_base + 2  |
+
+The implementation of the IPI multiplexing for ARM takes place in
+`arch/arm/kernel/smp.c`:
+
+- ipi_irq_base stands for the first logical interrupt number assigned
+  to the series of SGIs. All in-band IPIs are multiplexed over SGI0,
+  therefore all of them are signaled by IRQ #ipi_irq_base.
+
+- on the issuer side, `smp_cross_call()` deals with in-band IPIs
+  exclusively, logging them into a per-CPU global bitmask
+  (`ipi_messages`) before issuing SGI0. `irq_pipeline_send_remote()`
+  sends out-of-band IPIs by triggering SGI1 (TIMER_OOB_IPI) or SGI2
+  (RESCHEDULE_OOB_IPI).
+
+- upon receipt of SGI0, the in-band IPI handler (`ipi_handler`)
+  iterates over the pending in-band IPIs by reading the per-CPU
+  bitmask (`ipi_messages`) pushing each demultiplexed IRQ event to the
+  pipeline entry, see [generic_pipeline_irq()]({{< relref
+  "dovetail/porting/irqflow#genirq-flow" >}}). If SGI1 or SGI2 are
+  received instead, the incoming event is remapped to either
+  TIMER_OOB_IPI or RESCHEDULE_OOB_IPI before it is fed into the
+  pipeline.
+
+{{% notice note %}}
+There is no generic out-of-band IPI handler: since each IPI has a
+dedicated interrupt descriptor, the out-of-band code may request it
+directly, installing its own handler by a call to [__request_percpu_irq()]({{<
+relref "dovetail/pipeline/irq_handling.md" >}}).
+{{% /notice %}}
+
+```
+static DEFINE_PER_CPU(unsigned long, ipi_messages);
+
+static void smp_cross_call(const struct cpumask *target, unsigned int ipinr)
+{
+	unsigned int cpu;
+
+	/* regular in-band IPI (multiplexed over SGI0). */
+	for_each_cpu(cpu, target)
+		set_bit(ipinr, &per_cpu(ipi_messages, cpu));
+
+	wmb();
+	__smp_cross_call(target, 0);
+}
+
+static irqreturn_t ipi_handler(int irq, void *data)
+{
+	unsigned long *pmsg;
+	unsigned int ipinr;
+
+	/*
+	 * Decode in-band IPIs (0..MAX_IPI - 1) multiplexed over
+	 * SGI0. Out-of-band IPIs (SGI1, SGI2) have their own
+	 * individual handler.
+	 */
+	pmsg = raw_cpu_ptr(&ipi_messages);
+	while (*pmsg) {
+		ipinr = ffs(*pmsg) - 1;
+		clear_bit(ipinr, pmsg);
+		__this_cpu_inc(ipi_counts[ipinr]);
+		do_handle_IPI(ipinr);
+	}
+
+	return IRQ_HANDLED;
+}
+```
 
 ---
 
