@@ -222,7 +222,7 @@ All notices sent to the Observable should carry a valid issuer tag in
 the `evl_notice.tag` field.  For applications, a valid tag is an
 arbitrary value greater or equal to `EVL_NOTICE_USER` (lower tag
 values are reserved to the core for [HM diag codes]({{< relref
-"core/user-api/thread/_index.md#health-monitoring" >}}).
+"core/user-api/thread/_index.md#health-monitoring" >}})).
 		
 [evl_update_observable()]({{< relref "#evl_update_observable" >}})
 returns the number of notices which have been successfully
