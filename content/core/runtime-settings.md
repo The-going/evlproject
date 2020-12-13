@@ -29,14 +29,14 @@ This basic latency may be increased by multiple factors such as:
 - inter-processor serialization within the EVL core (_hard spinlocks_).
 
 In order to deliver events as close as possible to the ideal time, EVL
-defines the notion of _clock gravity_, which is a static adjustment
-value to account for the basic latency of the target system for
-responding to timer events from any given clock device, as perceived
-by the client code waiting for these wake up events. For this reason,
-a clock gravity is defined as a triplet of values, which indicates the
-amount of time by which every timer shot should be anticipated from,
-depending on the target context it should activate, either IRQ
-handler, kernel or user thread.
+defines the notion of _clock gravity_, which is a set of static
+adjustment values to account for the basic latency of the target
+system for responding to timer events from any given clock device, as
+perceived by the client code waiting for these wake up events. For
+this reason, a clock gravity is defined as a triplet of values, which
+indicates the amount of time by which every timer shot should be
+anticipated from, depending on the target context it should activate,
+either IRQ handler, kernel or user thread.
 
 When started with the `-t` option, `latmus` runs a series of tests for
 determining those best calibration values for the EVL core timer, then
