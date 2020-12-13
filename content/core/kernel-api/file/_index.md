@@ -137,8 +137,8 @@ handler of an OOB-capable character device driver.
 
 Because the in-band kernel and the EVL core run almost fully
 asynchronously, some [out-of-band I/O operations]({{< relref
-"core/user-api/io" >}}) - which the in-band kernel does not know about
-- might still be pending for _efilp_ when the `release()` handler is
+"core/user-api/io" >}}) - which the in-band kernel does not know about -
+might still be pending for _efilp_ when the `release()` handler is
 invoked by the in-band kernel. For instance, some application which
 issued an [oob_read()]({{< relref "core/user-api/io/_index.md#oob_read"
 >}}) request might still be waiting for data in the `oob_read()`
@@ -160,12 +160,12 @@ such operation is ongoing in the system for the released file,
 therefore it can be safely dismantled afterwards.
 
 For this reason, you do want to call [evl_release_file()]({{< relref
-"#evl_release_file" >}}) _before_ any resource attached to the file
-being released is freed by the `release()` handler. The following
-example illustrates such precaution, considering that some out-of-band
-operations might still be in-flight while the device file is released
-by the in-band kernel, such as waiting on an [EVL semaphore]({{<
-relref "core/kernel-api/semaphore/_index.md" >}}).
+"#evl_release_file" >}}) _before_ the context data attached to the
+file being released is freed by the `release()` handler eventually
+. The following example illustrates such precaution, considering that
+some out-of-band operations might still be in-flight while the device
+file is released by the in-band kernel, such as waiting on an [EVL
+semaphore]({{< relref "core/kernel-api/semaphore/_index.md" >}}).
 
 ```
 #include <slab.h>

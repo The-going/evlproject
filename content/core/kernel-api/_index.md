@@ -80,7 +80,7 @@ EVL driver, the
 [close(2)](http://man7.org/linux/man-pages/man2/close.2.html) call
 should block until the out-of-band operation finishes, at which point
 the `.release()` handler may proceed with dismantling the file. A
-[simple rule] ({{% relref
+[simple rule]({{% relref
 "core/kernel-api/file/_index.md#evl_release_file" %}}) for writing EVL
 drivers ensures this.
 {{% /notice %}}

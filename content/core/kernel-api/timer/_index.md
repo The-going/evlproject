@@ -33,7 +33,7 @@ weight: 35
 
 ---
 
-#### ktime_t xntimer_get_interval(struct evl_timer *timer)
+#### ktime_t evl_get_interval(struct evl_timer *timer)
 
 ---
 
