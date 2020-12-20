@@ -207,6 +207,10 @@ void some_kthread(struct evl_kthread *kthread)
 
 ---
 
+#### ktime_t evl_delay(ktime_t timeout, enum evl_tmode timeout_mode, struct evl_clock *clock)
+
+---
+
 #### int evl_sleep_until(ktime_t timeout)
 
 ---
@@ -215,11 +219,11 @@ void some_kthread(struct evl_kthread *kthread)
 
 ---
 
-#### int evl_set_thread_period(struct evl_clock *clock, ktime_t idate, ktime_t period)
+#### int evl_set_period(struct evl_clock *clock, ktime_t idate, ktime_t period)
 
 ---
 
-#### int evl_wait_thread_period(unsigned long *overruns_r)
+#### int evl_wait_period(unsigned long *overruns_r)
 
 ---
 
