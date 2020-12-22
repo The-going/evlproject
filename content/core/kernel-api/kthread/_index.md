@@ -13,7 +13,7 @@ required.
 ---
 
 {{< proto evl_run_kthread >}}
-int evl_run_kthread(struct evl_kthread *kthread, void (*threadfn)(struct evl_kthread *kthread), int priority, int clone_flags, const char *fmt, ...)
+int evl_run_kthread(struct evl_kthread *kthread, void (*threadfn)(void *arg), void *arg, int priority, int clone_flags, const char *fmt, ...)
 {{< /proto >}}
 
 [evl_run_kthread()]({{% relref "#evl_run_kthread" %}}) is a
@@ -33,13 +33,17 @@ associated kernel thread runs.
 {{% /argument %}}
 
 {{% argument threadfn %}}
-The routine to run in the new thread context, which is passed
-_kthread_ as its sole argument.
+The routine to run in the new thread context.
+{{% /argument %}}
+
+{{% argument arg %}}
+A user-defined opaque pointer which is passed unmodified to _threadfn_
+as its sole argument.
 {{% /argument %}}
 
 {{% argument priority %}}
-The priority of the new thread, which is assumed to refer to the
-[SCHED_FIFO]({{% relref
+The priority of the new thread, which is assumed to refer to
+the [SCHED_FIFO]({{% relref
 "core/user-api/scheduling/_index.md#SCHED_FIFO" %}}) class.
 {{% /argument %}}
 
@@ -89,7 +93,7 @@ success, or a negated error code otherwise:
 ---
 
 {{< proto evl_run_kthread_on_cpu >}}
-int evl_run_kthread_on_cpu(struct evl_kthread *kthread, int cpu, void (*threadfn)(struct evl_kthread *kthread), int priority, int clone_flags, const char *fmt, ...)
+int evl_run_kthread_on_cpu(struct evl_kthread *kthread, int cpu, void (*threadfn)(void *arg), void *arg, int priority, int clone_flags, const char *fmt, ...)
 {{< /proto >}}
 
 As its name suggests, [evl_run_kthread_on_cpu()]({{% relref
@@ -165,8 +169,7 @@ which intends to accept termination requests from other threads.
 Whenever [evl_kthread_should_stop()]({{% relref
 "#evl_kthread_should_stop" %}}) returns _true_, the caller should plan
 for exiting as soon as possible, typically by returning from its entry
-routine (_threadfn_ argument to [evl_run_kthread()]({{% relref
-"#evl_run_kthread" %}})). Otherwise, it may continue.
+routine. Otherwise, it may continue.
 
 A typical usage pattern is as follows:
 
@@ -199,11 +202,52 @@ void some_kthread(struct evl_kthread *kthread)
 
 ---
 
-![Alt text](/images/wip.png "To be continued")
+{{< proto evl_set_kthread_priority >}}
+int evl_set_kthread_priority(struct evl_kthread *kthread, int priority)
+{{< /proto >}}
+
+This service changes the priority of an EVL kernel thread.
+
+{{% argument kthread %}}
+The descriptor of the EVL kernel thread.
+{{% /argument %}}
+
+{{% argument priority %}}
+The new priority of _kthread_, which is assumed to refer to
+the [SCHED_FIFO]({{% relref
+"core/user-api/scheduling/_index.md#SCHED_FIFO" %}}) class.
+{{% /argument %}}
+
+[evl_set_kthread_priority()]({{% relref "#evl_set_kthread_priority"
+%}}) returns zero on success, otherwise a negated error code is
+returned:
+
+-EINVAL		_priority_ is invalid. Check the documentation of the [SCHED_FIFO]({{% relref
+		"core/user-api/scheduling/_index.md#SCHED_FIFO" %}}) class for details.
+
+[evl_set_kthread_priority()]({{% relref "#evl_set_kthread_priority"
+%}}) immediately applies the changes to the scheduling attributes of
+_kthread_.
 
 ---
 
-#### evl_set_kthread_priority(struct evl_kthread *thread, int priority)
+{{< proto evl_current_kthread >}}
+struct evl_kthread *evl_current_kthread(void)
+{{< /proto >}}
+
+Returns the descriptor of the current EVL kernel thread. NULL is
+returned when calling this service from any other type of thread
+context (i.e. EVL user thread, non-EVL thread).
+
+{{% notice warning %}}
+evl_current_kthread() does not account for the interrupt context; a
+non-NULL pointer to the interrupted kernel thread may be returned if
+called from the IRQ handler.
+{{% /notice %}}
+
+---
+
+![Alt text](/images/wip.png "To be continued")
 
 ---
 
