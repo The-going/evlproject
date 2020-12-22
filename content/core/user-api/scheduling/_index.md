@@ -108,11 +108,11 @@ zero on success, otherwise a negated error code is returned:
 		"core/user-api/thread/_index.md#evl_detach_self" >}}).
 
 [evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) immediately
-changes the scheduling attributes the EVL core uses for the target
-thread when it runs in out-of-band context. Later on, the next time
-such thread transitions from out-of-band to in-band context, the in-band
-kernel will apply an extrapolated version of those changes to its own
-scheduler as well.
+applies the changes to the scheduling attributes of the target thread
+when the latter runs in out-of-band context. Later on, the next time
+such thread transitions from out-of-band to in-band context, the
+in-band kernel will apply an extrapolated version of those changes to
+its own scheduler as well.
 
 The extrapolation of the out-of-band scheduling attributes passed to
 [evl_set_schedattr()]({{% relref "#evl_set_schedattr" %}}) to the
