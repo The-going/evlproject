@@ -298,7 +298,8 @@ $ make [-C $SRCDIR] [ARCH=$cpu_arch] [CROSS_COMPILE=$toolchain] UAPI=$uapi_dir [
 | ---     |     ---
 | all     |     generate all binaries (library, utilities and tests)
 | clean   |     remove the build files
-| install |     do all, copying the generated binaries to $DESTDIR in the process
+| install |     do all, copying the generated system binaries to $DESTDIR in the process
+| install_all | install, copying all the generated binaries including the tidbits
 
 #### Cross-compiling EVL
 
