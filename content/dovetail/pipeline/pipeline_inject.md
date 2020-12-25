@@ -210,7 +210,10 @@ The interrupt pipeline forces the use of a [synthetic IRQ]({{% relref
 "dovetail/pipeline/synthetic.md" %}}) as a notification signal
 for the IRQ work machinery, instead of a hardware-specific interrupt
 vector. This special IRQ is labeled _in-band work_ when reported by
-`/proc/interrupts`.
+`/proc/interrupts`. `irq_work_queue()` may invoke the work handler
+immediately _only_ if called from the in-band stage with hard irqs on.
+In all other cases, the handler execution is deferred until the in-band
+log is [synchronized]({{% relref "dovetail/pipeline/_index.md" %}}).
 {{% /notice %}}
 
 ---
