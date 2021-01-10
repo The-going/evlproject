@@ -31,12 +31,12 @@ configuration for signaling the following events across CPUs:
  
 As their respective name suggests, those two IPIs can be sent from
 out-of-band context (as well as in-band), by calling the
-`irq_pipeline_send_remote()` service.
+`irq_send_oob_ipi()` service.
 
 ---
 
-{{< proto irq_pipeline_send_remote >}}
-void irq_pipeline_send_remote(unsigned int ipi, const struct cpumask *cpumask)
+{{< proto irq_send_oob_ipi >}}
+void irq_send_oob_ipi(unsigned int ipi, const struct cpumask *cpumask)
 {{< /proto >}}
 
 {{% argument ipi %}}
@@ -56,7 +56,7 @@ In order to receive these IPIs, an out-of-band handler must have been
 set for them, mentioning the [IRQF_OOB flag]({{ < relref
 "dovetail/pipeline/irq_handling.md" >}}).
 
-`irq_pipeline_send_remote()` serializes callers internally so that it
+`irq_send_oob_ipi()` serializes callers internally so that it
 may be used from either stages: in-band or out-of-band.
 
 ---

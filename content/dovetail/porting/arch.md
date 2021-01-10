@@ -711,7 +711,7 @@ implementation must provide support for two operations:
 - sending the additional IPI signals defined by the [Dovetail API]({{<
   relref "dovetail/pipeline/pipeline_inject#oob-ipi" >}})
   using the mechanism available from your hardware for inter-processor
-  messaging, upon request from `irq_pipeline_send_remote()`.
+  messaging, upon request from `irq_send_oob_ipi()`.
 
 - [dispatching deferred IPIs]({{< relref
   "dovetail/porting/irqflow#arch-do-irq" >}}) to their
@@ -951,7 +951,7 @@ The implementation of the IPI multiplexing for ARM takes place in
 
 - on the issuer side, `smp_cross_call()` deals with in-band IPIs
   exclusively, logging them into a per-CPU global bitmask
-  (`ipi_messages`) before issuing SGI0. `irq_pipeline_send_remote()`
+  (`ipi_messages`) before issuing SGI0. `irq_send_oob_ipi()`
   sends out-of-band IPIs by triggering SGI1 (TIMER_OOB_IPI) or SGI2
   (RESCHEDULE_OOB_IPI).
 
