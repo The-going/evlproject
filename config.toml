@@ -2,7 +2,7 @@ baseURL = "https://evlproject.org/"
 languageCode = "en-US"
 title = "EVL project"
 theme = "hugo-theme-learn"
-copyright = "Copyright 2020 - The EVL project."
+copyright = "Copyright 2021 - The EVL project."
 enableGitInfo = true
 
 [params]
