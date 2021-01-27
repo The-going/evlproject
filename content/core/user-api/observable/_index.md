@@ -49,7 +49,7 @@ int evl_create_observable(int flags, const char *fmt, ...)
 This call creates an Observable element, returning a file descriptor
 representing the new object upon success. This is the generic call
 form; for creating an Observable with common pre-defined settings, see
-[evl_new_observable()}({{% relref "#evl_new_observable" %}}).
+[evl_new_observable()]({{% relref "#evl_new_observable" %}}).
 
 An Observable can operate either in [_broadcast_ or _master_ mode]({{<
 relref "#observer-pattern" >}}):
