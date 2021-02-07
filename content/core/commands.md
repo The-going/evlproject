@@ -383,27 +383,88 @@ features in your [kernel build]({{< relref
 The command syntax is as follows:
 
 ```
-evl trace [-e [-s <buffer_size>]]
+evl trace [-e[<trace_group>][-E<tracepoint_file>][-s<buffer_size>][-t]]
     	  [-d] [-p] [-f] [-h]
 	  [-c <cpu>]
 	  [-h]
 ```
 
+{{% notice tip %}}
+Arguments to options must immediately follow the option letter, without any
+spacing in between.
+{{% /notice %}}
+
 The command options allow for a straightforward use of the function
 tracer:
 
-- `-e` enables the tracer in the kernel. From this point, FTRACE
-  starts logging information about a set of kernel functions which may
-  be traversed while the system executes. By default, this switch only
-  enables tracing for out-of-band IRQ events, CPU idling events, and
-  all (in-kernel) EVL core routines. If a particular CPU is mentioned
-  with `-c` along with `-e`, then per-CPU tracing is enabled for
-  \<cpu\>.
+- `-e` enables the tracer in the kernel, optionally turning on a trace
+  group, which is a set of pre-defined tracepoints. From this point,
+  FTRACE starts logging information about a set of kernel tracepoints
+  which may be traversed while the system executes.
+
+  Up to libevl **r24**, this option-less switch enables tracing for
+  out-of-band IRQ events, CPU idling events, and all (in-kernel) EVL
+  core routines.
+
+  Since libevl **r25**, the name of a trace group can be mentioned
+  right after the option letter, which refers to a pre-defined set of
+  tracepoints. Those tracepoints are listed in a separate file which
+  should be stored at $EVL_CMDDIR/trace.$name. A tracepoint in such
+  file is specified relative to FTRACE's `tracing/` hierarchy, such as
+  `irq/irq_pipeline_entry`, which would refer to
+  `$EVL_TRACEDIR/tracing/irq/irq_pipeline_entry`. Without argument,
+  `-e` behaves as `-e -f`, which enables all kernel tracepoints (see
+  `-f`).
+
+```
+~# evl trace -eirq
+tracing enabled
+
+~ # cat /usr/evl/libexec/trace.irq 
+irq/irq_pipeline_entry
+irq/irq_pipeline_exit
+irq/irq_handler_entry
+irq/irq_handler_exit
+evl/evl_timer_shot
+evl/evl_trigger
+evl/evl_latspot
+```
+
+  You can either extend the set of pre-defined trace groups by adding
+  your own sets to $EVL_CMDDIR, or use the `-E` option to specify an
+  arbitray tracepoint file.
+
+  If a particular CPU is mentioned with `-c` along with `-e`, then
+  per-CPU tracing is enabled for \<cpu\>.
+
+- `-E` is similar to `-e`, except that its argument refers to an
+  arbitrary tracepoint file. This is handy for working with your own
+  custom set of tracepoints.
+
+  If a tracepoint listed in the file is invalid, it is silently
+  ignored.
+
+```
+~# cat > /tmp/custom_traces
+evl/evl_schedule
+evl/evl_pick_next
+evl/evl_switch_context
+evl/evl_switch_tail
+evl/evl_finish_wait
+^D
+
+~# evl trace -E/tmp/custom_traces
+tracing enabled
+```
+
+- `-t` turns on the _dry run_ mode for `-e` and `-E`, meaning that all
+  commands enabling tracepoints are echoed to the output but not
+  actually applied. This is a quick way to check the sanity of a
+  (custom) tracepoint file.
 
 - if `-f` is mentioned, all kernel functions traversed in the course
-  of execution are logged, not only the minimal subset enabled by
-  default by `-e`. CAUTION: enabling full tracing may cause a massive
-  overhead.
+  of execution are logged.  CAUTION: enabling full tracing may cause a
+  massive overhead.
 
 - `-s` changes the size of the FTRACE buffer on each tracing CPU to
   \<buffer_size\>. If a particular CPU is mentioned with `-c` along with
