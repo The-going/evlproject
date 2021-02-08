@@ -143,7 +143,12 @@ information.
     <td>Number of time partitions for CONFIG_EVL_SCHED_TP</td>
   </tr>
   <tr>
-    <td><a href="/core/user-api/thread/#thread-stats" target="_blank">CONFIG_EVL_SCHED_RUNSTATS</a></td>
+    <td>CONFIG_EVL_HIGH_PERCPU_CONCURRENCY</td>
+    <td>N</td>
+    <td>Optimizes the implementation for applications with many real-time threads running concurrently on any given CPU	core</td>
+  </tr>
+  <tr>
+    <td><a href="/core/user-api/thread/#thread-stats" target="_blank">CONFIG_EVL_RUNSTATS</a></td>
     <td>Y</td>
     <td>Collect runtime statistics about threads</td>
   </tr>
