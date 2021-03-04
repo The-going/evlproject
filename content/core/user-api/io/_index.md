@@ -37,13 +37,12 @@ definitely something we may want to happen within a bounded time,
 hence directly from the out-of-band execution stage.
 
 {{% notice tip %}}
-Since the EVL core exports each [element]({{< relref
-"core/_index.md#evl-core-elements" >}}) as a character device which
-can be accessed from [/dev/evl]({{< relref
-"core/user-api/_index.md#evl-fs-hierarchy" >}}),
-interacting with EVL elements via
-[libevl]({{< relref "core/user-api/_index.md" >}}) is a actually done
-through the out-of-band I/O interface documented here.
+Since the EVL core exports every [public element]({{< relref "core/user-api/_index.md#element-visibility" >}})
+as a character device which can be accessed from
+[/dev/evl]({{< relref "core/user-api/_index.md#evl-fs-hierarchy" >}}),
+[libevl]({{< relref "core/user-api/_index.md" >}}) can interface with
+elements from other processes through the out-of-band I/O requests
+documented here, which are sent to the corresponding devices.
 {{% /notice %}}
 
 ### Out-of-band I/O services {#oob-io-services}
