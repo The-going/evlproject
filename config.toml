@@ -17,7 +17,7 @@ disableLandingPageButton = true
 evlTrackingKernel = "v5.11"
 evlLTSBranch = "evl/v5.10"
 evlLTSLatest = "v5.10.23-evl1"
-evlLibLatest = "r24"
+evlLibLatest = "r25"
 
 [markup]
 [markup.goldmark]
