@@ -86,7 +86,7 @@ channel until terminated.
 
 ![Alt text](/images/oob-dma-cyclic.png?featherlight=false "Cyclic out-of-band transaction")
 
-### Pulsed mode transaction
+### Pulsed mode transaction {#dma-pulsed-mode}
 
 A DMA transaction of pulsed transfers is a common slave transaction
 for the most part, except that each transfer must be started manually
