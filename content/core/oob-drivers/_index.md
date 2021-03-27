@@ -146,7 +146,7 @@ using a strictly separated driver stack though:
   make a difference when it comes to rebasing it.
 
 Would such integrated approach cover all the needs for real-time I/O
-in a dual kernel system such as EVL? Certainly no. Typically, when
+in a dual kernel system such as EVL? Certainly not. Typically, when
 drivers are endpoints of a complex protocol stack such as an IP
 network stack attached to network interfaces, the issue of handling
 such protocol within a bounded execution time would still not be
