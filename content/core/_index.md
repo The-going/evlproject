@@ -191,6 +191,10 @@ implementing real-time I/O operations in common character device
 drivers. In fact, the EVL core is composed of a set of such drivers,
 implementing each class of elements.
 
+EVL also provides a way to extend existing socket protocol families
+with out-of-band I/O capabilities, or add your own protocols via the
+new PF_OOB family.
+
 ---
 
 {{<lastmodified>}}

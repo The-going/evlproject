@@ -219,6 +219,22 @@ RCU-wise if running oob. CAUTION: the converse assertion is **NOT**
 true (i.e. a CPU running code on the in-band stage may be idle
 RCU-wise).
 
+### Common services which are safe in out-of-band context
+
+Dovetail guarantees that the following services are safe to call from
+the out-of-band stage:
+
+- irq_work() may be called from the out-of-band stage to schedule a
+  (synthetic) interrupt in the in-band stage.
+
+- __raise_softirq_irqoff() may be called from the out-of-band stage to
+  schedule a softirq. For instance, the EVL network stack uses this to
+  kick the NET_TX_SOFTIRQ event in the in-band stage.
+
+- printk() may be called from any context, including out-of-band
+  interrupt handlers. Messages are queued, then passed to the output
+  device(s) only when the in-band stage resumes though.
+
 ## ARM
 
 ### Context assumption with outer L2 cache

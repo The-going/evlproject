@@ -16,7 +16,7 @@ layer (aka `virt-dma`), Dovetail adds the required changes to this
 layer in order to cope with execution from the out-of-band stage. The
 current list of DMA controllers which support out-of-band transactions
 is available [at this location]({{< relref
-"core/oob-drivers/_index.md##oob-driver-list" >}}).
+"core/oob-drivers/_index.md#oob-driver-list" >}}).
 
 ## Out-of-band DMA channel
 

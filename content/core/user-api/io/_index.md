@@ -6,22 +6,18 @@ weight: 50
 ### Talking to real-time capable device drivers
 
 Using the [EVL kernel API]({{< relref "core/kernel-api/_index.md"
->}}), you can extend an existing character driver for supporting
-out-of-band I/O requests, or even write one from scratch.
+>}}), you can extend an existing driver for supporting out-of-band I/O
+operations, or even write one from scratch. Both character-based I/O
+and socket protocol drivers are supported.
 
 On the user side, application can exchange data with, send requests to
 these real-time capable drivers from the out-of-band execution stage
 with the a couple of additional services [libevl]({{< relref
 "core/user-api/_index.md" >}}) provides.
 
-{{% notice note %}}
-The EVL core does not currently support out-of-band socket
-semantics. Maybe at some point this will happen, but this needs more
-thought about proper integration of this feature. Not there yet.
-{{% /notice %}}
-
 You may notice that several POSIX file I/O services such as
 [open(2)](http://man7.org/linux/man-pages/man2/open.2.html),
+[socket(2)](http://man7.org/linux/man-pages/man2/socket.2.html),
 [close(2)](http://man7.org/linux/man-pages/man2/close.2.html),
 [fcntl(2)](http://man7.org/linux/man-pages/man2/fcntl.2.html),
 [mmap(2)](http://man7.org/linux/man-pages/man2/mmap.2.html) and so on
@@ -53,17 +49,17 @@ ssize_t oob_read(int efd, void *buf, size_t count)
 
 This is the strict equivalent to the standard
 [read(2)](http://man7.org/linux/man-pages/man2/read.2.html) system
-call, but for running the request from the out-of-band stage. In other
-words, [oob_read()]({{< relref "#oob_read" >}}) attempts to read up to _count_ bytes from file
-descriptor _fd_ into the buffer starting at _buf_, from the
-out-of-band execution stage.
+call, for sending the request from the out-of-band stage to an EVL
+driver. In other words, [oob_read()]({{< relref "#oob_read" >}})
+attempts to read up to _count_ bytes from file descriptor _fd_ into
+the buffer starting at _buf_, from the out-of-band execution stage.
 
 The caller must be an [EVL thread]({{< relref
 "core/user-api/thread/_index.md" >}}), which may be switched
 automatically by the EVL core to the out-of-band execution stage as a
 result of this call.
 
-{{% argument fd %}}
+{{% argument efd %}}
 A file descriptor obtained by opening a [real-time
 capable driver]({{< relref "core/kernel-api/_index.md" >}}) which we
 want to read from.
@@ -123,17 +119,17 @@ ssize_t oob_write(int efd, const void *buf, size_t count)
 
 This is the strict equivalent to the standard
 [write(2)](http://man7.org/linux/man-pages/man2/write.2.html) system
-call, but for running the request from the out-of-band stage. In other
-words, [oob_write()]({{< relref "#oob_write" >}}) attempts to write up to _count_ bytes to file
-descriptor _fd_ from the buffer starting at _buf_, from the
-out-of-band execution stage.
+call, for sending the request from the out-of-band stage to an EVL
+driver. In other words, [oob_write()]({{< relref "#oob_write" >}})
+attempts to write up to _count_ bytes to file descriptor _fd_ from the
+buffer starting at _buf_, from the out-of-band execution stage.
 
 The caller must be an [EVL thread]({{< relref
 "core/user-api/thread/_index.md" >}}), which may be switched
 automatically by the EVL core to the out-of-band execution stage as a
 result of this call.
 
-{{% argument fd %}}
+{{% argument efd %}}
 A file descriptor obtained by opening a [real-time
 capable driver]({{< relref "core/kernel-api/_index.md" >}}) which we
 want to read from.
@@ -202,16 +198,17 @@ int oob_ioctl(int efd, unsigned long request, ...)
 
 This is the strict equivalent to the standard
 [ioctl(2)](http://man7.org/linux/man-pages/man2/ioctl.2.html) system
-call, but for running the I/O control request from the out-of-band
-stage. In other words, [oob_ioctl()]({{< relref "#oob_ioctl" >}}) issues _request_ to file
-descriptor _fd_ from the out-of-band execution stage.
+call, for sending the I/O control request from the out-of-band stage
+to an EVL driver. In other words, [oob_ioctl()]({{< relref
+"#oob_ioctl" >}}) issues _request_ to file descriptor _fd_ from the
+out-of-band execution stage.
 
 The caller must be an [EVL thread]({{< relref
 "core/user-api/thread/_index.md" >}}), which may be switched
 automatically by the EVL core to the out-of-band execution stage as a
 result of this call.
 
-{{% argument fd %}}
+{{% argument efd %}}
 A file descriptor obtained by opening a [real-time
 capable driver]({{< relref "core/kernel-api/_index.md" >}}) which we
 want to send a request to.
@@ -237,11 +234,216 @@ ENOTTY  if _fd_ does not support the [.oob_ioctl operation]({{< relref
 
 EFAULT	if _buf_ points to invalid memory.
 
-EAGAIN  _fd_ is marked as non-blocking (O_NONBLOCK)
-	(http://man7.org/linux/man-pages/man2/fcntl.2.html), and the control
+EAGAIN  _fd_ is marked as [non-blocking (O_NONBLOCK)](http://man7.org/linux/man-pages/man2/fcntl.2.html), and the control
 	request would block.
 
 Other driver-specific error codes may be returned.
+
+---
+
+{{< proto oob_recvmsg >}}
+ssize_t oob_recvmsg(int s, struct oob_msghdr *msghdr, const struct timespec *timeout, int flags)
+{{< /proto >}}
+
+This is an equivalent to the standard
+[recvmsg(2)](http://man7.org/linux/man-pages/man2/recvmsg.2.html)
+system call, for sending the request from the out-of-band stage to an
+EVL driver with a socket-based interface.  In other words,
+[oob_recvmsg()]({{< relref "#oob_recvmsg" >}}) is used to receive
+messages from an out-of-band capable EVL socket from the out-of-band
+execution stage.
+
+The caller must be an [EVL thread]({{< relref
+"core/user-api/thread/_index.md" >}}), which may be switched
+automatically by the EVL core to the out-of-band execution stage as a
+result of this call.
+
+{{% argument s %}}
+A socket descriptor obtained from a regular
+[socket(2)](http://man7.org/linux/man-pages/man2/recvmsg.2.html) call,
+with the `SOCK_OOB` flag set in the _type_ argument, denoting that
+out-of-band services are enabled for the socket.
+{{% /argument %}}
+
+{{% argument msghdr %}}
+A pointer to a structure containing the multiple arguments to this
+call, [which is described below]({{< relref "#oob-msghdr" >}}).
+{{% /argument %}}
+
+{{% argument timeout %}}
+A time limit to wait for a message before the call returns on
+error. The built-in clock [EVL_CLOCK_MONOTONIC]({{< relref
+"core/user-api/clock/_index.md#builtin-clocks" >}}) is used for
+tracking the elapsed time. If NULL is passed, the call is allowed
+to wait indefinitely for a message.
+{{% /argument %}}
+
+{{% argument flags %}}
+A set of flags further qualifying the operation. Only the following
+flags should be recognized for out-of-band requests:
+
+- `MSG_DONTWAIT` causes the call to fail with the error EAGAIN if no
+message is immediately available at the time of the
+call. `MSG_DONTWAIT` is implied if O_NONBLOCK was set for the socket
+descriptor via the
+[fcntl(2)](http://man7.org/linux/man-pages/man2/fcntl.2.html) F_SETFL
+operation.
+
+- `MSG_PEEK` causes the receive operation to return data from the
+beginning of the receive queue without removing that data from the
+queue.  Thus, a subsequent receive call will return the same data.
+{{% /argument %}}
+
+[oob_recvmsg()]({{< relref "#oob_recvmsg" >}}) returns the actual
+number of bytes received on success. Otherwise, -1 is returned, and
+errno is set to the error code:
+
+EBADF   if _s_ does not refer to a valid socket opened with the
+	`SOCK_OOB` type flag set, or _s_ was not opened for reading.
+
+EINVAL  if _s_ does not support the [.oob_ioctl operation]({{< relref
+	"core/kernel-api/_index.md" >}}).
+
+EFAULT	if _msghdr_, or any buffer it refers to indirectly points to
+	invalid memory.
+
+EAGAIN	_s_ is marked as [non-blocking (O_NONBLOCK)](http://man7.org/linux/man-pages/man2/fcntl.2.html), or
+	`MSG_DONTWAIT` is set in _flags_, and the receive operation would
+	block.
+
+ETIMEDOUT  the _timeout_ fired before the operation could complete successfully.
+
+---
+
+{{< proto oob_sendmsg >}}
+ssize_t oob_sendmsg(int s, const struct oob_msghdr *msghdr, const struct timespec *timeout, int flags)
+{{< /proto >}}
+
+This call is equivalent to the standard
+[sendmsg(2)](http://man7.org/linux/man-pages/man2/sendmsg.2.html)
+system call, for sending the request from the out-of-band stage to an
+EVL driver with a socket-based interface.  In other words,
+[oob_sendmsg()]({{< relref "#oob_sendmsg" >}}) is used to send
+messages to an out-of-band capable EVL socket from the out-of-band
+execution stage.
+
+The caller must be an [EVL thread]({{< relref
+"core/user-api/thread/_index.md" >}}), which may be switched
+automatically by the EVL core to the out-of-band execution stage as a
+result of this call.
+
+{{% argument s %}}
+A socket descriptor obtained from a regular
+[socket(2)](http://man7.org/linux/man-pages/man2/recvmsg.2.html) call,
+with the `SOCK_OOB` flag set in the _type_ argument, denoting that
+out-of-band services are enabled for the socket.
+{{% /argument %}}
+
+{{% argument msghdr %}}
+A pointer to a structure containing the multiple arguments to this
+call, [which is described below]({{< relref "#oob-msghdr" >}}).
+{{% /argument %}}
+
+{{% argument timeout %}}
+A time limit to wait for an internal buffer to be available for
+sending the message before the call returns on error. The built-in
+clock [EVL_CLOCK_MONOTONIC]({{< relref
+"core/user-api/clock/_index.md#builtin-clocks" >}}) is used for
+tracking the elapsed time.  If NULL is passed, the call is allowed
+ to wait indefinitely for a buffer.
+{{% /argument %}}
+
+{{% argument flags %}}
+A set of flags further qualifying the operation. Only the following
+flag should be recognized for out-of-band requests:
+
+- `MSG_DONTWAIT` causes the call to fail with the error EAGAIN if no
+buffer is immediately available at the time of the call for sending
+the message. `MSG_DONTWAIT` is implied if O_NONBLOCK was set for the
+socket descriptor via the
+[fcntl(2)](http://man7.org/linux/man-pages/man2/fcntl.2.html) F_SETFL
+operation.
+{{% /argument %}}
+
+[oob_sendmsg()]({{< relref "#oob_sendmsg" >}}) returns the actual
+number of bytes sent on success. Otherwise, -1 is returned, and errno
+is set to the error code:
+
+EBADF	if _s_ does not refer to a valid socket opened with the
+	`SOCK_OOB` type flag set, or _s_ was not opened for writing.
+
+EINVAL  if _s_ does not support the [.oob_ioctl operation]({{< relref
+	"core/kernel-api/_index.md" >}}).
+
+EFAULT	if _msghdr_, or any buffer it refers to indirectly points to
+	invalid memory.
+
+EAGAIN	_s_ is marked as [non-blocking (O_NONBLOCK)](http://man7.org/linux/man-pages/man2/fcntl.2.html), or
+	`MSG_DONTWAIT` is set in _flags_, and the send operation would
+	block.
+
+ETIMEDOUT  the _timeout_ fired before the operation could complete successfully.
+
+--
+
+## The out-of-band message header {#oob-msghdr}
+
+The structure `oob_msghdr` which is passed to the [oob_recvmsg()]({{<
+relref "#oob_recvmsg" >}}) and [oob_sendmsg()]({{< relref
+"#oob_sendmsg" >}}) calls is defined as follows:
+
+           struct oob_msghdr {
+               void           *msg_name;       /* Optional address */
+               socklen_t       msg_namelen;    /* Size of address */
+               struct iovec   *msg_iov;        /* Scatter/gather array */
+               size_t          msg_iovlen;     /* # elements in msg_iov */
+               void           *msg_control;    /* Ancillary data, see below */
+               size_t          msg_controllen; /* Ancillary data buffer len */
+               int             msg_flags;      /* Flags on received message */
+               struct timespec msg_time;       /* Optional time, see below */
+           };
+
+           struct iovec {                    /* Scatter/gather array items */
+               void  *iov_base;              /* Starting address */
+               size_t iov_len;               /* Number of bytes to transfer */
+           };
+
+The `msg_name` field points to a caller-allocated buffer that is used
+to return the source address if the socket is unconnected.  The caller
+should set `msg_namelen` to the size of this buffer before this call.
+On success, [oob_recvmsg()]({{< relref "#oob_recvmsg" >}}) updates
+`msg_namelen` to contain the length of the returned address.  If the
+application does not need to know the source address, `msg_name` can
+be specified as NULL.
+
+The fields `msg_iov` and `msg_iovlen` describe scatter-gather
+locations pointing at the message data being sent or received, as
+discussed in
+[readv(2)](http://man7.org/linux/man-pages/man2/readv.2.html).
+
+The field `msg_control` points to a buffer for other protocol
+control-related messages or miscellaneous ancillary data.  When either
+[oob_recvmsg()]({{< relref "#oob_recvmsg" >}}) or [oob_sendmsg()]({{<
+relref "#oob_sendmsg" >}}) is called, `msg_controllen` should contain
+the length of the available buffer in `msg_control`. On success,
+[oob_recvmsg()]({{< relref "#oob_recvmsg" >}}) updates
+`msg_controllen` to contain the actual length of the control message
+sequence returned by the call.
+
+The `msg_flags` field is only set on return of [oob_recvmsg()]({{<
+relref "#oob_recvmsg" >}}).  It can contain any of the flags which may
+be returned by
+[recvmsg(2)](http://man7.org/linux/man-pages/man2/recvmsg.2.html).
+
+`msg_time` may be used to send or receive timestamping information
+to/from the protocol driver implementing out-of-band operations.
+
+{{% notice warning %}}
+Protocol drivers should no attach any meaning to `MSG_OOB` when
+operating in out-of-band mode, so that no additional confusion arises
+with the common usage of this flag with
+[recvmsg(2)](http://man7.org/linux/man-pages/man2/recvmsg.2.html).
+{{% /notice %}}
 
 ---
 

@@ -178,34 +178,16 @@ addressing two major issues with the latter in the early days:
   that they would be portable across multiple flavours of dual kernel
   systems implementing the RTDM interface.
 
-Since EVL extends the regular Linux [character-based I/O
-interface]({{< relref "core/kernel-api/file/_index.md" >}}) between
-applications and real-time drivers, there is no need for any
-additional API. Although the question of how to best support the
-[socket](http://man7.org/linux/man-pages/man2/socket.2.html) semantics
-is still work-in-progress with EVL, implementation-wise there may be
-several options. For instance, RTDM implements the socket API as a
-character-based interface internally: each socket-related call from
-the application branches directly to a dedicated operation handler in
-a driver, and data is exchanged between both parties within
-per-request buffers; there is no complex logic for managing queues of
-socket buffers, no packet reassembly, no design for layered protocols
-in between. As a result, the so-called _named_ and _protocol_ driver
-interfaces RTDM defines are very close implementation-wise, only
-branching to distinct in-kernel handlers, except for the information
-identifying the driver to create a channel on
-(i.e. [open()](http://man7.org/linux/man-pages/man2/open.2.html) vs
-[socket()](http://man7.org/linux/man-pages/man2/socket.2.html)), and
-some ancilliary data which can be attached to I/O requests
-(e.g. `struct msghdr`) only using the socket API. If this is still the
-best option, EVL should do the same, exporting a dedicated socket-like
-API to applications. This question is not sorted out yet.
-
-Because RTDM enshrines the notion that a dual kernel system should
-provide for its own driver stack aside of the Linux driver model, it
+RTDM enshrines the notion that a dual kernel system should provide for
+its own driver stack aside of the Linux driver model, as a result it
 opposes in principle to what EVL aims at.  Achieving a closer
 integration of real-time I/O support into the mainline kernel code
 whenever possible is a fundamental goal of EVL.
+
+To this end, EVL extends both the regular Linux character-based I/O
+and socket [interfaces]({{< relref "core/user-api/api/_index.md" >}})
+between applications and real-time drivers to support out-of-band
+operations on common files and sockets.
 
 As a consequence, there is not much point in implementing the RTDM
 interface over EVL, except maybe as a compatibility layer for porting

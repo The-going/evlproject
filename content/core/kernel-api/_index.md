@@ -6,16 +6,16 @@ pre: "&#9702; "
 
 ## What is an EVL driver? {#evl-driver-definition}
 
-An EVL driver is a regular Linux character device driver which also
-implements a set of out-of-band I/O operations advertised by its file
-operation descriptor (`struct file_operations`). These out-of-band I/O
-requests are only available to [EVL threads]({{< relref
-"core/user-api/thread" >}}), since only such threads may run on the
-[out-of-band execution stage]({{< relref
-"dovetail/pipeline/_index.md#two-stage-pipeline" >}}). Applications
-running in user-space can start these I/O operations by issuing
-[specific system calls]({{< relref "core/user-api/io" >}}) to the EVL
-core.
+An EVL driver is a regular Linux driver, either of a character device
+driver or a socket protocol driver, which also implements a set of
+out-of-band I/O operations advertised by its file operation descriptor
+(`struct file_operations`). These out-of-band I/O requests are only
+available to [EVL threads]({{< relref "core/user-api/thread" >}}),
+since only such threads may run on the [out-of-band execution
+stage]({{< relref "dovetail/pipeline/_index.md#two-stage-pipeline"
+>}}). Applications running in user-space can start these I/O
+operations by issuing [specific system calls]({{< relref
+"core/user-api/io" >}}) to the EVL core.
 
 > Excerpt from _include/linux/fs.h_, as modified by Dovetail
 ```
@@ -29,6 +29,11 @@ struct file_operations {
 	...
 } __randomize_layout;
 ```
+
+In the particular case of the socket interface, [Dovetail]({{% relref
+"dovetail/_index.md" %}}) also connects the in-band networking core
+with the companion core through a simple internal interface so that
+the latter can provide out-of-band extensions.
 
 [Dovetail]({{% relref "dovetail/_index.md" %}}) is in charge of
 routing the system calls received from applications to the proper
