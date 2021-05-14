@@ -90,7 +90,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.10-rc4</td>
+    <td>v5.12</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank">Broadcom BCM2711 (Raspberry PI 4 Model B)</a></td>
@@ -98,7 +98,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.10-rc4</td>
+    <td>v5.12</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">Broadcom BCM2837 (Raspberry PI 3 Model B)</a></td>
@@ -146,7 +146,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.9-rc8</td>
+    <td>v5.12</td>
   </tr>
   <tr>
     <td><a href="https://www.xilinx.com/support/documentation/boards_and_kits/zcu102/ug1182-zcu102-eval-bd.pdf" target="_blank">Xilinx Zynq UltraScale+ (ZCU102)</a></td>
@@ -185,7 +185,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.9</td>
+    <td>v5.11</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-zero/" target="_blank">Broadcom BCM2835 (Raspberry PI Zero)</a></td>
@@ -225,7 +225,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.10-rc4</td>
+    <td>v5.11</td>
   </tr>
   <tr>
     <td><a href="http://nanopi.io/nanopi-neo.html/" target="_blank">AllWinner H3 (NanoPI NEO)</a></td>
@@ -241,7 +241,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.10-rc4</td>
+    <td>v5.12</td>
   </tr>
   <tr>
     <td><a href="https://www.phytec.eu/product-eu/single-board-computer/phyboard-mira/" target="_blank">NXP i.MX6Q (phyBOARD-Mira)</a></td>
@@ -249,7 +249,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.9</td>
+    <td>v5.12</td>
   </tr>
   <tr>
     <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-7dual-applications-processors:MCIMX7SABRE" target="_blank">NXP i.MX7D (SabreSD)</a></td>
@@ -284,7 +284,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.10-rc4</td>
+    <td>v5.12</td>
   </tr>
   <tr>
     <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
@@ -292,7 +292,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.10-rc4</td>
+    <td>v5.12</td>
   </tr>
   <tr>
     <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 core i7 quad (DFI SD631)</a></td>
@@ -308,7 +308,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.9-rc8</td>
+    <td>v5.11</td>
   </tr>
 </table>
 </div>
