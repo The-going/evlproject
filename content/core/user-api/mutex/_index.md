@@ -292,7 +292,7 @@ back to the caller in case the implicit initialization call fails.
 ---
 
 {{< proto evl_timedlock_mutex >}}
-int evl_timedlock_mutex(struct evl_mutex *mutex)
+int evl_timedlock_mutex(struct evl_mutex *mutex, const struct timespec *timeout)
 {{< /proto >}}
 
 This call is a variant of [evl_lock_mutex()]({{% relref

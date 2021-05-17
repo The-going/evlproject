@@ -44,7 +44,7 @@ what you are looking for.
 ---
 
 {{< proto evl_create_flags >}}
-int evl_create_flags(struct evl_flags *flg, int clockfd, init initval, int flags, const char *fmt, ...)
+int evl_create_flags(struct evl_flags *flg, int clockfd, int initval, int flags, const char *fmt, ...)
 {{< /proto >}}
 
 This call creates a group of event flags, returning a file descriptor

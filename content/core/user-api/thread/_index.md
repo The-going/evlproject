@@ -267,7 +267,7 @@ referring to the newly attached thread before returning from
 ---
 
 {{< proto evl_attach_self >}}
-int evl_attach_self(int flags, const char *fmt, ...)
+int evl_attach_self(const char *fmt, ...)
 {{< /proto >}}
 
 This call is a shorthand for attaching the calling thread to the EVL
