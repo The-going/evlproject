@@ -243,6 +243,11 @@ information.
     <td>n</td>
     <td>Enable support for out-of-band GPIO line handling requests.</td>
   </tr>
+  <tr>
+    <td><a href="/core/oob-drivers/spi" target="_blank">CONFIG_SPI_OOB, CONFIG_SPIDEV_OOB</a></td>
+    <td>n</td>
+    <td>Enable support for out-of-band SPI transfers.</td>
+  </tr>
 </table>
 
 #### Enabling 32-bit support in a 64-bit kernel (`CONFIG_COMPAT`) {#enable-kernel-compat-mode}
