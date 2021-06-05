@@ -612,20 +612,29 @@ involves dealing with debug traps `ptrace()` may poke into the
 debuggee's code for breakpointing.
 {{% /notice %}}
 
-The notification is delivered to the [handle_oob_trap()]({{< relref
-"#handle_oob_trap" >}}) handler the core should override for receiving
-those events (_\_\_weak_ binding). [handle_oob_trap()]({{< relref
-"#handle_oob_trap" >}}) is passed the exception code as defined in
-_arch/*/include/asm/dovetail.h_, and a pointer to the register frame
-of the faulting context (_struct pt\_regs_).
+The notification of entering a trap is delivered to the
+[handle_oob_trap_entry()]({{< relref "#handle_oob_trap_entry" >}})
+handler the core should override for receiving those events
+(_\_\_weak_ binding). [handle_oob_trap_entry()]({{< relref
+"#handle_oob_trap_entry" >}}) is passed the exception code as defined
+in _arch/*/include/asm/dovetail.h_, and a pointer to the register
+frame of the faulting context (_struct pt\_regs_).
+
+Before the in-band trap handler eventually exits, it invokes
+[handle_oob_trap_exit()]({{< relref "#handle_oob_trap_exit" >}}) which
+the core should override if it needs to perform any fixup before the
+trap context is left (_\_\_weak_
+binding). [handle_oob_trap_exit()]({{< relref "#handle_oob_trap_exit"
+>}}) is passed the same arguments than [handle_oob_trap_entry()]({{<
+relref "#handle_oob_trap_entry" >}}).
 
 ---
 
-{{< proto handle_oob_trap >}}
-__weak void handle_oob_trap(unsigned int trapnr, struct pt_regs *regs)
+{{< proto handle_oob_trap_entry >}}
+__weak void handle_oob_trap_entry(unsigned int trapnr, struct pt_regs *regs)
 {{< /proto >}}
 
-This handler is called whenever a CPU trap is received by a
+This handler is called when a CPU trap is received by a
 [Dovetail-enabled task]({{< relref "#dovetail_start_altsched" >}})
 while running on the [out-of-band execution stage]({{< relref
 "dovetail/pipeline/_index.md#two-stage-pipeline" >}}). In such an
@@ -660,6 +669,38 @@ Interrupts are **disabled** in the CPU when this handler is called.
 
 > An [implementation of
   handle_oob_trap_entry()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/thread.c#L1482)
+  is present in the EVL core.
+
+{{< proto handle_oob_trap_exit >}}
+__weak void handle_oob_trap_exit(unsigned int trapnr, struct pt_regs *regs)
+{{< /proto >}}
+
+This handler is called when the in-band trap handler is about to
+unwind a CPU trap context for a [Dovetail-enabled task]({{< relref
+"#dovetail_start_altsched" >}}).
+
+[handle_oob_trap_exit]({{< relref "#handle_oob_trap_exit" >}}) is
+paired with [handle_oob_trap_exit]({{< relref "#handle_oob_trap_exit"
+>}}), and receives the same arguments.
+
+{{% argument trapnr %}}
+
+The trap code number. Such code depends on the CPU architecture:
+
+- the documented Intel trap numbers are used for x86 (#GP, #DE, #OF etc.)
+- other architectures may use a Dovetail-specific enumeration defined in
+  `arch/*/include/asm/dovetail.h`.
+
+{{% /argument %}}
+
+{{% argument regs %}}
+The register file at the time of the trap.
+{{% /argument %}}
+
+Interrupts are **disabled** in the CPU when this handler is called.
+
+> An [implementation of
+  handle_oob_trap_exit()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/thread.c#L1529)
   is present in the EVL core.
 
 ### System calls {#syscall-events}
@@ -745,11 +786,10 @@ __weak void handle_oob_syscall(struct pt_regs *regs)
 {{< /proto >}}
 
 This handler should implement the fast path for handling out-of-band
-system calls.  It is called by Dovetail whenever a system call is
-detected on entry of the common syscall path implemented by the
-in-band kernel, which should be handled directly by the companion core
-instead. Both of the following conditions must be met for this route
-to be taken:
+system calls.  It is called by Dovetail when a system call is detected
+on entry of the common syscall path implemented by the in-band kernel,
+which should be handled directly by the companion core instead. Both
+of the following conditions must be met for this route to be taken:
 
 - the caller is a user task running on the [out-of-band execution
 stage]({{< relref "dovetail/pipeline/_index.md#two-stage-pipeline"
@@ -790,10 +830,10 @@ a typical implementation of such a handler.
 __weak void handle_pipelined_syscall(struct irq_stage *stage, struct pt_regs *regs)
 {{< /proto >}}
 
-This handler is called by Dovetail whenever a system call is detected
-on entry of the common syscall path implemented by the in-band kernel,
-if the requirements for delivering it to the companion core via the
-fast route implemented by [handle_oob_syscall]({{< relref
+This handler is called by Dovetail when a system call is detected on
+entry of the common syscall path implemented by the in-band kernel, if
+the requirements for delivering it to the companion core via the fast
+route implemented by [handle_oob_syscall]({{< relref
 "#handle_oob_syscall" >}}) are not met, and any of the following
 condition is true:
 
@@ -824,7 +864,7 @@ should take on return:
 - zero tells Dovetail to pass the system call to the regular in-band
   handler next. This status makes sense if the companion core did not
   handle the request, but did switch the calling context to in-band
-  mode. This typically happens whenever the companion core wants to
+  mode. This typically happens when the companion core wants to
   automatically demote the execution stage of the caller when it
   detects a regular in-band system call issued over the wrong
   (i.e. out-of-band) context, in which case it may [switch it
@@ -1129,7 +1169,7 @@ relref "#dovetail_request_ucall" >}}) has no effect.
 
 Pend a request for _target_ to fire the [INBAND_TASK_RETUSER]({{<
 relref "#inband-events" >}}) event at the first opportunity, which
-happens whenever the task is about to resume execution in user mode
+happens when the task is about to resume execution in user mode
 from the in-band stage.
 
 If the [INBAND_TASK_RETUSER]({{< relref "#inband-events" >}}) event
