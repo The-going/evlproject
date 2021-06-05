@@ -44,13 +44,10 @@ We are now tracking kernel v5.7-rc6.
 
 ### Week 20.2020
 
-Started a side branch with a [refactored commit
-stack](https://git.evlproject.org/linux-evl.git/log/?h=dovetail/squashed)
-for Dovetail, reordering and merging related changes. This branch
-tracks
-[dovetail/master](https://git.evlproject.org/linux-evl.git/log/?h=dovetail/master),
-reorganizing and tidying up its contents. By definition, this branch
-needs to be rebased routinely.
+Started a side branch with a refactored commit stack for Dovetail,
+reordering and merging related changes. This branch tracks
+dovetail/master, reorganizing and tidying up its contents. By
+definition, this branch needs to be rebased routinely.
 
 We are now tracking kernel v5.4.40 LTS.
 
@@ -185,9 +182,7 @@ EVL is now tracking kernel v5.5, heading to v5.6-rc1. A seriously
 silly bug in the ARM port was uncovered recently, causing _undefined
 instruction_ exceptions to be spuriously reported by the EVL core. If
 you run the ARM port of EVL, make sure to pull from the **evl/master**
-branch, or at the very least pick [this
-commit](https://git.evlproject.org/linux-evl.git/commit/?h=dovetail/master&id=386a332946b72f58793f9a4c72859cb9ff12d4c6)
-which is actually reverting a broken and useless change.
+branch.
 
 Update: EVL was rebased on kernel v5.6-rc2; coming from v5.5.0, this
 has been a fairly smooth process. Some upstream changes to the x86

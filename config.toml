@@ -15,7 +15,7 @@ themeVariant = "evl"
 disableShortcutsTitle = true
 disableLandingPageButton = true
 evlTrackingKernel = "v5.13"
-evlLTSBranch = "evl/v5.10"
+evlLTSBranch = "v5.10.y"
 evlLTSLatest = "v5.10.42-evl1"
 evlLibLatest = "r25"
 

@@ -148,8 +148,8 @@ _dovetail/master_ branch of the following GIT repository which tracks
 the [mainline
 kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
 
-  * git://git.evlproject.org/linux-evl.git
-  * https://git.evlproject.org/linux-evl.git
+  * git@git.xenomai.org:Xenomai/xenomai4/linux-evl.git
+  * https://git.xenomai.org/xenomai4/linux-evl.git
 
 ## Audience
 

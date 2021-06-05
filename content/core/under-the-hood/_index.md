@@ -57,7 +57,7 @@ type representing an EVL [element]({{< relref
 Linux device driver model, the EVL core is composed of a set of
 character-based device drivers, one per element type. The core is
 implemented under the [kernel/evl
-hierarchy](https://git.evlproject.org/linux-evl.git/tree/kernel/evl?h=evl/master).
+hierarchy](https://git.xenomai.org/xenomai4/linux-evl/-/tree/v5.10.y-evl-rebase/kernel/evl).
 
 ### Element creation {#hood-element-creation}
 
@@ -68,7 +68,7 @@ application. For instance, a [thread element]({{< relref
 [evl_attach_self()]({{< relref
 "core/user-api/thread/_index.md#evl_attach_self" >}}) is invoked from
 [libevl]({{< relref "core/user-api/_index.md" >}}). To do so,
-[create_evl_element()](https://git.evlproject.org/libevl.git/tree/lib/internal.c)
+[create_evl_element()](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/lib/internal.c#L62)
 sends a request to the special _clone_ device exported by the core at
 `/dev/evl/thread/clone`. Upon return, the new thread element is live,
 and can be accessed by
@@ -93,14 +93,14 @@ monitors which underlie [mutexes]({{< relref
 In order to avoid code duplication, the EVL core implements a
 so-called element _factory_. The factory refers to EVL class
 descriptors of type [struct
-evl_factory](https://git.evlproject.org/linux-evl.git/tree/include/evl/factory.h?h=evl/master),
+evl_factory](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/evl/factory.h#L47),
 which describes how a particular element type should be handled by the
 generic factory code.
 
 The factory performs the following tasks:
 
 - it [populates the initial device
-  hierarchy](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/factory.c?h=evl/master)
+  hierarchy](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/factory.c#L786)
   under `/dev/evl` so that applications can issue requests to the EVL
   core. The main aspect of this task is to register a Linux device
   class for each element type, creating the related _clone_ device.
@@ -109,9 +109,9 @@ The factory performs the following tasks:
   [ioctl(EVL_IOC_CLONE)](http://man7.org/linux/man-pages/man2/ioctl.2.html)
   request, eventually calling the proper type-specific handler, such
   as
-  [thread_factory_build()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/thread.c?h=evl/master)
+  [thread_factory_build()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/thread.c#L2379)
   for threads,
-  [monitor_factory_build()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/monitor.c?h=evl/master)
+  [monitor_factory_build()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/monitor.c#L763)
   for monitors and so on.
 
 - it maintains a reference count on every element instantiated in the

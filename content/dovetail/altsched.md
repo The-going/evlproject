@@ -544,7 +544,7 @@ the [out-of-band stage]({{< relref
 call, in which case the transition could not take place.
 
 > The usage is illustrated by the [implementation of
-  evl_switch_oob()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/sched/core.c?h=evl/master)
+  evl_switch_oob()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/sched/core.c#L1037)
   in the EVL core.
 
 ---
@@ -563,7 +563,7 @@ finalizes the transition to this stage, by reconciling the current
 task state with the internal state of the in-band scheduler.
 
 > The usage is illustrated by the [implementation of
-  evl_switch_inband()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/sched/core.c?h=evl/master)
+  evl_switch_inband()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/sched/core.c#L1108)
   in the EVL core.
 
 ---
@@ -583,7 +583,7 @@ execution, such as `T_INBAND` for the EVL core.
 interrupts **disabled** in the CPU, out-of-band stage is stalled.
 
 > An [implementation of
-  resume_oob_task()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/sched/core.c?h=evl/master)
+  resume_oob_task()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/sched/core.c#L1017)
   is present in the EVL core.
 
 ## The event notifier {#event-notifier}
@@ -659,7 +659,7 @@ The register file at the time of the trap.
 Interrupts are **disabled** in the CPU when this handler is called.
 
 > An [implementation of
-  handle_oob_trap()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/thread.c?h=evl/master)
+  handle_oob_trap_entry()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/thread.c#L1482)
   is present in the EVL core.
 
 ### System calls {#syscall-events}
@@ -767,10 +767,6 @@ for receiving such system calls. Dovetail defines a dummy weak
 implementation of it, which the implementation of the core would
 supersede if defined (_\_\_weak_ binding).
 
-The EVL core
-[exhibits](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/syscall.c?h=evl/master)
-a typical implementation of such a handler.
-
 {{% argument regs %}}
 The register file at the time of the system call, which contains the
 call arguments passed by the application.
@@ -784,9 +780,9 @@ the ABI convention for the CPU architecture.
 with interrupts enabled in the CPU, out-of-band stage is
 unstalled. Whether the in-band stage accepts interrupts is undefined.
 
-> An [implementation of
-  handle_oob_syscall()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/syscall.c?h=evl/master)
-  is present in the EVL core.
+> The EVL core
+[exhibits](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/syscall.c#L428)
+a typical implementation of such a handler.
 
 ---
 
@@ -855,7 +851,7 @@ unstalled. If current, the in-band stage accepts interrupts, otherwise
 whether the in-band stage is stalled or not is undefined.
 
 > An [implementation of
-  handle_pipelined_syscall()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/syscall.c?h=evl/master)
+  handle_pipelined_syscall()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/syscall.c#L420)
   is present in the EVL core.
 
 ### In-band events {#inband-events}
@@ -972,7 +968,7 @@ The in-band stage is always current and accepts interrupts on entry to
 this call.
 
 > An [implementation of
-  handle_inband_event()](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/thread.c?h=evl/master)
+  handle_inband_event()](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/thread.c#L1870)
   is present in the EVL core.
 
 ## Alternate task context {#dovetail-task-context}

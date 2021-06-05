@@ -37,13 +37,13 @@ repositories:
 
 - The kernel tree featuring the EVL core:
 
-  * git://git.evlproject.org/linux-evl.git
-  * https://git.evlproject.org/linux-evl.git
+  * git@git.xenomai.org:Xenomai/xenomai4/linux-evl.git
+  * https://git.xenomai.org/xenomai4/linux-evl.git
 
 - The libevl tree which provides the user interface to the core:
 
-  * git://git.evlproject.org/libevl.git
-  * https://git.evlproject.org/libevl.git
+  * git@git.xenomai.org:Xenomai/xenomai4/libevl.git
+  * https://git.xenomai.org/xenomai4/libevl.git
 
 ### Other prerequisites {#building-evl-prereq}
 

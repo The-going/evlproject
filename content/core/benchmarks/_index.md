@@ -121,7 +121,7 @@ system under test should be sufficient, therefore we can measure
 easily the latency directly from there.
 
 EVL implements this test with the help of the [latmus
-driver](https://git.evlproject.org/linux-evl.git/tree/drivers/evl/latmus.c?h=evl/master)
+driver](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/evl/latmus.c#L561)
 which sends a wake up event to an [EVL-enabled responder thread]({{<
 relref "core/user-api/thread/_index.md" >}}) created by the [latmus
 application]({{< relref "core/testing.md#latmus-program" >}}) each
@@ -158,7 +158,7 @@ have been observed over time. The output format can be parsed by
 #### Running the timer-based test
 
 First, we need the [latmus
-driver](https://git.evlproject.org/linux-evl.git/tree/drivers/evl/latmus.c?h=evl/master)
+driver](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/evl/latmus.c)
 to be loaded into the kernel for the SUT. Therefore
 `CONFIG_EVL_LATMUS` should be enabled in the kernel
 configuration. From the command line, the entire test is controlled by
@@ -421,10 +421,10 @@ board, a low-cost development platform from
 [NXP](https://www.nxp.com/). For this reason, the Zephyr _device tree_
 and _pinmux_ bits for enabling the GPIO lines are readily available
 from [this
-patch](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/frdm_k64f-enable-EVL-latency-monitor.patch).
+patch](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/zephyr/frdm_k64f-enable-EVL-latency-monitor.patch).
 
 - the latency monitoring application, aka
-[latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/),
+[latmon](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/),
 which runs on the Zephyr board. This application periodically sends a
 pulse on one GPIO (output) line to be received by the system under
 test, then waits for an acknowledge on another GPIO (input) line,
@@ -434,7 +434,7 @@ measuring the time elapsed between the two events.
 pins. This board runs [latmus]({{< relref
 "core/testing.md#latmus-program" >}}) which sets up the test system,
 asking
-[latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
+[latmon](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/)
 to configure according to the settings requested by the user, then
 enters a responder loop which listens to then acknowledges GPIO events
 to the latency monitor using two separate GPIO lines. The period is
@@ -442,19 +442,19 @@ chosen by calling [latmus]({{< relref "core/testing.md#latmus-program"
 >}}) using the `-p` option (which defaults to 1 ms, i.e. 1 Khz
 sampling loop). This setting and a few others are passed by
 [latmus]({{< relref "core/testing.md#latmus-program" >}}) to
-[latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
+[latmon](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/)
 during the setup phase via the TCP/IP connection they share.
 
 - a couple of wires between the GPIO pins of system under test and
   those of the Zephyr board running
-  [latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/),
+  [latmon](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/),
   for transmitting pulses and receiving acknowledges to/from the
   system under test.
 
 - a network connection between both systems so that [latmus]({{<
   relref "core/testing.md#latmus-program" >}}) can establish a TCP/IP
   stream with the remote
-  [latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
+  [latmon](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/)
   application.
 
 - a DHCP server reachable from the Zephyr board running on your
@@ -462,18 +462,18 @@ during the setup phase via the TCP/IP connection they share.
   request at boot up.
 
 The [latmon
-application](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
+application](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/)
 running on the monitor board periodically raises a GPIO pulse event on
 the TX wire, which causes the SUT to receive an interrupt. By calling
 into the [EVL-enabled gpiolib]
-(https://git.evlproject.org/linux-evl.git/tree/drivers/gpio/gpiolib.c?h=evl/master)
+(https://git.xenomai.org/xenomai4/linux-evl/-/blob/3451245cdc9846835f8a2786767b17037ee13dda/drivers/gpio/gpiolib-cdev.c)
 driver, the [responder thread]({{< relref "core/user-api/thread/_index.md" >}})
 created by the [latmus application]({{< relref
 "core/testing.md#latmus-program" >}}) waits for such interrupt by
 monitoring edges on the GPIO pulse signal. Upon receipt, it
 immediately acknowledges the event by raising an edge on the GPIO ack
 signal, which
-[latmon](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
+[latmon](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/)
 monitors for calculating the latency value as the delay between the
 acknowledge and pulse events. The latter accumulates these results,
 sending an intermediate summary every second over a TCP/IP stream to a
@@ -508,7 +508,7 @@ example](https://docs.zephyrproject.org/latest/samples/basic/blinky/README.html)
 rest of the description assumes that the [Zephyr
 SDK](https://docs.zephyrproject.org/latest/getting_started/installation_linux.html)
 is rooted at ~/zephyrproject, and the [libevl source
-tree](https://git.evlproject.org/libevl) was cloned into ~/libevl.
+tree](https://git.xenomai.org/xenomai4/libevl.git) was cloned into ~/libevl.
 
 2. Patch the device tree and _pinmux_ changes to the FRDM-K64F board
 which enable the GPIO lines in the Zephyr source tree:
@@ -542,7 +542,7 @@ FRDM-K64F to your development system. This will power on the FRDM-K64F
 board, enabling firmware upload.
 
 6. Build the [latmon
-application](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
+application](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/)
 using the [Zephyr
 SDK](https://docs.zephyrproject.org/latest/getting_started/installation_linux.html),
 then flash it to the FRDM-K64F.
@@ -686,7 +686,7 @@ you spawn a new test.
 #### Running the GPIO-based test
 
 Once the Zephyr board is started with the [latmon
-application](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
+application](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/)
 flashed in, we can run the benchmark tests on the system under test.
 
 This is done by running the [latmus application]({{< relref
@@ -709,7 +709,7 @@ events (**-I \<gpiochip-name\>,\<pin-number\>**) and sending
 acknowledge signals (**-O \<gpiochip-name\>,\<pin-number\>**).
 
 When the test is started on the SUT, the [latmon
-application](https://git.evlproject.org/libevl.git/tree/benchmarks/zephyr/latmon/)
+application](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/)
 should start monitoring the GPIO response times of the [latmus
 application]({{< relref "core/testing.md#latmus-program" >}})
 indefinitely until the latter stops, at which point the latency

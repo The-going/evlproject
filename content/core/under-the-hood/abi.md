@@ -35,9 +35,9 @@ To this end, the following apply (since ABI revision #19):
   integer starting at 1, incremented by one after each revision.
 
 - the EVL core defines two symbols, namely
-  [EVL_ABI_BASE](https://git.evlproject.org/linux-evl.git/tree/include/uapi/evl/control.h?h=evl/master)
+  [EVL_ABI_BASE](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/control.h#L14)
   and
-  [EVL_ABI_LEVEL](https://git.evlproject.org/linux-evl.git/tree/include/uapi/evl/control.h?h=evl/master),
+  [EVL_ABI_LEVEL](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/control.h#L21),
   which represent the range of ABI revisions the core supports
   (inclusively), from oldest (EVL_ABI_BASE) to current (EVL_ABI_LEVEL)
   respectively. Differing values means that the EVL core honors
@@ -55,7 +55,7 @@ revision.
 
 - [libevl]({{< relref "core/user-api/_index.md" >}}) states the ABI
   revision it follows by defining the
-  [EVL_ABI_PREREQ](https://git.evlproject.org/libevl.git/tree/include/evl/evl.h?h=master)
+  [EVL_ABI_PREREQ](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/include/evl/evl.h#L25)
   symbol. When [libevl initializes]({{< relref
   "core/user-api/init/_index.md" >}}), this prerequisite is checked
   against the range of ABI revisions the running EVL core
@@ -80,16 +80,16 @@ history of ABI prerequisites in [libevl]({{< relref
 "core/user-api/_index.md" >}}), so that you can map any particular
 point the commit history with the ABI revision it is compatible
 with. For this, you can use a simple script called
-[git-evlabi](https://git.evlproject.org/linux-evl.git/tree/scripts/git-evlabi?h=evl/master),
+[git-evlabi](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/scripts/git-evlabi),
 which is available in the
-[linux-evl](https://git.evlproject.org/linux-evl.git) repository. You
+[linux-evl](https://git.xenomai.org/xenomai4/linux-evl.git) repository. You
 just need to make sure this script is executable and reachable from
 the $PATH variable.
 
 git-evlabi looks for EVL ABI definitions or prereqs in GIT trees
 cloned from either
-[linux-evl](https://git.evlproject.org/linux-evl.git) or
-[libevl](https://git.evlproject.org/libevl.git) respectively. It does
+[linux-evl](https://git.xenomai.org/xenomai4/linux-evl.git) or
+[libevl](https://git.xenomai.org/xenomai4/libevl.git) respectively. It does
 so depending on the value and type of the GIT object mentioned (or
 not) in the command:
 
@@ -163,7 +163,7 @@ c2a51a7e68a7 evl/thread: replace SIGEVL_ACTION_HOME with a RETUSER event
 ```
 
 The same logic applies to the
-[libevl](https://git.evlproject.org/libevl.git) tree, this time for
+[libevl](https://git.xenomai.org/xenomai4/libevl.git) tree, this time for
 determining the ABI prerequisites of commits in the API.
 
 > e.g. walking the history of ABI prerequisites
@@ -173,7 +173,7 @@ dde33b5 1c6115c..dde33b5  19
 ```
 
 Which means that looking at the current state of branch _next_ in the
-[libevl](https://git.evlproject.org/libevl.git) tree, ABI revision 19
+[libevl](https://git.xenomai.org/xenomai4/libevl.git) tree, ABI revision 19
 in the EVL core starts being a prerequisite for the code starting at
 commit #dde33b5.
 
@@ -188,7 +188,7 @@ commit, using the -r switch.
 
 {{% notice info %}}
 git-evlabi cannot detect ABI revisions earlier than 19 in the
-[libevl](https://git.evlproject.org/libevl.git) tree, since the
+[libevl](https://git.xenomai.org/xenomai4/libevl.git) tree, since the
 marker it looks for was introduced by that particular revision.
 {{% /notice %}}
 

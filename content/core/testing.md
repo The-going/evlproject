@@ -139,7 +139,7 @@ order to detect any obvious misconfiguration of the kernel early on.
 {{% /notice %}}
 
 With the sole `-m` option or without any argument, the
-[latmus](https://git.evlproject.org/libevl.git/tree/benchmarks/latmus.c)
+[latmus](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c)
 application runs a 1Khz sampling loop, collecting the min, max and
 average latency values obtained for an EVL thread running in
 user-space which responds to [timer events]({{< relref
@@ -174,7 +174,7 @@ and
 utilities.
 {{% /notice %}}
 
-[latmus](https://git.evlproject.org/libevl.git/tree/benchmarks/latmus.c)
+[latmus](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c)
 accepts the following arguments, given as short or long option names:
 
 {{% argument "-i --irq" %}}
@@ -317,7 +317,7 @@ the out-of-band stage, i.e. relying on real-time capabilities of the EVL
 core. The argument is the host name or IPv4 addresses of the remote
 board which monitors the response time from the SUT running
 the
-[latmus](https://git.evlproject.org/libevl.git/tree/benchmarks/latmus.c)
+[latmus](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c)
 application. This option must be associated with `-I` and `-O` to
 specify the GPIO chip(s) and pin numbers to use.
 {{% /argument %}}
@@ -328,7 +328,7 @@ relref "core/benchmarks/_index.md#latmus-gpio-response-time" >}}) in
 plain in-band mode. The argument is the host name or IPv4 address of
 the remote board which monitors the response time from the
 SUT running the
-[latmus](https://git.evlproject.org/libevl.git/tree/benchmarks/latmus.c)
+[latmus](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c)
 application. This option must be associated with `-I` and `-O` to
 specify the GPIO chip(s) and pin numbers to use.
 {{% /argument %}}

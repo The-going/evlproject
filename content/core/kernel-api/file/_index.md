@@ -40,14 +40,14 @@ context as necessary.
 
 {{% notice tip %}}
 A typical example of the latter usage can be found in the EVL-enabled [GPIOLIB
-driver](https://git.evlproject.org/linux-evl.git/tree/drivers/gpio/gpiolib.c?h=evl/master),
+driver](https://git.xenomai.org/xenomai4/linux-evl/-/blob/3451245cdc9846835f8a2786767b17037ee13dda/drivers/gpio/gpiolib-cdev.c#L463),
 which advertises out-of-band support for files created by the
 GPIO_GET_LINEEVENT_IOCTL request from the [character device interface
 to GPIO
 lines](https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git). A
 more usual way of advertising EVL files can be seen from the
 `latmus_open()` routine of the [latmus driver
-code](https://git.evlproject.org/linux-evl.git/tree/drivers/evl/latmus.c?h=evl/master)
+code](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/evl/latmus.c#L1148)
 which supports the [latmus application]({{< relref
 "core/testing.md#latmus-program" >}})..
 {{% /notice %}}
@@ -264,7 +264,7 @@ the underlying EVL file is not complete.
 
 The implementation of the [polling services]({{< relref
 "core/user-api/poll/_index.md" >}}) in the [EVL
-core](https://git.evlproject.org/linux-evl.git/tree/kernel/evl/poll.c?h=evl/master)
+core](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/poll.c#L227)
 illustrates how [evl_get_file()]({{< relref "#evl_get_file" >}}) is used
 for retrieving EVL file descriptions from descriptors passed by the
 application.

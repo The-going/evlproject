@@ -53,19 +53,19 @@ title: homepage
         <th>Latest</th>
       </tr>
       <tr>
-        <td><a href="https://git.evlproject.org/linux-evl.git">linux-evl (mainline)</a></td>
-        <td><a href="https://git.evlproject.org/linux-evl.git/log/?h=evl/master">evl/master</a></td>
-        <td><a href="https://git.evlproject.org/linux-evl.git/log/?h=evl/master">{{< param evlTrackingKernel >}}</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/linux-evl.git">linux-evl (mainline)</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/tree/{{< param evlTrackingKernel >}}-evl-rebase">{{< param evlTrackingKernel >}}-evl-rebase</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/tree/{{< param evlTrackingKernel >}}-evl-rebase">{{< param evlTrackingKernel >}}</a></td>
       </tr>
       <tr>
-        <td><a href="https://git.evlproject.org/linux-evl.git">linux-evl (LTS)</a></td>
-        <td><a href="https://git.evlproject.org/linux-evl.git/log/?h=evl/v5.4">{{< param evlLTSBranch >}}</a></td>
-        <td><a href="https://git.evlproject.org/linux-evl.git/tag/?h={{< param evlLTSLatest >}}">{{< param evlLTSLatest >}}</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/linux-evl.git">linux-evl (LTS)</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/tree/{{< param evlLTSBranch >}}-evl-rebase">{{< param evlLTSBranch >}}</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/tree/{{< param evlLTSLatest >}}-rebase">{{< param evlLTSLatest >}}</a></td>
       </tr>
       <tr>
-        <td><a href="https://git.evlproject.org/libevl.git">libevl</a></td>
-        <td><a href="https://git.evlproject.org/libevl.git/log/">master</a></td>
-        <td><a href="https://git.evlproject.org/libevl.git/tag/?h={{< param evlLibLatest >}}">{{< param evlLibLatest >}}</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/libevl">libevl</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master">master</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/libevl/-/tags/{{< param evlLibLatest >}}">{{< param evlLibLatest >}}</a></td>
       </tr>
       </table>
   </div>

@@ -9,7 +9,7 @@ value of the `__EVL__` macro defined in the `<evl/evl.h>` main header
 file, or dynamically by calling [evl_get_version()]({{< relref
 "core/user-api/misc/_index.md#evl_get_version" >}}).
 
-### rev. 17 ([libevl r17](https://git.evlproject.org/libevl.git/tag/?h=r17))
+### rev. 17 ([libevl r17](https://git.xenomai.org/xenomai4/libevl/-/tags/r17))
 
 Enables HM support for threads. Since [ABI 23]({{< relref
 "core/abi-revs.md" >}}), the core is able to channel T_WOSS, T_WOLI
@@ -27,7 +27,7 @@ that we have a single nomenclature for these errors regardless of
 whether threads are notified via SIGDEBUG or their observable
 component.
 
-### rev. 16 ([libevl r17](https://git.evlproject.org/libevl.git/tag/?h=r17))
+### rev. 16 ([libevl r17](https://git.xenomai.org/xenomai4/libevl/-/tags/r17))
 
 Introduces the API changes for supporting the new Observable element:
 
@@ -51,7 +51,7 @@ Introduces the API changes for supporting the new Observable element:
   "core/user-api/poll/_index.md#evl_mode_pollfd" >}}), which is
   returned into the `struct evl_poll_event` descriptor.
 
-### rev. 15 ([libevl r16](https://git.evlproject.org/libevl.git/tag/?h=r16))
+### rev. 15 ([libevl r16](https://git.xenomai.org/xenomai4/libevl/-/tags/r16))
 
 Adds [evl_set_thread_mode()]({{< relref
 "core/user-api/thread/_index.md#evl_set_thread_mode" >}}) and
@@ -70,7 +70,7 @@ Adds [evl_unblock_thread()]({{< relref
 Adds [evl_yield()]({{< relref
 "core/user-api/scheduling/_index.md#evl_yield" >}}).
 
-### rev. 12 ([libevl r15](https://git.evlproject.org/libevl.git/tag/?h=r15))
+### rev. 12 ([libevl r15](https://git.xenomai.org/xenomai4/libevl/-/tags/r15))
 
 [Element visibility is introduced]({{< relref
 "core/user-api/_index.md#element-visibility" >}}), as a result:
@@ -149,7 +149,7 @@ Adds [evl_yield()]({{< relref
 
 ---
 
-### rev. 11 ([libevl r14](https://git.evlproject.org/libevl.git/tag/?h=r14))
+### rev. 11 ([libevl r14](https://git.xenomai.org/xenomai4/libevl/-/tags/r14))
 
 For naming consistency, evl_sched_control() was renamed
 [evl_control_sched()]({{< relref

@@ -16,5 +16,5 @@ licensing terms of each file clearly. This boils down to:
   system call interface implemented by the EVL core.
 
 - [MIT](https://spdx.org/licenses/MIT.html) for all code from
-  [libevl](https://git.evlproject.org/libevl.git), which implements
+  [libevl](https://git.xenomai.org/xenomai4/libevl.git), which implements
   the EVL system call wrappers, a few utilities and test programs.

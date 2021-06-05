@@ -41,7 +41,7 @@ maintained:
 ## EVL core development and releases
 
 Currently, up to three kernel branches are maintained in parallel into
-the [linux-evl](https://git.evlproject.org/linux-evl.git/) GIT
+the [linux-evl](https://git.xenomai.org/xenomai4/linux-evl.git) GIT
 repository:
 
 - the EVL core development proper takes place into the **evl/master**
@@ -64,7 +64,7 @@ repository:
   it is a basic subset of the `evl/master` branch, which does _not_
   include the commits related to the EVL core.
 
-> e.g., from the [linux-evl](https://git.evlproject.org/linux-evl.git/) repository:
+> e.g., from the [linux-evl](https://git.xenomai.org/xenomai4/linux-evl.git) repository:
 ```
 $ git branch
   dovetail/master /* dovetail only, tracking mainline master */
@@ -150,7 +150,7 @@ closed, and the new one receives the next EVL updates.
 
 The strictly linear development workflow of libevl is simpler in
 comparision to the EVL core. There is a single **master** branch in
-the [libevl GIT tree](https://git.evlproject.org/libevl.git/) where
+the [libevl GIT tree](https://git.xenomai.org/xenomai4/libevl.git/) where
 the development takes place. Over time, "official" libevl releases are
 tagged from arbitrary commits into this branch. These tags look like
 _r\<serial\>_, with the serial number progressing indefinitely as
@@ -158,16 +158,16 @@ subsequent releases are issued.
 
 ![Alt text](/images/libevl-release-tags.png "libevl release tags")
 
-A new [libevl](https://git.evlproject.org/libevl.git/) release may be
+A new [libevl](https://git.xenomai.org/xenomai4/libevl.git) release may be
 tagged whenever any of the following happens:
 
 - the [ABI]({{< relref "core/under-the-hood/abi.md" >}}) has changed
   in **evl/master** in a way which is not backward-compatible with the
-  latest libevl release. In other words, EVL_ABI_PREREQ in the latest
+  latest libevl release. In other words, EVL_ABI_PREREQ in some
   release of
-  [libevl](https://git.evlproject.org/libevl.git/tree/include/evl/evl.h?h=master)
-  is no more in the range defined by
-  [\[EVL_ABI_BASE..EVL_ABI_LEVEL\]](https://git.evlproject.org/linux-evl.git/tree/include/uapi/evl/control.h?h=evl/master)
+  [libevl](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/include/evl/evl.h#L25)
+  is not in the range defined by
+  [\[EVL_ABI_BASE..EVL_ABI_LEVEL\]](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/control.h#L14)
   anymore.
 
 - the API libevl implements has changed, usually due to the addition
@@ -176,7 +176,7 @@ tagged whenever any of the following happens:
   provide a small set of basic services exported by the EVL core. The
   API version implemented by libevl is an integer, which is assigned
   to the
-  [\_\_EVL\_\_](https://git.evlproject.org/libevl.git/tree/include/evl/evl.h?h=master)
+  [\_\_EVL\_\_](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/include/evl/evl.h#L23)
   C macro-definition. This information can also be retrieved at
   runtime by calling the [evl_get_version()]({{ relref
   "core/user-api/misc/_index.html#evl_get_version" >}})
@@ -194,7 +194,7 @@ conversely, provided the [ABI requirements]({{ relref
 
 {{% notice tip %}}
 If you need features from
-[libevl](https://git.evlproject.org/libevl.git/) which have not been
+[libevl](https://git.xenomai.org/xenomai4/libevl.git/) which have not been
 released yet, then your best and only option is to build this library
 from the `master` branch directly.
 {{% /notice %}}

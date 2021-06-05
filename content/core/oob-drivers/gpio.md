@@ -11,7 +11,7 @@ few microseconds regardless of the [in-band workload]({{< relref
 the system. Enabling [CONFIG_GPIOLIB_OOB]({{< relref
 "core/build-steps#core-kconfig" >}}) in the kernel configuration turns
 on such such capability in the regular [GPIOLIB
-driver](https://git.evlproject.org/linux-evl.git/tree/drivers/gpio/gpiolib.c?h=evl/master),
+driver](https://git.xenomai.org/xenomai4/linux-evl/-/blob/3451245cdc9846835f8a2786767b17037ee13dda/drivers/gpio/gpiolib-cdev.c#L463),
 which depends on the EVL core.  The out-of-band GPIO support is
 available to applications using a couple of additional I/O requests to
 the character device interface exported by this driver to application
@@ -37,14 +37,14 @@ into the regular Linux device driver model as much as possible,
 without imposing a separate driver stack. In the GPIO case, we have
 been able to add the out-of-band support to an existing driver such as
 the [GPIOLIB
-core](https://git.evlproject.org/linux-evl.git/tree/drivers/gpio/gpiolib.c?h=evl/master)
+core](https://git.xenomai.org/xenomai4/linux-evl/-/blob/3451245cdc9846835f8a2786767b17037ee13dda/drivers/gpio/gpiolib-cdev.c)
 instead of providing a dedicated driver.
 
 This translates as follows:
 
 - Common GPIO handling operations in this driver are extended with the
   specific
-  [GPIOHANDLE_REQUEST_OOB](https://git.evlproject.org/linux-evl.git/tree/include/uapi/evl/devices/gpio.h?h=evl/master)
+  [GPIOHANDLE_REQUEST_OOB](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/devices/gpio.h#L8)
   flag, which tells the GPIOLIB core about our intent to operate a
   GPIO pin directly from the out-of-band execution stage, for input
   and/or output. Line set up and configuration are still done using
@@ -65,7 +65,7 @@ This translates as follows:
 
 In order to use the out-of-band GPIO features, one simply needs to add
 the
-[GPIOHANDLE_REQUEST_OOB](https://git.evlproject.org/linux-evl.git/tree/include/uapi/evl/devices/gpio.h?h=evl/master)
+[GPIOHANDLE_REQUEST_OOB](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/devices/gpio.h#L8)
 flag defined by the EVL core to the common `GPIOHANDLE_REQUEST_INPUT`,
 `GPIOHANDLE_REQUEST_OUTPUT` operation flags, when issuing the
 `GPIO_GET_LINEEVENT_IOCTL` and `GPIO_GET_LINEHANDLE_IOCTL`

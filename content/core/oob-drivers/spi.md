@@ -7,7 +7,7 @@ EVL provides support for running high frequency SPI transfers which
 are useful in implementing closed-loop control systems. Applications
 manage the out-of-band transfers from user space via requests sent to
 the [SPIDEV
-driver](https://git.evlproject.org/linux-evl.git/Documentation/spi/spidev.rst),
+driver](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/Documentation/spi/spidev.rst),
 which exports a user-space API to reach the SPI devices overs a given
 bus. To this end, EVL makes a few of strong assumptions:
 
@@ -30,7 +30,7 @@ bus. To this end, EVL makes a few of strong assumptions:
   CPU cache is disabled. The DMA is managed in [pulsed out-of-band
   mode]({{< relref "core/oob-drivers/dma#dma-pulsed-mode" >}}) from
   the
-  [SPIDEV](https://git.evlproject.org/linux-evl.git/tree/drivers/gpio/gpiolib.c?h=evl/master)
+  [SPIDEV](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/spi/spidev.c#L439)
   interface.
 
 - while operating in out-of-band mode, the SPI bus cannot be used for
@@ -43,11 +43,11 @@ bus. To this end, EVL makes a few of strong assumptions:
 Enabling the out-of-band SPI capabilities is threefold, this requires:
 
 - adding the out-of-band management logic to the [generic SPI master
-  framework](https://git.evlproject.org/linux-evl.git/tree/drivers/spi/spi.c?h=evl/master). This
+  framework](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/spi/spi.c#L4058). This
   is done once and readily available from EVL.
 
 - having the [SPIDEV
-  driver](https://git.evlproject.org/linux-evl.git/tree/drivers/gpio/gpiolib.c?h=evl/master)
+  driver](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/spi/spidev.c#L451)
   export the out-of-band I/O interface to applications, which is also
   done once and readily available from EVL.
 

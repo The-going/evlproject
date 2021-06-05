@@ -148,7 +148,7 @@ it. However, _arm64_ and _arm_ are automatically translated to
 _aarch64_ and _aarch32_ when found in an assertion or passed to the
 `-a` option.
 
-The [default check list](https://git.evlproject.org/libevl.git/tree/utils/kconf-checklist.evl)
+The [default check list](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/utils/kconf-checklist.evl)
 translates the configuration-related information gathered in the [caveat section]({{< relref
 "core/caveat.md" >}}) as follows:
 ```
