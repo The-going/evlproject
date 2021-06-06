@@ -16,7 +16,7 @@ title: homepage
   <div class="repo-table-item">
       <style>
       #coderef {
-	       width: 600px;
+	       width: 650px;
       }
       #coderef td {
       	       border-style: none;
@@ -59,7 +59,7 @@ title: homepage
       </tr>
       <tr>
         <td><a href="https://git.xenomai.org/xenomai4/linux-evl.git">linux-evl (LTS)</a></td>
-        <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/tree/{{< param evlLTSBranch >}}-evl-rebase">{{< param evlLTSBranch >}}</a></td>
+        <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/tree/{{< param evlLTSBranch >}}-evl-rebase">{{< param evlLTSBranch >}}-evl-rebase</a></td>
         <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/tree/{{< param evlLTSLatest >}}-rebase">{{< param evlLTSLatest >}}</a></td>
       </tr>
       <tr>
