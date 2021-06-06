@@ -7,8 +7,9 @@ pre: "&#8226; "
 
 {{% notice info %}}
 **The EVL project is now Xenomai 4.** The EVL core was originally a
-fork of the Xenomai 3 _Cobalt_ core, which went through a significant
-overhaul to make it SMP-scalable, easier to grasp and maintain too. However,
+fork of the [Xenomai 3 Cobalt](https://git.xenomai.org/xenomai/-/wikis/home) core,
+which went through a significant overhaul to make it SMP-scalable, easier to grasp and
+maintain too. However,
 both still share the same principles when it comes to the dual kernel
 technique. As Xenomai 3 is gradually adopting [Dovetail]({{< relref
 "dovetail/_index.md" >}}) which the EVL project has developed, the
@@ -50,10 +51,9 @@ other dual kernel systems based on Dovetail.
 applications.
 
 Originally, the Dovetail code base forked off of the
-[I-pipe](https://gitlab.denx.de/Xenomai/xenomai/wikis/home) interface
-driven by the [Xenomai project](https://xenomai.org/) back in 2015,
-mainly to address a [fundamental maintenance
-issue](https://xenomai.org/pipermail/xenomai/2018-June/039002.html)
+[I-pipe](https://git.xenomai.org/xenomai/wikis/home) interface back in
+2015, mainly to address [fundamental maintenance
+issues](https://xenomai.org/pipermail/xenomai/2018-June/039002.html)
 with respect to tracking the most recent kernel releases. In parallel,
 a simplified variant of the [Cobalt
 core](https://xenomai.org/documentation/xenomai-3/html/xeno3prm/group__cobalt__core.html)
@@ -212,7 +212,7 @@ the total kernel code base as of v5.7-rc5.
 
 {{% mixedgrid-small src="/images/cloc-ipipe.png" %}}
 > **Comparing I-pipe and Dovetail footprints.** These figures compare
-the latest [I-pipe implementation](https://gitlab.denx.de/Xenomai/xenomai/wikis/home)
+the latest [I-pipe implementation](https://git.xenomai.org/xenomai/wikis/home)
 available to date based on kernel
 v4.19.x with Dovetail for v5.7-rc5. Dovetail provides additional core
 services such as built-in out-of-band task scheduling support which,
@@ -224,9 +224,9 @@ within the mainline kernel.
 {{% /mixedgrid-small %}}
 
 {{% mixedgrid-small src="/images/cloc-evl-vs-xenomai.png" %}} >
-> **Comparing Cobalt and the EVL core footprints.** These figures
-compare Xenomai 3.1 with EVL for kernel v5.7-rc5. The drastic
-reduction of the code footprint EVL shows is mainly due to focusing on
+> **Comparing Xenomai 3 Cobalt and Xenomai 4 EVL core footprints.** These figures
+compare Cobalt 3.1 with the EVL core for kernel v5.7-rc5. The drastic
+reduction of the code footprint the EVL core shows is mainly due to focusing on
 a simpler yet flexible [feature set]({{< relref "core/_index.md#evl-core-elements" >}})
 and reusing the [common driver
 model]({{< relref "core/oob-drivers/_index.md" >}}).  Besides, most of

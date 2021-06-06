@@ -108,7 +108,7 @@ regardless.
 
 A real-time system normally comes with a way to measure the latency of
 its threads on timer events.
-[Xenomai](https://xenomai.org/documentation/xenomai-3/html/man1/latency/)
+[Xenomai 3](https://xenomai.org/documentation/xenomai-3/html/man1/latency/)
 provides one, the
 [PREEMPT_RT](https://rt.wiki.kernel.org/index.php/Cyclictest) project
 as well, so does EVL with the [latmus]({{< relref
@@ -120,7 +120,7 @@ equipment is needed, the on-chip high-precision clock timer of the
 system under test should be sufficient, therefore we can measure
 easily the latency directly from there.
 
-EVL implements this test with the help of the [latmus
+[Xenomai 4] implements this test with the help of the [latmus
 driver](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/evl/latmus.c#L561)
 which sends a wake up event to an [EVL-enabled responder thread]({{<
 relref "core/user-api/thread/_index.md" >}}) created by the [latmus

@@ -95,12 +95,11 @@ core]({{< relref "core/_index.md" >}})) to the logic of the kernel it
 is embedded in, so as to benefit from the rich Linux feature set while
 running dedicated applications with stringent real-time
 requirements. The archetypical implementation of such kind of
-interface is the
-[I-pipe](https://gitlab.denx.de/Xenomai/xenomai/wikis/home), which
-served both [RTAI](http://rtai.org) and
-[Xenomai](https://xenomai.org/) over the years. For several reasons
-explained [in this
-document](https://gitlab.denx.de/Xenomai/xenomai/wikis/Dovetail/),
+interface is the [I-pipe](https://git.xenomai.org/xenomai/wikis/home),
+which served both [RTAI](http://rtai.org) and [Xenomai 3
+Cobalt](https://git.xenomai.org/xenomai/wikis/home) over the
+years. For several reasons explained [in this
+document](https://git.xenomai.org/xenomai/wikis/Dovetail),
 maintaining the I-pipe proved to be difficult as changes to the
 mainline kernel regularly caused non-trivial code conflicts, sometimes
 nasty regressions to the I-pipe maintainers downstream. Although the

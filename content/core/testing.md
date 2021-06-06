@@ -166,7 +166,7 @@ need `CONFIG_EVL_LATMUS` to be enabled in the kernel configuration to
 run the timer calibration or the [response to timer test]({{< relref
 "core/benchmarks/_index.md#latmus-timer-response-time" >}}). This
 driver must be loaded into the kernel under test if you built it as a
-dynamic module. For those familiar with Xenomai 3, this program
+dynamic module. For those familiar with [Xenomai 3 Cobalt](https://git.xenomai.org/xenomai/-/wikis/home), this program
 combines and extends the features of the
 [latency](https://xenomai.org/documentation/xenomai-3/html/man1/latency/index.html)
 and

@@ -48,7 +48,8 @@ What we are looking for:
   require common kernel development knowledge, and the code footprint
   and complexity must remain tractable for small development teams
   (currently about 20 KLOC, which is not even half the size of the
-  [Xenomai](https://xenomai.org/) core).
+  [Xenomai 3 Cobalt](https://git.xenomai.org/xenomai/-/wikis/home)
+  core.
 
 - Low runtime cost. Reliable, ultra low and bounded response time for
   the real-time workload including on low-end, single-core hardware
@@ -83,8 +84,9 @@ real-time infrastructure, which can also be used as a starting point
 for custom core implementations. The following figures have been
 obtained from the [CLOC](https://github.com/AlDanial/cloc) tool
 counting the lines of source code from the [RTAI](http://rtai.org),
-[Xenomai](https://xenomai.org) and [EVL](https://evlproject.org) core
-implementation respectively:
+[Xenomai 3 Cobalt](https://git.xenomai.org/xenomai/-/wikis/home) and
+[Xenomai 4 EVL](https://evlproject.org/core) core implementation
+respectively:
 
 ![Alt text](/images/kloc-core.png "EVL kernel code footprint")
 
@@ -142,7 +144,7 @@ core defines six elements:
   for exchanging data between out-of-band and in-band thread contexts,
   without impacting the real-time performance on the out-of-band side.
   Any kind of thread (EVL or regular) can wait/poll for input from the
-  other side. Cross-buffers serve the same purpose than Xenomai's
+  other side. Cross-buffers serve the same purpose than Xenomai 3's
   _message pipes_ implemented by the _XDDP_ socket protocol.
 
 - [File proxy]({{< relref "core/user-api/proxy/_index.md"

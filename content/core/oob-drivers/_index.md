@@ -45,15 +45,16 @@ the day, such real-time variant of a driver has diverged into an
 almost irreconcilable fork of the original code.
 
 Unfortunately, after two decades using this model in the
-[RTAI](http://rtai.org) and [Xenomai](https://xenomai.org) projects,
-we ended up with a massive issue which is a _severe bit rotting of the
-real-time driver stack_. Because the dual kernel ecosystem runs on
-very few contributors despite it has many industrial users, every
-real-time driver once merged would receive little to no maintenance
-effort in the long run. As a result, continuous updates to the
-original mainline driver which address bugs, extend support to new
-hardware models and versions, is lost for the real-time driver. In
-turn, the consequences for such dual kernel systems are bleak:
+[RTAI](http://rtai.org) and [Xenomai
+3](https://git.xenomai.org/xenomai/-/wikis/home) projects, we ended up
+with a massive issue which is a _severe bit rotting of the real-time
+driver stack_. Because the dual kernel ecosystem runs on very few
+contributors despite it has many industrial users, every real-time
+driver once merged would receive little to no maintenance effort in
+the long run. As a result, continuous updates to the original mainline
+driver which address bugs, extend support to new hardware models and
+versions, is lost for the real-time driver. In turn, the consequences
+for such dual kernel systems are bleak:
 
 - narrower hardware support than mainline drivers have.
 
@@ -155,7 +156,7 @@ is going to be needed too. However, finding a proper way to extend
 existing NIC drivers to serve as endpoints in this real-time IP stack
 seems a more tractable problem than maintaining a truckload of
 functionally redundant, separate drivers like
-[RTnet](https://gitlab.denx.de/Xenomai/xenomai/-/wikis/RTnet)
+[RTnet](https://git.xenomai.org/xenomai/-/wikis/RTnet)
 currently requires.
 
 ### Why doesn't EVL implement RTDM?
@@ -191,7 +192,8 @@ operations on common files and sockets.
 
 As a consequence, there is not much point in implementing the RTDM
 interface over EVL, except maybe as a compatibility layer for porting
-[RTAI](http://rtai.org) or [Xenomai](https://xenomai.org)-originated
+[RTAI](http://rtai.org) or [Xenomai 3
+Cobalt](https://git.xenomai.org/xenomai/-/wikis/home)-originated
 drivers, although this would be easily done by converting them
 directly to the [EVL kernel API]({{< relref
 "core/kernel-api/_index.md" >}}) without needing any wrapper of the
