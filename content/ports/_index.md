@@ -25,7 +25,7 @@ which does not appear in this list and want to let people know about
 it, please drop me a note at <rpm@xenomai.org>.
 
 {{% notice info %}}
-The EVL project primarily tracks the [mainline Linux
+The Xenomai 4 project primarily tracks the [mainline Linux
 kernel](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git). In
 absence of any specific information, all kernel releases mentioned
 below refer to mainline Linux.

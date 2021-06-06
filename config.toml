@@ -1,13 +1,13 @@
 baseURL = "https://evlproject.org/"
 languageCode = "en-US"
-title = "EVL project"
+title = "Xenomai 4"
 theme = "hugo-theme-learn"
-copyright = "Copyright 2021 - The EVL project."
+copyright = "Copyright 2021 - The Xenomai project."
 enableGitInfo = true
 
 [params]
 author = "Philippe Gerum <rpm@xenomai.org>"
-description = "EVL project"
+description = "Xenomai 4 project"
 disableSearch = false
 disableInlineCopyToClipBoard = true
 disableBreadcrumb = false

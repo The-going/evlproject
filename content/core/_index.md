@@ -17,16 +17,16 @@ which only those tasks have, like the [native
 preemption](https://wiki.linuxfoundation.org/realtime/rtl/blog) model
 requires.
 
-In a nutshell, the EVL project is about introducing a simple, scalable
-and dependable dual kernel architecture for Linux, based on the
-[Dovetail interface]({{% relref "dovetail/_index.md" %}}) for coupling
-a high-priority software core to the main kernel. This interface is
-showcased by a real-time core delivering basic services to
-applications via a [straightforward API]({{% relref
+In a nutshell, the Xenomai 4 project is about introducing a simple,
+scalable and dependable dual kernel architecture for Linux, based on
+the [Dovetail interface]({{% relref "dovetail/_index.md" %}}) for
+coupling a high-priority software core to the main kernel. This
+interface is showcased by a real-time core delivering basic services
+to applications via a [straightforward API]({{% relref
 "core/user-api/_index.md" %}}). The EVL core is an ongoing development
-toward a production-ready real-time infrastructure, which can also be a
-starting point for other flavours of dedicated software core embedded
-into the Linux kernel. This work is composed of:
+toward a production-ready real-time infrastructure, which can also be
+a starting point for other flavours of dedicated software core
+embedded into the Linux kernel. This work is composed of:
 
 - the [Dovetail]({{% relref "dovetail/_index.md" %}}) interface, which
   introduces a high-priority execution stage into the main kernel

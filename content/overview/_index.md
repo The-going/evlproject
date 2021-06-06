@@ -6,18 +6,19 @@ pre: "&#8226; "
 ---
 
 {{% mixedgrid src="/images/overview-design.png" %}}
-**A dual kernel architecture**. EVL brings real-time capabilities to
-Linux by embedding a companion core into the kernel, which
+**A dual kernel architecture**. Like its predecessors in the Xenomai
+core series, Xenomai 4 with the EVL core brings real-time capabilities
+to Linux by embedding a companion core into the kernel, which
 specifically deals with tasks requiring ultra low and bounded response
 time to events. For this reason, this approach is known as a _dual
 kernel architecture_, delivering stringent real-time guarantees to
 some tasks alongside rich operating system services to others. In this
 model, the general purpose kernel and the real-time core operate
 almost asynchronously, both serving their own set of tasks, always
-giving the latter precedence over the former.
-{{% /mixedgrid %}}
+giving the latter precedence over the former.  {{% /mixedgrid %}}
 
-In order to achieve this, the EVL project works on three components:
+In order to achieve this, the Xenomai 4 project works on three
+components:
 
 - a piece of inner kernel code - aka [Dovetail]({{< relref
 "dovetail/_index.md" >}}) - which acts as an interface between the
@@ -38,20 +39,21 @@ other dual kernel systems based on Dovetail.
 >}}), which enables invoking the real-time core services from
 applications.
 
-Originally, Dovetail [forked
-off](https://xenomai.org/pipermail/xenomai/2018-June/039002.html) of
-the [I-pipe](https://gitlab.denx.de/Xenomai/xenomai/wikis/home)
-interface driven by the [Xenomai project](https://xenomai.org/),
-mainly to address a fundamental maintenance issue with respect to
-tracking the most recent kernel releases. In parallel, a simplified
-variant of the [Cobalt
+Originally, the Dovetail code base forked off of the
+[I-pipe](https://gitlab.denx.de/Xenomai/xenomai/wikis/home) interface
+driven by the [Xenomai project](https://xenomai.org/) back in 2015,
+mainly to address a [fundamental maintenance
+issue](https://xenomai.org/pipermail/xenomai/2018-June/039002.html)
+with respect to tracking the most recent kernel releases. In parallel,
+a simplified variant of the [Cobalt
 core](https://xenomai.org/documentation/xenomai-3/html/xeno3prm/group__cobalt__core.html)
 once known as 'Steely' was implemented in order to experiment freely
 with Dovetail as the latter significantly departed from the I-pipe
 interface. At some point, Steely evolved into an even simpler, basic
 and more scalable real-time core which now serves as the reference
 implementation for Dovetail, known as the [EVL core]({{< relref
-"/core/_index.md" >}}).
+"/core/_index.md" >}}) which is at the heart of the Xenomai 4 effort
+today.
   
 ### When is a dual kernel architecture a good fit?
 
