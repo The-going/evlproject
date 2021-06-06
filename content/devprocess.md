@@ -1,13 +1,13 @@
-# EVL development process
+# Xenomai 4 development process
 
-The EVL project works on three software components:
+The Xenomai 4 project works on three software components:
 
-- The [Dovetail]({{ relref "dovetail/_index.md" >}}) interface, which
+- The [Dovetail]({{< relref "dovetail/_index.md" >}}) interface, which
   introduces a high-priority execution stage into the linux kernel
   logic, on which a functionally-independent companion software core
   may receive interrupts and run threads.
 
-- A compact and SMP-scalable real-time core - aka the [EVL core]({{
+- A compact and SMP-scalable real-time core - aka the [EVL core]({{<
   relref "core/_index.md" >}}) - leveraging Dovetail's capabilities,
   which is intended to be the reference implementation for other
   Dovetail-based companion cores. As such, the Dovetail code base
@@ -19,7 +19,7 @@ The EVL project works on three software components:
 - A library named [libevl]({{< relref "core/user-api/_index.md" >}}),
   which implements the [system call interface]({{< relref
   "core/user-api/function_index/_index.md" >}}) between applications
-  running in user-space and the [EVL core]({{ relref "core/_index.md"
+  running in user-space and the [EVL core]({{< relref "core/_index.md"
   >}}), along with a few other basic services, [utilities]({{< relref
   "core/commands.md" >}}) and [sanity tests]({{< relref
   "core/testing.md" >}}).
@@ -31,127 +31,54 @@ maintained:
   makes sense, while dealing with the issue of developing out-of-tree
   code from the standpoint of the mainline kernel.
 
-- The Dovetail code must be accessible to other projects for their own
-  use, based on releases of the reference (mainline) kernel.
+- The [Dovetail]({{< relref "dovetail/_index.md" >}}) code must be
+  accessible to other projects for their own use, based on releases of
+  the reference (mainline) kernel.
 
-- Maintaining the EVL core (and Dovetail) over several kernel releases
-  should remain a tractable problem for a project with limited
-  resources so far.
-  
+- Maintaining the EVL core (and Dovetail) over multiple kernel
+  releases should remain a tractable problem.
+
 ## EVL core development and releases
 
-Currently, up to three kernel branches are maintained in parallel into
-the [linux-evl](https://git.xenomai.org/xenomai4/linux-evl.git) GIT
-repository:
+The EVL core is maintained in the following GIT repository:
 
-- the EVL core development proper takes place into the **evl/master**
-  branch (which includes the Dovetail code for that matter). This
-  branch contains the bleeding edge EVL core implementation, tracking
-  the development tip of [linux
-  mainline](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/)
-  as closely as it makes sense.
+  * git@git.xenomai.org:Xenomai/xenomai4/linux-evl.git
+  * https://git.xenomai.org/xenomai4/linux-evl.git
 
-- in addition, a release branch tracking the [latest longterm mainline
-  kernel release](https://kernel.org/releases.html) (aka LTS) from the
-  [stable
-  tree](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git)
-  is maintained, with the EVL core implementation on top.
+This repository tracks the
+[Dovetail](https://git.xenomai.org/linux-dovetail.git) kernel tree,
+which in turn tracks the [mainline
+kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git). Details
+of the current policy are as follows:
 
-- finally, the **dovetail/master** branch is the reference code for
-  the [Dovetail interface]({{ relref "dovetail/_index.md" >}}) on top
-  of the latest [mainline kernel
-  code](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/). Therefore,
-  it is a basic subset of the `evl/master` branch, which does _not_
-  include the commits related to the EVL core.
+- since the EVL core is always based on a Dovetail port to a mainline
+  kernel release, every EVL branch is initially based on a
+  [Dovetail](https://git.xenomai.org/linux-dovetail.git) branch. For
+  instance
+  [v5.10.y-evl-rebase](https://git.xenomai.org/xenomai4/linux-evl/-/tree/v5.10.y-evl-rebase)
+  in the [EVL tree](https://git.xenomai.org/xenomai4/linux-evl.git)
+  originates from
+  [v5.10.y-dovetail-rebase](https://git.xenomai.org/linux-dovetail/-/tree/v5.10.y-dovetail-rebase)
+  in the [Dovetail tree](https://git.xenomai.org/linux-dovetail.git).
 
-> e.g., from the [linux-evl](https://git.xenomai.org/xenomai4/linux-evl.git) repository:
-```
-$ git branch
-  dovetail/master /* dovetail only, tracking mainline master */
-  evl/master      /* EVL core on top of mainline master */
-  evl/v5.4        /* EVL core on top of stable LTS, e.g. v5.4.24 */
+- the content of `*-rebase` branches may be rebased without notice, so
+  that Dovetail- and EVL-related commits always appears on top of the
+  vanilla mainline code. All EVL branches are currently rebased, we
+  have no merge branch yet.
 
-$ git tag -l 'v5.4-evl[0-9]*'
-v5.4-evl1
-v5.4-evl2
-v5.4.26-evl1
-...
-```
+- EVL release tags are of the form:
 
-### EVL core development process
-
-1. the EVL core is gradually rebased on [linux
-mainline](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/)
-into the `evl/master` branch, as the mainline kernel progresses
-through -rc releases. This means that `evl/master` may be rebased when
-the first upstream candidate release (i.e. -rc1) is out at the
-earliest, never during the merge window. From that point, the EVL
-development goes on into `evl/master` during the rest of the current
-upstream development cycle, which is about 6-8 weeks. During this
-period, some commits to `evl/master` may be backported to the LTS
-release branch. Because developing the EVL core may entail adding
-features to or fixing the Dovetail interface in the process, some
-commits from `evl/master` may be cherry-picked into `dovetail/master`
-on-the-fly.
-
-2. once the [mainline
-kernel](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/)
-reaches a final **vX.Y.0** release, `evl/master` is rebased on it. The
-EVL core development keeps going on that rebased branch for a while,
-until the next upstream kernel cycle issues the release candidate we
-are interested in.
-
-3. eventually, time has come to rebase the EVL core on a candidate
-release available for the next kernel development cycle, closing the
-previous cycle for EVL, which triggers the following actions:
-
-      1. the current HEAD of `evl/master` is tagged in order to point
-      at the most recent EVL core commit for the closed kernel cycle,
-      which represents the tip of the EVL core based on the **.0**
-      upstream release (_vX.Y-evl1_ ).
-     
-      2. `evl/master` is rebased on the selected candidate release,
-      which is usually -rc1. A later candidate could be picked
-      instead, although not later than -rc3 under normal
-      circumstances.
-
-      3. the current HEAD of `dovetail/master` is tagged in order to
-      point at the most recent Dovetail commit for the closed kernel
-      cycle, which represents the tip of Dovetail based on the **.0**
-      upstream release (_vX.Y-dovetail_). There is no serial number on
-      these tags because a single kernel release is tracked for
-      Dovetail strictly speaking at any point in time.
-
-      4. eventually, `dovetail/master` is rebased on the same upstream
-      candidate release than `evl/master` was rebased on at step 2.
-      Therefore, you may expect `evl/master` and `dovetail/master` to
-      always be based on the same upstream baseline.
-
-At this point, the next EVL development cycle starts anew from step 1.
-
-![Alt text](/images/evl-commit-stack.png "linux-evl branches")
-
-### LTS releases of the EVL core {#lts-core-release}
-
-Over time, arbitrary commits from the current LTS branch may be
-tagged, marking an "official" EVL core release.  These tags look like
-_vX.Y[.Z]-evl\<serial\>_, named after the mainline release they are
-based on. The serial number progresses as subsequent releases are
-issued based on the same mainline LTS branch; this number is therefore
-reset to 1 whenever the mainline LTS release changes.
-
-Each time a new mainline LTS release is selected upstream, a new LTS
-release branch for the EVL core is created. The older LTS branch is
-closed, and the new one receives the next EVL updates.
-
-![Alt text](/images/evl-release-tags.png "EVL core release tags")
+  - `v<kversion>-evl<serial>-rebase` if added to a rebase branch.
+  - `v<kversion>-evl<serial>` if added to a merge branch.
 
 ## libevl development and releases {#libevl-release}
 
-The strictly linear development workflow of libevl is simpler in
-comparision to the EVL core. There is a single **master** branch in
-the [libevl GIT tree](https://git.xenomai.org/xenomai4/libevl.git/) where
-the development takes place. Over time, "official" libevl releases are
+The strictly linear development workflow of [libevl]({{< relref
+"core/user-api/_index.md" >}}) is simpler in comparision to the EVL
+core. There is a single
+[master](https://git.xenomai.org/xenomai4/libevl/-/tree/master) branch
+in the [libevl GIT tree](https://git.xenomai.org/xenomai4/libevl.git/)
+where the development takes place. Over time, `libevl` releases are
 tagged from arbitrary commits into this branch. These tags look like
 _r\<serial\>_, with the serial number progressing indefinitely as
 subsequent releases are issued.
@@ -161,43 +88,116 @@ subsequent releases are issued.
 A new [libevl](https://git.xenomai.org/xenomai4/libevl.git) release may be
 tagged whenever any of the following happens:
 
-- the [ABI]({{< relref "core/under-the-hood/abi.md" >}}) has changed
-  in **evl/master** in a way which is not backward-compatible with the
-  latest libevl release. In other words, EVL_ABI_PREREQ in some
-  release of
+- the [ABI]({{< relref "core/under-the-hood/abi.md" >}}) exported by
+  the EVL core has changed in a way which is not backward-compatible
+  with the latest `libevl` release. In other words,
+  [EVL_ABI_PREREQ](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/include/evl/evl.h#L25)
+  in some release of
   [libevl](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/include/evl/evl.h#L25)
   is not in the range defined by
   [\[EVL_ABI_BASE..EVL_ABI_LEVEL\]](https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/control.h#L14)
   anymore.
 
-- the API libevl implements has changed, usually due to the addition
+- the API `libevl` implements has changed, usually due to the addition
   of new services or changes to the signature of existing
-  routine(s). This should happen rarely, since libevl is only meant to
+  routine(s). This should happen rarely, since `libevl` is only meant to
   provide a small set of basic services exported by the EVL core. The
-  API version implemented by libevl is an integer, which is assigned
+  API version implemented by `libevl` is an integer, which is assigned
   to the
   [\_\_EVL\_\_](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/include/evl/evl.h#L23)
   C macro-definition. This information can also be retrieved at
-  runtime by calling the [evl_get_version()]({{ relref
-  "core/user-api/misc/_index.html#evl_get_version" >}})
+  runtime by calling the [evl_get_version()]({{< relref
+  "core/user-api/misc/_index.md#evl_get_version" >}})
   routine.
-
-- each time `evl/master` reaches a **.0** kernel release, if commits
-  are pending on top of the latest libevl release.
 
 In any case, there is no strict relationship between a given [EVL core
 release]({{< relref "#lts-core-release" >}}) tag and a [libevl
-release]({{< relref "#libevl-release" >}}) tag. A particular libevl
+release]({{< relref "#libevl-release" >}}) tag. A particular `libevl`
 release might be usable with multiple subsequent EVL core releases and
-conversely, provided the [ABI requirements]({{ relref
+conversely, provided the [ABI requirements]({{< relref
 "core/under-the-hood/abi.md" >}}) are met.
 
-{{% notice tip %}}
-If you need features from
-[libevl](https://git.xenomai.org/xenomai4/libevl.git/) which have not been
-released yet, then your best and only option is to build this library
-from the `master` branch directly.
-{{% /notice %}}
+## Contributing to Xenomai 4
+
+We obviously welcome contribution to this effort, small or large. If
+you are interested in contributing to Xenomai 4 here are some helpful
+hints on how to get started. Start small, then progress as you get
+your feet wet.  There is no such thing as a minor contribution, there
+is no shame in making mistakes.  A contributor who submits a
+perfectible one-liner surely advances the project further than any
+smart lurker. Things you will need:
+
+- to [build EVL]({{< relref "core/build-steps.md" >}}) from source for
+  your platform of choice, unless you precisely want to port EVL to
+  that platform.
+
+- access to the [Xenomai mailing list](https://xenomai.org/mailman/listinfo/xenomai/)
+
+You can contribute to [Dovetail]({{< relref "dovetail/_index.md" >}}),
+the [EVL core]({{< relref "core/_index.md" >}}), [libevl]({{< relref
+"core/user-api/_index.md" >}}), and/or the [documentation
+effort](https://git.xenomai.org/xenomai4/website), there is a lot to
+be done in all areas.
+
+### Submitting patches
+
+Xenomai 4 follows the [kernel coding
+style](https://www.kernel.org/doc/html/latest/process/coding-style.html)
+for [Dovetail](https://git.xenomai.org/linux-dovetail.git), the [EVL
+core](https://git.xenomai.org/xenomai4/linux-evl.git), and
+[libevl](https://git.xenomai.org/xenomai4/libevl.git) too.
+
+Please send individual patch or series to the [Xenomai mailing
+list](https://xenomai.org/mailman/listinfo/xenomai/) for review.
+
+### Getting the basics right
+
+Understanding the two key concepts of [interrupt pipelining]({{<
+relref "dovetail/pipeline/_index.md" >}}) and [alternate
+scheduling]({{< relref "dovetail/altsched.md" >}}) implemented by
+Dovetail is a must. This is what enables the kernel to hand over high
+priority events and tasks to a companion core such as EVL (and any
+other Dovetail client for that purpose) to get them processed with
+bounded, ultra-low latency.
+
+### Porting EVL to a new platform
+
+This basically means porting [Dovetail]({{< relref
+"dovetail/_index.md" >}}) to that platform, in the sense that most
+machine and architecture-specific code we may need involves running
+the [interrupt pipeline]({{< relref "dovetail/pipeline/_index.md" >}})
+the EVL core depends on. Luckily, a [Dovetail porting guide]({{<
+relref "dovetail/porting/_index.md" >}}) is available to help you in
+this task, explaining the fundamentals of a port, and what changes
+should be applied to the vanilla mainline kernel.
+
+### Digging into the EVL core internals
+
+First, the documentation on this
+[website](https://git.xenomai.org/xenomai4/website) tends to
+explicitly refer to particular pieces of code via Permalinks to GIT
+commits when discussing a matter. This should give you direct pointers
+to the implementation in many occasions. For instance, you can find
+some of these in the discussion about the [alternate scheduling]({{<
+relref "dovetail/altsched.md" >}}) technique [Dovetail]({{< relref
+"dovetail/_index.md" >}}) implements and which the [EVL core]({{<
+relref "core/_index.md" >}}) uses, or in the discussion about
+[out-of-band GPIO]({{< relref "core/oob-drivers/gpio.md" >}})
+services.
+
+Second, there is a work-in-progress section called ["Under the
+hood"]({{< relref "core/under-the-hood/_index.md" >}}).
+
+Last but not least, there is always the [mailing
+list](https://xenomai.org/mailman/listinfo/xenomai/) to ask for
+implementation details.
+
+### Use the rules of thumb
+
+This [document]({{< relref "dovetail/rulesofthumb.md" >}}) gives you a
+few but important hints, tips and tricks when developing in a dual
+kernel environment based on [Dovetail]({{< relref "dovetail/_index.md"
+>}}).
 
 ---
 

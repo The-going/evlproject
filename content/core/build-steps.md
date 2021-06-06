@@ -29,7 +29,7 @@ process is:
 
 ### Getting the sources
 
-EVL sources are maintained in two separate [GIT](https://git-scm.com)
+EVL sources are maintained in [GIT](https://git-scm.com)
 repositories. As a preliminary step, you may want to have a look at
 the [EVL development process]({{< relref "devprocess.md" >}}), in
 order to determine which GIT branches you may be interested in these

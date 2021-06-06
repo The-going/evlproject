@@ -143,13 +143,12 @@ Working on Dovetail is customary Linux kernel development, following
 the common set of rules and guidelines which prevails with the
 mainline kernel.
 
-The development tip of the Dovetail interface is maintained in the
-_dovetail/master_ branch of the following GIT repository which tracks
-the [mainline
+The Dovetail interface is maintained in the following GIT repository
+which tracks the [mainline
 kernel](git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git):
 
-  * git@git.xenomai.org:Xenomai/xenomai4/linux-evl.git
-  * https://git.xenomai.org/xenomai4/linux-evl.git
+  * git@git.xenomai.org:Xenomai/linux-dovetail.git
+  * https://git.xenomai.org/linux-dovetail.git
 
 ## Audience
 
