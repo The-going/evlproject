@@ -5,6 +5,16 @@ weight: 1
 pre: "&#8226; "
 ---
 
+{{% notice info %}}
+**The EVL project is now Xenomai 4.** The EVL core was originally a
+fork of the Xenomai 3 _Cobalt_ core, which went through a significant
+overhaul to make it SMP-scalable, easier to grasp and maintain too. However,
+both still share the same principles when it comes to the dual kernel
+technique. As Xenomai 3 is gradually adopting [Dovetail]({{< relref
+"dovetail/_index.md" >}}) which the EVL project has developed, the
+latter merges with the Xenomai project as the Xenomai 4 effort.
+{{% /notice %}}
+
 {{% mixedgrid src="/images/overview-design.png" %}}
 **A dual kernel architecture**. Like its predecessors in the Xenomai
 core series, Xenomai 4 with the EVL core brings real-time capabilities
