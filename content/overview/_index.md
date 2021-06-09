@@ -11,9 +11,9 @@ fork of the [Xenomai 3 Cobalt](https://git.xenomai.org/xenomai/-/wikis/home) cor
 which went through a significant overhaul to make it SMP-scalable, easier to grasp and
 maintain too. However,
 both still share the same principles when it comes to the dual kernel
-technique. As Xenomai 3 is gradually adopting [Dovetail]({{< relref
-"dovetail/_index.md" >}}) which the EVL project has developed, the
-latter merges with the Xenomai project as the Xenomai 4 effort.
+technique. The Xenomai project is adopting EVL's [Dovetail]({{< relref
+"dovetail/_index.md" >}}) pipeline interface for its upcoming 3.2 release.
+In the same move, EVL becomes the Xenomai 4 project.
 {{% /notice %}}
 
 {{% mixedgrid src="/images/overview-design.png" %}}
