@@ -88,7 +88,7 @@ in the document mentioned, you may want to check whether building
 out-of-tree might work, since this is how Dovetail/EVL developers
 usually rebuild kernels. If something goes wrong while building
 in-tree or out-of-tree, please send a note to the [EVL mailing
-list](https://evlproject.org/mailman/listinfo/evl/) with the relevant
+list](https://xenomai.org/mailman/listinfo/xenomai/) with the relevant
 information.
 {{% /notice %}}
 

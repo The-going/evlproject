@@ -344,7 +344,7 @@ graph LR;
     L -->|No| Z["Report upstream"]
     style Z fill:#ff420e;
     click E "/core/testing#hectic-program"
-    click Z "https://evlproject.org/mailman/listinfo/evl/"
+    click Z "https://xenomai.org/mailman/listinfo/xenomai/"
     E --> M{OK?}
     style M fill:#fff;
     M -->|Yes| F["Calibrate timer"]

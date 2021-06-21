@@ -13,7 +13,7 @@ test cases for which the source code is fully available, which does
 not require any black-box, so as to allow you to verify and reproduce
 them fairly easily.
 
-Any [comments](https://evlproject.org/mailman/listinfo/evl/) and other
+Any [comments](https://xenomai.org/mailman/listinfo/xenomai/) and other
 contributions improving this section and/or EVL in general are
 welcome.
 
