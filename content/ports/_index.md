@@ -185,7 +185,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.13-rc6</td>
+    <td>v5.13</td>
   </tr>
   <tr>
     <td><a href="https://www.raspberrypi.org/products/raspberry-pi-zero/" target="_blank">Broadcom BCM2835 (Raspberry PI Zero)</a></td>
@@ -225,7 +225,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.13-rc6</td>
+    <td>v5.13</td>
   </tr>
   <tr>
     <td><a href="http://nanopi.io/nanopi-neo.html/" target="_blank">AllWinner H3 (NanoPI NEO)</a></td>
@@ -241,7 +241,7 @@ Linux {{< param evlTrackingKernel >}}
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
     <td><img src="/images/checked.png"></td>
-    <td>v5.13-rc6</td>
+    <td>v5.13</td>
   </tr>
   <tr>
     <td><a href="https://www.phytec.eu/product-eu/single-board-computer/phyboard-mira/" target="_blank">NXP i.MX6Q (phyBOARD-Mira)</a></td>
