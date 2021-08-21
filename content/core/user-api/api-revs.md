@@ -9,6 +9,18 @@ value of the `__EVL__` macro defined in the `<evl/evl.h>` main header
 file, or dynamically by calling [evl_get_version()]({{< relref
 "core/user-api/misc/_index.md#evl_get_version" >}}).
 
+### rev. 18 ([libevl r26](https://git.xenomai.org/xenomai4/libevl/-/tags/r26))
+
+Introduces the socket interface:
+
+- oob_recvmsg() to receive a message in out-of-band mode.
+
+- oob_sendmsg() to send a message in out-of-band mode.
+
+The regular socket(2) call as extended by ABI 26 is capable of
+creating oob-capable sockets when receiving the SOCK_OOB type flag, so
+there is no EVL-specific call for this operation.
+
 ### rev. 17 ([libevl r17](https://git.xenomai.org/xenomai4/libevl/-/tags/r17))
 
 Enables HM support for threads. Since [ABI 23]({{< relref

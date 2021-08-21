@@ -30,6 +30,11 @@ title: ABI revisions
     <th>libevl release</th>
   </tr>
   <tr>
+    <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/commit/41dc88ab524cd32878646d98b57d390e2bcc1198" target="_blank">26</a></td>
+    <td>Add socket interface.
+    <td><a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r26" target="_blank">r21</a></td>
+  </tr>
+  <tr>
     <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/commit/a8aa18f663feaabde73285bad3b000e02e0c2332" target="_blank">25</a></td>
     <td>Add latmus request for measuring in-band response time to synthetic interrupt latency.
     <td><a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r21" target="_blank">r21</a></td>
