@@ -41,6 +41,44 @@ elements from other processes through the out-of-band I/O requests
 documented here, which are sent to the corresponding devices.
 {{% /notice %}}
 
+### Opening an out-of-band capable I/O channel
+
+Since the EVL core does not redefine the
+[open(2)](http://man7.org/linux/man-pages/man2/open.2.html) and
+[socket(2)](http://man7.org/linux/man-pages/man2/socket.2.html) calls,
+there has to be a way to tell the kernel code managing the device
+and/or protocol that we want to enable out-of-band operations.
+
+In most cases, we don't have to do so though, because the purpose of
+the corresponding device driver is all about providing out-of-band
+services, so enabling them for any connecting file is implicit. For
+instance, most of the drivers accessed through the [/dev/evl]({{<
+relref "core/user-api/_index.md#evl-fs-hierarchy" >}}) file hierarchy
+turn on out-of-band services automatically.
+
+However, some drivers might distinguish between out-of-band capable
+files and others, providing a different set of services. Typically, a
+regular in-band driver which is extended in order to handle
+out-of-band requests too should be told when to do so for any given
+file.
+
+To meet this requirement, [Dovetail]({{< relref "dovetail/_index.md"
+>}}) introduces the additional open flag `O_OOB`, which can be passed
+to [open(2)](http://man7.org/linux/man-pages/man2/open.2.html) ORed
+into the `flags` argument. Similarly, it defines the `SOCK_OOB` flag
+which can be passed to
+[socket(2)](http://man7.org/linux/man-pages/man2/socket.2.html) ORed
+into the `type` argument for the same purpose. If the receiving driver
+implements opt-in out-of-band services, passing this flag when opening
+a file/socket should enable them.
+
+{{% notice warning %}}
+Not all devices drivers may support out-of-band operations (the
+overwhelming majority does not). Whether passing either `O_OOB` or
+`SOCK_OOB` to them when opening a file/socket would cause an error, or
+the flag would just be ignored depends on the driver code.
+{{% /notice %}}
+
 ### Out-of-band I/O services {#oob-io-services}
 
 {{< proto oob_read >}}
