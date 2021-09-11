@@ -414,47 +414,47 @@ weight: 1
     <th>non-EVL<sup>2</sup></th> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_create_sem" target="_blank">evl_create_sem()</a></td>
+    <td><a href="/core/user-api/semaphore/index.html#evl_create_sem" target="_blank">evl_create_sem()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_new_sem" target="_blank">evl_new_sem()</a></td>
+    <td><a href="/core/user-api/semaphore/index.html#evl_new_sem" target="_blank">evl_new_sem()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_open_sem" target="_blank">evl_open_sem()</a></td>
+    <td><a href="/core/user-api/semaphore/index.html#evl_open_sem" target="_blank">evl_open_sem()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_get_sem" target="_blank">evl_get_sem()</a></td>
+    <td><a href="/core/user-api/semaphore/index.html#evl_get_sem" target="_blank">evl_get_sem()</a></td>
     <td>&#9651;<sup>4</sup></td> 
     <td>&#10005;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_timedget_sem" target="_blank">evl_timedget_sem()</a></td>
+    <td><a href="/core/user-api/semaphore/index.html#evl_timedget_sem" target="_blank">evl_timedget_sem()</a></td>
     <td>&#9651;<sup>4</sup></td> 
     <td>&#10005;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_tryget_sem" target="_blank">evl_tryget_sem()</a></td>
+    <td><a href="/core/user-api/semaphore/index.html#evl_tryget_sem" target="_blank">evl_tryget_sem()</a></td>
     <td>&#9866;<sup>4</sup></td> 
     <td>&#9989;</td> 
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_peek_sem" target="_blank">evl_peek_sem()</a></td>
+    <td><a href="/core/user-api/semaphore/index.html#evl_peek_sem" target="_blank">evl_peek_sem()</a></td>
     <td>&#9866;</td>
     <td>&#9989;</td>
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_put_sem" target="_blank">evl_put_sem()</a></td>
+    <td><a href="/core/user-api/semaphore/index.html#evl_put_sem" target="_blank">evl_put_sem()</a></td>
     <td>&#9866;<sup>4</sup></td>
     <td>&#9989;</td>
   </tr>
   <tr>
-    <td><a href="/core/user-api/sem/index.html#evl_close_sem" target="_blank">evl_close_sem()</a></td>
+    <td><a href="/core/user-api/semaphore/index.html#evl_close_sem" target="_blank">evl_close_sem()</a></td>
     <td>&#9661;</td> 
     <td>&#9989;</td> 
   </tr>
