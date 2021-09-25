@@ -843,11 +843,11 @@ interrupts requires applying a significant stress load to the system
 in parallel to running the test itself. There have been many
 discussions about what _significant_ should mean in this context. Some
 have argued that real-time applications should have _reasonable_
-requirements, defined by a set of restriction on their behavior and
+requirements, defined by a set of restrictions on their behavior and
 environment, so that bounded response time can be guaranteed, which
 sounds like asking application developers to abide by the rules
-defined by kernel folks. When was the last time any of them did
-so anyway?
+defined by kernel folks. When was the last time any of them did so
+anyway?
 
 Obviously, we cannot ask the infrastructure to be resilient to any
 type of issue, including broken hardware or fatal kernel
