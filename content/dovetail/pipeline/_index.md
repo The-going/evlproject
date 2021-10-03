@@ -194,6 +194,81 @@ which will be invoked later from a safe place on the in-band stage as
 soon as it gets back in control on the current CPU (i.e. typically
 when in-band interrupts are allowed again).
 
+## Pipeline entry context
+
+The pipeline entry denotes the code which runs in order to accept a
+hardware interrupt, either dispatching it to its out-of-band handler
+immediately, or logging it as a pending event for the in-band stage.
+This runtime section starts from the call to
+[handle_irq_pipeline_prepare()](https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/pipeline.c#L1079),
+ends after the call to
+[handle_irq_pipeline_finish()](https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/pipeline.c#L1136). These
+calls are issued by the architecture code every time they need to feed
+the pipeline upon an incoming hardware interrupt.
+
+## Pipelining and RCU
+
+As described earlier, from the standpoint of the in-band context, an
+interrupt entry is unsafe in a similar way a NMI is when pipelining is
+in effect, since it may preempt almost anywhere as IRQs are only
+virtually masked most of the time, including inside (virtually)
+interrupt-free sections.
+
+For this reason, Dovetail declares a (pseudo-)NMI entry to RCU when a
+hardware interrupt is fed to the pipeline, so that it may enter RCU
+read sides to safely access RCU-protected data. Typically,
+[handle_domain_irq()](https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/irqdesc.c#L694)
+would need this guarantee to resolve IRQ mappings for incoming
+hardware interrupts.
+
+To this end, the RCU code considers a pipeline entry as a non-maskable
+context alongside `in_nmi()`, which ends before the companion core is
+allowed to reschedule.
+
+On hardware interrupt, the execution flow is as follows:
+
+```
+   <IRQ> /* hard irqs off */
+	core_notify_irq_entry /* disable oob reschedule */
+	<pipeline_entry>
+		rcu_nmi_enter
+			oob_irq_delivery
+			      OR,
+			inband_irq_logging
+		rcu_nmi_exit
+	</pipeline_entry>
+	core_notify_irq_exit /* re-enable oob reschedule */
+	synchronize_irq_log
+		inband_irq_delivery  /* hard irqs on */
+   </IRQ> /* in-band reschedule */
+```
+
+As a result, the pipeline core may safely assume that while in a
+pipeline entry:
+
+- RCU read sides may be entered to access protected data since RCU
+  is watching,
+
+- the virtual interrupt state (stall bit) might legitimately be
+  different from the hardware interrupt state.
+
+This also means that RCU-awareness is denied to activities running on
+the out-of-band stage outside of the pipeline entry context. As a
+result, the companion core has no RCU protection against accessing
+stale data.
+
+All of the above is possible because hardware interrupts are always
+disabled when running the pipeline entry code, therefore pipeline
+entries are strictly serialized on a given CPU. The following
+guarantees allow this:
+
+- out-of-band handlers called from
+  [handle_oob_irq()](https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/pipeline.c#L931)
+  may not re-enable hard interrupts.
+
+- synchronizing the in-band log with hard interrupts enabled is done
+  outside of the section marked as a pipeline entry.
+
 ---
 
 {{<lastmodified>}}
