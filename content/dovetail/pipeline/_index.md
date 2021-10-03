@@ -203,7 +203,7 @@ This runtime section starts from the call to
 [handle_irq_pipeline_prepare()](https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/pipeline.c#L1079),
 ends after the call to
 [handle_irq_pipeline_finish()](https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/pipeline.c#L1136). These
-calls are issued by the architecture code every time they need to feed
+calls are issued by the architecture code every time it wants to feed
 the pipeline upon an incoming hardware interrupt.
 
 ## Pipelining and RCU
@@ -249,13 +249,14 @@ pipeline entry:
 - RCU read sides may be entered to access protected data since RCU
   is watching,
 
-- the virtual interrupt state (stall bit) might legitimately be
-  different from the hardware interrupt state.
+- the virtual interrupt state (stall bit) of the in-band stage might
+  legitimately be different from the hardware interrupt state.
 
 This also means that RCU-awareness is denied to activities running on
 the out-of-band stage outside of the pipeline entry context. As a
 result, the companion core has no RCU protection against accessing
-stale data.
+stale data, except from its interrupt handlers (i.e. those marked as
+running out-of-band with the IRQF_OOB flag).
 
 All of the above is possible because hardware interrupts are always
 disabled when running the pipeline entry code, therefore pipeline
