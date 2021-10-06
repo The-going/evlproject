@@ -60,11 +60,11 @@ or the combination of multiple tests and/or computations, whatever
 works.
 
 {{% notice info %}}
-Unlike _glibc_ with condition variables, EVL optimizes the wake up
-sequence on event receipt by readying the waiter only upon release of
-the lock which protects accesses to the condition by the thread
-posting the awaited event. This spares us a useless context switch to
-the waiter in case it has a higher priority than the poster.
+EVL optimizes the wake up sequence on event receipt by implementing a
+_wait morphing_ technique. As a result, the waiter resumes execution
+once the lock which protects access to the condition is released by
+the thread posting the awaited event. This spares us a useless context
+switch to the waiter in case it has a higher priority than the poster.
 {{% /notice %}}
 
 ### Event services {#event-services}
