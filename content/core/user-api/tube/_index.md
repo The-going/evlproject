@@ -11,9 +11,9 @@ manipulating a tube is lockless, threads can use it regardless of
 their respective [execution stage]({{< relref
 "dovetail/altsched/_index.md#altsched-theory" >}}), therefore a tube
 could also be used as a very simple [inter-stage messaging system]({{<
-relref "#inter-stage-tube" >}}).  In addition, the tube supports the
-multi-reader and multi-writer paradigms. The intent is to provide a
-basic mechanism which can either be used "as is" for fully
+relref "#inter-stage-tube" >}}).  In addition, the tube only supports
+the single-reader, single-writer paradigm so far. The intent is to
+provide a basic mechanism which can either be used "as is" for fully
 non-blocking send/receive operations, or as a building block for
 implementing featureful message queues including sleeping wait for
 input and output congestion control.
