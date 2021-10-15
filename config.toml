@@ -1,7 +1,7 @@
 baseURL = "https://evlproject.org/"
 languageCode = "en-US"
 title = "Xenomai 4"
-theme = "hugo-theme-learn"
+theme = "relearn"
 copyright = "Copyright 2021 - The Xenomai project."
 enableGitInfo = true
 
