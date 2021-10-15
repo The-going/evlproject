@@ -1,4 +1,5 @@
-baseURL = "https://evlproject.org/"
+baseURL = "https://the-going.github.io/evlproject/"
+canonifyurls = true
 languageCode = "en-US"
 title = "Xenomai 4"
 theme = "relearn"
@@ -20,6 +21,9 @@ evlLTSLatest = "v5.10.70-evl1"
 evlLibLatest = "r27"
 
 [markup]
+  [markup.highlight]
+  style = "base16-snazzy" # choose a color theme or create your own
+  guessSyntax = true     # if set to true, avoid unstyled code if no language was given but mermaid code fences will not work anymore
 [markup.goldmark]
 [markup.goldmark.renderer]
 unsafe = true
@@ -27,7 +31,7 @@ unsafe = true
 [[menu.shortcuts]]
 name = "<i class='fas fa-home'></i> Home"
 identifier = "Home"
-url = "/"
+#url = "/"
 weight = 1
 
 [[menu.shortcuts]]
