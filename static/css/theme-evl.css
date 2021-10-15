@@ -101,24 +101,24 @@ a:hover {
     border-color: var(--MENU-SECTION-HR-color);
 }
 
-div.notices.warning p {
-    border-top: 30px solid #004fd0;
-    background: #f7f7f7;
+div.notices.warning {
+    border-color: #004fd0;
+    background-color: #f7f7f7;
 }
 
-div.notices.note p {
-    border-top: 30px solid #00a5d0;
-    background: #f7f7f7;
+div.notices.note {
+    border-color: #00a5d0;
+    background-color: #f7f7f7;
 }
 
-div.notices.tip p {
-    border-top: 30px solid #00a5d0;
-    background: #f7f7f7;
+div.notices.tip {
+    border-color: #799ba5;
+    background-color: #f7f7f7;
 }
 
-div.notices.info p {
-    border-top: 30px solid #00a5d0;
-    background: #f7f7f7;
+div.notices.info {
+    border-color: #4897CC;
+    background-color: #f7f7f7;
 }
 
 div.proto {
