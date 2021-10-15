@@ -17,7 +17,7 @@ must have execute permission on such file to run it.
 
 The general syntax is as follows:
 
-```
+```sh
 evl [-V] [-P <cmddir>] [-h] [<command> [command-args]]
 ```
 
@@ -42,7 +42,7 @@ evl [-V] [-P <cmddir>] [-h] [<command> [command-args]]
     part of, and **\<revision\>** refers to the kernel ABI this binary
     distribution is compatible with. For instance:
 
-```
+```sh
 ~ # evl -V
 evl.0 -- #1c6115c (2020-03-06 16:24:00 +0100) [requires ABI 19]
 ```
@@ -56,7 +56,7 @@ sources were not version-controlled by GIT.
 help, along with a short help string for each of the supported
 commands found in **\<cmddir\>**, such as:
 
-```
+```sh
 ~ # evl
 usage: evl [options] [<command> [<args>]]
 -P --prefix=<path>   set command path prefix
@@ -79,7 +79,7 @@ newly installed target system which is going to run the EVL core. This
 command checks a kernel configuration for common issues which may
 increase latency. The general syntax is as follows:
 
-```
+```sh
 $ evl check [-f --file=<.config>]
       	    [-L --check-list=<file>]
       	    [-a --arch=<cpuarch>]
@@ -101,7 +101,7 @@ override the default check list stored at
 `$prefix/libexec/kconf-checklist.evl` with our own set of checks with
 the `-L` option.  Each assertion follows the BNF-like syntax below:
 
-```
+```sh
 assertion   : expr conditions
             | "!" expr conditions
 
@@ -151,7 +151,7 @@ _aarch64_ and _aarch32_ when found in an assertion or passed to the
 The [default check list](https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/utils/kconf-checklist.evl)
 translates the configuration-related information gathered in the [caveat section]({{< relref
 "core/caveat.md" >}}) as follows:
-```
+```kconf
 CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE=y if CONFIG_CPU_FREQ
 CONFIG_DEBUG_HARD_LOCKS=n
 CONFIG_ACPI_PROCESSOR_IDLE=n
@@ -171,7 +171,7 @@ The command returns the following information:
   code ($?).
 
 > Example: checking the current kernel configuration
-```
+```sh
 ~ # evl check
 CONFIG_ACPI_PROCESSOR_IDLE=y
 ~ # echo $?
@@ -184,7 +184,7 @@ When you need to know which threads are currently present in your
 system, **evl ps** comes in handy. The command syntax - which
 supports short and long options formats - is as follows:
 
-```
+```sh
 $ evl ps [-c --cpu=<cpu>[,<cpu>...]]
          [-s --state]
          [-t --times]
@@ -295,7 +295,7 @@ should be displayed:
   instance, the following command would report threads pinned on CPU0,
   and all CPUs from CPU3 to CPU15.
 
-```
+```sh
 $ evl ps -c 0,3-15
 ```
 
@@ -329,7 +329,7 @@ $ evl ps -c 0,3-15
 For instance, the following command would list the times of all
 threads from CPU14 by decreasing CPU time consumption:
 
-```
+```sh
 $ evl ps -t -Srt -c14
 CPU   PID   TIMEOUT      %CPU   CPUTIME     NAME
  14   2603     -           0.6  00:435.952  rtup_ufpp14-5:2069
@@ -382,7 +382,7 @@ features in your [kernel build]({{< relref
 
 The command syntax is as follows:
 
-```
+```sh
 evl trace [-e[<trace_group>][-E<tracepoint_file>][-s<buffer_size>][-t]]
     	  [-d] [-p] [-f] [-h]
 	  [-c <cpu>]
@@ -416,7 +416,7 @@ tracer:
   `-e` behaves as `-e -f`, which enables all kernel tracepoints (see
   `-f`).
 
-```
+```sh
 ~# evl trace -eirq
 tracing enabled
 
@@ -444,7 +444,7 @@ evl/evl_latspot
   If a tracepoint listed in the file is invalid, it is silently
   ignored.
 
-```
+```sh
 ~# cat > /tmp/custom_traces
 evl/evl_schedule
 evl/evl_pick_next
@@ -483,7 +483,7 @@ tracing enabled
 For instance, the following command starts tracing all kernel
 routines:
 
-```
+```sh
 $ evl trace -ef
 ```
 
@@ -509,7 +509,7 @@ the notion of interrupt stage Dovetail implements.
 
 For instance:
 
-```
+```c
 /* hard irqs off, running in-band */
 <...>-4164  [003] D...   122.047972: do_syscall_64 <-entry_SYSCALL_64_after_hwframe
 /* in-band stalled and hard irqs off, running out-of-band */
@@ -526,7 +526,7 @@ visible in the corresponding per-CPU snapshot buffer. From that point,
 you may be able to backtrack to the source(s) of the extra latency. A
 typical debug session would look like this:
 
-```
+```sh
 ~ # evl trace -ef
 tracing enabled
 
@@ -573,7 +573,7 @@ latest tick date programmed in the hardware and the actual receipt of
 the timer interrupt. When tracing is enabled, this information is
 automatically produced in the trace log:
 
-```
+```c
 /* This is when the timer chip is programmed for the next tick. */
 <idle>-0     [001] *.~.   135.362244: evl_timer_shot: latmus_pulse_handler at 135.363228 (delay: 984 us, 196195 cycles
 ...
@@ -587,14 +587,14 @@ This command is a short-hand for running the [EVL test suite]({{<
 relref "core/testing#evl-unit-testing" >}}). The usage is as
 follows:
 
-```
+```sh
 $ evl test [-l][-L][-k] [test-list]
 ```
 
 With no argument, this command runs all of the tests available from
 the default installation path at $prefix/tests:
 
-```
+```sh
 $ evl test
 duplicate-element: OK
 monitor-pp-dynamic: OK
@@ -606,7 +606,7 @@ clone-fork-exec: OK
 You can also chose to run a specific set of tests by mentioning them
 as arguments to the command, such as:
 
-```
+```sh
 $ evl test duplicate-element monitor-pi
 duplicate-element: OK
 monitor-pi: OK
@@ -615,7 +615,7 @@ monitor-pi: OK
 You may ask for listing the available tests instead of executing them,
 by using the `-l` switch:
 
-```
+```sh
 $ evl test -l
 duplicate-element
 monitor-pp-dynamic
@@ -627,7 +627,7 @@ clone-fork-exec
 In a variant aimed at making scripting easier, you can ask for the
 absolute paths instead:
 
-```
+```sh
 $ evl test -L proxy-pipe mapfd
 /usr/evl/tests/proxy-pipe
 /usr/evl/tests/mapfd
@@ -648,7 +648,7 @@ considered, which means that you may override any base command with
 your own implementation whenever you see fit.
 
 > Crash course: adding the 'foo' command script to ~/tools
-```
+```sh
 $ mkdir ~/tools
 $ cat > ~/tools/evl-foo
 #! /bin/sh

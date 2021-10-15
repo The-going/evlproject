@@ -45,7 +45,7 @@ tells the core to use them.
 A typical output of this command looks like this:
 
 > Complete core timer calibration
-```
+```sh
 # latmus -t
 == latmus started for core tuning, period=1000 us (may take a while)
 irq gravity...2000 ns
@@ -60,7 +60,7 @@ modifiers to the `latmus` command, such as `-u` for user-space and
 `-i` for IRQ latency respectively:
 
 > Context-specific calibration
-```
+```sh
 # latmus -tui
 == latmus started for core tuning, period=1000 us (may take a while)
 irq gravity...1000 ns

@@ -14,7 +14,7 @@ part of building `libevl`. You should run each of them to make sure
 everything is fine. The simplest way to do this is as follows:
 
 > Running the EVL unit tests
-```
+```sh
 # evl test
 duplicate-element: OK
 monitor-pp-dynamic: OK
@@ -68,7 +68,7 @@ fpu-preload: OK
 A few tests from the test suite may fail in case some kernel support
 is missing in order to support them, like:
 
-```
+```sh
 sched-quota-accuracy.c:213: FAILED: evl_control_sched(44, &p, &q, test_cpu) (=Operation not supported)
 sched-quota-accuracy: no kernel support
 ```
@@ -99,7 +99,7 @@ enabled in the kernel configuration, and loaded into the kernel under
 test if you built it as a dynamic module.
 {{% /notice %}}
 
-```
+```sh
 # /usr/evl/bin/hectic -s 200
 == Testing FPU check routines...
 == FPU check routines: OK.

@@ -263,7 +263,7 @@ configuration. To be allowed to change the latter, the
 prefix of the 32-bit ARMv7 toolchain which should be used to compile
 the vDSO (yes, this is quite convoluted). For instance:
 
-```
+```sh
 $ make <your-make-args> ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- (x|g|menu)config
 ```
 
@@ -281,7 +281,7 @@ mentioned earlier.
 
 The generic command for building libevl is:
 
-```
+```sh
 $ make [-C $SRCDIR] [ARCH=$cpu_arch] [CROSS_COMPILE=$toolchain] UAPI=$uapi_dir [OTHER_BUILD_VARS] [goal...]
 ```
 
@@ -323,7 +323,7 @@ amount to this:
 
 > Cross-compiling from a separate build directory
 
-```
+```sh
 # First create a build directory the where output files should go
 $ mkdir /tmp/build-imx6q && cd /tmp/build-imx6q
 # Then start the build+install process
@@ -334,7 +334,7 @@ or,
 
 > Cross-compiling from the EVL library source tree
 
-```
+```sh
 $ mkdir /tmp/build-hikey
 $ cd ~/git/libevl
 $ make O=/tmp/build-hikey ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- UAPI=~/git/linux-evl DESTDIR=/nfsroot/hikey/usr/evl install
@@ -358,7 +358,7 @@ home located at e.g. /usr/evl can be done as follows:
 
 > Building natively from a build directory
 
-```
+```sh
 $ mkdir /tmp/build-native && cd /tmp/build-native
 $ make -C ~/git/libevl O=$PWD UAPI=~/git/linux-evl DESTDIR=/usr/evl install
 ```
@@ -367,7 +367,7 @@ or,
 
 > Building natively from the EVL library source tree
 
-```
+```sh
 $ mkdir /tmp/build-native
 $ cd ~/git/libevl
 $ make O=/tmp/build-native UAPI=~/git/linux-evl DESTDIR=/usr/evl install

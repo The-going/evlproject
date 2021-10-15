@@ -98,7 +98,7 @@ options, starting with `CONFIG_SMP`.
   systematically cause such behavior at boot. The following warning
   splat appearing in the kernel log is symptomatic of this problem:
 
-  ```
+  ```log
   clocksource: timekeeping watchdog on CPU0: Marking clocksource
                'tsc-early' as unstable because the skew is too large:
   clocksource: 'refined-jiffies' wd_now: fffb7018 wd_last: fffb6e9d 
@@ -131,7 +131,7 @@ can detect any related issue.
 
   	You can retrieve the current clocksource used by the kernel as follows:
 
-```
+```sh
 # cat /sys/devices/system/clocksource/clocksource0/current_clocksource
 tsc
 ```

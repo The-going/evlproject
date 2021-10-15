@@ -167,7 +167,7 @@ the [latmus application]({{< relref "core/testing.md#latmus-program"
 response time to timer events is the default test.
 
 > Measuring response time to timer events
-```
+```sh
 # latmus
 RTT|  00:00:01  (user, 1000 us period, priority 98, CPU1)
 RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
@@ -185,7 +185,7 @@ RTS|      1.182|      1.316|      3.899|       0|     0|    00:00:08/00:00:08
 ```
 
 > Collecting plottable histogram data (timer test)
-```
+```sh
 RTT|  00:00:01  (user, 1000 us period, priority 98, CPU1)
 RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
 RTD|      1.156|      1.273|      1.786|       0|     0|      1.156|      1.786
@@ -512,7 +512,7 @@ tree](https://git.xenomai.org/xenomai4/libevl.git) was cloned into ~/libevl.
 
 2. Patch the device tree and _pinmux_ changes to the FRDM-K64F board
 which enable the GPIO lines in the Zephyr source tree:
-```
+```sh
 $ cd ~/zephyrproject/zephyr
 $ patch -p1 < ~/libevl/benchmarks/zephyr/frdm_k64f-enable-EVL-latency-monitor.patch
 ```
@@ -546,7 +546,7 @@ application](https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/ze
 using the [Zephyr
 SDK](https://docs.zephyrproject.org/latest/getting_started/installation_linux.html),
 then flash it to the FRDM-K64F.
-```
+```sh
 $ cd ~/zephyrproject/zephyr
 $ source zephyr-env.sh
 $ west build -p auto -b frdm_k64f ~/libevl/benchmarks/zephyr/latmon
@@ -575,7 +575,7 @@ ninja: no work to do.
 	Once (re-)flashed, the FRDM-K64F is automatically reset, with the
 latency monitor taking over. You should see the following output in
 the serial console of the FRDM-K64F:
-```
+```sh
 *** Booting Zephyr OS build zephyr-<some version information> ***
 
 [00:00:00.006,000] <inf> latency_monitor: DHCPv4 binding...
@@ -613,7 +613,7 @@ check the output of `/proc/interrupts` once the test runs, looking for
 the GPIO consumer called _latmon-pulse_. For instance, the following
 output was obtained from a PREEMPT_RT kernel running on an i.MX8M SoM:
 
-```
+```sh
 ~ # cat /proc/interrupts 
            CPU0       CPU1       CPU2       CPU3       
   3:     237357      90193     227077     224949     GICv3  30 Level     arch_timer
@@ -654,7 +654,7 @@ order to reduce the disturbance of interrupt handling on the workload
 is something you may have to determine on a case-by-case basis.
 {{% /notice %}}
 
-```
+```sh
 ~ # pgrep irq/52
 345
 ~ # chrt -f -p 99 345
@@ -666,7 +666,7 @@ pid 345's new scheduling priority: 99
 
 Which can be shortened as:
 
-```
+```sh
 ~ # chrt -f -p 99 $(pgrep irq/52)
 pid 345's current scheduling policy: SCHED_FIFO
 pid 345's current scheduling priority: 50
@@ -715,7 +715,7 @@ application]({{< relref "core/testing.md#latmus-program" >}})
 indefinitely until the latter stops, at which point the latency
 monitor goes back waiting for another connection.
 
-```
+```sh
 [00:04:15.651,000] <inf> latency_monitor: monitoring started
 /* ...remote latmus runs for some time... */
 [00:04:24.877,000] <inf> latency_monitor: monitoring stopped
@@ -723,7 +723,7 @@ monitor goes back waiting for another connection.
 ```
 
 > Measuring out-of-band response time to GPIO events (on the SUT)
-```
+```sh
 /*
  * Caution: the following output was produced by running the test only
  * a few seconds on an idle EVL-enabled system: the results displayed do not
@@ -745,7 +745,7 @@ RTS|      1.791|     15.606|     30.950|       0|     0|    00:00:05/00:00:05
 ```
 
 > Measuring in-band response time to GPIO events (on the SUT)
-```
+```sh
 /*
  * Caution: the following output was produced by running the test only
  * a few seconds on an idle PREEMPT_RT-enabled system: the results displayed do
@@ -923,7 +923,7 @@ relevant over time when it comes to observing the worst case latency:
   your favourite latency benchmark (hint: CPU isolation for the
   real-time workload won't save the day on most platforms):
 
-  ```
+  ```sh
   $ dd if=/dev/zero of=/dev/null bs=128M &
   ```
 
@@ -1000,7 +1000,7 @@ following stress workloads are applied when running benchmarks:
    is likely to thrash common embedded systems. The shell commands to
    start this workload are:
 
-   ```
+   ```sh
    ~ # while :; do hackbench; done &
    ~ # dd if=/dev/zero of=/dev/null bs=128M &
    ```
