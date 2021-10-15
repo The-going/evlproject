@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dovetail interface on Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/dovetail/</link>
+    <description>Recent content in Dovetail interface on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright>
+    <lastBuildDate>Tue, 26 Jun 2018 19:28:38 +0200</lastBuildDate><atom:link href="https://the-going.github.io/evlproject/dovetail/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Interrupt pipeline</title>
+      <link>https://the-going.github.io/evlproject/dovetail/pipeline/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/pipeline/</guid>
+      <description>The autonomous core has to act upon device interrupts with no delay, regardless of the other kernel operations which may be ongoing when the interrupt is received by the CPU. Therefore, there is a basic requirement for prioritizing interrupt masking and delivery between the autonomous core and GPOS operations, while maintaining consistent internal serialization for the kernel.
+However, to protect from deadlocks and maintain data integrity, Linux hard disables interrupts around any critical section of code which must not be preempted by interrupt handlers on the same CPU, enforcing a strictly serialized execution among those contexts.</description>
+    </item>
+    <item>
+      <title>Porting Dovetail</title>
+      <link>https://the-going.github.io/evlproject/dovetail/porting/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/porting/</guid>
+      <description>Porting the Dovetail interface to a different kernel release, or a different CPU architecture involves enabling the interrupt pipeline first, then the alternate scheduling feature which builds on the former.
+Interrupt pipelining is enabled by turning on CONFIG_IRQ_PIPELINE: getting this feature to work flawlessly is a prerequisite before the rest of the Dovetail port can proceed. At the very least, you should check that these kernel features get along with interrupt pipelining:</description>
+    </item>
+    <item>
+      <title>Alternate scheduling</title>
+      <link>https://the-going.github.io/evlproject/dovetail/altsched/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/altsched/</guid>
+      <description>For specific use cases requiring reliable, ultra-low response times, we want to enable hosted autonomous software cores to control common Linux tasks based on their own scheduler infrastructure, fully decoupled from the host&amp;rsquo;s scheduler, with absolute priority over all other kernel activities.
+This being said, Dovetail also promotes the idea that a dual kernel system should keep the functional overlap between the main kernel and the autonomous core minimal. To this end, a task from such core should be merely seen as a regular Linux task with additional scheduling capabilities guaranteeing very low and bounded response times.</description>
+    </item>
+    <item>
+      <title>File tracking</title>
+      <link>https://the-going.github.io/evlproject/dovetail/files/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/files/</guid>
+      <description>A companion core usually wants its device drivers to export a file interface to applications. It may even generalize this to all of the resources it provides, which can then be implemented by device drivers and referred to by common file descriptors from applications. For this, we need a way for the core to maintain its own per-process index of files which may support out-of-band I/O, since we will not be allowed to reuse the in-band VFS services from the out-of-band context for this purpose (e.</description>
+    </item>
+    <item>
+      <title>Socket handling</title>
+      <link>https://the-going.github.io/evlproject/dovetail/sockets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/sockets/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rules Of Thumb</title>
+      <link>https://the-going.github.io/evlproject/dovetail/rulesofthumb/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/rulesofthumb/</guid>
+      <description>Turn on debug options in the kernel configuration! During the development phase, do yourself a favour: turn on CONFIG_DEBUG_IRQ_PIPELINE and CONFIG_DEBUG_DOVETAIL.
+The first one will catch many nasty issues, such as calling unsafe in-band code from out-of-band context. The second one checks the integrity of the alternate scheduling support, detecting issues in the architecture port.
+The runtime overhead induced by enabling these options is marginal. Just don&amp;rsquo;t port Dovetail or implement out-of-band client code without them enabled in your target kernel, seriously.</description>
+    </item>
+  </channel>
+</rss>

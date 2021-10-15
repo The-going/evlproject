@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Interrupt pipeline on Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/dovetail/pipeline/</link>
+    <description>Recent content in Interrupt pipeline on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright><atom:link href="https://the-going.github.io/evlproject/dovetail/pipeline/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>IRQ handling</title>
+      <link>https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/</guid>
+      <description>Requesting an out-of-band IRQ Dovetail introduces the new interrupt type flag IRQF_OOB, denoting an out-of-band handler to the generic interrupt API routines:
+ setup_irq() for early registration of special interrupts request_irq() for device interrupts __request_percpu_irq() for per-CPU interrupts  An IRQ action handler bearing this flag will run from out-of-band context over the out-of-band stage, regardless of the current interrupt state of the in-band stage. If no out-of-band stage is present, the flag will be ignored, with the interrupt handler running on the in-band stage as usual.</description>
+    </item>
+    <item>
+      <title>Synthetic IRQs</title>
+      <link>https://the-going.github.io/evlproject/dovetail/pipeline/synthetic/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/pipeline/synthetic/</guid>
+      <description>The pipeline introduces an additional type of interrupts, which are purely software-originated, with no hardware involvement. These IRQs can be triggered by any kernel code. Synthetic IRQs are inherently per-CPU events. Because the common pipeline flow applies to synthetic interrupts, it is possible to attach them to out-of-band and/or in-band handlers, just like device interrupts.
+Synthetic interrupts abide by the normal rules with respect to interrupt masking: such IRQs may be deferred until the stage they should be handled from is unstalled.</description>
+    </item>
+    <item>
+      <title>IRQ injection</title>
+      <link>https://the-going.github.io/evlproject/dovetail/pipeline/pipeline_inject/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/pipeline/pipeline_inject/</guid>
+      <description>Sending out-of-band IPIs to remote CPUs Although the pipeline does not directly use IPIs internally, it exposes two generic IPI vectors which autonomous cores may use in SMP configuration for signaling the following events across CPUs:
+  RESCHEDULE_OOB_IPI, the cross-CPU task reschedule request. This is available to the core&amp;rsquo;s scheduler for kicking the task rescheduling procedure on remote CPUs, when the state of their respective runqueue has changed. For instance, a task sleeping on CPU #1 may be unblocked by a system call issued from CPU #0: in this case, the scheduler code running on CPU #0 is supposed to tell CPU #1 that it should reschedule.</description>
+    </item>
+    <item>
+      <title>Interrupt protection</title>
+      <link>https://the-going.github.io/evlproject/dovetail/pipeline/interrupt_protection/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/pipeline/interrupt_protection/</guid>
+      <description>Disabling interrupts in the CPU The local_irq_save() and local_irq_disable() helpers are no more disabling interrupts in the CPU when interrupt pipelining is enabled, but only disable interrupt events virtually for the in-band stage.
+A set of helpers is provided for manipulating the interrupt disable flag in the CPU instead. When CONFIG_IRQ_PIPELINE is disabled, this set maps 1:1 over the regular local_irq_*() API.
+   Original/Virtual Non-virtualized call     local_save_flags(flags) flags = hard_local_save_flags()   local_irq_disable() hard_local_irq_disable()   local_irq_enable() hard_local_irq_enable()   local_irq_save(flags) flags = hard_local_irq_save()   local_irq_restore(flags) hard_local_irq_restore(flags)   irqs_disabled() hard_irqs_disabled()   irqs_disabled_flags(flags) hard_irqs_disabled_flags(flags)    Stalling the out-of-band stage Just like the in-band stage is affected by the state of the virtual interrupt disable flag, the interrupt state of the oob stage is controlled by a dedicated stall bit flag in the oob stage&amp;rsquo;s status.</description>
+    </item>
+    <item>
+      <title>Installing the out-of-band stage</title>
+      <link>https://the-going.github.io/evlproject/dovetail/pipeline/stage_push/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/pipeline/stage_push/</guid>
+      <description>Before you can direct the incoming interrupt flow to out-of-band handlers, you need to install the out-of-band interrupt stage. Conversely, you need to remove the out-of-band stage from the interrupt pipeline when you are done with receiving out-of-band events.
+  int enable_oob_stage(const char *name)  nameA symbolic name describing the high priority interrupt stage which is being installed. This information is merely used in kernel messages, so it should be short but descriptive enough.</description>
+    </item>
+    <item>
+      <title>Stage escalation</title>
+      <link>https://the-going.github.io/evlproject/dovetail/pipeline/stage_escalation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/pipeline/stage_escalation/</guid>
+      <description>Sometimes you may need to escalate the current execution stage from in-band to out-of-band, only for running a particular routine. This can be done using run_oob_call(). For instance, the EVL core is using this service to escalate calls to its rescheduling procedure to the out-of-band stage, as described in the discussion about switching task contexts with Dovetail&amp;rsquo;s support for alternate scheduling.
+  int run_oob_call(int (*fn)(void *arg), void *arg)  fnThe address of the routine to execute on the out-of-band stage.</description>
+    </item>
+    <item>
+      <title>Locking</title>
+      <link>https://the-going.github.io/evlproject/dovetail/pipeline/locking/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/pipeline/locking/</guid>
+      <description>Additional spinlock types The pipeline core introduces two spinlock types:
+ hard spinlocks manipulate the CPU interrupt mask, and don&amp;rsquo;t affect the kernel preemption state in locking/unlocking operations.  This type of spinlock is useful for implementing a critical section to serialize concurrent accesses from both in-band and out-of-band contexts, i.e. from in-band and oob stages. Obviously, sleeping into a critical section protected by a hard spinlock would be a very bad idea.</description>
+    </item>
+  </channel>
+</rss>

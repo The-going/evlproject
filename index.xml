@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/</link>
+    <description>Recent content on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright>
+    <lastBuildDate>Sat, 16 Feb 2019 16:10:44 +0100</lastBuildDate><atom:link href="https://the-going.github.io/evlproject/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Overview</title>
+      <link>https://the-going.github.io/evlproject/overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/overview/</guid>
+      <description>InfoThe EVL project is now Xenomai 4. The EVL core was originally a fork of the Xenomai 3 Cobalt core, which went through a significant overhaul to make it SMP-scalable, easier to grasp and maintain too. However, both still share the same principles when it comes to the dual kernel technique. The Xenomai project is adopting EVL&amp;rsquo;s Dovetail pipeline interface for its upcoming 3.2 release. In the same move, EVL becomes the Xenomai 4 project.</description>
+    </item>
+    <item>
+      <title>The EVL core</title>
+      <link>https://the-going.github.io/evlproject/core/</link>
+      <pubDate>Sat, 16 Feb 2019 16:10:44 +0100</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/</guid>
+      <description>Pitching the real-time EVL core For certain types of applications, offloading a particular set of time-critical tasks to an autonomous software core embedded into the Linux kernel may deliver the best performance at the lowest engineering and runtime costs in comparison to imposing real-time behavior on the whole kernel logic in order to meet the deadlines which only those tasks have, like the native preemption model requires.
+In a nutshell, the Xenomai 4 project is about introducing a simple, scalable and dependable dual kernel architecture for Linux, based on the Dovetail interface for coupling a high-priority software core to the main kernel.</description>
+    </item>
+    <item>
+      <title>Dovetail interface</title>
+      <link>https://the-going.github.io/evlproject/dovetail/</link>
+      <pubDate>Tue, 26 Jun 2018 19:28:38 +0200</pubDate>
+      <guid>https://the-going.github.io/evlproject/dovetail/</guid>
+      <description>Introducing Dovetail Using Linux as a host for lightweight software cores specialized in delivering very short and bounded response times has been a popular way of supporting real-time applications in the embedded space over the years.
+This dual kernel design introduces a small real-time infrastructure into the Linux kernel, which immediately handles time-critical, out-of-band activities independently from the ongoing general purpose kernel work. Application threads co-managed by this infrastructure still benefit from the common kernel services such as virtual memory management; they can leverage the rich GPOS feature set Linux provides such as networking, data storage or GUIs too.</description>
+    </item>
+    <item>
+      <title>Status of EVL ports</title>
+      <link>https://the-going.github.io/evlproject/ports/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ports/</guid>
+      <description>The table below summarizes the current status of the EVL ports to particular SoCs which we are aware of. It is definitely not meant to be exhaustive: many SoCs which are not listed here may just work out of the box with a recent EVL-enabled kernel release, especially in the x86 and arm64 ecosystems (arm32 might require more work in some cases). New SoCs sporting interrupt chip controllers, timer or clock sources which have not been made pipeline-aware yet may need the corresponding kernel drivers to be marginally fixed up for that purpose.</description>
+    </item>
+    <item>
+      <title>Contributing to Xenomai 4</title>
+      <link>https://the-going.github.io/evlproject/contributing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/contributing/</guid>
+      <description>We obviously welcome contribution to this effort, small or large. If you are interested in contributing to Xenomai 4 here are some helpful hints on how to get started. Start small, then progress as you get your feet wet. There is no such thing as a minor contribution, there is no shame in making mistakes. A contributor who submits a perfectible one-liner surely advances the project further than any smart lurker.</description>
+    </item>
+  </channel>
+</rss>

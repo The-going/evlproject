@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The EVL core on Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/core/</link>
+    <description>Recent content in The EVL core on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright>
+    <lastBuildDate>Sat, 16 Feb 2019 16:10:44 +0100</lastBuildDate><atom:link href="https://the-going.github.io/evlproject/core/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Running benchmarks</title>
+      <link>https://the-going.github.io/evlproject/core/benchmarks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/benchmarks/</guid>
+      <description>The issue of proper benchmarking is sisyphean, a never ending conversation which reboots as technology and user requirements change. Every benchmark has an agenda of some sort; that is ok provided it does not take the reader for a fool. For these reasons, this section is a work-in-progress by design, which only discusses test cases for which the source code is fully available, which does not require any black-box, so as to allow you to verify and reproduce them fairly easily.</description>
+    </item>
+    <item>
+      <title>Using libevl</title>
+      <link>https://the-going.github.io/evlproject/core/user-api/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/user-api/</guid>
+      <description>What is an &amp;ldquo;EVL application process&amp;rdquo;? An EVL application process is composed of one or more EVL threads, running along with any number of regular POSIX threads.
+  an EVL thread is initially a plain regular POSIX thread spawned by a call to pthread_create(3) or the main() context which has issued the evl_attach_self() system call. This service binds the caller to the EVL core, which enables it to invoke the real-time, ultra-low latency services the latter delivers.</description>
+    </item>
+    <item>
+      <title>Real-time I/O drivers</title>
+      <link>https://the-going.github.io/evlproject/core/oob-drivers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/oob-drivers/</guid>
+      <description>The real-time I/O support EVL provides for is based on the ability some kernel drivers have to handle out-of-band interrupts triggered by the hardware, along with out-of-band requests issued by applications. To achieve this, such driver may depend on the EVL kernel API which in turn depends on Dovetail. This way, both the incoming events and outgoing requests are expedited by the EVL core, without being delayed by the regular GPOS work which is still handled normally on the in-band execution stage.</description>
+    </item>
+    <item>
+      <title>Writing drivers</title>
+      <link>https://the-going.github.io/evlproject/core/kernel-api/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/kernel-api/</guid>
+      <description>What is an EVL driver? An EVL driver is a regular Linux driver, either of a character device driver or a socket protocol driver, which also implements a set of out-of-band I/O operations advertised by its file operation descriptor (struct file_operations). These out-of-band I/O requests are only available to EVL threads, since only such threads may run on the out-of-band execution stage. Applications running in user-space can start these I/O operations by issuing specific system calls to the EVL core.</description>
+    </item>
+    <item>
+      <title>Under the hood</title>
+      <link>https://the-going.github.io/evlproject/core/under-the-hood/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/under-the-hood/</guid>
+      <description>This (work-in-progress) section will help you navigate the design and implementation of the EVL core. It is written from a developer perspective as a practical example of implementing a companion core living in the Linux kernel, emphasizing on details about the way the Dovetail interface is leveraged for this purpose. This information is intended to help anyone interested in or simply curious about the &amp;ldquo;other path to Linux real-time&amp;rdquo;, whether it is useful for developing your own Linux-based dual kernel system, contributing to EVL, or educational purpose.</description>
+    </item>
+    <item>
+      <title>Building EVL</title>
+      <link>https://the-going.github.io/evlproject/core/build-steps/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/build-steps/</guid>
+      <description>Building EVL from source   The build process. Building EVL from the source code is a two-step process: we need to build a kernel enabling the EVL core, and the library implementing the user API to this core - aka libevl - using the proper toolchain. These steps may happen in any order. The output of this process is:
+  a Linux kernel image featuring Dovetail and the EVL core on top of it.</description>
+    </item>
+    <item>
+      <title>Runtime configuration</title>
+      <link>https://the-going.github.io/evlproject/core/runtime-settings/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/runtime-settings/</guid>
+      <description>Calibrating the core timer When enabled in the kernel, EVL transparently controls the hardware timer chip via a proxy device, serving all timing requests including those originating from the in-band kernel logic. In order to maximize the timing accuracy, EVL needs to figure out the basic latency of the target platform.
+Upon receipt from an interrupt, the time spent traversing the kernel code from the low-level entry code until the interrupt handler installed by some driver is invoked is shorter than the time that would be required for a kernel thread to resume on such event instead.</description>
+    </item>
+    <item>
+      <title>Testing the installation</title>
+      <link>https://the-going.github.io/evlproject/core/testing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/testing/</guid>
+      <description>EVL comes with a series of tests you can run to make sure the core is performing correctly on your target system.
+Unit testing A series of unit testing programs is produced in $prefix/tests as part of building libevl. You should run each of them to make sure everything is fine. The simplest way to do this is as follows:
+ Running the EVL unit tests
+ # evl test duplicate-element: OK monitor-pp-dynamic: OK monitor-pi: OK clone-fork-exec: OK clock-timer-periodic: OK poll-close: OK sem-wait: OK monitor-pp-raise: OK monitor-pp-tryenter: OK heap-torture: OK monitor-pp-lower: OK poll-read: OK monitor-deadlock: OK monitor-wait-multiple: OK monitor-event: OK proxy-eventfd: OK monitor-flags.</description>
+    </item>
+    <item>
+      <title>ABI revisions</title>
+      <link>https://the-going.github.io/evlproject/core/abi-revs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/abi-revs/</guid>
+      <description>#abimap { width: 35%; margin-left: auto; margin-right: auto; } #abimap th { text-align: center; } #abimap td { text-align: center; } #abimap tr:nth-child(even) { background-color: #f2f2f2; }   Revision Purpose libevl release   26 Add socket interface. r21   25 Add latmus request for measuring in-band response time to synthetic interrupt latency. r21   24 Add proxy read side. r19   23 Add the Observable element, and thread observability.</description>
+    </item>
+  </channel>
+</rss>

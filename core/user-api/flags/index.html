@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    <title> :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1634330591" rel="stylesheet" media="print">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634330591"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/core/user-api/flags/">
+    <nav id="sidebar" class="">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Search...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634330591"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634330591"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script>
+          var index_url="https://the-going.github.io/evlproject/index.json";
+          var root_url="https://the-going.github.io/evlproject/";
+          var baseUri=root_url.replace(/\/$/, '');
+        </script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1634330591"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started</a><ul></ul></li>
+          <li data-nav-id="/core/" title="The EVL core" class="dd-item parent"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core</a><ul>
+          <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL</a></li>
+          <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings</a></li>
+          <li data-nav-id="/core/testing/" title="Testing the installation" class="dd-item"><a href="https://the-going.github.io/evlproject/core/testing/">Running tests</a></li>
+          <li data-nav-id="/core/benchmarks/" title="Running benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/benchmarks/">Benchmarking</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/" title="Using libevl" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/">&#9702; Application interface</a><ul>
+          <li data-nav-id="/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/mutex/">Mutex</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/flags/" title="" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/flags/">Flags</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/semaphore/">Semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/observable/">Observable</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/proxy/">File proxy</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/poll/">Polling file descriptors</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/io/">Out-of-band I/O services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/misc/">Misc. services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/user-api/api-revs/">API revisions</a></li></ul></li>
+          <li data-nav-id="/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/oob-drivers/">&#9702; Real-time I/O drivers</a><ul>
+          <li data-nav-id="/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/dma/">DMA</a></li>
+          <li data-nav-id="/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/spi/">SPI</a></li>
+          <li data-nav-id="/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/gpio/">GPIO</a></li></ul></li>
+          <li data-nav-id="/core/kernel-api/" title="Writing drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/">&#9702; Writing drivers</a><ul>
+          <li data-nav-id="/core/kernel-api/function_index/" title="Kernel function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/file/" title="File description" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/file/">File description</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/socket/" title="Socket interface" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/socket/">Socket interface</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/kthread/" title="Kernel thread" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/kthread/">Kernel thread</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/wait/" title="Wait queue" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/wait/">Wait queue</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/mutex/" title="Kernel mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/mutex/">Kernel mutex</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/semaphore/" title="Kernel semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/semaphore/">Kernel semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/flag/" title="Kernel flag" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/flag/">Kernel flag</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/spinlock/" title="EVL Spinlock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/spinlock/">EVL Spinlock</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/timer/" title="Timer" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/timer/">Timer</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/xbuf/" title="Cross-buffer access" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/xbuf/">Cross-buffer access</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/interrupts/" title="Managing IRQs" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/interrupts/">Managing IRQs</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/stax/" title="Stage exclusion lock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/stax/">Stage exclusion lock</a><ul></ul></li></ul></li>
+          <li data-nav-id="/core/under-the-hood/" title="Under the hood" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/under-the-hood/">&#9702; Under the hood</a><ul>
+          <li data-nav-id="/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/under-the-hood/abi/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/abi-revs/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/">&#8226; Dovetail interface</a><ul>
+          <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/">&#9702; Interrupt pipeline</a><ul>
+          <li data-nav-id="/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/">IRQ handling</a></li>
+          <li data-nav-id="/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/synthetic/">Synthetic IRQs</a></li>
+          <li data-nav-id="/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/pipeline_inject/">IRQ injection</a></li>
+          <li data-nav-id="/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/interrupt_protection/">Interrupt protection</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_push/">OOB stage installation</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_escalation/">Stage escalation</a></li>
+          <li data-nav-id="/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/locking/">Locking</a></li></ul></li>
+          <li data-nav-id="/dovetail/porting/" title="Porting Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/porting/">&#9702; Porting Dovetail</a><ul>
+          <li data-nav-id="/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/prerequisites/">Prerequisites</a></li>
+          <li data-nav-id="/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/irqflow/">Interrupt flow</a></li>
+          <li data-nav-id="/dovetail/porting/atomic/" title="Atomic operations" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/atomic/">Atomic operations</a></li>
+          <li data-nav-id="/dovetail/porting/arch/" title="Architecture-specific bits" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/arch/">Architecture bits</a></li>
+          <li data-nav-id="/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/timer/">Tick devices</a></li>
+          <li data-nav-id="/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/clocksource/">Clock sources</a></li>
+          <li data-nav-id="/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/syscall/">Syscall path</a></li>
+          <li data-nav-id="/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/rawprintk/">Serial debugging</a></li>
+          <li data-nav-id="/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/misc/">Misc</a></li>
+          <li data-nav-id="/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/devnotes/">Developer&#39;s Notes</a></li></ul></li>
+          <li data-nav-id="/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/altsched/">Alternate scheduling</a></li>
+          <li data-nav-id="/dovetail/files/" title="File tracking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/files/">File tracking</a></li>
+          <li data-nav-id="/dovetail/sockets/" title="Socket handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/sockets/">Socket handling</a></li>
+          <li data-nav-id="/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/rulesofthumb/">Rules Of Thumb</a></li></ul></li>
+          <li data-nav-id="/ports/" title="Status of EVL ports" class="dd-item"><a href="https://the-going.github.io/evlproject/ports/">&#8226; Ports</a><ul></ul></li>
+          <li data-nav-id="/contributing/" title="Contributing to Xenomai 4" class="dd-item"><a href="https://the-going.github.io/evlproject/contributing/">&#8226; Contributing</a><ul></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/"><i class='fas fa-home'></i> Home</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> RIOT channel</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Mailing list</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/"><span itemprop="name">The EVL core</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/user-api/"><span itemprop="name">Using libevl</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/user-api/flags/" aria-disabled="true"><span itemprop="name"></span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#synchronizing-on-flags">Synchronizing on a group of flags</a></li>
+        <li><a href="#event-flag-group-services">Event flag group services</a></li>
+        <li><a href="#flags-poll-events">Events pollable from an event flag group descriptor</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1></h1>
+
+<h3 id="synchronizing-on-flags">Synchronizing on a group of flags</h3>
+<p>An event flag group is an efficient and lightweight mechanism for
+synchronizing multiple threads, based on a 32bit value, in which each
+individual bit represents the state of a particular event defined by
+the application. Therefore, each group defines 32 individual events,
+from bit #0 to bit #31. Threads can wait for bits to be posted by
+other threads. Although EVL&rsquo;s event flag group API is somewhat
+reminiscent of the <a href="http://man7.org/linux/man-pages/man2/eventfd.2.html">eventfd
+interface</a>, it is
+much simpler:</p>
+<ul>
+<li>
+<p>on the send side, posting the <em>bits</em> event mask to an event <em>group</em>
+is equivalent to performing atomically a bitwise OR operation such
+as <em>group |= bits</em>.</p>
+</li>
+<li>
+<p>on the receive side, waiting for events means blocking until <em>group</em>
+becomes non-zero, at which point this value is returned to the
+thread heading the wait queue and the group is reset to zero in the
+same move. In other words, all bits set are immediately consumed by
+the first waiter and cleared in the group atomically. Threads wait
+on a group by priority order, which is determined by the <a href="https://the-going.github.io/evlproject/core/user-api/scheduling/">scheduling
+policy</a> they
+undergo.</p>
+</li>
+</ul>
+<p><img src="https://the-going.github.io/evlproject/images/flags.png" alt="Alt text" title="Event flag group"></p>
+
+<div class="notices tip">
+    <div class="label">Tip</div><p>Unlike with the
+<a href="http://man7.org/linux/man-pages/man2/eventfd.2.html">eventfd</a>, there
+is no semaphore semantics associated to an event flag group, you may
+want to consider the EVL <a href="https://the-going.github.io/evlproject/core/user-api/semaphore/">semaphore</a> feature instead if this is
+what you are looking for.</p>
+
+</div>
+<h3 id="event-flag-group-services">Event flag group services</h3>
+<hr>
+
+<div class="proto"><a name="evl_create_flags"></a>
+int evl_create_flags(struct evl_flags *flg, int clockfd, int initval, int flags, const char *fmt, ...)
+</div>
+
+<p>This call creates a group of event flags, returning a file descriptor
+representing the new object upon success.  This is the generic call
+form; for creating an event group with common pre-defined settings,
+see [evl_new_flags()}(#evl_new_flags).</p>
+
+<p><li><i>flg</i><p>An in-memory flag group descriptor is constructed by
+<a href="#evl_create_flags">evl_create_flags()</a>,
+which contains ancillary information other calls will need. <em>flg</em>
+is a pointer to such descriptor of type <code>struct evl_flags</code>.</p>
+</li></p>
+
+
+<p><li><i>clockfd</i><p>Some flag group-related calls are timed like
+<a href="#evl_timedwait_flags">evl_timewait_flags()</a>
+which receives a timeout value. You can specify the <a href="https://the-going.github.io/evlproject/core/user-api/clock/">EVL clock</a> this timeout refers to by
+passing its file descriptor as <em>clockfd</em>. <a href="https://the-going.github.io/evlproject/core/user-api/clock/#builtin-clocks">Built-in EVL clocks</a> are
+accepted here.</p>
+</li></p>
+
+
+<p><li><i>initval</i><p>The initial value of the flag group. You can use this parameter to
+pre-set some bits in the received event mask at creation time.</p>
+</li></p>
+
+
+<p><li><i>flags</i><p>A set of creation flags for the new element, defining its
+<a href="https://the-going.github.io/evlproject/core/user-api/#element-visibility">visibility</a>:</p>
+<ul>
+<li>
+<p><code>EVL_CLONE_PUBLIC</code> denotes a public element which is represented
+by a device file in the <a href="https://the-going.github.io/evlproject/core/user-api/#evl-fs-hierarchy">/dev/evl</a> file
+hierarchy, which makes it visible to other processes for sharing.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_PRIVATE</code> denotes an element which is private to the
+calling process. No device file appears for it in the
+<a href="https://the-going.github.io/evlproject/core/user-api/#evl-fs-hierarchy">/dev/evl</a>
+file hierarchy.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_NONBLOCK</code> sets the file descriptor of the new flag group in
+non-blocking I/O mode (<code>O_NONBLOCK</code>). By default, <code>O_NONBLOCK</code> is
+cleared for the file descriptor.</p>
+</li>
+</ul>
+</li></p>
+
+
+<p><li><i>fmt</i><p>A <a href="http://man7.org/linux/man-pages/man3/printf.3.html">printf</a>-like
+format string to generate the flag group name. See this description of the
+[naming convention]
+(/core/user-api/#element-naming-convention).</p>
+</li></p>
+
+
+<p><li><i>...</i><p>The optional variable argument list completing the format.</p>
+</li></p>
+
+<p><a href="#evl_create_flags">evl_create_flags()</a> returns the file descriptor of the newly created
+flag group on success. Otherwise, a negated error code is returned:</p>
+<ul>
+<li>
+<p>-EEXIST	The generated name is conflicting with an existing mutex,
+event, semaphore or flag group name.</p>
+</li>
+<li>
+<p>-EINVAL	Either <em>flags</em> is wrong, <em>clockfd</em> does not refer to a valid EVL clock,
+or the <a href="https://the-going.github.io/evlproject/core/user-api/#element-naming-convention">generated name</a> is badly formed.</p>
+</li>
+<li>
+<p>-ENAMETOOLONG	The overall length of the device element&rsquo;s file path including
+the generated name exceeds PATH_MAX.</p>
+</li>
+<li>
+<p>-EMFILE	The per-process limit on the number of open file descriptors
+has been reached.</p>
+</li>
+<li>
+<p>-ENFILE	The system-wide limit on the total number of open files
+has been reached.</p>
+</li>
+<li>
+<p>-ENOMEM	No memory available.</p>
+</li>
+<li>
+<p>-ENXIO        The EVL library is not initialized for the current process.
+Such initialization happens implicitly when <a href="https://the-going.github.io/evlproject/core/user-api/thread/#evl_attach_self">evl_attach_self()</a>
+is called by any thread of your process, or by explicitly
+calling <a href="https://the-going.github.io/evlproject/core/user-api/init/#evl_init">evl_init()</a>. You have to bootstrap the library
+services in a way or another before creating an EVL flag group.</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/flags.h&gt;
+
+static struct evl_flags flags;
+
+void create_new_flags(void)
+{
+	int fd;
+
+	fd = evl_create_flags(&amp;flags, EVL_CLOCK_MONOTONIC, 0, &#34;name_of_group&#34;);
+	/* skipping checks */
+	
+	return fd;
+}
+</code></pre></div><hr>
+
+<div class="proto"><a name="evl_new_flags"></a>
+int evl_new_flags(struct evl_flags *flg, const char *fmt, ...)
+</div>
+
+<p>This call is a shorthand for creating a zero-initialized group of
+event flags, timed on the built-in <a href="https://the-going.github.io/evlproject/core/user-api/clock/#builtin-clocks">EVL monotonic clock</a>. It is identical
+to calling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	evl_create_flags(flg, EVL_CLOCK_MONOTONIC, 0, EVL_CLONE_PRIVATE, fmt, ...);
+</code></pre></div>
+<div class="notices info">
+    <div class="label">Info</div><p>Note that if the [generated name] (/core/user-api/#element-naming-convention) starts with a
+slash ('/') character, <code>EVL_CLONE_PRIVATE</code> would be automatically turned
+into <code>EVL_CLONE_PUBLIC</code> internally.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="EVL_FLAGS_INITIALIZER"></a>
+EVL_FLAGS_INITIALIZER((const char *) name, (int) clockfd, (int) initval, (int) flags)
+</div>
+
+<p>The static initializer you can use with flag groups. All arguments to
+this macro refer to their counterpart in the call to
+<a href="#evl_create_flags">evl_create_flags()</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_open_flags"></a>
+int evl_open_flags(struct evl_flags *flg, const char *fmt, ...)
+</div>
+
+<p>You can open an existing flag group, possibly from a different
+process, by calling <a href="#evl_open_flags">evl_open_flags()</a>.</p>
+
+<p><li><i>flg</i><p>An in-memory flag group descriptor is constructed by <a href="#evl_open_flags">evl_open_flags()</a>,
+which contains ancillary information other calls will need. <em>flg</em> is a
+pointer to such descriptor of type <code>struct evl_flags</code>. The information
+is retrieved from the existing flag group which was opened.</p>
+</li></p>
+
+
+<p><li><i>fmt</i><p>A printf-like format string to generate the name of the flag group to
+open. This name must exist in the EVL device file hierarchy at
+<a href="https://the-going.github.io/evlproject/core/user-api/#evl-fs-hierarchy">/dev/evl/monitor</a>.
+See this description of the <a href="https://the-going.github.io/evlproject/core/user-api/#element-naming-convention">naming convention</a>.</p>
+</li></p>
+
+
+<p><li><i>...</i><p>The optional variable argument list completing the format.</p>
+</li></p>
+
+<p><a href="#evl_open_flags">evl_open_flags()</a> returns the file descriptor referring to the opened
+group on success, Otherwise, a negated error code is returned:</p>
+<ul>
+<li>
+<p>-EINVAL	The name refers to an existing object, but not to a group.</p>
+</li>
+<li>
+<p>-EMFILE	The per-process limit on the number of open file descriptors
+has been reached.</p>
+</li>
+<li>
+<p>-ENFILE	The system-wide limit on the total number of open files
+has been reached.</p>
+</li>
+<li>
+<p>-ENOMEM	No memory available.</p>
+</li>
+</ul>
+<hr>
+
+<div class="proto"><a name="evl_wait_flags"></a>
+int evl_wait_flags(struct evl_flags *flg, int *r_bits)
+</div>
+
+<p>This service <a href="#synchronizing-on-flags">waits for events</a> to be posted to the flag group.  The caller is put to sleep by
+the core until this happens. Waiters are queued by order of
+<a href="https://the-going.github.io/evlproject/core/user-api/scheduling/">scheduling priority</a>.</p>
+<p>When the group receives some event(s), its value is passed back to the
+waiter leading the wait queue, then reset to zero before the latter
+returns.</p>
+<p>If the flag group value is non-zero on entry to this service, the
+caller returns immediately without blocking with the current set of
+posted flags.</p>
+
+<p><li><i>flg</i><p>The in-memory flag group descriptor constructed by
+either <a href="#evl_create_flags">evl_create_flags()</a> or
+<a href="#evl_open_flags">evl_open_flags()</a>, or statically built
+with <a href="#EVL_FLAGS_INITIALIZER">EVL_FLAGS_INITIALIZER</a>. In the latter case, an implicit call to
+<a href="#evl_create_flags">evl_create_flags()</a> is
+issued for <em>flg</em> before a wait is attempted, which may trigger a transition
+to the in-band execution mode for the caller.</p>
+</li></p>
+
+
+<p><li><i>r_bits</i><p>The address of an integer which contains the set of flags received on
+successful return from the call.</p>
+</li></p>
+
+<p><a href="#evl_wait_flags">evl_wait_flags()</a> returns zero on
+success. Otherwise, a negated error code may be returned if:</p>
+<p>-EINVAL	      <em>flg</em> does not represent a valid in-memory flag group
+descriptor. If that pointer is out of the caller&rsquo;s
+address space or points to read-only memory, the
+caller bluntly gets a memory access exception.</p>
+<p>If <em>flg</em> was statically initialized with <a href="#EVL_FLAGS_INITIALIZER">EVL_FLAGS_INITIALIZER</a>, then any error returned by
+<a href="#evl_create_flags">evl_create_flags()</a> may be passed
+back to the caller in case the implicit initialization call fails.</p>
+<hr>
+
+<div class="proto"><a name="evl_timedwait_flags"></a>
+int evl_timedwait_flags(struct evl_flags *flg, const struct timespec *timeout, int *r_bits)
+</div>
+
+<p>This call is a variant of <a href="#evl_wait_flags">evl_wait_flags()</a> which allows specifying a timeout on the wait
+operation, so that the caller is unblocked after a specified delay
+sleeping without any flag being posted.</p>
+
+<p><li><i>flg</i><p>The in-memory flag group descriptor constructed by
+either <a href="#evl_create_flags">evl_create_flags()</a>
+or <a href="#evl_open_flags">evl_open_flags()</a>, or statically built
+with <a href="#EVL_FLAGS_INITIALIZER">EVL_FLAGS_INITIALIZER</a>. In the latter case, an implicit call to
+<a href="#evl_create_flags">evl_create_flags()</a> for
+<em>flg</em> is issued before a wait is attempted, which may trigger a transition
+to the in-band execution mode for the caller.</p>
+</li></p>
+
+
+<p><li><i>timeout</i><p>A time limit to wait for the group to be posted before the call
+returns on error. The clock mentioned in the call to
+<a href="#evl_create_flags">evl_create_flags()</a> will be used for
+tracking the elapsed time.</p>
+</li></p>
+
+
+<p><li><i>r_bits</i><p>The address of an integer which contains the set of flags received on
+successful return from the call.</p>
+</li></p>
+
+<p>The possible return values include any status from
+<a href="#evl_wait_flags">evl_wait_flags()</a>, plus:</p>
+<p>-ETIMEDOUT	   The timeout fired, after the amount of time specified by
+<em>timeout</em>.</p>
+<hr>
+
+<div class="proto"><a name="evl_post_flags"></a>
+int evl_post_flags(struct evl_flags *flg, int bits)
+</div>
+
+<p>This call posts a (non-null) set of events to a flag group. The core
+adds the posted bits to the group&rsquo;s current value using a bitwise OR
+operation. Afterwards, it unblocks the thread heading the wait queue
+of the flag group at the time of the call if any (i.e. having the
+highest priority among waiters).</p>
+
+<p><li><i>flg</i><p>The in-memory flag group descriptor constructed by either
+<a href="#evl_create_flags">evl_create_flags()</a>
+or <a href="#evl_open_flags">evl_open_flags()</a>, or statically built with
+<a href="#EVL_FLAGS_INITIALIZER">EVL_FLAGS_INITIALIZER</a>. In
+the latter case, an implicit call to
+<a href="#evl_create_flags">evl_create_flags()</a> for <em>flg</em> is
+issued before the event mask is posted, which may trigger a transition to
+the in-band execution mode for the caller.</p>
+</li></p>
+
+
+<p><li><i>bits</i><p>The non-zero bitmask to add to the flag group value.</p>
+</li></p>
+
+<p><a href="#evl_post_flags">evl_post_flags()</a> returns zero upon
+success. Otherwise, a negated error code is returned:</p>
+<p>-EINVAL	      <em>flg</em> does not represent a valid in-memory flag group
+descriptor. If that pointer is out of the caller&rsquo;s
+address space or points to read-only memory, the
+caller bluntly gets a memory access exception.</p>
+<p>-EINVAL	      <em>bits</em> is zero.</p>
+<p>If <em>flg</em> was statically initialized with
+<a href="#EVL_FLAGS_INITIALIZER">EVL_FLAGS_INITIALIZER</a> but not passed to any flag
+group-related call yet, then any error status returned by
+<a href="#evl_create_flags">evl_create_flags()</a> may be passed back
+to the caller in case the implicit initialization call fails.</p>
+<hr>
+
+<div class="proto"><a name="evl_trywait_flags"></a>
+int evl_trywait_flags(struct evl_flags *flg, int *r_bits)
+</div>
+
+<p>This call attempts to consume the event flags currently posted to a
+group without blocking the caller if there are none. If some events
+were pending at the time of the call, the group value is reset to zero
+before returning to the caller.</p>
+
+<p><li><i>flg</i><p>The in-memory flag group descriptor constructed by
+either <a href="#evl_create_flags">evl_create_flags()</a>
+or <a href="#evl_open_flags">evl_open_flags()</a>, or statically built
+with <a href="#EVL_FLAGS_INITIALIZER">EVL_FLAGS_INITIALIZER</a>.
+In the latter case, an implicit call to
+<a href="#evl_create_flags">evl_create_flags()</a> for
+<em>flg</em> is issued before a wait is attempted, which may trigger a transition
+to the in-band execution mode for the caller.</p>
+</li></p>
+
+
+<p><li><i>r_bits</i><p>The address of an integer which contains the set of flags received on
+successful return from the call.</p>
+</li></p>
+
+<p><a href="#evl_trywait_flags">evl_trywait_flags()</a> returns
+zero on success and the non-zero set of pending events. Otherwise, a
+negated error code may be returned if:</p>
+<p>-EAGAIN       <em>flg</em> had no event pending at the time of the call.</p>
+<p>-EINVAL	      <em>flg</em> does not represent a valid in-memory flag group
+descriptor. If that pointer is out of the caller&rsquo;s
+address space or points to read-only memory, the
+caller bluntly gets a memory access exception.</p>
+<p>If <em>flg</em> was statically initialized with
+<a href="#EVL_FLAGS_INITIALIZER">EVL_FLAGS_INITIALIZER</a>, then any error returned by
+<a href="#evl_create_flags">evl_create_flags()</a> may be passed
+back to the caller in case the implicit initialization call fails.</p>
+<hr>
+
+<div class="proto"><a name="evl_peek_flags"></a>
+int evl_peek_flags(struct evl_flags *flg, int *r_bits)
+</div>
+
+<p>This call is a variant of <a href="#evl_trywait_flags">evl_trywait_flags()</a> which does not consume the flags before
+returning to the caller. In other words, the group value is not reset
+to zero before returning a non-zero set of pending events, allowing
+the group value to be read multiple times with no side-effect.</p>
+
+<p><li><i>flg</i><p>The in-memory flag group descriptor constructed by either
+<a href="#evl_create_flags">evl_create_flags()</a>
+or <a href="#evl_open_flags">evl_open_flags()</a>, or statically built with
+<a href="#EVL_FLAGS_INITIALIZER">EVL_FLAGS_INITIALIZER</a>. In
+the latter case, the flag group becomes valid for a call to
+<a href="#evl_peek_flags">evl_peek_flags()</a>
+only after a post or [try]wait operation was issued
+for it.</p>
+</li></p>
+
+
+<p><li><i>r_bits</i><p>The address of an integer which contains the group value on
+successful return from the call.</p>
+</li></p>
+
+<p><a href="#evl_peek_flags">evl_peek_flags()</a> returns zero on
+success along with the current group value. Otherwise, a negated error
+code may be returned if:</p>
+<p>-EINVAL	      <em>flg</em> does not represent a valid in-memory flag group
+descriptor. If that pointer is out of the caller&rsquo;s
+address space or points to read-only memory, the
+caller bluntly gets a memory access exception.</p>
+<hr>
+
+<div class="proto"><a name="evl_close_flags"></a>
+int evl_close_flags(struct evl_flags *flg)
+</div>
+
+<p>You can use <a href="#evl_close_flags">evl_close_flags()</a> to
+dispose of an EVL flag group, releasing the associated file
+descriptor, at which point <em>flg</em> will not be valid for any subsequent
+operation from the current process. However, this flag group is kept
+alive in the EVL core until all file descriptors opened on it by
+call(s) to <a href="#evl_open_flags">evl_open_flags()</a> have
+been released, whether from the current process or any other process.</p>
+
+<p><li><i>flg</i><p>The in-memory descriptor of the flag group to dismantle.</p>
+</li></p>
+
+<p><a href="#evl_close_flags">evl_close_flags()</a> returns zero
+upon success. Otherwise, a negated error code is returned:</p>
+<p>-EINVAL	      <em>flg</em> does not represent a valid in-memory flag group
+descriptor. If that pointer is out of the caller&rsquo;s
+address space or points to read-only memory, the
+caller bluntly gets a memory access exception.</p>
+<p>Closing a <a href="#EVL_FLAGS_INITIALIZER">statically initialized</a> flag group descriptor which has
+never been used in wait or post operations always returns zero.</p>
+<hr>
+<h3 id="flags-poll-events">Events pollable from an event flag group descriptor</h3>
+<p>The <a href="https://the-going.github.io/evlproject/core/user-api/poll/">evl_poll()</a>
+interface can monitor the following events occurring on an event
+flag group descriptor:</p>
+<ul>
+<li>
+<p><em>POLLIN</em> and <em>POLLRDNORM</em> are set whenever the flag group value is
+non-zero, which means that a subsequent attempt to read it by a call
+to <a href="#evl_wait_flags">evl_wait_flags()</a>,
+<a href="#evl_trywait_flags">evl_trywait_flags()</a> or
+<a href="#evl_timedwait_flags">evl_timedwait_flags()</a>
+<em>might</em> be successful without blocking (i.e. unless another thread
+sneaks in in the meantime and collects the pending flags).</p>
+</li>
+<li>
+<p><em>POLLOUT</em> and <em>POLLWRNORM</em> are set whenever the flag group value is
+zero, which means that no flag is pending at the time of the
+call. As a result, polling for such status waits for all pending
+events to have been read by the receiving side.</p>
+</li>
+</ul>
+<hr>
+<p style="text-align:right">Last modified: Mon, 17 May 2021 16:48:45 &#43;0200</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/core/user-api/mutex/" title="Mutex"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/core/user-api/semaphore/" title="Semaphore"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634330591"></script>
+    <script>
+      if (typeof mermaid != 'undefined') {
+        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
+      }
+    </script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634330591"></script>
+  </body>
+</html>

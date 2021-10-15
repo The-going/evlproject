@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.88.1" />
+    <link rel="alternate" type="application/rss+xml" href="https://the-going.github.io/evlproject/ports/index.xml" title="Xenomai 4" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    <title>Status of EVL ports :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1634330591" rel="stylesheet" media="print">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634330591"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ports/">
+    <nav id="sidebar" class="">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Search...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634330591"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634330591"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script>
+          var index_url="https://the-going.github.io/evlproject/index.json";
+          var root_url="https://the-going.github.io/evlproject/";
+          var baseUri=root_url.replace(/\/$/, '');
+        </script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1634330591"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started</a><ul></ul></li>
+          <li data-nav-id="/core/" title="The EVL core" class="dd-item"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core</a><ul>
+          <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL</a></li>
+          <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings</a></li>
+          <li data-nav-id="/core/testing/" title="Testing the installation" class="dd-item"><a href="https://the-going.github.io/evlproject/core/testing/">Running tests</a></li>
+          <li data-nav-id="/core/benchmarks/" title="Running benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/benchmarks/">Benchmarking</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/">&#9702; Application interface</a><ul>
+          <li data-nav-id="/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/mutex/">Mutex</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/semaphore/">Semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/observable/">Observable</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/proxy/">File proxy</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/poll/">Polling file descriptors</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/io/">Out-of-band I/O services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/misc/">Misc. services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/user-api/api-revs/">API revisions</a></li></ul></li>
+          <li data-nav-id="/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/oob-drivers/">&#9702; Real-time I/O drivers</a><ul>
+          <li data-nav-id="/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/dma/">DMA</a></li>
+          <li data-nav-id="/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/spi/">SPI</a></li>
+          <li data-nav-id="/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/gpio/">GPIO</a></li></ul></li>
+          <li data-nav-id="/core/kernel-api/" title="Writing drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/">&#9702; Writing drivers</a><ul>
+          <li data-nav-id="/core/kernel-api/function_index/" title="Kernel function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/file/" title="File description" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/file/">File description</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/socket/" title="Socket interface" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/socket/">Socket interface</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/kthread/" title="Kernel thread" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/kthread/">Kernel thread</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/wait/" title="Wait queue" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/wait/">Wait queue</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/mutex/" title="Kernel mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/mutex/">Kernel mutex</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/semaphore/" title="Kernel semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/semaphore/">Kernel semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/flag/" title="Kernel flag" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/flag/">Kernel flag</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/spinlock/" title="EVL Spinlock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/spinlock/">EVL Spinlock</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/timer/" title="Timer" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/timer/">Timer</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/xbuf/" title="Cross-buffer access" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/xbuf/">Cross-buffer access</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/interrupts/" title="Managing IRQs" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/interrupts/">Managing IRQs</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/stax/" title="Stage exclusion lock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/stax/">Stage exclusion lock</a><ul></ul></li></ul></li>
+          <li data-nav-id="/core/under-the-hood/" title="Under the hood" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/under-the-hood/">&#9702; Under the hood</a><ul>
+          <li data-nav-id="/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/under-the-hood/abi/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/abi-revs/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/">&#8226; Dovetail interface</a><ul>
+          <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/">&#9702; Interrupt pipeline</a><ul>
+          <li data-nav-id="/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/">IRQ handling</a></li>
+          <li data-nav-id="/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/synthetic/">Synthetic IRQs</a></li>
+          <li data-nav-id="/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/pipeline_inject/">IRQ injection</a></li>
+          <li data-nav-id="/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/interrupt_protection/">Interrupt protection</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_push/">OOB stage installation</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_escalation/">Stage escalation</a></li>
+          <li data-nav-id="/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/locking/">Locking</a></li></ul></li>
+          <li data-nav-id="/dovetail/porting/" title="Porting Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/porting/">&#9702; Porting Dovetail</a><ul>
+          <li data-nav-id="/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/prerequisites/">Prerequisites</a></li>
+          <li data-nav-id="/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/irqflow/">Interrupt flow</a></li>
+          <li data-nav-id="/dovetail/porting/atomic/" title="Atomic operations" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/atomic/">Atomic operations</a></li>
+          <li data-nav-id="/dovetail/porting/arch/" title="Architecture-specific bits" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/arch/">Architecture bits</a></li>
+          <li data-nav-id="/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/timer/">Tick devices</a></li>
+          <li data-nav-id="/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/clocksource/">Clock sources</a></li>
+          <li data-nav-id="/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/syscall/">Syscall path</a></li>
+          <li data-nav-id="/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/rawprintk/">Serial debugging</a></li>
+          <li data-nav-id="/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/misc/">Misc</a></li>
+          <li data-nav-id="/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/devnotes/">Developer&#39;s Notes</a></li></ul></li>
+          <li data-nav-id="/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/altsched/">Alternate scheduling</a></li>
+          <li data-nav-id="/dovetail/files/" title="File tracking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/files/">File tracking</a></li>
+          <li data-nav-id="/dovetail/sockets/" title="Socket handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/sockets/">Socket handling</a></li>
+          <li data-nav-id="/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/rulesofthumb/">Rules Of Thumb</a></li></ul></li>
+          <li data-nav-id="/ports/" title="Status of EVL ports" class="dd-item active parent"><a href="https://the-going.github.io/evlproject/ports/">&#8226; Ports</a><ul></ul></li>
+          <li data-nav-id="/contributing/" title="Contributing to Xenomai 4" class="dd-item"><a href="https://the-going.github.io/evlproject/contributing/">&#8226; Contributing</a><ul></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/"><i class='fas fa-home'></i> Home</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> RIOT channel</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Mailing list</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ports/" aria-disabled="true"><span itemprop="name">Status of EVL ports</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents"></nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Status of EVL ports</h1>
+
+<p>The table below summarizes the current status of the EVL ports to
+particular SoCs which we are aware of. It is definitely not meant to
+be exhaustive: many SoCs which are not listed here may just work out
+of the box with a recent EVL-enabled kernel release, especially in the
+x86 and arm64 ecosystems (arm32 might require more work in some
+cases). New SoCs sporting interrupt chip controllers, timer or clock
+sources which have not been made pipeline-aware yet may need the
+corresponding kernel drivers to be marginally fixed up for that
+purpose. See the <a href="https://the-going.github.io/evlproject/dovetail/porting/">porting guide</a> for more.</p>
+<p>If you are interested in porting your own autonomous core to a
+particular kernel release Dovetail supports, you certainly need the
+<em>IRQ pipeline</em> column matching the target platform to be checked, and
+likely the <em>Alternate scheduling</em> column as well. Running the EVL core
+requires both features to be available. If you ported EVL to a SoC
+which does not appear in this list and want to let people know about
+it, please drop me a note at <a href="mailto:rpm@xenomai.org">rpm@xenomai.org</a>.</p>
+
+<div class="notices info">
+    <div class="label">Info</div><p>The Xenomai 4 project primarily tracks the <a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git">mainline Linux
+kernel</a>. In
+absence of any specific information, all kernel releases mentioned
+below refer to mainline Linux.</p>
+
+</div>
+<p>To get EVL running on a platform, we need the following software to be
+ported in the following sequence:</p>
+<ol>
+<li>
+<p>the <a href="https://the-going.github.io/evlproject/dovetail/">Dovetail</a> interface. This
+task is composed of two incremental milestones: first getting the
+<a href="https://the-going.github.io/evlproject/dovetail/pipeline/">interrupt pipeline</a>
+to work, then enabling the <a href="https://the-going.github.io/evlproject/dovetail/altsched/">alternate scheduling</a>. Porting <a href="https://the-going.github.io/evlproject/dovetail/">Dovetail</a> is where most of the work takes place,
+the other porting tasks are comparatively quite simple.</p>
+</li>
+<li>
+<p>the <a href="https://the-going.github.io/evlproject/core/">EVL core</a> which is mostly
+composed of architecture-independent code, therefore only a few
+bits need to be ported (a FPU test helper for the most part).</p>
+</li>
+<li>
+<p>the <a href="https://the-going.github.io/evlproject/core/user-api/">EVL library</a>. Likewise, this code has very little dependencies on the
+underlying CPU architecture and platform. A port boils down to
+resolving the address of the
+<a href="http://man7.org/linux/man-pages/man3/clock_gettime.3.html">clock_gettime(3)</a>
+in the vDSO.</p>
+</li>
+</ol>
+<blockquote>
+<p>Current target kernel release</p>
+</blockquote>
+<p>Linux v5.14</p>
+<blockquote>
+<p>ARM64 SoC</p>
+</blockquote>
+<div>
+<style>
+#ports {
+       width: 70%;
+}
+#ports td {
+       text-align: center;
+}
+</style>
+<table id="ports">
+  <col width="40%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <tr>
+    <th>SoC (Board)</th>
+    <th>IRQ pipeline<sup>1</sup></th> 
+    <th>Alternate scheduling</th>
+    <th>EVL base<sup>2</sup></th>
+    <th>EVL stress<sup>3</sup></th>
+    <th>Test kernel</th>
+  </tr>
+  <tr>
+    <td><a href="https://www.hardkernel.com/shop/odroid-c4/" target="_blank">Amlogic S905X3 (Odroid C4)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.12</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/" target="_blank">Broadcom BCM2711 (Raspberry PI 4 Model B)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.12</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/" target="_blank">Broadcom BCM2837 (Raspberry PI 3 Model B)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.7-rc7</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.qualcomm.com/products/qcs404/" target="_blank">Qualcomm QCS404</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.1-rc3</td>
+  </tr>
+  <tr>
+    <td><a href="https://developer.qualcomm.com/hardware/dragonboard-410c" target="_blank">Qualcomm Snapdragon 410E (DragonBoard 410c)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.0</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.96boards.org/product/hikey/" target="_blank">HiSilicon Kirin 620 (HiKey LeMaker)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.5-rc7</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.variscite.com/product/system-on-module-som/cortex-a53-krait/dart-mx8m-mini-nxp-i-mx8m-mini/" target="_blank">NXP i.MX8M Mini (Variscite DART-MX8M-MINI)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.4.40 <sup>*</sup></td>
+  </tr>
+  <tr>
+    <td><a href="https://wiki.qemu.org/Documentation/Platforms/ARM#Generic_ARM_system_emulation_with_the_virt_machine" target="_blank">QEMU virt</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.13-rc6</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.xilinx.com/support/documentation/boards_and_kits/zcu102/ug1182-zcu102-eval-bd.pdf" target="_blank">Xilinx Zynq UltraScale+ (ZCU102)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.4.40</td>
+  </tr>
+</table>
+<p><sup>*</sup> Mainline kernel with  SoC-specific bits picked from the vendor tree.</p>
+<blockquote>
+<p>ARM SoC</p>
+</blockquote>
+<table id="ports">
+  <col width="40%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <tr>
+    <th>SoC (Board)</th>
+    <th>IRQ pipeline<sup>1</sup></th> 
+    <th>Alternate scheduling</th>
+    <th>EVL base<sup>2</sup></th>
+    <th>EVL stress<sup>3</sup></th>
+    <th>Test kernel</th>
+  </tr>
+  <tr>
+    <td><a href="https://beagleboard.org/black/" target="_blank">TI AM335x-GP (BeagleBone Black)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.13</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-zero/" target="_blank">Broadcom BCM2835 (Raspberry PI Zero)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.7-rc6</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">Broadcom BCM2836 (Raspberry PI 2 Model B)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.9</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.96boards.org/documentation/consumer/b2260/hardware-docs/" target="_blank">STMicro Cannes2-STiH410 (B2260)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.2-rc7</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.altera.com/products/soc/portfolio/cyclone-v-soc/overview.html" target="_blank">Altera Cyclone V SoC FPGA (DevKit)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.7</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.samsung.com/semiconductor/minisite/exynos/products/mobileprocessor/exynos-5-octa-5422/#:~:text=The%20Exynos%205422%20released%20in,(Heterogeneous%20Multi%2DProcessing)." target="_blank">Exynos 5422 (Odroid XU4Q)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.13</td>
+  </tr>
+  <tr>
+    <td><a href="http://nanopi.io/nanopi-neo.html/" target="_blank">AllWinner H3 (NanoPI NEO)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.5-rc2</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-6quadplus-applications-processors:RD-IMX6QP-SABRE" target="_blank">NXP i.MX6QP (SabreSD)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.13</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.phytec.eu/product-eu/single-board-computer/phyboard-mira/" target="_blank">NXP i.MX6Q (phyBOARD-Mira)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.12</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.nxp.com/support/developer-resources/hardware-development-tools/sabre-development-system/sabre-board-for-smart-devices-based-on-the-i.mx-7dual-applications-processors:MCIMX7SABRE" target="_blank">NXP i.MX7D (SabreSD)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.8</td>
+  </tr>
+</table>
+<blockquote>
+<p>X86_64</p>
+</blockquote>
+<table id="ports">
+  <col width="40%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <col width="12%">
+  <tr>
+    <th>Chipset (Module)</th>
+    <th>IRQ pipeline<sup>1</sup></th> 
+    <th>Alternate scheduling</th>
+    <th>EVL base<sup>2</sup></th>
+    <th>EVL stress<sup>3</sup></th>
+    <th>Test kernel</th>
+  </tr>
+  <tr>
+    <td><a href="https://www.linux-kvm.org/page/Main_Page" target="_blank">QEMU KVM</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.13-rc6</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.tq-group.com/en/products/tq-embedded/x86-architecture/tqmxe39m/" target="_blank">Intel Atom x5-E3940 (TQMxE39M)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.12</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.dfi.com/product/index/224#specification" target="_blank">Intel C236 core i7 quad (DFI SD631)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.9</td>
+  </tr>
+  <tr>
+    <td><a href="https://ark.intel.com/content/www/us/en/ark/products/34687/intel-desktop-board-dq45cb.html" target="_blank">Intel Desktop Board DQ45CB (Legacy)</a></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td> 
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td><img src="https://the-going.github.io/evlproject/images/checked.png"></td>
+    <td>v5.11</td>
+  </tr>
+</table>
+</div>
+<br>
+<p><sup>1</sup> Means that the pipeline torture tests pass (see
+<code>CONFIG_IRQ_PIPELINE_TORTURE_TEST</code>). This milestone guarantees that we
+can deliver high-priority interrupt events immediately to a guest
+core, regardless of the work ongoing for the main kernel.</p>
+<p><sup>2</sup> When this box is checked, <a href="https://the-going.github.io/evlproject/core/">EVL</a>&rsquo;s basic functional test suite runs properly on
+the platform, which is a good starting point. So far so good.</p>
+<p><sup>3</sup> When this box is checked, the <a href="https://the-going.github.io/evlproject/core/">EVL core</a> passes a massive stress test involving the
+<code>hectic</code> and <code>latmus</code> applications running in parallel along with the
+full test suite for 24 hrs, all glitchlessly. This denotes a reliable
+state, including flawless alternate scheduling of threads between the
+main kernel and EVL. On the contrary, a problem with sharing the FPU
+unit properly between the in-band and out-of-band execution contexts
+is most often the reason for keeping this box unchecked until the
+situation is fixed.</p>
+<hr>
+<p style="text-align:right">Last modified: Tue, 10 Aug 2021 10:52:41 &#43;0200</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/dovetail/rulesofthumb/" title="Rules Of Thumb"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/contributing/" title="Contributing to Xenomai 4"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634330591"></script>
+    <script>
+      if (typeof mermaid != 'undefined') {
+        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
+      }
+    </script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634330591"></script>
+  </body>
+</html>

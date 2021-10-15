@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.88.1" />
+    <link rel="alternate" type="application/rss+xml" href="https://the-going.github.io/evlproject/dovetail/pipeline/index.xml" title="Xenomai 4" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    <title>Interrupt pipeline :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1634330591" rel="stylesheet" media="print">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634330591"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/dovetail/pipeline/">
+    <nav id="sidebar" class="">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Search...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634330591"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634330591"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script>
+          var index_url="https://the-going.github.io/evlproject/index.json";
+          var root_url="https://the-going.github.io/evlproject/";
+          var baseUri=root_url.replace(/\/$/, '');
+        </script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1634330591"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started</a><ul></ul></li>
+          <li data-nav-id="/core/" title="The EVL core" class="dd-item"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core</a><ul>
+          <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL</a></li>
+          <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings</a></li>
+          <li data-nav-id="/core/testing/" title="Testing the installation" class="dd-item"><a href="https://the-going.github.io/evlproject/core/testing/">Running tests</a></li>
+          <li data-nav-id="/core/benchmarks/" title="Running benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/benchmarks/">Benchmarking</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/">&#9702; Application interface</a><ul>
+          <li data-nav-id="/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/mutex/">Mutex</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/semaphore/">Semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/observable/">Observable</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/proxy/">File proxy</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/poll/">Polling file descriptors</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/io/">Out-of-band I/O services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/misc/">Misc. services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/user-api/api-revs/">API revisions</a></li></ul></li>
+          <li data-nav-id="/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/oob-drivers/">&#9702; Real-time I/O drivers</a><ul>
+          <li data-nav-id="/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/dma/">DMA</a></li>
+          <li data-nav-id="/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/spi/">SPI</a></li>
+          <li data-nav-id="/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/gpio/">GPIO</a></li></ul></li>
+          <li data-nav-id="/core/kernel-api/" title="Writing drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/">&#9702; Writing drivers</a><ul>
+          <li data-nav-id="/core/kernel-api/function_index/" title="Kernel function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/file/" title="File description" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/file/">File description</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/socket/" title="Socket interface" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/socket/">Socket interface</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/kthread/" title="Kernel thread" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/kthread/">Kernel thread</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/wait/" title="Wait queue" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/wait/">Wait queue</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/mutex/" title="Kernel mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/mutex/">Kernel mutex</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/semaphore/" title="Kernel semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/semaphore/">Kernel semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/flag/" title="Kernel flag" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/flag/">Kernel flag</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/spinlock/" title="EVL Spinlock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/spinlock/">EVL Spinlock</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/timer/" title="Timer" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/timer/">Timer</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/xbuf/" title="Cross-buffer access" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/xbuf/">Cross-buffer access</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/interrupts/" title="Managing IRQs" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/interrupts/">Managing IRQs</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/stax/" title="Stage exclusion lock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/stax/">Stage exclusion lock</a><ul></ul></li></ul></li>
+          <li data-nav-id="/core/under-the-hood/" title="Under the hood" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/under-the-hood/">&#9702; Under the hood</a><ul>
+          <li data-nav-id="/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/under-the-hood/abi/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/abi-revs/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item parent"><a href="https://the-going.github.io/evlproject/dovetail/">&#8226; Dovetail interface</a><ul>
+          <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/">&#9702; Interrupt pipeline</a><ul>
+          <li data-nav-id="/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/">IRQ handling</a></li>
+          <li data-nav-id="/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/synthetic/">Synthetic IRQs</a></li>
+          <li data-nav-id="/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/pipeline_inject/">IRQ injection</a></li>
+          <li data-nav-id="/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/interrupt_protection/">Interrupt protection</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_push/">OOB stage installation</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_escalation/">Stage escalation</a></li>
+          <li data-nav-id="/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/locking/">Locking</a></li></ul></li>
+          <li data-nav-id="/dovetail/porting/" title="Porting Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/porting/">&#9702; Porting Dovetail</a><ul>
+          <li data-nav-id="/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/prerequisites/">Prerequisites</a></li>
+          <li data-nav-id="/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/irqflow/">Interrupt flow</a></li>
+          <li data-nav-id="/dovetail/porting/atomic/" title="Atomic operations" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/atomic/">Atomic operations</a></li>
+          <li data-nav-id="/dovetail/porting/arch/" title="Architecture-specific bits" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/arch/">Architecture bits</a></li>
+          <li data-nav-id="/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/timer/">Tick devices</a></li>
+          <li data-nav-id="/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/clocksource/">Clock sources</a></li>
+          <li data-nav-id="/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/syscall/">Syscall path</a></li>
+          <li data-nav-id="/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/rawprintk/">Serial debugging</a></li>
+          <li data-nav-id="/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/misc/">Misc</a></li>
+          <li data-nav-id="/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/devnotes/">Developer&#39;s Notes</a></li></ul></li>
+          <li data-nav-id="/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/altsched/">Alternate scheduling</a></li>
+          <li data-nav-id="/dovetail/files/" title="File tracking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/files/">File tracking</a></li>
+          <li data-nav-id="/dovetail/sockets/" title="Socket handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/sockets/">Socket handling</a></li>
+          <li data-nav-id="/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/rulesofthumb/">Rules Of Thumb</a></li></ul></li>
+          <li data-nav-id="/ports/" title="Status of EVL ports" class="dd-item"><a href="https://the-going.github.io/evlproject/ports/">&#8226; Ports</a><ul></ul></li>
+          <li data-nav-id="/contributing/" title="Contributing to Xenomai 4" class="dd-item"><a href="https://the-going.github.io/evlproject/contributing/">&#8226; Contributing</a><ul></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/"><i class='fas fa-home'></i> Home</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> RIOT channel</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Mailing list</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/dovetail/"><span itemprop="name">Dovetail interface</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/dovetail/pipeline/" aria-disabled="true"><span itemprop="name">Interrupt pipeline</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#two-stage-pipeline">Two-stage IRQ pipeline</a></li>
+    <li><a href="#optimistic-irq-protect">Optimistic interrupt protection</a></li>
+    <li><a href="#virtual-i-flag">Virtual interrupt disabling</a></li>
+    <li><a href="#irq-deferral">Interrupt deferral for the <em>in-band stage</em></a></li>
+    <li><a href="#no-inband-reentry">All interrupts are (seemingly) NMIs</a></li>
+    <li><a href="#pipeline-entry-context">Pipeline entry context</a></li>
+    <li><a href="#pipelining-and-rcu">Pipelining and RCU</a></li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Interrupt pipeline</h1>
+
+<p>The autonomous core has to act upon device interrupts with no delay,
+regardless of the other kernel operations which may be ongoing when
+the interrupt is received by the CPU. Therefore, there is a basic
+requirement for prioritizing interrupt masking and delivery between
+the autonomous core and GPOS operations, while maintaining consistent
+internal serialization for the kernel.</p>
+<p>However, to protect from deadlocks and maintain data integrity, Linux
+hard disables interrupts around any critical section of code which
+must not be preempted by interrupt handlers on the same CPU, enforcing
+a strictly serialized execution among those contexts. The
+unpredictable delay this may cause before external events can be
+handled is a major roadblock for kernel components requiring
+predictable and very short response times to external events, in the
+range of a few microseconds.</p>
+<p>To address this issue, Dovetail introduces a mechanism called
+<em>interrupt pipelining</em> which turns all device IRQs into pseudo-NMIs,
+only to run NMI-safe interrupt handlers from the perspective of the
+main kernel activities. This is achieved by substituting real
+interrupt masking in a CPU by a software-based, virtual interrupt
+masking when the in-band stage is active on such CPU. This way, the
+autonomous core can receive IRQs as long as it did not mask interrupts
+in the CPU, regardless of the virtual interrupt state maintained by
+the in-band side. Dovetail monitors the virtual state to decide when
+IRQ events should be allowed to flow down to the in-band stage where
+the main kernel executes. This way, the assumptions the in-band code
+makes about running interrupt-free or not are still valid.</p>
+<h2 id="two-stage-pipeline">Two-stage IRQ pipeline</h2>
+<p>Interrupt pipelining is a lightweight approach based on the
+introduction of a separate, high-priority execution stage for running
+out-of-band interrupt handlers immediately upon IRQ receipt, which
+cannot be delayed by the in-band, main kernel work. By immediately,
+we mean unconditionally, regardless of whether the in-band kernel code
+had disabled interrupts when the event arrived, using the common
+<code>local_irq_save()</code>, <code>local_irq_disable()</code> helpers or any of their
+derivatives.  IRQs which have no handlers in the high priority stage
+may be deferred on the receiving CPU until the out-of-band activity
+has quiesced on that CPU. Eventually, the preempted in-band code can
+resume normally, which may involve handling the deferred interrupts.</p>
+<p>In other words, interrupts are flowing down from the out-of-band to
+the in-band interrupt stages, which form a two-stage pipeline for
+prioritizing interrupt delivery. The runtime context of the
+out-of-band interrupt handlers is known as the <em>out-of-band stage</em> of
+the pipeline, as opposed to the in-band kernel activities sitting on
+the <em>in-band stage</em>:</p>
+<p><img src="https://the-going.github.io/evlproject/images/pipeline.png" alt="Alt text" title="Interrupt pipeline"></p>
+<p>An autonomous core can base its own activities on the out-of-band
+stage, interposing on specific IRQ events, for delivering real-time
+capabilities to a particular set of applications. Meanwhile, the main
+kernel operations keep going over the in-band stage unaffected, only
+delayed by short preemption times for running the out-of-band work.</p>
+<h2 id="optimistic-irq-protect">Optimistic interrupt protection</h2>
+<p>Predictable response time of out-of-band handlers to IRQ receipts
+requires the in-band kernel work not to be allowed to delay them by
+masking interrupts in the CPU.</p>
+<p>However, critical sections delimited this way by the in-band code must
+still be enforced for the <em>in-band stage</em>, so that system integrity is
+not at risk. This means that although out-of-band IRQ handlers may run
+at any time while the <em>out-of-band stage</em> is accepting interrupts,
+in-band IRQ handlers should be allowed to run only when the in-band
+stage is accepting interrupts too. So we need to decouple the
+interrupt masking and delivery logic which applies to the out-of-band
+stage from the one in effect on the in-band stage, by implementing a
+dual interrupt control.</p>
+<p>In the pipelined interrupt model, the CPU can receive interrupts most
+of the time, but the delivery logic of those events may be deferred by
+a software mechanism until the kernel actually accepts them. This
+approach is said to be <em>optimistic</em> because it is assumed that the
+overhead of maintaining such mechanism should be small as the in-band
+code seldom receives an interrupt while masking them.</p>
+<p>This approach was fully described by <strong>Stodolsky</strong>, <strong>Chen</strong> &amp;
+<strong>Bershad</strong> in [<em>Fast Interrupt Priority Management in Operating
+System Kernels</em>]
+(<a href="https://www.usenix.org/legacy/publications/library/proceedings/micro93/full_papers/stodolsky.txt)">https://www.usenix.org/legacy/publications/library/proceedings/micro93/full_papers/stodolsky.txt)</a>.</p>
+<h2 id="virtual-i-flag">Virtual interrupt disabling</h2>
+<p>To this end, a software logic managing a virtual interrupt disable
+flag is introduced by the interrupt pipeline between the hardware and
+the generic IRQ management layer. This logic can mask IRQs from the
+perspective of the in-band kernel work when <code>local_irq_save()</code>,
+<code>local_irq_disable()</code> or any lock-controlled masking operations like
+<code>spin_lock_irqsave()</code> is called, while still accepting IRQs from the
+CPU for immediate delivery to out-of-band handlers.</p>
+<p>When a real IRQ arrives while interrupts are virtually masked, the
+event is logged for the receiving CPU, kept there until the virtual
+interrupt disable flag is cleared at which point it is dispatched as
+if it just happened. The principle of deferring interrupt delivery
+based on a software flag coupled to an event log has been originally
+described as <em>Optimistic interrupt protection</em> in <a href="https://www.usenix.org/legacy/publications/library/proceedings/micro93/full_papers/stodolsky.txt">this
+paper</a>.
+It was originally intended as a low-overhead technique for
+manipulating the processor interrupt state, reducing the cost of
+interrupt masking for the common case of absence of interrupts.</p>
+<p>In Dovetail&rsquo;s two-stage pipeline, the out-of-band stage protects from
+interrupts by disabling them in the CPU&rsquo;s status register as usual,
+while the in-band stage disables interrupts only virtually. A stage
+for which interrupts are disabled is said to be <em>stalled</em>. Conversely,
+<em>unstalling</em> a stage means re-enabling interrupts for it.</p>
+
+<div class="notices warning">
+    <div class="label">Warning</div><p>Obviously, stalling the out-of-band stage implicitly means disabling
+further IRQ receipts for the in-band stage down the pipeline too.</p>
+
+</div>
+<h2 id="irq-deferral">Interrupt deferral for the <em>in-band stage</em></h2>
+<p>When the in-band stage is stalled because the virtual interrupt disable
+flag is set, any IRQ event which was not immediately delivered to the
+<em>out-of-band stage</em> is recorded into a per-CPU log, postponing delivery to the
+in-band kernel handler.</p>
+<p>Such delivery is deferred until the in-band kernel code clears the
+virtual interrupt disable flag by calling <code>local_irq_enable()</code> or any
+of its variants, which unstalls the in-band stage. When this happens, the
+interrupt state is resynchronized by playing the log, firing the
+in-band handlers for which an IRQ event is pending.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">   /* Both stages unstalled on entry */
+   local_irq_save(flags);
+   &lt;<span style="color:#ff6ac1">IRQx</span> <span style="color:#57c7ff">received:</span> <span style="color:#57c7ff">no</span> <span style="color:#57c7ff">out-of-band</span> <span style="color:#57c7ff">handler</span>&gt;
+       (pipeline logs IRQx event)
+   ...
+   local_irq_restore(flags);
+       (pipeline plays IRQx event)
+            handle_IRQx_interrupt();
+</code></pre></div><p>If the in-band stage is unstalled at the time of the IRQ receipt, the
+in-band handler is immediately invoked, just like with the
+non-pipelined IRQ model.</p>
+<h2 id="no-inband-reentry">All interrupts are (seemingly) NMIs</h2>
+<p>From the standpoint of the in-band kernel code (i.e. the one running
+over the <em>in-band</em> interrupt stage) , the interrupt pipelining logic
+virtually turns all device IRQs into NMIs, for running out-of-band
+handlers.</p>
+<p>For this reason, out-of-band code may generally <em>not</em> re-enter
+in-band code, for preventing creepy situations like this one:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">   /* in-band context */
+   spin_lock_irqsave(<span style="color:#ff5c57">&amp;</span>lock, flags);
+      &lt;<span style="color:#ff6ac1">IRQx</span> <span style="color:#57c7ff">received:</span> <span style="color:#57c7ff">out-of-band</span> <span style="color:#57c7ff">handler</span> <span style="color:#57c7ff">installed</span>&gt;
+         handle_oob_event();
+            /* attempted re-entry to in-band from out-of-band. */
+            in_band_routine();
+               spin_lock_irqsave(<span style="color:#ff5c57">&amp;</span>lock, flags);
+               &lt;<span style="color:#ff6ac1">DEADLOCK</span>&gt;
+               ...
+            ...
+         ...
+   ...
+   spin_unlock irqrestore(<span style="color:#ff5c57">&amp;</span>lock, flags);
+</code></pre></div><p>Even in absence of an attempt to get a spinlock recursively, the outer
+in-band code in the example above is entitled to assume that no access
+race can occur on the current CPU while interrupts are (virtually)
+masked for the in-band stage. Re-entering in-band code from an
+out-of-band handler would invalidate this assumption.</p>
+<p>In rare cases, we may need to fix up the in-band kernel routines in
+order to allow out-of-band handlers to call them. Typically, generic
+atomic helpers are such routines, which serialize in-band and
+out-of-band callers.</p>
+<p>For all other cases, the <a href="https://the-going.github.io/evlproject/dovetail/pipeline/pipeline_inject/">IRQ work API</a> is available for
+scheduling the execution of a routine from the out-of-band stage,
+which will be invoked later from a safe place on the in-band stage as
+soon as it gets back in control on the current CPU (i.e. typically
+when in-band interrupts are allowed again).</p>
+<h2 id="pipeline-entry-context">Pipeline entry context</h2>
+<p>The pipeline entry denotes the code which runs in order to accept a
+hardware interrupt, either dispatching it to its out-of-band handler
+immediately, or logging it as a pending event for the in-band stage.
+This runtime section starts from the call to
+<a href="https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/pipeline.c#L1079">handle_irq_pipeline_prepare()</a>,
+ends after the call to
+<a href="https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/pipeline.c#L1136">handle_irq_pipeline_finish()</a>. These
+calls are issued by the architecture code every time it wants to feed
+the pipeline upon an incoming hardware interrupt.</p>
+<h2 id="pipelining-and-rcu">Pipelining and RCU</h2>
+<p>As described earlier, from the standpoint of the in-band context, an
+interrupt entry is unsafe in a similar way a NMI is when pipelining is
+in effect, since it may preempt almost anywhere as IRQs are only
+virtually masked most of the time, including inside (virtually)
+interrupt-free sections.</p>
+<p>For this reason, Dovetail declares a (pseudo-)NMI entry to RCU when a
+hardware interrupt is fed to the pipeline, so that it may enter RCU
+read sides to safely access RCU-protected data. Typically,
+<a href="https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/irqdesc.c#L694">handle_domain_irq()</a>
+would need this guarantee to resolve IRQ mappings for incoming
+hardware interrupts.</p>
+<p>To this end, the RCU code considers a pipeline entry as a non-maskable
+context alongside <code>in_nmi()</code>, which ends before the companion core is
+allowed to reschedule.</p>
+<p>On hardware interrupt, the execution flow is as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">   &lt;IRQ&gt; /* hard irqs off */
+	core_notify_irq_entry /* disable oob reschedule */
+	&lt;pipeline_entry&gt;
+		rcu_nmi_enter
+			oob_irq_delivery
+			      OR,
+			inband_irq_logging
+		rcu_nmi_exit
+	&lt;/pipeline_entry&gt;
+	core_notify_irq_exit /* re-enable oob reschedule */
+	synchronize_irq_log
+		inband_irq_delivery  /* hard irqs on */
+   &lt;/IRQ&gt; /* in-band reschedule */
+</code></pre></div><p>As a result, the pipeline core may safely assume that while in a
+pipeline entry:</p>
+<ul>
+<li>
+<p>RCU read sides may be entered to access protected data since RCU
+is watching,</p>
+</li>
+<li>
+<p>the virtual interrupt state (stall bit) of the in-band stage might
+legitimately be different from the hardware interrupt state.</p>
+</li>
+</ul>
+<p>This also means that RCU-awareness is denied to activities running on
+the out-of-band stage outside of the pipeline entry context. As a
+result, the companion core has no RCU protection against accessing
+stale data, except from its interrupt handlers (i.e. those marked as
+running out-of-band with the IRQF_OOB flag).</p>
+<p>All of the above is possible because hardware interrupts are always
+disabled when running the pipeline entry code, therefore pipeline
+entries are strictly serialized on a given CPU. The following
+guarantees allow this:</p>
+<ul>
+<li>
+<p>out-of-band handlers called from
+<a href="https://source.denx.de/Xenomai/linux-dovetail/-/blob/83a3215f995fe0c95336d1003be502a9f95ef309/kernel/irq/pipeline.c#L931">handle_oob_irq()</a>
+may not re-enable hard interrupts.</p>
+</li>
+<li>
+<p>synchronizing the in-band log with hard interrupts enabled is done
+outside of the section marked as a pipeline entry.</p>
+</li>
+</ul>
+<hr>
+<p style="text-align:right">Last modified: Sun, 03 Oct 2021 11:41:49 &#43;0200</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/dovetail/" title="Dovetail interface"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/" title="IRQ handling"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634330591"></script>
+    <script>
+      if (typeof mermaid != 'undefined') {
+        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
+      }
+    </script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634330591"></script>
+  </body>
+</html>

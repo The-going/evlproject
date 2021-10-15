@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.88.1" />
+    <link rel="alternate" type="application/rss+xml" href="https://the-going.github.io/evlproject/core/kernel-api/kthread/index.xml" title="Xenomai 4" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    <title>Kernel thread :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1634330591" rel="stylesheet" media="print">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634330591"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/core/kernel-api/kthread/">
+    <nav id="sidebar" class="">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Search...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634330591"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634330591"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script>
+          var index_url="https://the-going.github.io/evlproject/index.json";
+          var root_url="https://the-going.github.io/evlproject/";
+          var baseUri=root_url.replace(/\/$/, '');
+        </script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1634330591"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started</a><ul></ul></li>
+          <li data-nav-id="/core/" title="The EVL core" class="dd-item parent"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core</a><ul>
+          <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL</a></li>
+          <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings</a></li>
+          <li data-nav-id="/core/testing/" title="Testing the installation" class="dd-item"><a href="https://the-going.github.io/evlproject/core/testing/">Running tests</a></li>
+          <li data-nav-id="/core/benchmarks/" title="Running benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/benchmarks/">Benchmarking</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/">&#9702; Application interface</a><ul>
+          <li data-nav-id="/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/mutex/">Mutex</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/semaphore/">Semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/observable/">Observable</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/proxy/">File proxy</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/poll/">Polling file descriptors</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/io/">Out-of-band I/O services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/misc/">Misc. services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/user-api/api-revs/">API revisions</a></li></ul></li>
+          <li data-nav-id="/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/oob-drivers/">&#9702; Real-time I/O drivers</a><ul>
+          <li data-nav-id="/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/dma/">DMA</a></li>
+          <li data-nav-id="/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/spi/">SPI</a></li>
+          <li data-nav-id="/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/gpio/">GPIO</a></li></ul></li>
+          <li data-nav-id="/core/kernel-api/" title="Writing drivers" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/">&#9702; Writing drivers</a><ul>
+          <li data-nav-id="/core/kernel-api/function_index/" title="Kernel function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/file/" title="File description" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/file/">File description</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/socket/" title="Socket interface" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/socket/">Socket interface</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/kthread/" title="Kernel thread" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/kthread/">Kernel thread</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/wait/" title="Wait queue" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/wait/">Wait queue</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/mutex/" title="Kernel mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/mutex/">Kernel mutex</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/semaphore/" title="Kernel semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/semaphore/">Kernel semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/flag/" title="Kernel flag" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/flag/">Kernel flag</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/spinlock/" title="EVL Spinlock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/spinlock/">EVL Spinlock</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/timer/" title="Timer" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/timer/">Timer</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/xbuf/" title="Cross-buffer access" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/xbuf/">Cross-buffer access</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/interrupts/" title="Managing IRQs" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/interrupts/">Managing IRQs</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/stax/" title="Stage exclusion lock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/stax/">Stage exclusion lock</a><ul></ul></li></ul></li>
+          <li data-nav-id="/core/under-the-hood/" title="Under the hood" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/under-the-hood/">&#9702; Under the hood</a><ul>
+          <li data-nav-id="/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/under-the-hood/abi/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/abi-revs/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/">&#8226; Dovetail interface</a><ul>
+          <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/">&#9702; Interrupt pipeline</a><ul>
+          <li data-nav-id="/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/">IRQ handling</a></li>
+          <li data-nav-id="/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/synthetic/">Synthetic IRQs</a></li>
+          <li data-nav-id="/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/pipeline_inject/">IRQ injection</a></li>
+          <li data-nav-id="/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/interrupt_protection/">Interrupt protection</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_push/">OOB stage installation</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_escalation/">Stage escalation</a></li>
+          <li data-nav-id="/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/locking/">Locking</a></li></ul></li>
+          <li data-nav-id="/dovetail/porting/" title="Porting Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/porting/">&#9702; Porting Dovetail</a><ul>
+          <li data-nav-id="/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/prerequisites/">Prerequisites</a></li>
+          <li data-nav-id="/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/irqflow/">Interrupt flow</a></li>
+          <li data-nav-id="/dovetail/porting/atomic/" title="Atomic operations" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/atomic/">Atomic operations</a></li>
+          <li data-nav-id="/dovetail/porting/arch/" title="Architecture-specific bits" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/arch/">Architecture bits</a></li>
+          <li data-nav-id="/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/timer/">Tick devices</a></li>
+          <li data-nav-id="/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/clocksource/">Clock sources</a></li>
+          <li data-nav-id="/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/syscall/">Syscall path</a></li>
+          <li data-nav-id="/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/rawprintk/">Serial debugging</a></li>
+          <li data-nav-id="/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/misc/">Misc</a></li>
+          <li data-nav-id="/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/devnotes/">Developer&#39;s Notes</a></li></ul></li>
+          <li data-nav-id="/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/altsched/">Alternate scheduling</a></li>
+          <li data-nav-id="/dovetail/files/" title="File tracking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/files/">File tracking</a></li>
+          <li data-nav-id="/dovetail/sockets/" title="Socket handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/sockets/">Socket handling</a></li>
+          <li data-nav-id="/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/rulesofthumb/">Rules Of Thumb</a></li></ul></li>
+          <li data-nav-id="/ports/" title="Status of EVL ports" class="dd-item"><a href="https://the-going.github.io/evlproject/ports/">&#8226; Ports</a><ul></ul></li>
+          <li data-nav-id="/contributing/" title="Contributing to Xenomai 4" class="dd-item"><a href="https://the-going.github.io/evlproject/contributing/">&#8226; Contributing</a><ul></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/"><i class='fas fa-home'></i> Home</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> RIOT channel</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Mailing list</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/"><span itemprop="name">The EVL core</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/kernel-api/"><span itemprop="name">Writing drivers</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/kernel-api/kthread/" aria-disabled="true"><span itemprop="name">Kernel thread</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#out-of-band-threads-in-kernel-space">Out-of-band threads in kernel space</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Kernel thread</h1>
+
+<h3 id="out-of-band-threads-in-kernel-space">Out-of-band threads in kernel space</h3>
+<p>The EVL core can run common kernel threads on the out-of-band stage,
+which can be used in <a href="https://the-going.github.io/evlproject/core/oob-drivers/">out-of-band capable drivers</a> when ultra-low response time is
+required.</p>
+<hr>
+
+<div class="proto"><a name="evl_run_kthread"></a>
+int evl_run_kthread(struct evl_kthread *kthread, void (*threadfn)(void *arg), void *arg, int priority, int clone_flags, const char *fmt, ...)
+</div>
+
+<p><a href="#evl_run_kthread">evl_run_kthread()</a> is a
+macro-definition which spawns an EVL kernel thread, which is the EVL
+equivalent of its in-band kernel counterpart named <code>kthread_run()</code>.</p>
+<p>The new thread may be pinned on any of the out-of-band capable CPUs
+(See the <code>evl.oob_cpus</code> kernel parameter). If you need to spawn a
+kernel thread on a particular CPU, you may want to use
+<a href="#evl_run_kthread_on_cpu">evl_run_kthread_on_cpu()</a>
+instead.</p>
+
+<p><li><i>kthread</i><p>A kernel thread descriptor where the core will maintain the per-thread
+context information. This memory area must remain valid as long as the
+associated kernel thread runs.</p>
+</li></p>
+
+
+<p><li><i>threadfn</i><p>The routine to run in the new thread context.</p>
+</li></p>
+
+
+<p><li><i>arg</i><p>A user-defined opaque pointer which is passed unmodified to <em>threadfn</em>
+as its sole argument.</p>
+</li></p>
+
+
+<p><li><i>priority</i><p>The priority of the new thread, which is assumed to refer to
+the <a href="https://the-going.github.io/evlproject/core/user-api/scheduling/#SCHED_FIFO">SCHED_FIFO</a> class.</p>
+</li></p>
+
+
+<p><li><i>clone_flags</i><p>A set of creation flags for the new kernel thread, defining its
+<a href="https://the-going.github.io/evlproject/core/user-api/#element-visibility">visibility</a>:</p>
+<ul>
+<li>
+<p><code>EVL_CLONE_PUBLIC</code> denotes a public thread which is represented
+by a device file in the <a href="https://the-going.github.io/evlproject/core/user-api/#evl-fs-hierarchy">/dev/evl</a> file hierarchy, which
+makes it visible to application processes for sharing.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_PRIVATE</code> denotes a thread which is private to the
+kernel. No device file appears for it in the
+<a href="https://the-going.github.io/evlproject/core/user-api/#evl-fs-hierarchy">/dev/evl</a>
+file hierarchy.</p>
+</li>
+</ul>
+</li></p>
+
+
+<p><li><i>fmt</i><p>A <code>ksprintf()</code>-like format string to generate the thread name. Unlike
+<a href="https://the-going.github.io/evlproject/core/user-api/thread/#evl_attach_thread">evl_attach_thread()</a> from the user API,
+<a href="#evl_run_kthread">evl_run_kthread()</a> does not look
+for any shorthand defined by the <a href="https://the-going.github.io/evlproject/core/user-api/#element-naming-convention">naming convention</a> for
+application threads. Thread visibility can be set exclusively by using
+the <em>clone_flags</em>.</p>
+</li></p>
+
+
+<p><li><i>...</i><p>The optional variable argument list completing the format.</p>
+</li></p>
+
+<p><a href="#evl_run_kthread">evl_run_kthread()</a> returns zero on
+success, or a negated error code otherwise:</p>
+<ul>
+<li>
+<p>-EEXIST	The generated name is conflicting with an existing thread
+name.</p>
+</li>
+<li>
+<p>-EINVAL	Either <em>clone_flags</em> or <em>priority</em> are wrong.</p>
+</li>
+<li>
+<p>-ENAMETOOLONG	The overall length of the device element&rsquo;s file path including
+the generated name exceeds PATH_MAX.</p>
+</li>
+<li>
+<p>-ENOMEM	Not enough memory available. Buckle up.</p>
+</li>
+</ul>
+<hr>
+
+<div class="proto"><a name="evl_run_kthread_on_cpu"></a>
+int evl_run_kthread_on_cpu(struct evl_kthread *kthread, int cpu, void (*threadfn)(void *arg), void *arg, int priority, int clone_flags, const char *fmt, ...)
+</div>
+
+<p>As its name suggests, <a href="#evl_run_kthread_on_cpu">evl_run_kthread_on_cpu()</a> is a variant of <a href="#evl_run_kthread">evl_run_kthread()</a> which lets you pick a particular CPU
+for pinning the new kernel thread.</p>
+
+<p><li><i>cpu</i><p>The CPU number the new thread should be pinned to, among the
+out-of-band capable ones (See the <code>evl.oob_cpus</code> kernel parameter).</p>
+</li></p>
+
+<p><a href="#evl_run_kthread_on_cpu">evl_run_kthread_on_cpu()</a>
+returns zero on success, or a negated error code. The set of error
+conditions for <a href="#evl_run_kthread">evl_run_kthread()</a>
+apply to <a href="#evl_run_kthread_on_cpu">evl_run_kthread_on_cpu()</a>, plus:</p>
+<ul>
+<li>-EINVAL	<em>cpu</em> is not a valid, out-of-band capable CPU.</li>
+</ul>
+<hr>
+
+<div class="proto"><a name="evl_stop_kthread"></a>
+void evl_stop_kthread(struct evl_kthread *kthread)
+</div>
+
+<p>This call requests the EVL <em>kthread</em> to exit at the first
+opportunity. It may be called from any stage, but only from a kernel
+thread context, regular in-band or EVL.</p>
+<p>This is an advisory method for stopping EVL kernel threads, which
+requires <em>kthread</em> to call <a href="#evl_kthread_should_stop">evl_kthread_should_stop()</a> as part of its regular work
+loop, exiting when such test returns <em>true</em>.  In other words,
+<a href="#evl_stop_kthread">evl_stop_kthread()</a> raises the
+condition which <a href="#evl_kthread_should_stop">evl_kthread_should_stop()</a> returns to its caller.</p>
+<p><a href="#evl_stop_kthread">evl_stop_kthread()</a> first
+unblocks <em>kthread</em> from any blocking call, then waits for <em>kthread</em> to
+actually exit before returning to the caller. Therefore, an EVL kernel
+thread which receives a request for termination while sleeping on some
+EVL call unblocks with -EINTR as a result.</p>
+
+<div class="notices tip">
+    <div class="label">Tip</div><p>There is no way to forcibly terminate kernel threads since this
+would potentially leave the kernel system in a broken, unstable state.
+Both the requestor and the subject kernel thread must cooperate for the
+later to follow an orderly process for exiting. The
+in-band equivalent is achieved with
+<a href="https://www.kernel.org/doc/html/latest/driver-api/basics.html#c.kthread_stop">kthread_stop()</a>,
+<a href="https://www.kernel.org/doc/html/latest/driver-api/basics.html#c.kthread_should_stop">kthread_should_stop()</a>.</p>
+
+</div>
+
+<p><li><i>kthread</i><p>The EVL kernel thread to send a stop request to. If <em>kthread</em> represents the calling
+context (i.e. self-termination), the call does not return and the caller is
+exited immediately. Otherwise, the stop request is left pending until <em>kthread</em>
+eventually calls <a href="#evl_kthread_should_stop">evl_kthread_should_stop()</a>, at which point it should act upon this event by exiting.</p>
+</li></p>
+
+<hr>
+
+<div class="proto"><a name="evl_kthread_should_stop"></a>
+bool evl_kthread_should_stop(void)
+</div>
+
+<p>This call is paired with <a href="#evl_stop_kthread">evl_stop_kthread()</a>. It should be called by any EVL kernel thread
+which intends to accept termination requests from other threads.</p>
+<p>Whenever <a href="#evl_kthread_should_stop">evl_kthread_should_stop()</a> returns <em>true</em>, the caller should plan
+for exiting as soon as possible, typically by returning from its entry
+routine. Otherwise, it may continue.</p>
+<p>A typical usage pattern is as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">
+#include &lt;evl/thread.h&gt;
+#include &lt;evl/flag.h&gt;
+
+static DEFINE_EVL_FLAG(some_flag);
+
+void some_kthread(struct evl_kthread *kthread)
+{
+	int ret;
+
+	for (;;) {
+		if (evl_kthread_should_stop())
+			break;
+
+		/* wait for the next processing signal */
+		ret = evl_wait_flag(&amp;some_flag);
+		if (ret == -EINTR)
+		    	break;
+
+		/* do some useful stuff */
+	}
+
+	/* about to leave, do some cleanup */
+}
+</code></pre></div><hr>
+
+<div class="proto"><a name="evl_set_kthread_priority"></a>
+int evl_set_kthread_priority(struct evl_kthread *kthread, int priority)
+</div>
+
+<p>This service changes the priority of an EVL kernel thread.</p>
+
+<p><li><i>kthread</i><p>The descriptor of the EVL kernel thread.</p>
+</li></p>
+
+
+<p><li><i>priority</i><p>The new priority of <em>kthread</em>, which is assumed to refer to
+the <a href="https://the-going.github.io/evlproject/core/user-api/scheduling/#SCHED_FIFO">SCHED_FIFO</a> class.</p>
+</li></p>
+
+<p><a href="#evl_set_kthread_priority">evl_set_kthread_priority()</a> returns zero on success, otherwise a negated error code is
+returned:</p>
+<p>-EINVAL		<em>priority</em> is invalid. Check the documentation of the <a href="https://the-going.github.io/evlproject/core/user-api/scheduling/#SCHED_FIFO">SCHED_FIFO</a> class for details.</p>
+<p><a href="#evl_set_kthread_priority">evl_set_kthread_priority()</a> immediately applies the changes to the scheduling attributes of
+<em>kthread</em>.</p>
+<hr>
+
+<div class="proto"><a name="evl_current_kthread"></a>
+struct evl_kthread *evl_current_kthread(void)
+</div>
+
+<p>Returns the descriptor of the current EVL kernel thread. NULL is
+returned when calling this service from any other type of thread
+context (i.e. EVL user thread, non-EVL thread).</p>
+
+<div class="notices warning">
+    <div class="label">Warning</div><p>evl_current_kthread() does not account for the interrupt context; a
+non-NULL pointer to the interrupted kernel thread may be returned if
+called from the IRQ handler.</p>
+
+</div>
+<hr>
+<p><img src="https://the-going.github.io/evlproject/images/wip.png" alt="Alt text" title="To be continued"></p>
+<hr>
+<h4 id="ktime_t-evl_delayktime_t-timeout-enum-evl_tmode-timeout_mode-struct-evl_clock-clock">ktime_t evl_delay(ktime_t timeout, enum evl_tmode timeout_mode, struct evl_clock *clock)</h4>
+<hr>
+<h4 id="int-evl_sleep_untilktime_t-timeout">int evl_sleep_until(ktime_t timeout)</h4>
+<hr>
+<h4 id="int-evl_sleepktime_t-delay">int evl_sleep(ktime_t delay)</h4>
+<hr>
+<h4 id="int-evl_set_periodstruct-evl_clock-clock-ktime_t-idate-ktime_t-period">int evl_set_period(struct evl_clock *clock, ktime_t idate, ktime_t period)</h4>
+<hr>
+<h4 id="int-evl_wait_periodunsigned-long-overruns_r">int evl_wait_period(unsigned long *overruns_r)</h4>
+<hr>
+<p style="text-align:right">Last modified: Tue, 22 Dec 2020 17:32:06 &#43;0100</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/core/kernel-api/socket/" title="Socket interface"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/core/kernel-api/wait/" title="Wait queue"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634330591"></script>
+    <script>
+      if (typeof mermaid != 'undefined') {
+        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
+      }
+    </script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634330591"></script>
+  </body>
+</html>

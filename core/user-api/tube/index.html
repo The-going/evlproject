@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    <title> :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1634330591" rel="stylesheet" media="print">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634330591"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/core/user-api/tube/">
+    <nav id="sidebar" class="">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Search...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634330591"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634330591"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script>
+          var index_url="https://the-going.github.io/evlproject/index.json";
+          var root_url="https://the-going.github.io/evlproject/";
+          var baseUri=root_url.replace(/\/$/, '');
+        </script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1634330591"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started</a><ul></ul></li>
+          <li data-nav-id="/core/" title="The EVL core" class="dd-item parent"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core</a><ul>
+          <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL</a></li>
+          <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings</a></li>
+          <li data-nav-id="/core/testing/" title="Testing the installation" class="dd-item"><a href="https://the-going.github.io/evlproject/core/testing/">Running tests</a></li>
+          <li data-nav-id="/core/benchmarks/" title="Running benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/benchmarks/">Benchmarking</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/" title="Using libevl" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/">&#9702; Application interface</a><ul>
+          <li data-nav-id="/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/mutex/">Mutex</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/semaphore/">Semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/observable/">Observable</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/proxy/">File proxy</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/poll/">Polling file descriptors</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/io/">Out-of-band I/O services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/tube/" title="" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/tube/">Tube</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/misc/">Misc. services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/user-api/api-revs/">API revisions</a></li></ul></li>
+          <li data-nav-id="/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/oob-drivers/">&#9702; Real-time I/O drivers</a><ul>
+          <li data-nav-id="/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/dma/">DMA</a></li>
+          <li data-nav-id="/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/spi/">SPI</a></li>
+          <li data-nav-id="/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/gpio/">GPIO</a></li></ul></li>
+          <li data-nav-id="/core/kernel-api/" title="Writing drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/">&#9702; Writing drivers</a><ul>
+          <li data-nav-id="/core/kernel-api/function_index/" title="Kernel function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/file/" title="File description" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/file/">File description</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/socket/" title="Socket interface" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/socket/">Socket interface</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/kthread/" title="Kernel thread" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/kthread/">Kernel thread</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/wait/" title="Wait queue" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/wait/">Wait queue</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/mutex/" title="Kernel mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/mutex/">Kernel mutex</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/semaphore/" title="Kernel semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/semaphore/">Kernel semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/flag/" title="Kernel flag" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/flag/">Kernel flag</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/spinlock/" title="EVL Spinlock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/spinlock/">EVL Spinlock</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/timer/" title="Timer" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/timer/">Timer</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/xbuf/" title="Cross-buffer access" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/xbuf/">Cross-buffer access</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/interrupts/" title="Managing IRQs" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/interrupts/">Managing IRQs</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/stax/" title="Stage exclusion lock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/stax/">Stage exclusion lock</a><ul></ul></li></ul></li>
+          <li data-nav-id="/core/under-the-hood/" title="Under the hood" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/under-the-hood/">&#9702; Under the hood</a><ul>
+          <li data-nav-id="/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/under-the-hood/abi/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/abi-revs/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/">&#8226; Dovetail interface</a><ul>
+          <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/">&#9702; Interrupt pipeline</a><ul>
+          <li data-nav-id="/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/">IRQ handling</a></li>
+          <li data-nav-id="/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/synthetic/">Synthetic IRQs</a></li>
+          <li data-nav-id="/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/pipeline_inject/">IRQ injection</a></li>
+          <li data-nav-id="/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/interrupt_protection/">Interrupt protection</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_push/">OOB stage installation</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_escalation/">Stage escalation</a></li>
+          <li data-nav-id="/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/locking/">Locking</a></li></ul></li>
+          <li data-nav-id="/dovetail/porting/" title="Porting Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/porting/">&#9702; Porting Dovetail</a><ul>
+          <li data-nav-id="/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/prerequisites/">Prerequisites</a></li>
+          <li data-nav-id="/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/irqflow/">Interrupt flow</a></li>
+          <li data-nav-id="/dovetail/porting/atomic/" title="Atomic operations" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/atomic/">Atomic operations</a></li>
+          <li data-nav-id="/dovetail/porting/arch/" title="Architecture-specific bits" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/arch/">Architecture bits</a></li>
+          <li data-nav-id="/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/timer/">Tick devices</a></li>
+          <li data-nav-id="/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/clocksource/">Clock sources</a></li>
+          <li data-nav-id="/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/syscall/">Syscall path</a></li>
+          <li data-nav-id="/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/rawprintk/">Serial debugging</a></li>
+          <li data-nav-id="/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/misc/">Misc</a></li>
+          <li data-nav-id="/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/devnotes/">Developer&#39;s Notes</a></li></ul></li>
+          <li data-nav-id="/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/altsched/">Alternate scheduling</a></li>
+          <li data-nav-id="/dovetail/files/" title="File tracking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/files/">File tracking</a></li>
+          <li data-nav-id="/dovetail/sockets/" title="Socket handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/sockets/">Socket handling</a></li>
+          <li data-nav-id="/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/rulesofthumb/">Rules Of Thumb</a></li></ul></li>
+          <li data-nav-id="/ports/" title="Status of EVL ports" class="dd-item"><a href="https://the-going.github.io/evlproject/ports/">&#8226; Ports</a><ul></ul></li>
+          <li data-nav-id="/contributing/" title="Contributing to Xenomai 4" class="dd-item"><a href="https://the-going.github.io/evlproject/contributing/">&#8226; Contributing</a><ul></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/"><i class='fas fa-home'></i> Home</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> RIOT channel</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Mailing list</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/"><span itemprop="name">The EVL core</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/user-api/"><span itemprop="name">Using libevl</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/user-api/tube/" aria-disabled="true"><span itemprop="name"></span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#a-lightweight-fifo-messaging-mechanism">A lightweight FIFO messaging mechanism</a></li>
+        <li><a href="#tube-services">Tube services</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1></h1>
+
+<h3 id="a-lightweight-fifo-messaging-mechanism">A lightweight FIFO messaging mechanism</h3>
+<p>The tube is a lighweight and flexible FIFO data structure which you
+can use to send any type of data between threads. Since the algorithm
+manipulating a tube is lockless, threads can use it regardless of
+their respective <a href="https://the-going.github.io/evlproject/dovetail/altsched/#altsched-theory">execution stage</a>, therefore a tube
+could also be used as a very simple <a href="#inter-stage-tube">inter-stage messaging system</a>.  In addition, the tube only supports
+the single-reader, single-writer paradigm so far. The intent is to
+provide a basic mechanism which can either be used &ldquo;as is&rdquo; for fully
+non-blocking send/receive operations, or as a building block for
+implementing featureful message queues including sleeping wait for
+input and output congestion control.</p>
+<p>At its core, an EVL <em>tube</em> is basically a one-way linked list
+conveying so-called <em>canisters</em> in a FIFO manner. Each canister is a
+container for a data item (or payload) a thread wants to send to
+another thread.</p>
+<p><img src="https://the-going.github.io/evlproject/images/tube.png" alt="Alt text" title="Lightweight data tube"></p>
+<h4 id="tube-creation">Creating a tube</h4>
+<p>The following steps are required to create a tube:</p>
+<ol>
+<li>You first need to declare the C structure type of the canister
+which is going to convey data through that tube. This is done by using
+the <code>DECLARE_EVL_CANISTER(canister_tag, data_type)</code> macro in your
+code, which should be given the name of the new canister type (used as
+the C structure tag), and the C type of the data to be conveyed in
+that canister. For instance, the following snippet would declare the
+<code>j1587_canister</code> type, conveying J1587 protocol data (some automotive
+diagnostic protocol, could be anything else of use of course):</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/tube.h&gt;
+
+struct j1587_data {
+   uint16_t pid;
+   uint16_t ecu;
+   unsigned char data[17];
+};
+DECLARE_EVL_CANISTER(j1587_canister, struct j1587_data);
+</code></pre></div><pre><code>The macro call above expands to a complete C `struct
+</code></pre>
+<p>j1587_canister<code>definition, laying out the information needed to convey one item of type</code>struct j1587_data`, such as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct j1587_canister {
+  struct j1587_data payload;
+  struct j1587_canister *next;
+ };
+</code></pre></div><ol start="2">
+<li>Then you need to declare the tube data structure itself, mentioning
+which kind of canister is going to flow through it. Note that a tube
+is fit for one specific type of canister, you cannot use multiple
+types of canister with a single tube. Such declaration is obtained by
+expanding the <code>DECLARE_EVL_TUBE(tube_tag, canister_tag)</code> macro, which
+receives the name of the new tube type (used as a C structure tag) and
+the canister tag passed earlier to <code>DECLARE_EVL_CANISTER()</code>.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/tube.h&gt;
+
+DECLARE_EVL_TUBE(j1587_tube, j1587_canister);
+</code></pre></div><pre><code> The macro call above defines the C struct type describing a
+</code></pre>
+<p>tube conveying canisters which in turn contain a payload of
+type j1587_data, such as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> struct j1587_tube {
+     ...
+ };
+</code></pre></div><ol start="3">
+<li>Finally, you need to initialize the tube by a call to
+<a href="#evl_init_tube">evl_init_tube()</a>, passing it a
+memory area which should be large enough to store as many canisters as
+required. This should be seen as the maximum number of canisters which
+can be queued into the tube at once. In other words, this is the
+maximum number of messages such queue can hold without running out of
+memory. The initialization code can refer to the declarations of the
+canister and tube types obtained by DECLARE_EVL_CANISTER() and
+DECLARE_EVL_TUBE():</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;stdio.h&gt;
+#include &lt;evl/tube.h&gt;
+
+/* The tube can convey up to sixteen j1587 items at once. */
+static DECLARE_EVL_CANISTER(j1587_canister, struct j1587_data) canisters[16];
+static DECLARE_EVL_TUBE(j1587_tube, j1587_canister) tube;
+
+evl_init_tube(&amp;tube, canisters, 16);
+printf(&#34;j1587 tube can convey %ld messages concurrently\n&#34;,
+            tube.max_items); /* should display as &#39;16&#39; */
+</code></pre></div><p>Once the tube is initialized, threads can communicate over it by
+calling <a href="#evl_send_tube">evl_send_tube()</a> and
+<a href="#evl_receive_tube">evl_receive_tube()</a>.</p>
+
+<div class="notices note">
+    <div class="label">Note</div><p>You can use any valid C type to hold the payload into a
+canister. However, keep in mind that conveying a payload entails two
+copies of the corresponding data: first to install it into the
+canister when <a href="#evl_send_tube">evl_send_tube()</a> is
+called, next when <a href="#evl_receive_tube">evl_receive_tube()</a> extracts it from the canister at the other end to private memory,
+so you definitely want to keep the payload size reasonable. If you need to
+convey large bulks of data as single messages flowing through the
+tube, then you should consider declaring a canister type which only stores
+a pointer to the final data, so that only that pointer needs to be copied, e.g.:</p>
+
+</div>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/tube.h&gt;
+
+DECLARE_EVL_CANISTER(massive_bitmap_canister, void *);
+</code></pre></div><p>The macro call above defines the C struct type describing a canister
+which conveys a reference to a large bulk of data using an opaque
+pointer. It would be expanded as follows in the code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">   struct massive_bitmap_canister {
+        void *payload;
+        struct massive_bitmap_canister *next;
+   };
+</code></pre></div><h4 id="inter-process-tube">Using tubes for inter-process messaging</h4>
+<p>A special form of tube can be used for transferring data between
+processes, using the *_<em>rel()</em> interface variant, which stands for
+<em>relative addressing</em>. As this implies, all internal references within
+the tube data structure use base-offset addressing instead of absolute
+memory pointers, so that such data structure can be mapped to a
+piece of memory shared between processes via <a href="http://man7.org/linux/man-pages/man2/mmap.2.html">mmap(2)</a>. <code>DECLARE_EVL_TUBE_REL()</code>
+should be used to define the C type of the new inter-process tube,
+along with <code>DECLARE_EVL_CANISTER_REL()</code> for declaring the
+canister type for such a tube. Eventually, <a href="#evl_init_tube_rel">evl_init_tube_rel()</a> should be used for initializing the
+the new tube, <a href="#evl_send_tube">evl_send_tube_rel()</a>
+for pushing data through it, and <a href="#evl_receive_tube_rel">evl_receive_tube_rel()</a> for pulling available messages from it.</p>
+<p>Of course, you still need to refrain from conveying absolute pointers
+referring to a particular process address space into the message
+payload. Here is an example of mapping an EVL tube which can handle up
+to 1024 messages flowing concurrently, to a new shared memory segment
+which we will be creating for the purpose:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">  #include &lt;fcntl.h&gt;
+  #include &lt;unistd.h&gt;
+  #include &lt;evl/tube.h&gt;
+  #include &lt;sys/types.h&gt;
+  #include &lt;sys/mman.h&gt;
+  #include &lt;sys/stat.h&gt;
+
+  struct j1587_data {
+  	 uint16_t pid;
+  	 uint16_t ecu;
+	 unsigned char data[17];
+  };
+
+  DECLARE_EVL_CANISTER_REL(j1587_rel_canister, struct j1587_data);
+  DECLARE_EVL_TUBE_REL(j1587_rel_tube, j1587_rel_canister);
+  j1587_rel_tube *tube;
+  int shmfd, ret;
+  size_t len;
+  void *ptr;
+
+  /* Create a shared memory object. */
+  shmfd = shm_open(some_shm_pathname, O_RDWR, 0660);
+  ...
+  /*
+   * Use ftruncate() to fit the shared memory to the tube size. We want
+   * up to 1024 data items to flow concurrently through the tube.
+   */
+  len = evl_get_tube_size_rel(j1787_rel_tube, 1024);
+  ret = ftruncate(shmfd, len);
+  ...
+  /* Now map this new segment into our address space. */
+  ptr = mmap(NULL, len, PROT_READ|PROT_WRITE, MAP_SHARED, shmfd, 0);
+  ...
+  /*
+   * Finally, set up the tube over the shared memory and retrieve its
+   * descriptor for further commands. From this point, you can send and
+   * receive j1787_data messages through it.
+   */
+  tube = evl_init_tube_rel(j1587_rel_tube, j1587_rel_canister, ptr, len);
+</code></pre></div><h4 id="inter-stage-tube">Using tubes for out-of-band ⇔ in-band messaging</h4>
+<p>Since sending and receiving to/from a tube is performed locklessly and
+does not involve any system call, this data structure can be used for
+implementing a basic message queue between threads which may belong to
+different stages, which is an alternative to using a
+<a href="https://the-going.github.io/evlproject/core/user-api/xbuf/">cross-buffer</a>.</p>
+<h4 id="synchronizing-tube-ops">Blocking input and/or output congestion control</h4>
+<p>A tube is inherently non-blocking, it neither imposes any policy nor
+provides support for sleeping in absence of input or for dealing with
+output congestion. It only provides a very simple lockless mechanism
+for transferring arbitrary data between peers. This means that
+<a href="#evl_send_tube">evl_send_tube()</a> may return a
+failure status (i.e. boolean <em>false</em>) if no free canister is available
+for conveying data at the time of the call. Conversely,
+<a href="#evl_receive_tube">evl_receive_tube()</a> may also
+return a failure status in case no data is immediately available at
+the receiving end of the tube. If you need the sender(s) to handle
+output congestion by sleeping until canisters are free for sending to
+the other side, or the receiver(s) to sleep until some data is
+available for input, the trick is to combine a tube with the proper
+synchronization mechanisms. For instance:</p>
+<ul>
+<li>
+<p>if both the sender(s) and receiver(s) run on the <a href="https://the-going.github.io/evlproject/dovetail/altsched/#altsched-theory">out-of-band
+stage</a>,
+then a pair of <a href="https://the-going.github.io/evlproject/core/user-api/semaphore/">EVL semaphores</a> would suffice: the sender
+would <a href="https://the-going.github.io/evlproject/core/user-api/semaphore/#evl_get_sem">wait on a semaphore</a> counting the
+number of free canisters in the tube before attempting to <a href="#evl_send_tube">push a new
+data item</a>, and the receiver would
+wait on the other semaphore counting the number of canisters available
+for <a href="#evl_receive_tube">reading from the tube</a>. Conversely, the receiver would <a href="https://the-going.github.io/evlproject/core/user-api/semaphore/#evl_put_sem">signal the semaphore</a> counting the free
+canisters after it has successfully pulled a data item, and the sender
+would signal the input semaphore after it has successfully pushed a
+new data item.</p>
+</li>
+<li>
+<p>if the sender or the receiver run on the <a href="https://the-going.github.io/evlproject/dovetail/altsched/#altsched-theory">out-of-band stage</a> but its peer
+may only run in-band, you could use one <a href="https://the-going.github.io/evlproject/core/user-api/semaphore/">EVL semaphore</a>, and a <a href="https://the-going.github.io/evlproject/core/user-api/proxy/">proxy</a> associated with a regular
+<a href="http://man7.org/linux/man-pages/man2/eventfd.2.html">eventfd(2)</a>.
+How to synchronize two threads which belong to distinct execution
+stages using such combo is explained in <a href="https://the-going.github.io/evlproject/core/user-api/proxy/#proxy-synchronization-example">this document</a>.</p>
+</li>
+</ul>
+<p>The following figure summarizes these options for synchronizing tube
+operations:</p>
+<p><img src="https://the-going.github.io/evlproject/images/tubesync.png" alt="Alt text" title="Synchronizing tube operations"></p>
+<h3 id="tube-services">Tube services</h3>
+
+<div class="proto"><a name="evl_init_tube"></a>
+void evl_init_tube(struct {tube_tag} *tube, struct {canister_tag} freevec[], int count)
+</div>
+
+<p>Initialize a tube data structure for process-local use, which can only
+happen once the canister and tube types <a href="#tube-creation">have been defined</a>.</p>
+
+<p><li><i>tube</i><p>The address of the tube structure to initialize. The C type of the new
+tube should have been declared earlier by the <a href="#tube-creation">DECLARE_EVL_TUBE()</a> macro.</p>
+</li></p>
+
+
+<p><li><i>freevec</i><p>The start address of an array of canisters which should be used to
+convey the payload through the tube. The C type of the basic element
+should have been declared earlier by the
+<a href="#tube-creation">DECLARE_EVL_CANISTER()</a>
+macro.</p>
+</li></p>
+
+
+<p><li><i>count</i><p>The number of elements in <em>freevec</em>.</p>
+</li></p>
+
+<hr>
+
+<div class="proto"><a name="evl_init_tube_rel"></a>
+void evl_init_tube_rel({tube_tag}, {canister_tag}, void *mem, size_t memsize)
+</div>
+
+<p>Initialize a relative-addressing tube data structure for inter-process
+use, which can only happen once the canister and tube types <a href="#tube-creation">have been
+defined</a>. Unlike with the
+<a href="#evl_init_tube">process-local variant</a>, the
+relative-addressing variant requires both the tube meta-data and the
+canisters to be part of the same (shareable) memory segment so that
+all peers have easily access to both of them.</p>
+
+<p><li><i>tube_tag</i><p>The C tag of the tube type to initialize. The C type of the new
+tube should have been declared earlier by the <a href="#tube-creation">DECLARE_EVL_TUBE_REL()</a> macro.</p>
+</li></p>
+
+
+<p><li><i>mem</i><p>The start address of the shared memory area where both the tube
+meta-data and canisters will live.</p>
+</li></p>
+
+
+<p><li><i>memsize</i><p>The length in bytes of <em>mem</em>. Because a portion of <em>mem</em> is reserved
+for storing meta-data, the number of canisters available for conveying
+actual payload through the tube is lesser than <code>memsize / sizeof(struct &lt;canister_tag&gt;)</code>. You can use
+<a href="#evl_get_tube_size_rel">evl_get_tube_size_rel()</a> to
+calculate the exact amount of memory you would need for storing a
+process-shared tube given the canister type and a maximum number of
+messages flowing concurrently through the tube. The returned value
+should be used to allocate the shared memory segment, then passed to
+<a href="#evl_init_tube_rel">evl_init_tube_rel</a>.</p>
+</li></p>
+
+<p>This macro returns the tube address which should be used in other
+relative-addressing calls. You can retrieve the number of canisters
+available with this tube by fetching the <code>max_items</code> members from the
+tube C type.</p>
+<hr>
+
+<div class="proto"><a name="evl_send_tube"></a>
+bool evl_send_tube[_rel](struct {tube_tag} *tube, {payload})
+</div>
+
+<p>Send a data item through a tube in a FIFO manner. The _<em>rel</em> variant
+should be used for sending to a relative-addressing tube. This payload
+is first copied to a free canister, which is then queued for
+consumption by the receiving end.</p>
+
+<p><li><i>tube</i><p>The address of the tube to push the data to.</p>
+</li></p>
+
+
+<p><li><i>payload</i><p>The data to push to the tube. This argument is passed by reference to
+the <a href="#evl_send_tube">evl_send_tube()</a> macro.</p>
+</li></p>
+
+<p>This macro returns a boolean <em>true</em> value on success, or <em>false</em> in
+case no free canister was available for sending more data at the time
+of the call. If you need a mechanism to have the sender block on
+output contention, you may want to have a <a href="#synchronizing-tube-ops">look at this section</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_receive_tube"></a>
+bool evl_receive_tube[_rel](struct {tube_tag} *tube, {payload})
+</div>
+
+<p>Receive the next available data item from a tube. The _<em>rel</em> variant
+should be used for receiving from a relative-addressing tube. The
+incoming payload is eventually copied to the <em>payload</em> argument before
+the conveying canister is made available anew for further sending.</p>
+
+<p><li><i>tube</i><p>The address of the tube to pull data from.</p>
+</li></p>
+
+
+<p><li><i>payload</i><p>A variable to be assigned the payload data received from the
+tube. This argument is passed by reference to the
+<a href="#evl_receive_tube">evl_receive_tube()</a> macro.</p>
+</li></p>
+
+<p>This macro returns a boolean <em>true</em> value on success, or <em>false</em> in
+case no free canister was available for sending more data at the time
+of the call. If you need a mechanism to have the receiver block on
+lack of input, you may want to have a <a href="#synchronizing-tube-ops">look at this section</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_get_tube_size"></a>
+bool evl_get_tube_size[_rel]({tube_tag}, int count)
+</div>
+
+<p>Calculate the exact amount of memory required for storing a tube data
+structure given the canister type and a maximum number of messages
+flowing concurrently through that tube. This size represents the total
+amount of memory which is needed for storing a complete tube data
+structure.</p>
+
+<p><li><i>tube_tag</i><p>The C tag of the tube type to get the size of.</p>
+</li></p>
+
+
+<p><li><i>count</i><p>The number of messages which can flow concurrently through the tube.</p>
+</li></p>
+
+<p>Return the size in bytes representing the amount of memory required
+for storing both the meta-data and the canisters for the given tube
+type.</p>
+<hr>
+<p style="text-align:right">Last modified: Wed, 13 Oct 2021 19:08:03 &#43;0200</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/core/user-api/io/" title="Out-of-band I/O services"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/core/user-api/misc/" title="Miscellanea"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634330591"></script>
+    <script>
+      if (typeof mermaid != 'undefined') {
+        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
+      }
+    </script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634330591"></script>
+  </body>
+</html>

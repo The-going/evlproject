@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.88.1" />
+    <link rel="alternate" type="application/rss+xml" href="https://the-going.github.io/evlproject/core/oob-drivers/index.xml" title="Xenomai 4" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    <title>Real-time I/O drivers :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1634330591" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1634330591" rel="stylesheet" media="print">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634330591"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/core/oob-drivers/">
+    <nav id="sidebar" class="">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Search...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634330591"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634330591"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script>
+          var index_url="https://the-going.github.io/evlproject/index.json";
+          var root_url="https://the-going.github.io/evlproject/";
+          var baseUri=root_url.replace(/\/$/, '');
+        </script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1634330591"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started</a><ul></ul></li>
+          <li data-nav-id="/core/" title="The EVL core" class="dd-item parent"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core</a><ul>
+          <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL</a></li>
+          <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings</a></li>
+          <li data-nav-id="/core/testing/" title="Testing the installation" class="dd-item"><a href="https://the-going.github.io/evlproject/core/testing/">Running tests</a></li>
+          <li data-nav-id="/core/benchmarks/" title="Running benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/benchmarks/">Benchmarking</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/">&#9702; Application interface</a><ul>
+          <li data-nav-id="/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/mutex/">Mutex</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/semaphore/">Semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/observable/">Observable</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/proxy/">File proxy</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/poll/">Polling file descriptors</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/io/">Out-of-band I/O services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/user-api/misc/">Misc. services</a><ul></ul></li>
+          <li data-nav-id="/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/user-api/api-revs/">API revisions</a></li></ul></li>
+          <li data-nav-id="/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/core/oob-drivers/">&#9702; Real-time I/O drivers</a><ul>
+          <li data-nav-id="/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/dma/">DMA</a></li>
+          <li data-nav-id="/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/spi/">SPI</a></li>
+          <li data-nav-id="/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/core/oob-drivers/gpio/">GPIO</a></li></ul></li>
+          <li data-nav-id="/core/kernel-api/" title="Writing drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/">&#9702; Writing drivers</a><ul>
+          <li data-nav-id="/core/kernel-api/function_index/" title="Kernel function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/function_index/">Function index</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/file/" title="File description" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/file/">File description</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/socket/" title="Socket interface" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/socket/">Socket interface</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/kthread/" title="Kernel thread" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/kthread/">Kernel thread</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/wait/" title="Wait queue" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/wait/">Wait queue</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/mutex/" title="Kernel mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/mutex/">Kernel mutex</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/semaphore/" title="Kernel semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/semaphore/">Kernel semaphore</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/flag/" title="Kernel flag" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/flag/">Kernel flag</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/spinlock/" title="EVL Spinlock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/spinlock/">EVL Spinlock</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/timer/" title="Timer" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/timer/">Timer</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/xbuf/" title="Cross-buffer access" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/xbuf/">Cross-buffer access</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/interrupts/" title="Managing IRQs" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/interrupts/">Managing IRQs</a><ul></ul></li>
+          <li data-nav-id="/core/kernel-api/stax/" title="Stage exclusion lock" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/kernel-api/stax/">Stage exclusion lock</a><ul></ul></li></ul></li>
+          <li data-nav-id="/core/under-the-hood/" title="Under the hood" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/core/under-the-hood/">&#9702; Under the hood</a><ul>
+          <li data-nav-id="/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/core/under-the-hood/abi/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/core/abi-revs/">ABI revisions</a></li></ul></li>
+          <li data-nav-id="/dovetail/" title="Dovetail interface" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/">&#8226; Dovetail interface</a><ul>
+          <li data-nav-id="/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/">&#9702; Interrupt pipeline</a><ul>
+          <li data-nav-id="/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/">IRQ handling</a></li>
+          <li data-nav-id="/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/synthetic/">Synthetic IRQs</a></li>
+          <li data-nav-id="/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/pipeline_inject/">IRQ injection</a></li>
+          <li data-nav-id="/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/interrupt_protection/">Interrupt protection</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_push/">OOB stage installation</a></li>
+          <li data-nav-id="/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/stage_escalation/">Stage escalation</a></li>
+          <li data-nav-id="/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/pipeline/locking/">Locking</a></li></ul></li>
+          <li data-nav-id="/dovetail/porting/" title="Porting Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/dovetail/porting/">&#9702; Porting Dovetail</a><ul>
+          <li data-nav-id="/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/prerequisites/">Prerequisites</a></li>
+          <li data-nav-id="/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/irqflow/">Interrupt flow</a></li>
+          <li data-nav-id="/dovetail/porting/atomic/" title="Atomic operations" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/atomic/">Atomic operations</a></li>
+          <li data-nav-id="/dovetail/porting/arch/" title="Architecture-specific bits" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/arch/">Architecture bits</a></li>
+          <li data-nav-id="/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/timer/">Tick devices</a></li>
+          <li data-nav-id="/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/clocksource/">Clock sources</a></li>
+          <li data-nav-id="/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/syscall/">Syscall path</a></li>
+          <li data-nav-id="/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/rawprintk/">Serial debugging</a></li>
+          <li data-nav-id="/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/misc/">Misc</a></li>
+          <li data-nav-id="/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/porting/devnotes/">Developer&#39;s Notes</a></li></ul></li>
+          <li data-nav-id="/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/altsched/">Alternate scheduling</a></li>
+          <li data-nav-id="/dovetail/files/" title="File tracking" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/files/">File tracking</a></li>
+          <li data-nav-id="/dovetail/sockets/" title="Socket handling" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/sockets/">Socket handling</a></li>
+          <li data-nav-id="/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/dovetail/rulesofthumb/">Rules Of Thumb</a></li></ul></li>
+          <li data-nav-id="/ports/" title="Status of EVL ports" class="dd-item"><a href="https://the-going.github.io/evlproject/ports/">&#8226; Ports</a><ul></ul></li>
+          <li data-nav-id="/contributing/" title="Contributing to Xenomai 4" class="dd-item"><a href="https://the-going.github.io/evlproject/contributing/">&#8226; Contributing</a><ul></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/"><i class='fas fa-home'></i> Home</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> RIOT channel</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Mailing list</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/"><span itemprop="name">The EVL core</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/core/oob-drivers/" aria-disabled="true"><span itemprop="name">Real-time I/O drivers</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#integrated-vs-separated-real-time-io-support">Integrated vs separated real-time I/O support</a></li>
+        <li><a href="#why-doesnt-evl-implement-rtdm">Why doesn&rsquo;t EVL implement RTDM?</a></li>
+        <li><a href="#oob-driver-list">Out-of-band capable I/O drivers</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Real-time I/O drivers</h1>
+
+<p>The real-time I/O support EVL provides for is based on the ability
+some kernel drivers have to handle <a href="https://the-going.github.io/evlproject/dovetail/pipeline/#two-stage-pipeline">out-of-band interrupts</a> triggered by the
+hardware, along with <a href="https://the-going.github.io/evlproject/core/kernel-api/#evl-driver-definition">out-of-band requests</a> issued by
+applications. To achieve this, such driver may depend on the EVL
+<a href="https://the-going.github.io/evlproject/core/kernel-api/function_index/">kernel API</a> which in turn depends on <a href="https://the-going.github.io/evlproject/dovetail/">Dovetail</a>. This way, both the incoming events and
+outgoing requests are expedited by the EVL core, without being delayed
+by the regular GPOS work which is still handled normally on the
+in-band execution stage.</p>
+<h3 id="integrated-vs-separated-real-time-io-support">Integrated vs separated real-time I/O support</h3>
+<p>Over the years, the usual approach followed by dual kernel systems in
+order to provide for real-time I/O support has been to build their own
+separate, ad hoc driver stack, re-implementing a marginal portion of
+the common driver stack. The arguments invoked for doing so have been
+that:</p>
+<ul>
+<li>
+<p>a strict separation between both code bases would prevent any
+non-deterministic behavior from the common Linux driver stack to
+spill over into the real-time execution, by design.</p>
+</li>
+<li>
+<p>such a separate implementation would be required in order to
+optimize for real-time performance.</p>
+</li>
+<li>
+<p>the real-time driver stack would be easier to maintain, not being
+affected by conflicting updates to the original kernel code it is
+based on.</p>
+</li>
+</ul>
+<p>The typical way to implement such a driver is to start from a copy of
+a mainline kernel driver available for the target device, amending the
+sources heavily in order to use the real-time core API instead of the
+common kernel API, dropping any code which would not be required for
+supporting the real-time applications in the same move. At the end of
+the day, such real-time variant of a driver has diverged into an
+almost irreconcilable fork of the original code.</p>
+<p>Unfortunately, after two decades using this model in the
+<a href="http://rtai.org">RTAI</a> and <a href="https://git.xenomai.org/xenomai/-/wikis/home">Xenomai
+3</a> projects, we ended up
+with a massive issue which is a <em>severe bit rotting of the real-time
+driver stack</em>. Because the dual kernel ecosystem runs on very few
+contributors despite it has many industrial users, every real-time
+driver once merged would receive little to no maintenance effort in
+the long run. As a result, continuous updates to the original mainline
+driver which address bugs, extend support to new hardware models and
+versions, is lost for the real-time driver. In turn, the consequences
+for such dual kernel systems are bleak:</p>
+<ul>
+<li>
+<p>narrower hardware support than mainline drivers have.</p>
+</li>
+<li>
+<p>more reliability issues than mainline drivers suffer from.</p>
+</li>
+<li>
+<p>high cost of updating the real-time driver variant with the bug
+fixes and improvements available from the original mainline
+implementation, which in most cases discourages potential
+contributors from tackling such a task.</p>
+</li>
+</ul>
+<p>Instead of reinventing the wheel with a separate driver stack, the
+option EVL follows builds on these observations:</p>
+<ul>
+<li>
+<p>we can define the notion of operating mode for most common drivers,
+either in-band or out-of-band. Device probing, initialization,
+changes in basic device management are in-band operations by nature,
+which should never overlap with out-of-band I/O transactions aimed
+at transferring data since the latter are supposed to be expedited
+and time-bound. So both aspects of a real-time capable driver should
+be able to coexist, although active at different times, on a
+mutually exclusive basis.</p>
+</li>
+<li>
+<p>we would only need a limited subset of the Linux driver stack to
+deliver ultra-low latency performances via out-of-band
+execution. <a href="https://the-going.github.io/evlproject/core/oob-drivers/dma/">DMA</a>,
+<a href="https://the-going.github.io/evlproject/core/oob-drivers/spi/">SPI</a>, <a href="https://the-going.github.io/evlproject/core/oob-drivers/gpio/">GPIO</a>, UART, network interface,
+acquisition cards, CAN and other fieldbus devices are among those
+which are typically involved in systems with real-time requirements.</p>
+</li>
+</ul>
+<p>With this in mind, the idea would be to add out-of-band capabilities
+to the existing mainline drivers we are interested in for dealing with
+real-time I/O, while keeping the original, in-band support
+available. These capabilities would be known from the EVL core, and
+exclusively accessible via its API under well-defined conditions.
+When sharing the implementation with an existing driver is not
+possible, either because adding out-of-band capabilities would be
+clumsly, or simply because there is no mainline driver for the target
+device (e.g. some custom FPGA), it should be a non-issue to implement
+a dedicated real-time driver from scratch, using the <a href="https://the-going.github.io/evlproject/core/kernel-api/">EVL kernel
+API</a>.</p>
+<p>Such approach is not at odds with the motivations which prevailed for
+using a strictly separated driver stack though:</p>
+<ul>
+<li>
+<p>there are two ways the GPOS kernel code can adversely affect the
+real-time behavior of the out-of-band code:</p>
+<ul>
+<li>
+<p>if the out-of-band code spuriously calls into the common,
+in-band kernel API. In such a case, Dovetail can detect
+whether some code running on the out-of-band stage is
+wrongfully calling into the non real-time code, so such
+fact would hardly go unnoticed. Which API calls are legit
+in the context of out-of-band processing, and which are
+not, is well-defined for EVL and such rules are applicable
+to any out-of-band code regardless of its location. In this
+respect, having a separate implementation for the driver
+stack brings no upside.</p>
+</li>
+<li>
+<p>if the in-band code changes the hardware state in a way
+which may cause high latency peaks (e.g. lengthy cache
+maintenance operations). In this respect, if a real-time
+capable driver is a fork of a mainline kernel driver, any
+pre-existing issue of that kind in the latter
+implementation would be initially imported into the former,
+by definition. Therefore, a careful audit of the code is
+required in any case, whether it is forked off of a
+mainline driver or we are adding out-of-band capabilities
+to the original driver directly.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>there is no reason for the out-of-band services available from a
+common driver to underperform if the implementation clearly gives
+exclusive access to the hardware to the EVL core while out-of-band
+requests are being processed. For instance, reserving exclusive
+access to a SPI bus for out-of-band transfers only until we are done
+with an entire session is an acceptable restriction on in-band usage
+for the purpose of delivering real-time performances. Once such
+out-of-band runtime mode is left, the driver becomes usable anew for
+regular, in-band operations. In some cases, I/O transaction
+management might also be entirely left to the out-of-band code,
+proxying in-band I/O requests via some low-priority queue which
+would be processed by the former on idle time, provided we
+can still meet the real-time requirements doing so.</p>
+</li>
+<li>
+<p>although the risk of merge or logic conflicts does exist by
+definition as the extended driver is rebased over later kernel
+releases, it seems an acceptable burden compared to bit rotting of a
+separate code base, which is definitely not. How soundly the
+out-of-band support is integrated into the original driver code will
+make a difference when it comes to rebasing it.</p>
+</li>
+</ul>
+<p>Would such integrated approach cover all the needs for real-time I/O
+in a dual kernel system such as EVL? Certainly not. Typically, when
+drivers are endpoints of a complex protocol stack such as an IP
+network stack attached to network interfaces, the issue of handling
+such protocol within a bounded execution time would still not be
+solved. In that particular case, a separate real-time capable IP stack
+is going to be needed too. However, finding a proper way to extend
+existing NIC drivers to serve as endpoints in this real-time IP stack
+seems a more tractable problem than maintaining a truckload of
+functionally redundant, separate drivers like
+<a href="https://git.xenomai.org/xenomai/-/wikis/RTnet">RTnet</a>
+currently requires.</p>
+<h3 id="why-doesnt-evl-implement-rtdm">Why doesn&rsquo;t EVL implement RTDM?</h3>
+<p><a href="https://xenomai.org/documentation/xenomai-3/html/xeno3prm/group__rtdm.html">RTDM</a>
+as an abstract driver model for dual kernel systems was aimed at
+addressing two major issues with the latter in the early days:</p>
+<ul>
+<li>
+<p>provide a common call interface between applications and the
+real-time core, in order to replace the variety of ad hoc mechanisms
+which application developers came up with over time. Some would use
+FIFOs, others shared memory, others some specific system call only
+available from a given flavour of dual kernel system, and so
+on. Every application would come with its own I/O interface to the
+kernel, which was kind of weird. RTDM replaced all of them by a
+single POSIXish API, which strives to mimic the common
+character-based interface, and socket API.</p>
+</li>
+<li>
+<p>establish a common kernel API which all RTDM drivers would use, so
+that they would be portable across multiple flavours of dual kernel
+systems implementing the RTDM interface.</p>
+</li>
+</ul>
+<p>RTDM enshrines the notion that a dual kernel system should provide for
+its own driver stack aside of the Linux driver model, as a result it
+opposes in principle to what EVL aims at.  Achieving a closer
+integration of real-time I/O support into the mainline kernel code
+whenever possible is a fundamental goal of EVL.</p>
+<p>To this end, EVL extends both the regular Linux character-based I/O
+and socket <a href="">interfaces</a>
+between applications and real-time drivers to support out-of-band
+operations on common files and sockets.</p>
+<p>As a consequence, there is not much point in implementing the RTDM
+interface over EVL, except maybe as a compatibility layer for porting
+<a href="http://rtai.org">RTAI</a> or <a href="https://git.xenomai.org/xenomai/-/wikis/home">Xenomai 3
+Cobalt</a>-originated
+drivers, although this would be easily done by converting them
+directly to the <a href="https://the-going.github.io/evlproject/core/kernel-api/">EVL kernel API</a> without needing any wrapper of the
+kind. As a matter of fact, the EVL kernel API and the portion of the
+<a href="https://xenomai.org/documentation/xenomai-3/html/xeno3prm/group__cobalt__core.html">Cobalt core
+API</a>
+which has been used as a reference when designing RTDM share all key
+semantics.</p>
+<h3 id="oob-driver-list">Out-of-band capable I/O drivers</h3>
+<p>This table gives an overview of the current support for real-time I/O
+in EVL, which is not much yet, but poised to improve since the
+infrastructure is ready:</p>
+<div>
+<style>
+#oobdrv {
+       width: 70%;
+       align: left;
+}
+#oobdrv td:nth-child(1) {
+       text-align: center;
+}
+#oobdrv th:nth-child(1) {
+       text-align: center;
+}
+</style>
+<table id="oobdrv">
+  <col width="10%">
+  <col width="90%">
+  <tr>
+    <th>Device Type</th>
+    <th>Support</th> 
+  </tr>
+  <tr>
+    <td>DMA</td>
+    <td>bcm2835-dma, imx-sdma</td> 
+  </tr>
+  <tr>
+    <td>SPI</td>
+    <td>spi-bcm2835</td> 
+  </tr>
+  <tr>
+    <td>GPIO <sup>*</sup></td>
+    <td>gpio-mxc</td> 
+  </tr>
+</table>
+</div>
+<p><sup>*</sup> In theory, any GPIO pin controller based on the generic
+GPIOLIB services should be real-time ready since the latter implements
+the out-of-band interface for all of them, at the exception of
+controllers which can sleep from their <code>-&gt;get()</code> and <code>-&gt;set()</code> pin
+state handlers. In practice, each controller we may want to use in
+such context should still be audited though, in order to make sure
+that no in-band service (e.g. common non-raw spinlocks) is called
+under the hood by these handlers. Only the controllers which are known
+to work in out-of-band mode <em>at the time of this writing</em> are listed
+in the table.</p>
+<hr>
+<p style="text-align:right">Last modified: Sun, 06 Jun 2021 18:28:51 &#43;0200</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/core/user-api/api-revs/" title="API revisions"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/core/oob-drivers/dma/" title="DMA"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634330591"></script>
+    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634330591"></script>
+    <script>
+      if (typeof mermaid != 'undefined') {
+        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
+      }
+    </script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634330591"></script>
+  </body>
+</html>
