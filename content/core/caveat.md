@@ -1,9 +1,8 @@
 ---
 menuTitle: "Caveat"
+title: "Things you definitely want to know"
 weight: 7
 ---
-
-# Things you definitely want to know
 
 ## Generic issues
 

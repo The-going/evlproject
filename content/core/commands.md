@@ -1,9 +1,8 @@
 ---
 menuTitle: "Commands"
+title: "The 'evl' command"
 weight: 5
 ---
-
-# The 'evl' command
 
 The 'evl' umbrella utility can run the set of base commands available
 for controlling, inspecting and testing the state of the EVL core and
