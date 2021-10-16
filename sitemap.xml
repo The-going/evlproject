@@ -53,8 +53,16 @@
     <lastmod>2020-12-22T17:32:06+01:00</lastmod>
   </url>
   <url>
+    <loc>https://the-going.github.io/evlproject/core/commands/</loc>
+    <lastmod>2021-10-16T23:13:14+03:00</lastmod>
+  </url>
+  <url>
     <loc>https://the-going.github.io/evlproject/core/benchmarks/</loc>
     <lastmod>2021-10-15T22:06:25+03:00</lastmod>
+  </url>
+  <url>
+    <loc>https://the-going.github.io/evlproject/core/caveat/</loc>
+    <lastmod>2021-10-16T23:13:14+03:00</lastmod>
   </url>
   <url>
     <loc>https://the-going.github.io/evlproject/core/user-api/</loc>
@@ -250,7 +258,7 @@
   </url>
   <url>
     <loc>https://the-going.github.io/evlproject/</loc>
-    <lastmod>2021-10-15T22:06:25+03:00</lastmod>
+    <lastmod>2021-10-16T23:13:14+03:00</lastmod>
   </url>
   <url>
     <loc>https://the-going.github.io/evlproject/core/abi-revs/</loc>

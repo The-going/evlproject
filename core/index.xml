@@ -71,6 +71,21 @@ Unit testing A series of unit testing programs is produced in $prefix/tests as p
  # evl test duplicate-element: OK monitor-pp-dynamic: OK monitor-pi: OK clone-fork-exec: OK clock-timer-periodic: OK poll-close: OK sem-wait: OK monitor-pp-raise: OK monitor-pp-tryenter: OK heap-torture: OK monitor-pp-lower: OK poll-read: OK monitor-deadlock: OK monitor-wait-multiple: OK monitor-event: OK proxy-eventfd: OK monitor-flags.</description>
     </item>
     <item>
+      <title>The &#39;evl&#39; command</title>
+      <link>https://the-going.github.io/evlproject/core/commands/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/commands/</guid>
+      <description>The &amp;lsquo;evl&amp;rsquo; umbrella utility can run the set of base commands available for controlling, inspecting and testing the state of the EVL core and any command matching the &amp;lsquo;evl-*&amp;rsquo; glob pattern which may be reachable from the shell $PATH variable. The way the &amp;lsquo;evl&amp;rsquo; utility centralizes access to a variety of EVL-related commands is very similar to that of git on purpose. Each of the EVL commands is implemented by an external plugin, which can be a mere executable, or a script in whatever language.</description>
+    </item>
+    <item>
+      <title>Things you definitely want to know</title>
+      <link>https://the-going.github.io/evlproject/core/caveat/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/core/caveat/</guid>
+      <description>Generic issues isolcpus is our friend too Isolating some CPUs on the kernel command line using the isolcpus= option, in order to prevent the load balancer from offloading in-band work to them is not only a good idea with PREEMPT_RT, but for any dual kernel configuration too.
+By doing so, having some random in-band work evicting cache lines on a CPU where real-time threads briefly sleep is less likely, increasing the odds of costly cache misses, which translates positively into the latency numbers you can get.</description>
+    </item>
+    <item>
       <title>ABI revisions</title>
       <link>https://the-going.github.io/evlproject/core/abi-revs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
