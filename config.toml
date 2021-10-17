@@ -13,7 +13,10 @@ disableSearch = false
 disableInlineCopyToClipBoard = true
 disableBreadcrumb = false
 themeVariant = "evl"
-disableShortcutsTitle = true
+
+showVisitedLinks = true
+disableShortcutsTitle = false
+
 disableLandingPageButton = true
 evlTrackingKernel = "v5.14"
 evlLTSBranch = "v5.10.y"
