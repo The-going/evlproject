@@ -1,0 +1,18 @@
+[[shortcuts]]
+name = "<i class='fas fa-home'></i> На главную"
+identifier = "Home"
+#url = "/"
+weight = 1
+
+[[shortcuts]]
+name = "<i class='fas fa-comments'></i> канал RIOT"
+identifier = "RIOT"
+url = "https://riot.im/app/#/room/#evlproject:matrix.org/"
+weight = 2
+
+[[shortcuts]]
+name = "<i class='fas fa-comment-dots'></i> Список рассылки"
+identifier = "ML"
+url = "https://xenomai.org/mailman/listinfo/xenomai/"
+weight = 3
+ 
