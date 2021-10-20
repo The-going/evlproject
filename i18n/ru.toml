@@ -1,0 +1,23 @@
+[Last-modified]
+other = "Последнее изменение"
+
+[Get-started]
+other = "Описание"
+
+[Repository]
+other = "Хранилище"
+
+[Branch]
+other = "Ветка"
+
+[Contributing]
+other = "Contributing"
+
+[Home]
+other = "На главную"
+
+[RIOT]
+other = "Канал RIOT"
+
+[ML]
+other = "Список рассылки"
