@@ -1,0 +1,54 @@
+{{- $langsrc := .Get 1 | default "en" }}
+{{- $langtrg := .Page.Language.Lang }}
+{{- $words := dict
+	"Repository" "Хранилище"
+	"Branch" "Ветка"
+	"Latest" "Последняя версия"
+	"Get started" "Начало"
+	"Overview" "Обзор"
+	"Ports" "Порты"
+	"Contributing" "Содействие"
+	"Commands" "Команды"
+	"The 'evl' command" "Команда 'evl'"
+	"Benchmarking" "Сравнительный анализ"
+	"Running benchmarks" "Запуск контрольных тестов"
+	"Clock device" "Тактовое устройство"
+	"Function index" "Индекс функций"
+	"Using libevl" "Использование libevl"
+	"Runtime settings" "Параметры среды выполнения"
+	"Runtime configuration" "Конфигурация среды выполнения"
+	"Running tests" "Выполнение тестов"
+	"Testing the installation" "Тестирование установки"
+	"Dovetail interface" "Интерфейс Dovetail"
+	"Interrupt pipeline" "Конвейер прерываний"
+	"Socket handling" "Обработка сокетов"
+}}
+{{- $fix := dict
+	"/overview/" "/ru/overview/"
+	"Pitching the real-time EVL core" "Подача ядра EVL в реальном времени"
+	"The EVL core" "Ядро EVL"
+	"Real-time core" "Ядро реального времени"
+	"EVL device drivers are (almost) common drivers" "Драйверы устройств EVL являются (почти) распространенными драйверами"
+	"Make it ordinary, make it simple" "Сделай это обычным, сделай это простым"
+	"When is a dual kernel architecture a good fit" "Когда архитектура с двумя ядрами хорошо подходит"
+	"What does a dual kernel architecture require from your application?" "Чего требует от вашего приложения архитектура с двумя ядрами?"
+	"Which API should be used for implementing real-time device drivers?" "Какой API следует использовать для реализации драйверов устройств реального времени?"
+	"Submitting patches" "Отправка исправлений"
+	"Getting the basics right" "Правильное понимание основ"
+	"Porting EVL to a new platform" "Перенос EVL на новую платформу"
+	"Digging into the EVL core internals" "Копание во внутренностях ядра EVL"
+	"Use the rules of thumb" "Используйте эмпирические правила"
+}}
+{{- $c := "" }}
+{{- range .Page.Translations }}
+	{{- if eq .Language.Lang $langsrc }}
+		{{- $c = .Content }}
+		{{- range $from, $to := $words }}
+			{{- $c = replaceRE (printf "([\\s\\n>])%s([\\s\\n<.,;?!:])" $from) (printf "${1}%s${2}" $to) $c }}
+		{{- end }}
+		{{- range $from, $to := $fix }}
+			{{ $c = replace $c $from $to }}
+		{{- end }}
+	{{- end }}
+{{- end }}
+{{- $c | safeHTML }}
