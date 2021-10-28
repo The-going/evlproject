@@ -1,0 +1,34 @@
+
+body #chapter h1 {
+    font-size: 3.5rem;
+}
+
+body {
+    font-family: "Open Sans", "Source Sans Pro", "Work Sans", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+    #font-weight: 300;
+    #line-height: 1.6;
+	letter-spacing: 0.7px;
+	text-rendering: optimizeLegibility;
+    font-size: 18px !important;
+	color: var(--MAIN-TEXT-color) !important;
+}
+
+h2, h3, h4, h5 h6 {
+    color: var(--MAIN-TITLES-TEXT-color) !important;
+	font-family: "Open Sans Semibold", "Work Sans", "Helvetica", "FreeSans", "Open Sans", sans-serif;
+	text-rendering: optimizeLegibility;
+	color: #5e5e5e;
+	letter-spacing: 0.8px;
+	font-size: 28.0px !important;
+}
+
+h1 {
+	font-family:  "Cantarell Light", "Open Sans Light", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+	#font-weight: Thin; # Thin or Light
+	#line-height: 0.8;
+	text-align: center;
+    text-rendering: optimizeLegibility;
+    color: var(--MAIN-TEXT-color) !important;
+    letter-spacing: -1px;
+	font-size: 48px !important;
+}
