@@ -1,0 +1,25 @@
+baseURL = "https://the-going.github.io/evlproject/"
+canonifyurls = true
+relativeURLs = true
+defaultContentLanguage = "en"
+## font-Cantarell.css  font-Open-Sans.css  font-Source-Sans-Pro.css
+## font-mix.css  font-template.css
+# custom_css = ["css/font-mix.css"]
+
+[params]
+showVisitedLinks = true
+DisableLanguageSwitchingButton = false
+
+[markup]
+  [markup.highlight]
+  # choose a color theme or create your own
+  style = "base16-snazzy"
+  # if set to true, avoid unstyled code if no language
+  # was given but mermaid code fences will not work anymore
+  guessSyntax = true
+
+[Language]
+[Language.en]
+[Language.ru]
+
+
