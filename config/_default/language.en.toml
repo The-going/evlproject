@@ -1,4 +1,6 @@
 weight = 3
 languageName = "English"
 landingPageURL = "/en"
-contentDir = "content" 
+contentDir = "content"
+
+custom_css = ["css/font-mix.css"]

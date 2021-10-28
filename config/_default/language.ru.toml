@@ -1,0 +1,11 @@
+weight = 11
+languageCode = "ru"
+languageName = "Русский"
+landingPageURL = "/ru"
+contentDir = "content.ru"
+
+# Допустимые значения ERROR (по умолчанию) или WARNING.
+# Любая ERROR приведет к сбою сборки (exit -1).
+refLinksErrorLevel = "WARNING"
+
+custom_css = ["css/font-mix.css"]
