@@ -1,0 +1,37 @@
+
+body {	# *line 41*
+    background: #fff;
+    color: #777;
+}
+
+body #chapter h1 {
+    font-size: 3.5rem;
+}
+
+body {	# *line 413*
+    font-family: "Source Sans Pro", "Work Sans", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+    #font-weight: 300;
+    line-height: 1.6;
+    font-size: 18px !important;
+}
+
+h2, h3, h4, h5, h6 {
+    font-family: "Source Sans Pro", "Work Sans", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+	font-weight: Semibold;
+    text-rendering: optimizeLegibility;
+    color: #5e5e5e;
+    letter-spacing: -1px;
+}
+
+h1 {
+    font-family: "Source Sans Pro", "Novacento Sans Wide", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+    font-weight: Light;
+    text-align: center;
+    text-transform: uppercase;
+    color: #222;
+}
+
+body {	# *line 1111*
+    font-size: 16px !important;
+    color: #323232 !important;
+}
