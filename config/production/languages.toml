@@ -1,0 +1,86 @@
+disableLanguages = ["ar", "de", "es", "fr", "hi", "id", "ja", "nl", "pt", "tr", "vn", "zh-cn"]
+
+[Language.ar]
+  weight = 1
+  languageName = "العربية"
+  landingPageURL = "/ar"
+  contentDir = "content.ar"
+
+[Language.de]
+  weight = 2
+  languageName = "Deutsch"
+  landingPageURL = "/de"
+  contentDir = "content.de"
+
+[Language.en]
+  weight = 3
+  languageName = "English"
+  landingPageURL = "/en"
+  contentDir = "content"
+
+[Language.es]
+  weight = 4
+  languageName = "Español"
+  landingPageURL = "/es"
+  contentDir = "content.es"
+
+[Language.fr]
+  weight = 5
+  languageName = "Français"
+  landingPageURL = "/fr"
+  contentDir = "content.fr"
+
+[Language.hi]
+  weight = 6
+  languageName = "हिन्दी"
+  landingPageURL = "/hi"
+  contentDir = "content.hi"
+
+[Language.id]
+  weight = 7
+  languageName = "Indonesia"
+  landingPageURL = "/id"
+  contentDir = "content.id"
+
+[Language.ja]
+  weight = 8
+  languageName = "日本語"
+  landingPageURL = "/ja"
+  contentDir = "content.ja"
+
+[Language.nl]
+  weight = 9
+  languageName = "Nederlands"
+  landingPageURL = "/nl"
+  contentDir = "content.nl"
+
+[Language.pt]
+  weight = 10
+  languageName = "Polski"
+  landingPageURL = "/pt"
+  contentDir = "content.pt"
+
+[Language.ru]
+  weight = 11
+  languageName = "Русский"
+  landingPageURL = "/ru"
+  contentDir = "content.ru"
+
+[Language.tr]
+  weight = 12
+  languageName = "Türk"
+  landingPageURL = "/tr"
+  contentDir = "content.tr"
+
+[Language.vn]
+  weight = 13
+  languageName = "Việt nam"
+  landingPageURL = "/vn"
+  contentDir = "content.vn"
+
+[Language.zh-cn]
+  weight = 14
+  languageName = "中文"
+  landingPageURL = "/zh-cn"
+  contentDir = "content.zh-cn"
+
