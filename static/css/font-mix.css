@@ -9,17 +9,17 @@ body {
     #line-height: 1.6;
 	letter-spacing: 0.7px;
 	text-rendering: optimizeLegibility;
-    font-size: 18px !important;
+    font-size: 16px !important;
 	color: var(--MAIN-TEXT-color) !important;
 }
 
-h2, h3, h4, h5 h6 {
+h2, h3, h4, h5, h6 {
     color: var(--MAIN-TITLES-TEXT-color) !important;
 	font-family: "Open Sans Semibold", "Work Sans", "Helvetica", "FreeSans", "Open Sans", sans-serif;
-	text-rendering: optimizeLegibility;
+	#text-rendering: optimizeLegibility;
 	color: #5e5e5e;
 	letter-spacing: 0.8px;
-	font-size: 28.0px !important;
+	#font-size: 28.0px !important;
 }
 
 h1 {
@@ -31,4 +31,65 @@ h1 {
     color: var(--MAIN-TEXT-color) !important;
     letter-spacing: -1px;
 	font-size: 48px !important;
+}
+
+/* Redefines headers style */
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  font-weight: inherit;
+}
+
+#body h2 {
+  font-size: 2.4rem;
+  #font-weight: 400;
+  margin-top: 2rem;
+}
+
+#body h3 {
+  font-size: 2.1rem;
+  #font-weight: 400;
+  margin-top: 2rem;
+}
+
+#body h4 {
+  font-size: 1.8rem;
+  #font-weight: 200;
+  margin-top: 2rem;
+}
+
+#body h5 {
+  font-size: 1.5rem;
+  #font-weight: 200;
+  margin-top: 2rem;
+}
+
+#body h6 {
+  font-size: 1.2rem;
+  #font-weight: 200;
+  margin-top: 2rem;
+}
+
+code, kbd, pre, samp {
+    font-family: "Hack", "PT Mono", "Source Code Pro", "Consolas", menlo, monospace;
+    font-size: 110%;
+    vertical-align: baseline;
+}
+
+code {
+	font-family: "Hack", "PT Mono", "Source Code Pro";
+	#font-size: 110% !important;
+	line-height: 1.3;
+    border-radius: 2px;
+    white-space: nowrap;
+    color: #5e5e5e;
+    background: #ffffff;
+    border: 0px;
+    padding: 0px 3px;
+}
+
+div.proto {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 500;
+    font-family: "Hack", "Source Code Pro", "Consolas", menlo, monospace;
+    font-size: 115%;
 }
