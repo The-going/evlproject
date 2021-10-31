@@ -31,7 +31,7 @@
 
 }
 
-# Redefine notices color render
+/* Redefine notices color render */
 div.notices.warning {
     border-color: #004fd0;
     background-color: #f7f7f7;
@@ -52,7 +52,7 @@ div.notices.info {
     background-color: #f7f7f7;
 }
 
-# Render start page
+/* Render start page */
 .signature-item {
     grid-area: evl_signature_area;
 }
@@ -109,7 +109,7 @@ div.notices.info {
     transform: translateY(4px);
 }
 
-# Mixed grid container
+/* Mixed grid container */
 .mixed-grid-container {
   display: grid;
   grid-template-areas: 'mixed_area mixed_area';
@@ -149,7 +149,7 @@ div.notices.info {
   padding: 0px 0;
 }
 
-# TODO
+/* TODO */
 
 a {
     color: var(--MAIN-LINK-color);
