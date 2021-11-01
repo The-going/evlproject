@@ -30,6 +30,11 @@ title: ABI revisions
     <th>libevl release</th>
   </tr>
   <tr>
+    <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/commit/fcc7a8c49a4e5a632f60fd8da5a84855c618df04" target="_blank">27</a></td>
+    <td>Handle prctl()-based syscall form. This enables Valgrind for EVL applications, while keeping backward compatibility for the legacy call form.
+    <td><a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r28" target="_blank">r28</a></td>
+  </tr>
+  <tr>
     <td><a href="https://git.xenomai.org/xenomai4/linux-evl/-/commit/41dc88ab524cd32878646d98b57d390e2bcc1198" target="_blank">26</a></td>
     <td>Add socket interface.
     <td><a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r26" target="_blank">r21</a></td>
