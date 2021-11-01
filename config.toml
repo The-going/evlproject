@@ -15,10 +15,10 @@ disableBreadcrumb = false
 themeVariant = "evl"
 disableShortcutsTitle = true
 disableLandingPageButton = true
-evlTrackingKernel = "v5.14"
+evlTrackingKernel = "v5.15"
 evlLTSBranch = "v5.10.y"
-evlLTSLatest = "v5.10.70-evl1"
-evlLibLatest = "r27"
+evlLTSLatest = "v5.10.76-evl2"
+evlLibLatest = "r28"
 
 [markup]
 [markup.goldmark]
