@@ -11,5 +11,7 @@
 ---
 ## Changes
 
- * Switching to the [Relearn](https://relearn.netlify.app/) theme, which is a continuation of the previously used [Learn](https://learn.netlify.com/en/) theme.
+ * Switching to the [Relearn](https://relearn.netlify.app/) theme, which is
+   a continuation of the previously used [Learn](https://learn.netlify.com/en/) theme.
    [History of Relearn theme improvements](https://relearn.netlify.app/basics/history/).
+ * Update version theme Relearn to 2.7.0
