@@ -1,6 +1,6 @@
 ---
 menuTitle: "Предостережение"
-title: "Вещи, которые вы определенно хотите знать"
+title: "Это вы определенно хотите знать"
 weight: 7
 original_path: "content/core/caveat.md"
 original_hash: "129a74f"
@@ -46,108 +46,109 @@ _isolcpus=_, чтобы не допустить, чтобы балансиров
 
 ### Масштабирование частоты процессора (обычно) оказывает негативное влияние на задержку {#caveat-cpufreq}
 
-Enabling the _ondemand_ CPUFreq governor - or any governor performing
-dynamic adjustment of the CPU frequency - may induce significant
-latency for EVL on your system, from ten microseconds to more than a
-hundred depending on the hardware. Selecting the so-called
-_performance_ governor is the safe option, which guarantees that no
-frequency transition ever happens, keeping the CPUs at their maximum
-processing speed.
+Включение регулятора _ondemand_ CPUFreq - или любого регулятора, выполняющего
+динамическую настройку частоты процессора, - может привести к значительной
+задержке EVL в вашей системе, от десяти микросекунд до более чем ста
+в зависимости от оборудования. Выбор так называемого регулятора производительности
+(_performance_) является безопасным вариантом, который гарантирует, что никогда
+не произойдет никакого частотного перехода, сохраняя процессоры на максимальной
+скорости обработки.
 
-In other words, if `CONFIG_CPU_FREQ` has to be enabled in your
-configuration, enabling `CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE` and
-`CONFIG_CPU_FREQ_GOV_PERFORMANCE` exclusively is most often the best way
-to prevent unexpectedly high latency peaks.
+Другими словами, если `CONFIG_CPU_FREQ` должен быть включен в вашей конфигурации,
+включение исключительно `CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE` и
+`CONFIG_CPU_FREQ_GOV_PERFORMANCE` чаще всего является лучшим способом
+предотвращения неожиданно высоких пиков задержки.
 
-### Disable `CONFIG_SMP` for best latency on single-core systems
+### Отключите `CONFIG_SMP` для лучшей задержки в одноядерных системах
 
-On single-core hardware, some out-of-line code may still be executed
-for dealing with various types of spinlock with a SMP build, which
-translates into additional CPU branches and cache misses. On low end
-hardware, this overhead may be noticeable.
+На одноядерном оборудовании может по-прежнему выполняться некоторый
+нестандартный код для работы с различными типами спин-блокировок с помощью
+сборки SMP, что приводит к дополнительным ветвям процессора и пропускам кэша.
+На низкоуровневом оборудовании эти накладные расходы могут быть заметны.
 
-Therefore, if you neither need SMP support nor kernel debug options
-which depend on instrumenting the spinlock constructs (e.g.
-`CONFIG_DEBUG_PREEMPT`), you may want to disable all the related kernel
-options, starting with `CONFIG_SMP`.
+Поэтому, если вам не нужна поддержка SMP или параметры отладки ядра
+которые зависят от инструментирования конструкций spinlock (например
+`CONFIG_DEBUG_PREEMPT`), вы можете отключить все связанные параметры ядра,
+начиная с `CONFIG_SMP`.
 
-## Architecture-specific issues
+## Проблемы, связанные с архитектурой
 
 ### x86 {#x86-caveat}
 
-- GCC 10.x might generate code causing the SMP boot process to break
-  early, as reported [by this
-  post](https://lkml.org/lkml/2020/3/14/186). As a work-around, you
-  can disable `CONFIG_STACKPROTECTOR_STRONG` from your kernel
-  configuration.
+- GCC 10.x может генерировать код, вызывающий преждевременный сбой процесса
+  загрузки SMP, как сообщается в [этом сообщении](https://lkml.org/lkml/2020/3/14/186).
+  В качестве обходного решения вы можете отключить `CONFIG_STACKPROTECTOR_STRONG`
+  в конфигурации ядра.
 
-- `CONFIG_ACPI_PROCESSOR_IDLE` may increase the latency upon wakeup on
-  IRQ from idle on some SoC (up to 30 us observed) on x86. This option
-  is implicitly selected by the following configuration chain:
+- `CONFIG_ACPI_PROCESSOR_IDLE` может увеличить задержку при пробуждении по IRQ
+  из режима ожидания на некоторых SoC (до 30 наблюдаемых нами) на x86. Этот
+  параметр неявно выбирается следующей цепочкой конфигурации:
   `CONFIG_SCHED_MC_PRIO` &#8594; `CONFIG_INTEL_PSTATE` &#8594;
-  `CONFIG_ACPI_PROCESSOR`. If out-of-range latency figures are observed
-  on your x86 hardware, turning off this chain may help.
+  `CONFIG_ACPI_PROCESSOR`. Если на вашем оборудовании x86 наблюдаются показатели
+  задержки вне диапазона, отключение этой цепочки может помочь.
 
-- When the HPET is disabled, the watchdog which monitors the sanity of
-  the current clocksource for the kernel may use _refined-jiffies_ as
-  the reference clocksource to compare with. Unfortunately, such
-  clocksource is fairly imprecise for timekeeping since timer
-  interrupts might be missed.  This could in turn trigger false
-  positives with the watchdog, which would end up declaring the TSC
-  clocksource as 'unstable'. For instance, it has been observed that
-  enabling  `CONFIG_FUNCTION_GRAPH_TRACER` on some legacy hardware would
-  systematically cause such behavior at boot. The following warning
-  splat appearing in the kernel log is symptomatic of this problem:
+- Когда HPET отключен, сторожевой таймер, который отслеживает работоспособность
+  текущего источника синхронизации (clocksource) для ядра, может использовать
+  _refined-jiffies_ в качестве эталонного источника синхронизации для сравнения.
+  К сожалению, такой источник синхронизации довольно неточен для хронометража,
+  так как прерывания таймера могут быть пропущены. Это, в свою очередь, может
+  вызвать ложные срабатывания сторожевого таймера, что в конечном итоге приведет
+  к объявлению источника синхронизации TSC 'нестабильным'. Например, было замечено,
+  что включение `CONFIG_FUNCTION_GRAPH_TRACER` на некотором устаревшем
+  оборудовании будет систематически вызывать такое поведение при загрузке.
+  Следующее предупреждение, появляющееся в журнале ядра, является симптомом этой
+  проблемы:
 
-  ```log
+  ```mk
   clocksource: timekeeping watchdog on CPU0: Marking clocksource
                'tsc-early' as unstable because the skew is too large:
-  clocksource: 'refined-jiffies' wd_now: fffb7018 wd_last: fffb6e9d 
+  clocksource: 'refined-jiffies' wd_now: fffb7018 wd_last: fffb6e9d
                mask: ffffffff
-  clocksource: 'tsc-early' cs_now: 68a6a7070f6a0 cs_last: 68a69ab6f74d6 
+  clocksource: 'tsc-early' cs_now: 68a6a7070f6a0 cs_last: 68a69ab6f74d6
                mask: ffffffffffffffff
   tsc: Marking TSC unstable due to clocksource watchdog
   ```
 
-	This is a problem because the TSC is the best-rated
-clocksource and [directly accessible from the vDSO]({{< relref
-"dovetail/porting/clocksource#time-vdso-access" >}}), which speeds
-up timestamping operations. If the TSC on your hardware is known to be
-fine and face this issue nevertheless, you may want to pass
-`tsc=nowatchdog` to the kernel to prevent it, or even `tsc=reliable`
-if all TSCs are reliable enough to be synchronized across CPUs.  If
-the TSC is really unstable on some legacy hardware and you cannot
-ignore the watchdog alert, you can still leave it to other
-clocksources such as _acpi\_pm_. Calls to [evl_read_clock()]({{<
-relref "core/user-api/clock/_index.md#evl_read_clock" >}}) would be
-slower compared to a direct syscall-less readout from the vDSO, but
-the EVL core would nevertheless manage to get timestamps from its
-[built-in clocks]({{< relref
-"core/user-api/clock/_index.md#builtin-clocks" >}}) at the expense of
-an out-of-band system call, without involving the in-band stage
-though. You definitely want to make sure everything is right on your
-platform with respect to reading timestamps by running the
-[latmus]({{< relref "core/testing#latmus-program" >}}) test, which
-can detect any related issue.
+  Это проблема, потому что TSC является источником синхронизации с лучшим
+  рейтингом и напрямую доступен из vDSO,]({{< relref
+  "dovetail/porting/clocksource#time-vdso-access" >}}), что ускоряет операции с
+  отметкой времени. Если известно, что TSC на вашем оборудовании в порядке и, тем
+  не менее, вы столкнулись с этой проблемой, вы можете передать `tsc=nowatchdog`
+  ядру, чтобы предотвратить это, или даже `tsc=reliable`, если все TSC достаточно
+  надежны для синхронизации между процессорами. Если TSC действительно нестабилен
+  на каком-либо устаревшем оборудовании, и вы не можете игнорировать предупреждение
+  сторожевого таймера, вы все равно можете оставить его другим источникам
+  синхронизации, таким как  _acpi\_pm_. Вызовы [evl_read_clock()]({{<
+  relref "core/user-api/clock/_index.md#evl_read_clock" >}}) были бы медленнее по
+  сравнению с прямым считыванием без системного вызова из vDSO, но ядру EVL, тем
+  не менее, удалось бы получить временные метки из своих [встроенных
+  часов]({{< relref "core/user-api/clock/_index.md#builtin-clocks" >}}) за счет
+  внеполосного системного вызова, хотя и без участия внутриполосной стадии.
+  Вы определенно хотите убедиться, что на вашей платформе все правильно в
+  отношении считывания временных меток, запустив тест
+  [latmus]({{< relref "core/testing#latmus-program" >}}), который может
+  обнаружить любую связанную с этим проблему.
 
-  	You can retrieve the current clocksource used by the kernel as follows:
+  Вы можете получить текущий источник синхронизации, используемый ядром, следующим образом:
 
-```sh
-# cat /sys/devices/system/clocksource/clocksource0/current_clocksource
-tsc
-```
- 
-- NMI-based _perf_ data collection may cause the kernel to execute
-  utterly sluggish ACPI driver code at each event. Since disabling
-  `CONFIG_PERF` is not an option, passing `nmi_watchodg=0` on the
-  kernel command line at boot may help.
+  ```sh
+  # cat /sys/devices/system/clocksource/clocksource0/current_clocksource
+  tsc
+  ```
+
+- Сбор данных _perf_ на основе NMI может привести к тому, что ядро будет выполнять
+  крайне медленный код драйвера ACPI при каждом событии. Поскольку отключение
+  `CONFIG_PERF` не является опцией, передача `nmi_watchdog=0` в командной строке
+  ядра при загрузке может помочь.
 
 {{% notice warning %}}
-Passing `nmi_watchodg=0` turns off the hard lockup detection for the
-in-band kernel. However, EVL will still detect runaway EVL threads
-stuck in out-of-band execution if `CONFIG_EVL_WATCHDOG` is enabled.
+Передача `nmi_watchdog=0` отключает обнаружение жесткой блокировки для
+внутриполосного ядра. Однако EVL по-прежнему будет обнаруживать запущенные
+потоки EVL, застрявшие во внеполосном выполнении, если включена функция
+`CONFIG_EVL_WATCHDOG`.
 {{% /notice %}}
 
 ---
 
 {{<lastmodified>}}
+{{<last-ru-modified>}}
