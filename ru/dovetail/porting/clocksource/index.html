@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Reading clock sources :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/dovetail/porting/clocksource/">English</option>
+                    <option id="ru" value="/ru/dovetail/porting/clocksource/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/"><span itemprop="name">Интерфейс Dovetail</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/porting/"><span itemprop="name">Перенос Dovetail</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/" aria-disabled="true"><span itemprop="name">Reading clock sources</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#time-vdso-access">Reading timestamps via the vDSO in a nutshell</a></li>
+        <li><a href="#the-arm-_situation_">The ARM <em>situation</em></a></li>
+        <li><a href="#generic-clocksource-vdso">The generic vDSO and USER_MMIO clock sources</a></li>
+        <li><a href="#example-converting-the-omap2-gp-timer">Example: converting the OMAP2 GP-timer</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Reading clock sources</h1>
+
+<p>Your autonomous core most likely needs a fast access to the current
+clock source from the out-of-band context, for reading precise
+timestamps which are in sync with the kernel&rsquo;s idea of time. The best
+way to achieve this is by enabling the fast
+<a href="http://man7.org/linux/man-pages/man3/clock_gettime.3.html">clock_gettime(3)</a>
+helper in the <a href="https://lwn.net/Articles/615809/">vDSO support</a> for the
+target CPU architecture. At least, you may want user-space tasks
+controlled by the core to have access to the POSIX-defined
+<code>CLOCK_MONOTONIC</code> and <code>CLOCK_REALTIME</code> clocks from the out-of-band
+context, using a vDSO call, with no execution and response time
+penalty involved in invoking an [in-band syscall] (/ru/dovetail/altsched/#inband-switch).</p>
+<h3 id="time-vdso-access">Reading timestamps via the vDSO in a nutshell</h3>
+<p>Basically, A vDSO-based
+<a href="http://man7.org/linux/man-pages/man3/clock_gettime.3.html">clock_gettime(3)</a>
+implementation wants to read from non-privileged CPU mode the same
+monotonic hardware counter which is currently used by the kernel for
+timekeeping, before converting the count to nanoseconds. In other
+words, this implementation should mirror the kernel
+<a href="https://www.kernel.org/doc/Documentation/timers/timekeeping.txt">clocksource</a>
+behavior. However, it should do so relying exclusively on resources
+which may be accessed from user mode, since the vDSO code segment
+containing this helper is merely a kernel-defined extension of the
+application code running in non-privileged mode. In order to perform
+such conversion, the vDSO code also needs additional timekeeping
+information maintained by the kernel, which it usually gets from a
+small data segment the kernel maps into every application as part of
+the vDSO support (see the various <em>update_vsyscall()</em> implementations
+for more on this).</p>
+<p>There are two common ways of reading the hardware counter used for
+timekeeping by the kernel from a non-privileged environement:</p>
+<ul>
+<li>
+<p>either by reading some non-privileged on-chip register
+(e.g. <em>powerpc</em>&rsquo;s timebase register, or <em>x86</em>&rsquo;s TSC register).</p>
+</li>
+<li>
+<p>or by reading a memory-mapped counter, from a memory mapping the
+calling application has access to.</p>
+</li>
+</ul>
+<h3 id="the-arm-_situation_">The ARM <em>situation</em></h3>
+<p>For several CPU architectures Linux supports, reading the
+CLOCK_MONOTONIC and CLOCK_REALTIME clocks is already possible via vDSO
+calls, including from tasks <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/#altsched-theory">running out-of-band</a> without incurring
+any <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/#stage-migration">execution stage switch</a>.</p>
+<p>For ARM, the situation is clumsy: the mainline kernel implementation
+supports reading timestamps directly from the vDSO <strong>only</strong> for the
+so-called <em>architected timer</em> the armv8 specification requires from
+compliant CPUs. With CPUs following an earlier specification, a
+truckload of different hardware chips may be used for that purpose
+instead, which the vDSO implementation does not provide any support
+for. Sometimes, the architected timer is present but not usable for
+timekeeping duties because of firmware issues. In these cases, a plain
+in-band system call would be issued whenever the vDSO-based
+<a href="http://man7.org/linux/man-pages/man3/clock_gettime.3.html">clock_gettime(3)</a>
+is called from an application, which would be a showstopper for
+keeping the response time short and bounded.</p>
+<h3 id="generic-clocksource-vdso">The generic vDSO and USER_MMIO clock sources</h3>
+<p>If your target kernel supports the generic vDSO implementation
+(CONFIG_HAVE_GENERIC_VDSO), Dovetail already provides the core support
+for accessing MMIO-based clock sources from the vDSO, which is
+essentially part of the application context:</p>
+<ul>
+<li>
+<p>firstly, it extends the <em>clocksource_mmio</em> semantics with the
+MMIO-accessed clock sources mapped to user space aka <em>struct
+clocksource_user_mmio</em>, implemented in <code>drivers/clocksource/mmio.c</code>,
+which we call USER_MMIO for short in this document.  In essence, a
+USER_MMIO clock source is a MMIO-based clock source which any
+application may map into its own address space, so that it can read
+the hardware counter directly. Specifically, the MMIO space covering
+the hardware counter register(s) is mapped into the caller&rsquo;s address
+space.</p>
+</li>
+<li>
+<p>Secondly, Dovetail extends the generic vDSO implementation in
+<code>lib/vdso.c</code> and <code>kernel/time/vsyscall.c</code> in order to make USER_MMIO
+clock sources visible to applications, in addition to the architected
+timer if present.</p>
+</li>
+<li>
+<p>Finally, Dovetail converts some MMIO clock sources to USER_MMIO
+clock sources, such as the OMAP2 general-purpose timer, the ARM global
+timer counter and the DesignWare APB timer. More conversions will come
+over time, as Dovetail is ported to a broader range of hardware.</p>
+</li>
+</ul>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>The mapping operation happens once in a process lifetime, during the
+very first call to <a href="http://man7.org/linux/man-pages/man3/clock_gettime.3.html">clock_gettime(3)</a>
+issued by the application. Since this involves running in-band code for
+updating the caller&rsquo;s address space, this particular call gives absolutely
+<strong>no</strong> response time guarantee. So it&rsquo;s good practice to force an initial
+dummy call to <a href="http://man7.org/linux/man-pages/man3/clock_gettime.3.html">clock_gettime(3)</a>
+from the library code which initializes the
+interface between applications and your autonomous core (i.e. some
+user-space library which implements the out-of-band system calls
+wrappers to send requests to this core). For EVL, this is done in
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/">libevl</a>.</p>
+
+</div>
+<h4 id="enabling-mmio-clocksource">Making a MMIO clock source accessible from the vDSO</h4>
+<p>If you need to convert an existing MMIO clock source to a
+user-mappable one visible from the generic vDSO, you can follow this
+three-step process:</p>
+<ul>
+<li>
+<p>in the Kconfig stanza enabling the clock source, select
+<code>[CONFIG_]GENERIC_CLOCKSOURCE_VDSO</code> in the dependency list to
+compile the required support in the generic vDSO code, which in turn
+selects the USER_MMIO support it depends on.</p>
+</li>
+<li>
+<p>in the clock source implementation, convert the <em>struct clocksource</em>
+descriptor to a <em>struct clocksource_user_mmio</em> descriptor. The
+original <em>struct clocksource</em> object is now available as a member of
+the <em>struct clocksource_user_mmio</em> descriptor, so you may have to
+move the original initializers accordingly. You also need to fix up
+the clock source&rsquo;s <code>.read()</code> handler, changing it to one of the
+helpers <em>clocksource_user_mmio</em> knows about. Do <em>not</em> use any
+other helper outside of the following set, or you would receive
+-EINVAL from <code>clocksource_user_mmio_init()</code>:</p>
+<ul>
+<li>
+<p><code>clocksource_mmio_readl_up()</code>, for reading a 32bit count-up
+register (i.e. <em>reg_higher</em> is NULL in <em>clocksource_mmio_regs</em>
+as described below).</p>
+</li>
+<li>
+<p><code>clocksource_mmio_readl_down()</code>, for reading a 32bit count-down
+register.</p>
+</li>
+<li>
+<p><code>clocksource_mmio_readw_up()</code>, for reading a 16bit count-up
+register.</p>
+</li>
+<li>
+<p><code>clocksource_mmio_readw_down()</code>, for reading a 16bit count-down
+register.</p>
+</li>
+<li>
+<p><code>clocksource_dual_mmio_readl_up()</code>, for reading a count-up counter
+composed of two 32bit registers (i.e. both <em>reg_lower</em> and
+<em>reg_higher</em> must be valid in <em>clocksource_mmio_regs</em> as
+described below).</p>
+</li>
+<li>
+<p><code>clocksource_dual_mmio_readl_down()</code>, for reading a count-down
+counter composed of two 32bit registers.</p>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>Only continuous clock sources can be converted to
+<em>clocksource_user_mmio</em>, otherwise the registration fails with
+-EINVAL in <code>clocksource_user_mmio_init()</code>. Therefore, only clock
+sources originally bearing the <code>CLOCK_SOURCE_IS_CONTINUOUS</code> flag can
+be converted.</p>
+
+</div>
+<ul>
+<li>
+<p>eventually, substitute the call to <code>clocksource_register_hz()</code> by a
+call to <code>clocksource_user_mmio_init()</code> instead. This function takes
+the following arguments:</p>
+<ul>
+<li>
+<p>the USER_MMIO descriptor address</p>
+</li>
+<li>
+<p>the address of a <em>clocksource_mmio_regs</em> structure which defines
+the method and parameters for reading the hardware counter.  Such
+counter can be represented by up to two 32bit MMIO registers,
+making a 64bit value. A lower precision is acceptable too, the
+vDSO code deals with wrapping as needed. However, the higher the
+precision, the better the accuracy for applications. The
+<em>clocksource_mmio_regs</em> structure should be filled with the
+following information:</p>
+<pre><code> - _reg\_lower_ is the **virtual** address of the counter's
+   low 32bit register. This address was most likely obtained
+   from `ioremap()` in the original clock source driver code;
+   it cannot be NULL.
+</code></pre>
+<ul>
+<li>
+<p><em>bits_lower</em> is a bitmask defining the significant bits to
+read from the low register, starting from the low order
+bit. For instance, if the first 31 bits only are
+significant, 0x7fffffff should be passed.</p>
+</li>
+<li>
+<p><em>reg_higher</em> is the <strong>virtual</strong> address of the counter&rsquo;s
+high register. This address can be NULL if the hardware
+counter is only 32bit wide or less, in which case
+<em>bits_higher</em> is ignored too.</p>
+</li>
+<li>
+<p><em>bits_higher</em> is a bitmask defining the significant bits to read
+from the high register.</p>
+</li>
+<li>
+<p><em>revmap</em> is a reverse mapping helper, for resolving the
+physical address of the low and high registers mentioned
+above, based on the virtual address passed in <em>reg_lower</em>
+and <em>reg_higher</em>. If <em>revmap</em> is NULL,
+<code>clocksource_user_mmio_init()</code> tries to figure this out by
+resolving the address of the containing memory frame via a
+call to <code>find_vma()</code>, which is usually fine. If this
+resolution should be done in a different way, you should
+specify your own handler in <em>revmap</em>, which receives the
+<strong>virtual</strong> address to resolve, and should return the
+corresponding physical address, or zero upon failure.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>the hardware clock rate that was originally passed to
+<code>clocksource_register_hz()</code>.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="example-converting-the-omap2-gp-timer">Example: converting the OMAP2 GP-timer</h3>
+<p>The Beaglebone Black is an AM335X processor equipped with a Cortex A8
+CPU, therefore no ARM architected timer is available. Instead, Linux
+runs one of the available general purpose timers on this platform for
+timekeeping purpose. The clock source driver for such devices is
+implemented in <code>arch/arm/mach-omap2/timer.c</code>. The patch below
+illustrates the changes Dovetail introduces to convert this clock
+source to a user-mappable one, which the ARM vDSO implementation can
+use.</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/mach-omap2/Kconfig
++++ b/arch/arm/mach-omap2/Kconfig
+@@ -96,6 +96,7 @@ config ARCH_OMAP2PLUS
+ 	select ARCH_HAS_HOLES_MEMORYMODEL
+ 	select ARCH_OMAP
+ 	select CLKSRC_MMIO
++	select GENERIC_CLOCKSOURCE_VDSO
+ 	select GENERIC_IRQ_CHIP
+ 	select GPIOLIB
+ 	select MACH_OMAP_GENERIC
+diff --git a/arch/arm/mach-omap2/timer.c b/arch/arm/mach-omap2/timer.c
+index 69c3a6d94933..bc7d177759c3 100644
+--- a/arch/arm/mach-omap2/timer.c
++++ b/arch/arm/mach-omap2/timer.c
+@@ -413,17 +413,14 @@ static bool use_gptimer_clksrc __initdata;
+ /*
+  * clocksource
+  */
+-static u64 clocksource_read_cycles(struct clocksource *cs)
+-{
+-	return (u64)__omap_dm_timer_read_counter(&amp;clksrc,
+-						     OMAP_TIMER_NONPOSTED);
+-}
+ 
+-static struct clocksource clocksource_gpt = {
+-	.rating		= 300,
+-	.read		= clocksource_read_cycles,
+-	.mask		= CLOCKSOURCE_MASK(32),
+-	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
++static struct clocksource_user_mmio clocksource_gpt = {
++	.mmio.clksrc = {
++		.rating		= 300,
++		.read		= clocksource_mmio_readl_up,
++		.mask		= CLOCKSOURCE_MASK(32),
++		.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
++	},
+ };
+ 
+ static u64 notrace dmtimer_read_sched_clock(void)
+@@ -505,21 +502,22 @@ static void __init omap2_gptimer_clocksource_init(int gptimer_id,
+ 						  const char *fck_source,
+ 						  const char *property)
+ {
++	struct clocksource_mmio_regs mmr;
+ 	int res;
+ 
+ 	clksrc.id = gptimer_id;
+ 	clksrc.errata = omap_dm_timer_get_errata();
+ 
+ 	res = omap_dm_timer_init_one(&amp;clksrc, fck_source, property,
+-				     &amp;clocksource_gpt.name,
++				     &amp;clocksource_gpt.mmio.clksrc.name,
+ 				     OMAP_TIMER_NONPOSTED);
+ 
+ 	if (soc_is_am43xx()) {
+-		clocksource_gpt.suspend = omap2_gptimer_clksrc_suspend;
+-		clocksource_gpt.resume = omap2_gptimer_clksrc_resume;
++		clocksource_gpt.mmio.clksrc.suspend = omap2_gptimer_clksrc_suspend;
++		clocksource_gpt.mmio.clksrc.resume = omap2_gptimer_clksrc_resume;
+ 
+ 		clocksource_gpt_hwmod =
+-			omap_hwmod_lookup(clocksource_gpt.name);
++			omap_hwmod_lookup(clocksource_gpt.mmio.clksrc.name);
+ 	}
+ 
+ 	BUG_ON(res);
+@@ -529,12 +527,18 @@ static void __init omap2_gptimer_clocksource_init(int gptimer_id,
+ 				   OMAP_TIMER_NONPOSTED);
+ 	sched_clock_register(dmtimer_read_sched_clock, 32, clksrc.rate);
+ 
+-	if (clocksource_register_hz(&amp;clocksource_gpt, clksrc.rate))
++	mmr.reg_lower = clksrc.func_base + (OMAP_TIMER_COUNTER_REG &amp; 0xff);
++	mmr.bits_lower = 32;
++	mmr.reg_upper = 0;
++	mmr.bits_upper = 0;
++	mmr.revmap = NULL;
++
++	if (clocksource_user_mmio_init(&amp;clocksource_gpt, &amp;mmr, clksrc.rate))
+ 		pr_err(&#34;Could not register clocksource %s\n&#34;,
+-			clocksource_gpt.name);
++			clocksource_gpt.mmio.clksrc.name);
+ 	else
+ 		pr_info(&#34;OMAP clocksource: %s at %lu Hz\n&#34;,
+-			clocksource_gpt.name, clksrc.rate);
++			clocksource_gpt.mmio.clksrc.name, clksrc.rate);
+ }
+</code></pre></div>
+<div class="notices tip">
+    <div class="label">Совет</div><p>In some rare cases, converting the available clocksource(s) so that we
+can read them directly from the vDSO might not be an option, typically
+because reading them would require supervisor privileges in the CPU,
+which the vDSO context excludes by definition.  For these almost desperate
+situations, there is still the option for your companion core to
+<a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/#syscall-events">intercept system calls</a> to
+<a href="http://man7.org/linux/man-pages/man3/clock_gettime.3.html">clock_gettime(3)</a>
+from the out-of-band handler, handling them directly from that spot.
+This would be slower compared to a direct readout from the
+vDSO, but the core would manage to get timestamps for <code>CLOCK_MONOTONIC</code>
+and <code>CLOCK_REALTIME</code> clocks at least without involving the in-band stage.
+EVL solves a limitation with clock sources on <a href="https://the-going.github.io/evlproject/ru/core/caveat/#x86-caveat">legacy x86
+hardware</a> this way.</p>
+
+</div>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/" title="Tick devices"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/" title="Syscall path"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

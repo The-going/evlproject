@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <link rel="alternate" type="application/rss&#43;xml" href="https://the-going.github.io/evlproject/ru/core/user-api/observable/index.xml" title="Xenomai 4" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Observable :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/user-api/observable/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/observable/">English</option>
+                    <option id="ru" value="/ru/core/user-api/observable/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/"><span itemprop="name">Using libevl</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/observable/" aria-disabled="true"><span itemprop="name">Observable</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#observer-pattern">Using the observer pattern for event-driven applications</a></li>
+        <li><a href="#creating-an-observable">Creating an Observable</a></li>
+        <li><a href="#working-with-an-observable">Working with an Observable</a></li>
+        <li><a href="#observable-poll-events">Events pollable from an Observable</a></li>
+        <li><a href="#observable-thread">Observing EVL threads</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Observable</h1>
+
+<h3 id="observer-pattern">Using the observer pattern for event-driven applications</h3>
+<p>The EVL core provides a simple yet flexible support for implementing
+the <a href="https://en.wikipedia.org/wiki/Observer_pattern">observer design
+pattern</a> in your
+application, based on the <a href="https://the-going.github.io/evlproject/ru/core/#evl-core-elements">Observable</a> element.  The Observable
+receives a stream of so-called <em>notices</em>, which may be events, state
+changes or any data which fits within a 64bit word, delivering them as
+<em>notifications</em> (with additional meta-data) to subscribed threads
+called <em>observers</em>, when they ask for it. Subscribers do not have to
+be <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">attached</a> to the EVL
+core, any thread can observe an Observable element. Whether the
+threads which produce the events, the Observable and the observers
+live in the same or different processes is transparent.</p>
+
+<div class="mixed-grid-right-container">
+<div style="align-self: center;">
+  <h4 id="broadcast-mode">Broadcast mode</h4>
+<p>By default, an Observable broadcasts a copy of every event it receives to
+every subscribed observer:</p>
+
+</div>
+<div>
+   <img src=https://the-going.github.io/evlproject/images/observable-bcast.png>
+</div>
+</div>
+
+
+<div class="mixed-grid-right-container">
+<div style="align-self: center;">
+  <h4 id="master-mode">Master mode</h4>
+<p>In some cases, you may want to use an Observable to dispatch work
+submitted as events to the set of observers which forms a pool of
+worker threads.  Each message would be sent to a single worker, each
+worker would be picked on a round-robin basis so as to implement a
+naive load-balancing strategy.  Setting the Observable in the
+so-called <em>master mode</em> (see <a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/#evl_create_observable">EVL_CLONE_MASTER</a>) at
+creation time enables this behavior:</p>
+
+</div>
+<div>
+   <img src=https://the-going.github.io/evlproject/images/observable-master.png>
+</div>
+</div>
+
+<h3 id="creating-an-observable">Creating an Observable</h3>
+<hr>
+
+<div class="proto"><a name="evl_create_observable"></a>
+int evl_create_observable(int flags, const char *fmt, ...)
+</div>
+
+<p>This call creates an Observable element, returning a file descriptor
+representing the new object upon success. This is the generic call
+form; for creating an Observable with common pre-defined settings, see
+<a href="#evl_new_observable">evl_new_observable()</a>.</p>
+<p>An Observable can operate either in <a href="#observer-pattern"><em>broadcast</em> or <em>master</em> mode</a>:</p>
+<ul>
+<li>
+<p>in broadcast mode, a copy of every event received by the Observable
+is sent to every <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_subscribe">observer</a>.</p>
+</li>
+<li>
+<p>in master mode, each message received by the Observable is sent to a
+single observer. The subscriber to send a message to is picked
+according to a simple round-robin strategy among all observers.</p>
+</li>
+</ul>
+
+<p><li><i>flags</i><p>A set of creation flags for the new element, defining its
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-visibility">visibility</a> and operation mode:</p>
+<ul>
+<li>
+<p><code>EVL_CLONE_PUBLIC</code> denotes a public element which is represented
+by a device file in the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl</a> file hierarchy, which
+makes it visible to other processes for sharing.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_PRIVATE</code> denotes an element which is private to the
+calling process. No device file appears for it in the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl</a> file hierarchy.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_MASTER</code> enables the <a href="#observer-pattern">master mode</a> for the Observable.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_NONBLOCK</code> sets the file descriptor of the new Observable in
+non-blocking I/O mode (<code>O_NONBLOCK</code>). By default, <code>O_NONBLOCK</code> is
+cleared for the file descriptor.</p>
+</li>
+</ul>
+</li></p>
+
+
+<p><li><i>fmt</i><p>A <a href="http://man7.org/linux/man-pages/man3/printf.3.html">printf</a>-like
+format string to generate the Observable name. See this description of the
+[naming convention]
+(/ru/core/user-api/#element-naming-convention).</p>
+</li></p>
+
+
+<p><li><i>...</i><p>The optional variable argument list completing the format.</p>
+</li></p>
+
+<p><a href="#evl_create_observable">evl_create_observable()</a>
+returns the file descriptor of the newly created Observable on
+success. Otherwise, a negated error code is returned:</p>
+<ul>
+<li>
+<p>-EEXIST	The generated name is conflicting with an existing Observable
+name.</p>
+</li>
+<li>
+<p>-EINVAL	Either <em>flags</em> is wrong, or the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-naming-convention">generated name</a> is badly formed.</p>
+</li>
+<li>
+<p>-ENAMETOOLONG	The overall length of the device element&rsquo;s file path including
+the generated name exceeds PATH_MAX.</p>
+</li>
+<li>
+<p>-EMFILE	The per-process limit on the number of open file descriptors
+has been reached.</p>
+</li>
+<li>
+<p>-ENFILE	The system-wide limit on the total number of open files
+has been reached.</p>
+</li>
+<li>
+<p>-ENOMEM	No memory available.</p>
+</li>
+<li>
+<p>-ENXIO        The EVL library is not initialized for the current process.
+Such initialization happens implicitly when <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_self">evl_attach_self()</a>
+is called by any thread of your process, or by explicitly
+calling <a href="https://the-going.github.io/evlproject/ru/core/user-api/init/#evl_init">evl_init()</a>. You have to bootstrap the library
+services in a way or another before creating an EVL Observable.</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/observable.h&gt;
+
+void create_new_observable(void)
+{
+	int efd;
+
+	efd = evl_create_observable(EVL_CLONE_PUBLIC|EVL_CLONE_MASTER, &#34;name_of_observable&#34;);
+	/* skipping checks */
+	
+	return efd;
+}
+</code></pre></div><hr>
+
+<div class="proto"><a name="evl_new_observable"></a>
+int evl_new_observable(const char *fmt, ...)
+</div>
+
+<p>This call is a shorthand for creating a private observable operating
+in <a href="#observer-pattern">broadcast mode</a>. It is
+identical to calling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	evl_create_observable(EVL_CLONE_PRIVATE, fmt, ...);
+</code></pre></div>
+<div class="notices info">
+    <div class="label">Информация</div><p>Note that if the [generated name] (/ru/core/user-api/#element-naming-convention) starts with a
+slash ('/') character, <code>EVL_CLONE_PRIVATE</code> would be automatically turned
+into <code>EVL_CLONE_PUBLIC</code> internally.</p>
+
+</div>
+<hr>
+<h3 id="working-with-an-observable">Working with an Observable</h3>
+<p>Once an Observable is <a href="#evl_create_observable">created</a>, using it entails the following steps, performed by either the
+thread(s) issuing the stream of events to the Observable, or those
+observing these events:</p>
+
+<div class="mixed-grid-right-container">
+<div style="align-self: center;">
+  <p>Observers need to subscribe to the Observable. Observers can subscribe
+and unsubscribe at will, come and go freely during the Observable&rsquo;s
+lifetime. Depending on its subscription flags, the observer may ask
+for merging consecutive identical notices or receiving all of them
+unfiltered (See <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_subscribe">EVL_NOTIFY_ONCHANGE</a>).</p>
+
+</div>
+<div>
+   <img src=https://the-going.github.io/evlproject/images/observable-subscribe.png>
+</div>
+</div>
+
+
+<div class="mixed-grid-right-container">
+<div style="align-self: center;">
+  <p>Event streamers can send notices to the Observable by calling
+<a href="#evl_update_observable">evl_update_observable()</a>.</p>
+
+</div>
+<div>
+   <img src=https://the-going.github.io/evlproject/images/observable-write.png>
+</div>
+</div>
+
+
+<div class="mixed-grid-right-container">
+<div style="align-self: center;">
+  <p>Observers can read notifications from the Observable by calling
+<a href="#evl_read_observable">evl_read_observable()</a>.</p>
+
+</div>
+<div>
+   <img src=https://the-going.github.io/evlproject/images/observable-read.png>
+</div>
+</div>
+
+<p>Once an Observable has become useless, you only need to close all the
+file descriptors referring to it in order to release it, like for any
+ordinary file.</p>
+<hr>
+
+<div class="proto"><a name="evl_update_observable"></a>
+int evl_update_observable(int efd, const struct evl_notice *ntc, int nr)
+</div>
+
+<p>This call sends up to <em>nr</em> notices starting at address <em>ntc</em> in memory
+to the Observable referred to by <em>efd</em>. This call never blocks the
+caller. It may be used by any thread, including non-EVL ones.</p>
+<p>A notice contains a <em>tag</em>, and an opaque <em>event</em> value. It is defined by
+the following C types:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">union evl_value {
+	int32_t val;
+	int64_t lval;
+	void *ptr;
+};
+
+struct evl_notice {
+	uint32_t tag;
+	union evl_value event;
+};
+</code></pre></div><p>All notices sent to the Observable should carry a valid issuer tag in
+the <code>evl_notice.tag</code> field.  For applications, a valid tag is an
+arbitrary value greater or equal to <code>EVL_NOTICE_USER</code> (lower tag
+values are reserved to the core for <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#health-monitoring">HM diag codes</a>).</p>
+<p><a href="#evl_update_observable">evl_update_observable()</a>
+returns the number of notices which have been successfully
+queued. Each notice which have been successfully queued for
+consumption by at least one observer counts for one in the return
+value.  Zero is returned whenever no observer was subscribed to the
+Observable at the time of the call, or no buffer space was available
+for queuing any notification for any observer. Otherwise, a negated
+error code is returned on error:</p>
+<ul>
+<li>
+<p>-EBADF	<em>efd</em> is not a valid file descriptor.</p>
+</li>
+<li>
+<p>-EPERM	<em>efd</em> does not refer to an Observable element.
+This may happen if <em>efd</em> refers to a valid EVL thread
+which was not <a href="#evl_attach_thread">created</a>
+with the <code>EVL_CLONE_OBSERVABLE</code> flag.</p>
+</li>
+<li>
+<p>-EINVAL	Some notice has an invalid tag.</p>
+</li>
+<li>
+<p>-EFAULT	if <em>ntc</em> points to invalid memory.</p>
+</li>
+</ul>
+<blockquote>
+<p>Sending a notice to an observable</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">void send_notice(int ofd)
+{
+	struct evl_notice notice;
+	int ret;
+
+	notice.tag = EVL_NOTICE_USER;
+	notice.event.val = 42;
+	ret = evl_update_observable(ofd, &amp;notice, 1);
+	/* ret should be 1 on success. */
+}
+</code></pre></div><hr>
+
+<div class="proto"><a name="evl_read_observable"></a>
+int evl_read_observable(int efd, struct evl_notification *nf, int nr)
+</div>
+
+<p>This call receives up to <em>nr</em> notifications starting at address <em>nf</em>
+in memory from the Observable referred to by <em>efd</em>. It may only be
+used by observers <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_subscribe">subscribed</a> to this particular
+Observable. If <code>O_NONBLOCK</code> is clear for <em>efd</em>, the caller might block
+until at least one notification arrives.</p>
+<p>A notification contains the tag and the event value <a href="#evl_update_observable">sent by the
+issuer</a> of the corresponding
+notice, plus some meta-data. A notification is defined by the
+following C type:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">union evl_value {
+	int32_t val;
+	int64_t lval;
+	void *ptr;
+};
+
+struct evl_notification {
+	uint32_t tag;
+	uint32_t serial;
+	int32_t issuer;
+	union evl_value event;
+	struct timespec date;
+};
+</code></pre></div><p>The meta-data is defined as follows:</p>
+<ul>
+<li>
+<p><em>serial</em> is a monotonically increasing counter of notices sent by
+the Observable referred to by <em>efd</em>. In broadcast mode, this serial
+number is identical in every copy of a given original notice
+forwarded to the observers present.</p>
+</li>
+<li>
+<p><em>issuer</em> is the pid of the thread which issued the notice, zero if
+it was sent by the EVL core, such as with <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#health-monitoring">HM diagnostics</a>.</p>
+</li>
+<li>
+<p><em>date</em> is a timestamp at receipt of the original notice, based on
+the built-in <a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/#builtin-clocks">EVL_CLOCK_MONOTONIC</a> clock.</p>
+</li>
+</ul>
+<p><a href="#evl_read_observable">evl_read_observable()</a> returns
+the number of notifications which have been successfully copied to
+<em>nf</em>. This count may be lower than <em>nr</em>. Otherwise, a negated error
+code is returned on error:</p>
+<ul>
+<li>
+<p>-EAGAIN	<code>O_NONBLOCK</code> is set for <em>efd</em> and no notification is pending
+at the time of the call.</p>
+</li>
+<li>
+<p>-EBADF	<em>efd</em> is not a valid file descriptor.</p>
+</li>
+<li>
+<p>-EPERM	<em>efd</em> does not refer to an Observable element.
+This may happen if <em>efd</em> refers to a valid EVL thread
+which was not <a href="#evl_attach_thread">created</a>
+with the <code>EVL_CLONE_OBSERVABLE</code> flag.</p>
+</li>
+<li>
+<p>-ENXIO	the calling thread is not <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_subscribe">subscribed</a> to
+the Observable referred to by <em>efd</em>.</p>
+</li>
+<li>
+<p>-EFAULT	if <em>nf</em> points to invalid memory.</p>
+</li>
+</ul>
+<blockquote>
+<p>Receiving a notification from an observable</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">void receive_notification(int ofd)
+{
+	struct evl_notification notification;
+	int ret;
+
+	ret = evl_read_observable(ofd, &amp;notification, 1);
+	/* ret should be 1 on success. */
+}
+</code></pre></div><hr>
+<h3 id="observable-poll-events">Events pollable from an Observable</h3>
+<p>The <a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">evl_poll()</a> and
+<a href="http://man7.org/linux/man-pages/man2/poll.2.html">poll(2)</a> interfaces
+can monitor the following events occurring on an Observable:</p>
+<ul>
+<li>
+<p><code>POLLIN</code> and <code>POLLRDNORM</code> are set whenever at least one notification
+is pending for the calling <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_subscribe">observer thread</a>. This means that
+a subsequent call to <a href="#evl_read_observable">evl_read_observable()</a> by the same thread would return at least
+one valid notification immediately.</p>
+</li>
+<li>
+<p><code>POLLOUT</code> and <code>POLLWRNORM</code> are set whenever at least one observer
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_subscribe">subscribed</a> to the
+Observable has enough room in its backlog to receive at least one
+notice. This means that a subsequent call to
+<a href="#evl_read_observable">evl_update_observable()</a>
+would succeed in queuing at least one notice to one observer. In
+case multiple threads may update the Observable concurrently, which
+thread might succeed in doing so cannot be determined (typically,
+there would be no such guarantee for the caller of <a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">evl_poll()</a> and
+<a href="http://man7.org/linux/man-pages/man2/poll.2.html">poll(2)</a>).</p>
+</li>
+</ul>
+<p>In addition to these flags, <code>POLLERR</code> might be returned in case the
+caller did not <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_subscribe">subscribe</a> to the Observable,
+or some file descriptor from the polled set refer to an EVL thread
+which was not <a href="#evl_attach_thread">created</a> with the
+<code>EVL_CLONE_OBSERVABLE</code> flag.</p>
+<h3 id="observable-thread">Observing EVL threads</h3>
+<p>An EVL thread is in and of itself an Observable element. Observability
+of a thread can be enabled by passing the <code>EVL_CLONE_OBSERVABLE</code> flag
+when attaching a thread to the EVL core. In this case, the file
+descriptor obtained from <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">evl_attach_thread()</a> may be
+subsequently used in Observable-related operations. If the thread was
+also made public (<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">EVL_CLONE_PUBLIC</a>), then there
+is a way for remote processes to monitor it via an access to <a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">its
+device</a>.</p>
+<p>Threads can monitor events sent to an observable thread element by
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_subscribe">subscribing</a>
+to it. An observable thread typically relays <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#health-monitoring">health monitoring</a>
+information to subscribers. An observable thread can also do
+introspection, by subscribing to itself then reading the
+HM diagnostics it has received.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/" title="Semaphore"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/" title="File proxy"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

@@ -185,7 +185,7 @@ code {
 .mixed-grid-right-container {
   display: grid;
   grid-template-areas: 'mixed_area mixed_area';
-  grid-template-columns: 800px 600px;
+  grid-template-columns: auto 600px;
   grid-gap: 0px;
   padding: 0px;
 }
@@ -198,7 +198,7 @@ code {
 .mixed-grid-small-container {
   display: grid;
   grid-template-areas: 'mixed_area mixed_area';
-  grid-template-columns: 400px 500px;
+  grid-template-columns: auto 500px;
   grid-gap: 30px;
   padding: 0px;
 }

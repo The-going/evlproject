@@ -3,21 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="generator" content="Hugo 0.89.1" />
     <meta name="description" content="Xenomai 4 project">
     <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
-    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    
     <title>Interrupt flow :: Xenomai 4</title>
-    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/variant.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/print.css?1634415569" rel="stylesheet" media="print">
-    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634415569"></script>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572174" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572174" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572174"></script>
     <style>
       :root #header + #content > #left > #rlblock_left{
         display:none !important;
@@ -28,6 +29,11 @@
     </style>
   </head>
   <body class="" data-url="https://the-going.github.io/evlproject/dovetail/porting/irqflow/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
     <nav id="sidebar" class="showVisitedLinks">
       <div id="header-wrapper">
         <div id="header">
@@ -39,20 +45,16 @@
           <input data-search-input id="search-by" type="search" placeholder="Search...">
           <span data-search-clear=""><i class="fas fa-times"></i></span>
         </div>
-        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634415569"></script>
-        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572174"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572174"></script>
         <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
         <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
-        <script>
-          var index_url="https://the-going.github.io/evlproject/index.json";
-          var root_url="https://the-going.github.io/evlproject/";
-          var baseUri=root_url.replace(/\/$/, '');
-        </script>
-        <script src="https://the-going.github.io/evlproject/js/search.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572174"></script>
       </div>
       <div class="highlightable">
         <ul class="topics">
-          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/overview/testing-page/" title="Testing the page rendering" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/testing-page/">Test page<i class="fas fa-check read-icon"></i></a></li></ul></li>
           <li data-nav-id="/core/" title="The EVL core" class="dd-item"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core<i class="fas fa-check read-icon"></i></a><ul>
           <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL<i class="fas fa-check read-icon"></i></a></li>
           <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings<i class="fas fa-check read-icon"></i></a></li>
@@ -129,6 +131,25 @@
         <div id="prefooter">
           <hr/>
           <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/dovetail/porting/irqflow/" selected>English</option>
+                    <option id="ru" value="/ru/dovetail/porting/irqflow/">Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
             <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
           </ul>
         </div>
@@ -260,7 +281,7 @@ graph LR;
 </div>
 
 <p>For ARM and ARM64, the corresponding code looks like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">void arch_do_IRQ_pipelined(struct irq_desc *desc)
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">void arch_do_IRQ_pipelined(struct irq_desc *desc)
 {
 	struct pt_regs *regs = raw_cpu_ptr(&amp;irq_pipeline.tick_regs);
 	unsigned int irq = irq_desc_get_irq(desc);
@@ -324,17 +345,17 @@ continuous interrupt request.</p>
 <blockquote>
 <p>The pathological case</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">    /* no OOB handler, in-band stage stalled on entry
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">    /* no OOB handler, in-band stage stalled on entry
        leading to deferred dispatch to handler */
     asm_irq_entry
        ...
           -&gt; generic_pipeline_irq()
              ...
-                &lt;<span style="color:#ff6ac1">IRQ</span> <span style="color:#57c7ff">logged</span><span style="color:#ff5c57">,</span> <span style="color:#57c7ff">delivery</span> <span style="color:#57c7ff">deferred</span>&gt;
+                &lt;<span style="color:#5bc4bf">IRQ</span> <span style="color:#06b6ef">logged</span><span style="color:#ef6155">,</span> <span style="color:#06b6ef">delivery</span> <span style="color:#06b6ef">deferred</span>&gt;
     asm_irq_exit
     /*
-     <span style="color:#ff6ac1">*</span> CPU allowed to accept interrupts again with IRQ cause not
-     <span style="color:#ff6ac1">*</span> acknowledged in device yet =&gt; <span style="font-style:italic">**IRQ storm**</span>.
+     <span style="color:#815ba4">*</span> CPU allowed to accept interrupts again with IRQ cause not
+     <span style="color:#815ba4">*</span> acknowledged in device yet =&gt; <span style="font-weight:bold">**IRQ storm**</span>.
      */
     asm_irq_entry
        ...
@@ -405,7 +426,7 @@ event.</p>
 <blockquote>
 <p>Example: adapting the handler dealing with level-triggered IRQs</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/kernel/irq/chip.c
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/kernel/irq/chip.c
 +++ b/kernel/irq/chip.c
 void handle_level_irq(struct irq_desc *desc)
 {
@@ -511,7 +532,7 @@ did review the code for that purpose.</p>
 <blockquote>
 <p>Adapting the ARM GIC driver to interrupt pipelining</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/drivers/irqchip/irq-gic.c
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/drivers/irqchip/irq-gic.c
 +++ b/drivers/irqchip/irq-gic.c
 @@ -93,7 +93,7 @@ struct gic_chip_data {
  
@@ -535,7 +556,7 @@ did review the code for that purpose.</p>
 </code></pre></div><blockquote>
 <p>Adapting the BCM2835 pin control driver to interrupt pipelining</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
 +++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
 @@ -79,7 +79,7 @@ struct bcm2835_pinctrl {
  	struct gpio_chip gpio_chip;
@@ -574,7 +595,10 @@ the assembly level code upon kernel entry - with basic assumptions
 made by the scheduler core, such as entering with interrupts virtually
 disabled (i.e. the in-band stage should be stalled).</p>
 <hr>
-<p style="text-align:right">Last modified: Sat, 21 Nov 2020 17:55:57 &#43;0100</p>
+<p style="text-align:right">Last modified: Sat, 21 Nov 2020 17:55:57 &#43;0100
+
+	
+</p>
 
 
           <footer class="footline">
@@ -589,18 +613,18 @@ disabled (i.e. the in-band stage should be stalled).</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634415569"></script>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1636572174"></script>
     <script>
-      if (typeof mermaid != 'undefined') {
+      if (typeof mermaid != 'undefined' && typeof mermaid.mermaidAPI != 'undefined') {
         mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
       }
     </script>
-    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634415569"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572174"></script>
   </body>
 </html>

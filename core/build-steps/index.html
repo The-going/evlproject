@@ -3,21 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="generator" content="Hugo 0.89.1" />
     <meta name="description" content="Xenomai 4 project">
     <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
-    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    
     <title>Building EVL :: Xenomai 4</title>
-    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/variant.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/print.css?1634415568" rel="stylesheet" media="print">
-    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634415568"></script>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572173" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572173" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572173"></script>
     <style>
       :root #header + #content > #left > #rlblock_left{
         display:none !important;
@@ -28,6 +29,11 @@
     </style>
   </head>
   <body class="" data-url="https://the-going.github.io/evlproject/core/build-steps/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
     <nav id="sidebar" class="showVisitedLinks">
       <div id="header-wrapper">
         <div id="header">
@@ -39,20 +45,16 @@
           <input data-search-input id="search-by" type="search" placeholder="Search...">
           <span data-search-clear=""><i class="fas fa-times"></i></span>
         </div>
-        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634415568"></script>
-        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634415568"></script>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572173"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572173"></script>
         <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
         <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
-        <script>
-          var index_url="https://the-going.github.io/evlproject/index.json";
-          var root_url="https://the-going.github.io/evlproject/";
-          var baseUri=root_url.replace(/\/$/, '');
-        </script>
-        <script src="https://the-going.github.io/evlproject/js/search.js?1634415568"></script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572173"></script>
       </div>
       <div class="highlightable">
         <ul class="topics">
-          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/overview/testing-page/" title="Testing the page rendering" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/testing-page/">Test page<i class="fas fa-check read-icon"></i></a></li></ul></li>
           <li data-nav-id="/core/" title="The EVL core" class="dd-item parent"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core<i class="fas fa-check read-icon"></i></a><ul>
           <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item active"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL<i class="fas fa-check read-icon"></i></a></li>
           <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings<i class="fas fa-check read-icon"></i></a></li>
@@ -129,6 +131,25 @@
         <div id="prefooter">
           <hr/>
           <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/build-steps/" selected>English</option>
+                    <option id="ru" value="/ru/core/build-steps/">Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
             <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
           </ul>
         </div>
@@ -441,7 +462,7 @@ configuration. To be allowed to change the latter, the
 <code>CROSS_COMPILE_COMPAT</code> environment variable should be set to the
 prefix of the 32-bit ARMv7 toolchain which should be used to compile
 the vDSO (yes, this is quite convoluted). For instance:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ make &lt;your-make-args&gt; <span style="color:#ff5c57">ARCH</span><span style="color:#ff6ac1">=</span>arm64 <span style="color:#ff5c57">CROSS_COMPILE</span><span style="color:#ff6ac1">=</span>aarch64-linux-gnu- <span style="color:#ff5c57">CROSS_COMPILE_COMPAT</span><span style="color:#ff6ac1">=</span>arm-linux-gnueabihf- <span style="color:#ff6ac1">(</span>x|g|menu<span style="color:#ff6ac1">)</span>config
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ make &lt;your-make-args&gt; <span style="color:#ef6155">ARCH</span><span style="color:#5bc4bf">=</span>arm64 <span style="color:#ef6155">CROSS_COMPILE</span><span style="color:#5bc4bf">=</span>aarch64-linux-gnu- <span style="color:#ef6155">CROSS_COMPILE_COMPAT</span><span style="color:#5bc4bf">=</span>arm-linux-gnueabihf- <span style="color:#5bc4bf">(</span>x|g|menu<span style="color:#5bc4bf">)</span>config
 </code></pre></div>
 <div class="notices tip">
     <div class="label">Tip</div><p>For instance, if you plan to run EVL over any of the <a href="https://raspberrypi.org">Raspberry
@@ -455,7 +476,7 @@ mentioned earlier.</p>
 </div>
 <h3 id="building-libevl">Building libevl</h3>
 <p>The generic command for building libevl is:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ make <span style="color:#ff6ac1">[</span>-C <span style="color:#ff5c57">$SRCDIR</span><span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span><span style="color:#ff5c57">ARCH</span><span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$cpu_arch</span><span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span><span style="color:#ff5c57">CROSS_COMPILE</span><span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$toolchain</span><span style="color:#ff6ac1">]</span> <span style="color:#ff5c57">UAPI</span><span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$uapi_dir</span> <span style="color:#ff6ac1">[</span>OTHER_BUILD_VARS<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>goal...<span style="color:#ff6ac1">]</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ make <span style="color:#5bc4bf">[</span>-C <span style="color:#ef6155">$SRCDIR</span><span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span><span style="color:#ef6155">ARCH</span><span style="color:#5bc4bf">=</span><span style="color:#ef6155">$cpu_arch</span><span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span><span style="color:#ef6155">CROSS_COMPILE</span><span style="color:#5bc4bf">=</span><span style="color:#ef6155">$toolchain</span><span style="color:#5bc4bf">]</span> <span style="color:#ef6155">UAPI</span><span style="color:#5bc4bf">=</span><span style="color:#ef6155">$uapi_dir</span> <span style="color:#5bc4bf">[</span>OTHER_BUILD_VARS<span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span>goal...<span style="color:#5bc4bf">]</span>
 </code></pre></div><blockquote>
 <p>Main build variables</p>
 </blockquote>
@@ -554,17 +575,17 @@ amount to this:</p>
 <blockquote>
 <p>Cross-compiling from a separate build directory</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#78787e"># First create a build directory the where output files should go</span>
-$ mkdir /tmp/build-imx6q <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff5c57">cd</span> /tmp/build-imx6q
-<span style="color:#78787e"># Then start the build+install process</span>
-$ make -C ~/git/libevl <span style="color:#ff5c57">O</span><span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$PWD</span> <span style="color:#ff5c57">ARCH</span><span style="color:#ff6ac1">=</span>arm <span style="color:#ff5c57">CROSS_COMPILE</span><span style="color:#ff6ac1">=</span>arm-linux-gnueabihf- <span style="color:#ff5c57">UAPI</span><span style="color:#ff6ac1">=</span>~/git/linux-evl <span style="color:#ff5c57">DESTDIR</span><span style="color:#ff6ac1">=</span>/nfsroot/imx6q/usr/evl install
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#8d8687"># First create a build directory the where output files should go</span>
+$ mkdir /tmp/build-imx6q <span style="color:#5bc4bf">&amp;&amp;</span> cd /tmp/build-imx6q
+<span style="color:#8d8687"># Then start the build+install process</span>
+$ make -C ~/git/libevl <span style="color:#ef6155">O</span><span style="color:#5bc4bf">=</span><span style="color:#ef6155">$PWD</span> <span style="color:#ef6155">ARCH</span><span style="color:#5bc4bf">=</span>arm <span style="color:#ef6155">CROSS_COMPILE</span><span style="color:#5bc4bf">=</span>arm-linux-gnueabihf- <span style="color:#ef6155">UAPI</span><span style="color:#5bc4bf">=</span>~/git/linux-evl <span style="color:#ef6155">DESTDIR</span><span style="color:#5bc4bf">=</span>/nfsroot/imx6q/usr/evl install
 </code></pre></div><p>or,</p>
 <blockquote>
 <p>Cross-compiling from the EVL library source tree</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkdir /tmp/build-hikey
-$ <span style="color:#ff5c57">cd</span> ~/git/libevl
-$ make <span style="color:#ff5c57">O</span><span style="color:#ff6ac1">=</span>/tmp/build-hikey <span style="color:#ff5c57">ARCH</span><span style="color:#ff6ac1">=</span>arm64 <span style="color:#ff5c57">CROSS_COMPILE</span><span style="color:#ff6ac1">=</span>aarch64-linux-gnu- <span style="color:#ff5c57">UAPI</span><span style="color:#ff6ac1">=</span>~/git/linux-evl <span style="color:#ff5c57">DESTDIR</span><span style="color:#ff6ac1">=</span>/nfsroot/hikey/usr/evl install
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkdir /tmp/build-hikey
+$ cd ~/git/libevl
+$ make <span style="color:#ef6155">O</span><span style="color:#5bc4bf">=</span>/tmp/build-hikey <span style="color:#ef6155">ARCH</span><span style="color:#5bc4bf">=</span>arm64 <span style="color:#ef6155">CROSS_COMPILE</span><span style="color:#5bc4bf">=</span>aarch64-linux-gnu- <span style="color:#ef6155">UAPI</span><span style="color:#5bc4bf">=</span>~/git/linux-evl <span style="color:#ef6155">DESTDIR</span><span style="color:#5bc4bf">=</span>/nfsroot/hikey/usr/evl install
 </code></pre></div>
 <div class="notices note">
     <div class="label">Note</div><p>This is good practice to always generate the build output files to a
@@ -583,19 +604,22 @@ home located at e.g. /usr/evl can be done as follows:</p>
 <blockquote>
 <p>Building natively from a build directory</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkdir /tmp/build-native <span style="color:#ff6ac1">&amp;&amp;</span> <span style="color:#ff5c57">cd</span> /tmp/build-native
-$ make -C ~/git/libevl <span style="color:#ff5c57">O</span><span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$PWD</span> <span style="color:#ff5c57">UAPI</span><span style="color:#ff6ac1">=</span>~/git/linux-evl <span style="color:#ff5c57">DESTDIR</span><span style="color:#ff6ac1">=</span>/usr/evl install
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkdir /tmp/build-native <span style="color:#5bc4bf">&amp;&amp;</span> cd /tmp/build-native
+$ make -C ~/git/libevl <span style="color:#ef6155">O</span><span style="color:#5bc4bf">=</span><span style="color:#ef6155">$PWD</span> <span style="color:#ef6155">UAPI</span><span style="color:#5bc4bf">=</span>~/git/linux-evl <span style="color:#ef6155">DESTDIR</span><span style="color:#5bc4bf">=</span>/usr/evl install
 </code></pre></div><p>or,</p>
 <blockquote>
 <p>Building natively from the EVL library source tree</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkdir /tmp/build-native
-$ <span style="color:#ff5c57">cd</span> ~/git/libevl
-$ make <span style="color:#ff5c57">O</span><span style="color:#ff6ac1">=</span>/tmp/build-native <span style="color:#ff5c57">UAPI</span><span style="color:#ff6ac1">=</span>~/git/linux-evl <span style="color:#ff5c57">DESTDIR</span><span style="color:#ff6ac1">=</span>/usr/evl install
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkdir /tmp/build-native
+$ cd ~/git/libevl
+$ make <span style="color:#ef6155">O</span><span style="color:#5bc4bf">=</span>/tmp/build-native <span style="color:#ef6155">UAPI</span><span style="color:#5bc4bf">=</span>~/git/linux-evl <span style="color:#ef6155">DESTDIR</span><span style="color:#5bc4bf">=</span>/usr/evl install
 </code></pre></div><h3 id="testing-the-installation">Testing the installation</h3>
 <p>At this point, you really want to <a href="https://the-going.github.io/evlproject/core/testing/">test the EVL installation</a>.</p>
 <hr>
-<p style="text-align:right">Last modified: Fri, 15 Oct 2021 22:06:25 MSK</p>
+<p style="text-align:right">Last modified: Fri, 15 Oct 2021 22:06:25 MSK
+
+	
+</p>
 
 
           <footer class="footline">
@@ -610,18 +634,12 @@ $ make <span style="color:#ff5c57">O</span><span style="color:#ff6ac1">=</span>/
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634415568"></script>
-    <script>
-      if (typeof mermaid != 'undefined') {
-        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
-      }
-    </script>
-    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634415568"></script>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572173"></script>
   </body>
 </html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.0" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Протестируем рендер страницы :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636142419" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636142419" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636142419" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636142419" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636142419" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636142419" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636142419" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636142419" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636142419" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636142419" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636142419"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/overview/testing/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636142419"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636142419"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636142419"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing/" title="Протестируем рендер страницы" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/overview/testing/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Atomic operations" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Atomic operations<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Architecture-specific bits" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Architecture bits<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/overview/testing/">English</option>
+                    <option id="ru" value="/ru/overview/testing/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/overview/"><span itemprop="name">Обзор</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/overview/testing/" aria-disabled="true"><span itemprop="name">Протестируем рендер страницы</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#h2-модульное-тестирование-кода">h2 Модульное тестирование <code>Кода</code></a>
+      <ul>
+        <li><a href="#h3-модульное-тестирование-code">h3 Модульное тестирование <code>Code</code></a></li>
+        <li><a href="#hectic-program">hectic: hammering the EVL context switching machinery</a></li>
+        <li><a href="#latmus-program">latmus: the litmus test for latency</a></li>
+      </ul>
+    </li>
+    <li><a href="#hahahugoshortcode-s18-hbhb">HAHAHUGOSHORTCODE-s18-HBHB</a></li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Протестируем рендер страницы</h1>
+
+<p>EVL comes with a series of tests you can run to make sure the core is
+performing correctly on your target system.
+EVL поставляется с серией тестов, которые вы можете выполнить, чтобы убедиться,
+что ядро работает правильно в вашей целевой системе.</p>
+<p><code>Текст Code в обратных одинарных кавычках</code></p>
+<h4 id="sh">```sh</h4>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#815ba4">for</span> val in <span style="color:#815ba4">$(</span>var<span style="color:#815ba4">)</span>; <span style="color:#815ba4">do</span>
+	echo <span style="color:#ef6155">$val</span>
+<span style="color:#815ba4">done</span>
+</code></pre></div><h2 id="h2-модульное-тестирование-кода">h2 Модульное тестирование <code>Кода</code></h2>
+<h3 id="h3-модульное-тестирование-code">h3 Модульное тестирование <code>Code</code></h3>
+<h4 id="h4-модульное-тестирование-code">h4 Модульное тестирование <code>Code</code></h4>
+<h5 id="h5-модульное-тестирование-code">h5 Модульное тестирование <code>Code</code></h5>
+<h6 id="h6-модульное-тестирование-code">h6 Модульное тестирование <code>Code</code></h6>
+<ul>
+<li><a href="https://example.com">link to site</a></li>
+<li><a href="https://example.com">Ссылка на сайт</a></li>
+<li><a href="https://the-going.github.io/evlproject/ru/core/">Пермалинк</a></li>
+</ul>
+<p>A series of unit testing programs is produced in <code>$prefix/tests</code> as
+part of building <code>libevl</code>. You should run each of them to make sure
+everything is fine. The simplest way to do this is as follows:</p>
+<blockquote>
+<p>Running the <code>EVL</code> unit tests</p>
+</blockquote>
+
+<div class="tab-panel">
+  <div class="tab-nav">
+    <button
+      data-tab-item="python"
+      data-tab-group="default"
+      class="tab-nav-button btn active"
+      onclick="switchTab('default','python')"
+      ><span>python</span></button>
+    <button
+      data-tab-item="mk"
+      data-tab-group="default"
+      class="tab-nav-button btn "
+      onclick="switchTab('default','mk')"
+      ><span>mk</span></button>
+    <button
+      data-tab-item="R"
+      data-tab-group="default"
+      class="tab-nav-button btn "
+      onclick="switchTab('default','R')"
+      ><span>R</span></button>
+    <button
+      data-tab-item="patch"
+      data-tab-group="default"
+      class="tab-nav-button btn "
+      onclick="switchTab('default','patch')"
+      ><span>patch</span></button>
+    <button
+      data-tab-item="Bash"
+      data-tab-group="default"
+      class="tab-nav-button btn "
+      onclick="switchTab('default','Bash')"
+      ><span>Bash</span></button>
+    <button
+      data-tab-item="C"
+      data-tab-group="default"
+      class="tab-nav-button btn "
+      onclick="switchTab('default','C')"
+      ><span>C</span></button>
+  </div>
+  <div class="tab-content">
+    <div data-tab-item="python" data-tab-group="default" class="tab-item active">
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">print(<span style="color:#48b685">&#34;Hello World!&#34;</span>)
+</code></pre></div>
+    </div>
+    <div data-tab-item="mk" data-tab-group="default" class="tab-item ">
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mk" data-lang="mk"><span style="color:#8d8687"># evl test
+</span><span style="color:#8d8687"></span><span style="color:#06b6ef">duplicate-element</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-dynamic</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">clone-fork-exec</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">clock-timer-periodic</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">poll-close</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">sem-wait</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-raise</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-tryenter</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">heap-torture</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-lower</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">poll-read</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-deadlock</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-wait-multiple</span><span style="color:#5bc4bf">:</span> OK
+</code></pre></div>
+    </div>
+    <div data-tab-item="R" data-tab-group="default" class="tab-item ">
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#5bc4bf">&gt;</span> <span style="color:#06b6ef">print</span>(<span style="color:#48b685">&#34;Hello World!&#34;</span>)
+monitor<span style="color:#5bc4bf">-</span>event<span style="color:#5bc4bf">:</span> OK
+proxy<span style="color:#5bc4bf">-</span>eventfd<span style="color:#5bc4bf">:</span> OK
+monitor<span style="color:#5bc4bf">-</span>flags.eshi<span style="color:#5bc4bf">:</span> OK
+monitor<span style="color:#5bc4bf">-</span>wait<span style="color:#5bc4bf">-</span>multiple.eshi<span style="color:#5bc4bf">:</span> OK
+sem<span style="color:#5bc4bf">-</span>wait.eshi<span style="color:#5bc4bf">:</span> OK
+detach<span style="color:#5bc4bf">-</span>self.eshi<span style="color:#5bc4bf">:</span> OK
+sem<span style="color:#5bc4bf">-</span>timedwait.eshi<span style="color:#5bc4bf">:</span> OK
+proxy<span style="color:#5bc4bf">-</span>pipe.eshi<span style="color:#5bc4bf">:</span> OK
+clock<span style="color:#5bc4bf">-</span>timer<span style="color:#5bc4bf">-</span>periodic.eshi<span style="color:#5bc4bf">:</span> OK
+proxy<span style="color:#5bc4bf">-</span>eventfd.eshi<span style="color:#5bc4bf">:</span> OK
+monitor<span style="color:#5bc4bf">-</span>event.eshi<span style="color:#5bc4bf">:</span> OK
+heap<span style="color:#5bc4bf">-</span>torture.eshi<span style="color:#5bc4bf">:</span> OK
+poll<span style="color:#5bc4bf">-</span>sem.eshi<span style="color:#5bc4bf">:</span> OK
+poll<span style="color:#5bc4bf">-</span>nested.eshi<span style="color:#5bc4bf">:</span> OK
+sem<span style="color:#5bc4bf">-</span>close<span style="color:#5bc4bf">-</span>unblock<span style="color:#5bc4bf">:</span> OK
+</code></pre></div>
+    </div>
+    <div data-tab-item="patch" data-tab-group="default" class="tab-item ">
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-patch" data-lang="patch"><span style="color:#ef6155">--- a/include/asm-generic/atomic.h
+</span><span style="color:#ef6155"></span><span style="color:#48b685">+++ b/include/asm-generic/atomic.h
+</span><span style="color:#48b685"></span><span style="color:#5bc4bf;font-weight:bold">@@ -80,9 +80,9 @@ static inline void atomic_##op(int i, atomic_t *v)			\
+</span><span style="color:#5bc4bf;font-weight:bold"></span> {									\
+ 	unsigned long flags;						\
+ 									\
+<span style="color:#ef6155">-	raw_local_irq_save(flags);					\
+</span><span style="color:#ef6155"></span><span style="color:#48b685">+	flags = hard_local_irq_save();					\
+</span><span style="color:#48b685"></span> 	v-&gt;counter = v-&gt;counter c_op i;					\
+<span style="color:#ef6155">-	raw_local_irq_restore(flags);					\
+</span><span style="color:#ef6155"></span><span style="color:#48b685">+	hard_local_irq_restore(flags);					\
+</span><span style="color:#48b685"></span> }
+
+ #define ATOMIC_OP_RETURN(op, c_op)					\
+<span style="color:#5bc4bf;font-weight:bold">@@ -91,9 +91,9 @@ static inline int atomic_##op##_return(int i, atomic_t *v)		\
+</span><span style="color:#5bc4bf;font-weight:bold"></span> 	unsigned long flags;						\
+ 	int ret;							\
+ 									\
+<span style="color:#ef6155">-	raw_local_irq_save(flags);					\
+</span><span style="color:#ef6155"></span><span style="color:#48b685">+	flags = hard_local_irq_save();					\
+</span><span style="color:#48b685"></span> 	ret = (v-&gt;counter = v-&gt;counter c_op i);				\
+<span style="color:#ef6155">-	raw_local_irq_restore(flags);					\
+</span><span style="color:#ef6155"></span><span style="color:#48b685">+	hard_local_irq_restore(flags);					\
+</span><span style="color:#48b685"></span> 									\
+ 	return ret;							\
+ }
+<span style="color:#5bc4bf;font-weight:bold">@@ -104,10 +104,10 @@ static inline int atomic_fetch_##op(int i, atomic_t *v)			\
+</span><span style="color:#5bc4bf;font-weight:bold"></span> 	unsigned long flags;						\
+ 	int ret;							\
+ 									\
+<span style="color:#ef6155">-	raw_local_irq_save(flags);					\
+</span><span style="color:#ef6155"></span><span style="color:#48b685">+	flags = hard_local_irq_save();					\
+</span><span style="color:#48b685"></span> 	ret = v-&gt;counter;						\
+ 	v-&gt;counter = v-&gt;counter c_op i;					\
+<span style="color:#ef6155">-	raw_local_irq_restore(flags);					\
+</span><span style="color:#ef6155"></span><span style="color:#48b685">+	hard_local_irq_restore(flags);					\
+</span><span style="color:#48b685"></span> 									\
+ 	return ret;							\
+ }
+</code></pre></div>
+    </div>
+    <div data-tab-item="Bash" data-tab-group="default" class="tab-item ">
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Bash" data-lang="Bash"><span style="color:#8d8687">#!/bin/bash
+</span><span style="color:#8d8687"></span><span style="color:#8d8687">#</span>
+
+<span style="color:#8d8687">#######################################</span>
+usage<span style="color:#5bc4bf">()</span>
+<span style="color:#5bc4bf">{</span>
+    info_pr <span style="color:#48b685">&#34;
+</span><span style="color:#48b685">	used:
+</span><span style="color:#48b685">	</span><span style="color:#ef6155">$0</span><span style="color:#48b685"> mg   - make git in to /tmp as tmpfs
+</span><span style="color:#48b685">	</span><span style="color:#ef6155">$0</span><span style="color:#48b685"> ps   - aplly patches series
+</span><span style="color:#48b685">	</span><span style="color:#ef6155">$0</span><span style="color:#48b685"> evl  - for testing make libevl
+</span><span style="color:#48b685">	</span><span style="color:#ef6155">$0</span><span style="color:#48b685"> rpm  - make rpmbuild insert *.spec file
+</span><span style="color:#48b685">
+</span><span style="color:#48b685">	</span><span style="color:#ef6155">$0</span><span style="color:#48b685"> mk   - make kernel config = TODO =
+</span><span style="color:#48b685">	</span><span style="color:#ef6155">$0</span><span style="color:#48b685"> cc   - ccache parametrs
+</span><span style="color:#48b685">	</span><span style="color:#ef6155">$0</span><span style="color:#48b685"> br   - branding_evl for rpmbuild
+</span><span style="color:#48b685">    &#34;</span>
+    exit
+<span style="color:#5bc4bf">}</span>
+<span style="color:#8d8687">#########################################</span>
+
+get_up_libevl<span style="color:#5bc4bf">()</span>
+<span style="color:#5bc4bf">{</span>
+	<span style="color:#815ba4">if</span> <span style="color:#5bc4bf">[</span> -f <span style="color:#ef6155">$libevl_tree</span>/.git/config <span style="color:#5bc4bf">]</span> ; <span style="color:#815ba4">then</span>
+		git -C <span style="color:#ef6155">$libevl_tree</span> pull
+	<span style="color:#815ba4">else</span>
+		git -C <span style="color:#ef6155">$SCRATCH_AREA</span> clone <span style="color:#ef6155">$URL_libevl</span>
+	<span style="color:#815ba4">fi</span>
+<span style="color:#5bc4bf">}</span>
+
+</code></pre></div>
+    </div>
+    <div data-tab-item="C" data-tab-group="default" class="tab-item ">
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;evl/mutex.h&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687"></span>
+<span style="color:#815ba4">static</span> <span style="color:#815ba4">struct</span> evl_mutex mutex;
+
+<span style="color:#fec418">void</span> <span style="color:#06b6ef">create_new_mutex</span>(<span style="color:#fec418">void</span>)
+{
+	<span style="color:#fec418">int</span> fd;
+
+	<span style="color:#8d8687">/* Create a (private) non-recursive mutex with priority inheritance enabled. */</span>
+	fd <span style="color:#5bc4bf">=</span> evl_create_mutex(mutex,
+					EVL_CLOCK_MONOTONIC,
+					<span style="color:#f99b15">0</span>,
+					EVL_MUTEX_NORMAL, <span style="color:#48b685">&#34;name_of_mutex&#34;</span>);
+	<span style="color:#8d8687">/* skipping checks */</span>
+
+	<span style="color:#815ba4">return</span> fd;
+}
+
+<span style="color:#fec418">void</span> <span style="color:#06b6ef">arch_do_IRQ_pipelined</span>(<span style="color:#815ba4">struct</span> irq_desc <span style="color:#5bc4bf">*</span>desc)
+{
+	<span style="color:#815ba4">struct</span> pt_regs <span style="color:#5bc4bf">*</span>regs <span style="color:#5bc4bf">=</span> raw_cpu_ptr(<span style="color:#5bc4bf">&amp;</span>irq_pipeline.tick_regs);
+	<span style="color:#fec418">unsigned</span> <span style="color:#fec418">int</span> irq <span style="color:#5bc4bf">=</span> irq_desc_get_irq(desc);
+
+<span style="color:#8d8687">#ifdef CONFIG_SMP
+</span><span style="color:#8d8687"></span>	<span style="color:#8d8687">/*
+</span><span style="color:#8d8687">	 * Check for IPIs, handing them over to the specific dispatch
+</span><span style="color:#8d8687">	 * code.
+</span><span style="color:#8d8687">	 */</span>
+	<span style="color:#815ba4">if</span> (irq <span style="color:#5bc4bf">&gt;=</span> OOB_IPI_BASE <span style="color:#5bc4bf">&amp;&amp;</span>
+	    irq <span style="color:#5bc4bf">&lt;</span> OOB_IPI_BASE <span style="color:#5bc4bf">+</span> NR_IPI <span style="color:#5bc4bf">+</span> OOB_NR_IPI) {
+		__handle_IPI(irq <span style="color:#5bc4bf">-</span> OOB_IPI_BASE, regs);
+		<span style="color:#815ba4">return</span>;
+	}
+<span style="color:#8d8687">#endif
+</span><span style="color:#8d8687"></span>
+	do_domain_irq(irq, regs);
+}
+</code></pre></div>
+    </div>
+  </div>
+</div>
+
+<p>In the example above, <em>sched-quota-accuracy</em> failed because
+<a href="https://the-going.github.io/evlproject/ru/core/build-steps/#core-kconfig">CONFIG_EVL_SCHED_QUOTA</a> was not set in the kernel configuration. Likewise,
+<em>sched-tp-accuracy</em> requires <a href="https://the-going.github.io/evlproject/ru/core/build-steps/#core-kconfig">CONFIG_EVL_SCHED_TP</a> to be enabled in the kernel
+configuration.</p>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>The test loop aborts immediately upon a test failure. You may disable
+this behavior by running <code>evl test -k</code> (i.e. <em>keep going</em>) instead.</p>
+
+</div>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>The test loop aborts immediately upon a test failure. You may disable
+this behavior by running <code>evl test -k</code> (i.e. <em>keep going</em>) instead.</p>
+
+</div>
+
+<div class="notices info">
+    <div class="label">Информация в заголовке может быть введена</div><p>Цикл тестирования прерывается сразу же после сбоя теста. Вы можете отключить
+это поведение, запустив вместо этого <code>evl test -k</code> (т.е. <em>keep going</em>).</p>
+
+</div>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>To get this test running, you will need <code>CONFIG_EVL_HECTIC</code> to be
+enabled in the kernel configuration, and loaded into the kernel under
+test if you built it as a dynamic module.</p>
+
+</div>
+<h3 id="hectic-program">hectic: hammering the EVL context switching machinery</h3>
+<p>By default, the <code>hectic</code> program runs a truckload of EVL threads both
+in user and kernel spaces, for exercising the scheduler of the
+autonomous core. In addition, this test can specifically stress the
+floating-point management code to make sure the FPU is shared
+flawlessly between out-of-band and in-band thread contexts.</p>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>To get this test running, you will need <code>CONFIG_EVL_HECTIC</code> to be
+enabled in the kernel configuration, and loaded into the kernel under
+test if you built it as a dynamic module.</p>
+
+</div>
+<h3 id="latmus-program">latmus: the litmus test for latency</h3>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>If you plan for measuring the worst case latency on your target
+system, you should run the <a href="https://the-going.github.io/evlproject/ru/core/commands/#evl-check-command">evl check</a> command on such system in
+order to detect any obvious misconfiguration of the kernel early on.</p>
+
+</div>
+<p>With the sole <code>-m</code> option or without any argument, the
+<a href="https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c">latmus</a>
+application runs a 1Khz sampling loop, collecting the min, max and
+average latency values obtained for an EVL thread running in
+user-space which responds to <a href="">timer events</a>. This is a
+basic latency benchmark which does not require any additional
+interrupt source beyond the on-chip hardware timer readily available
+to the kernel.</p>
+<p>In addition, you can use this application to measure the response time
+of a thread running in user-space to external interrupts, specifically
+to <a href="">GPIO events</a>. This
+second call form is selected by the <code>-Z</code> and <code>-z</code> option switches.</p>
+<p>Finally, passing <code>-t</code> starts a <a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">calibration of the EVL core timer</a>, finding the best configuration
+values.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Unless you only plan to measure <a href="">in-band response time to GPIO
+events</a>, you will
+need <code>CONFIG_EVL_LATMUS</code> to be enabled in the kernel configuration to
+run the timer calibration or the <a href="">response to timer test</a>. This
+driver must be loaded into the kernel under test if you built it as a
+dynamic module. For those familiar with <a href="https://git.xenomai.org/xenomai/-/wikis/home">Xenomai 3 Cobalt</a>, this program
+combines and extends the features of the
+<a href="https://xenomai.org/documentation/xenomai-3/html/man1/latency/index.html">latency</a>
+and
+<a href="https://xenomai.org/documentation/xenomai-3/html/man1/autotune/index.html">autotune</a>
+utilities.</p>
+
+</div>
+<p><a href="https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c">latmus</a>
+accepts the following arguments, given as short or long option names:</p>
+
+<p><li><i>-i --irq</i><p>Collect latency figures or tune the EVL core timer from the context of
+an in-kernel interrupt handler.</p>
+</li></p>
+
+
+<p><li><i>-k --kernel</i><p>Collect latency figures or tune the EVL core timer from the context of
+a kernel-based EVL thread.</p>
+</li></p>
+
+
+<p><li><i>-u --user</i><p>Collect latency figures or tune the EVL core timer from the context of
+an EVL thread running in user-space. This is the default mode, in
+absence of <code>-i</code> and <code>-k</code>.</p>
+</li></p>
+
+
+<div class="mermaid" align="left">
+flowchart LR;
+    S("Сборка libevl") --> X["Установка libevl"]
+    style S fill:#99ccff;
+    click S href "https://the-going.github.io/ru/core/build-steps"
+    X --> A["Сборка ядра"]
+    click A href "https://the-going.github.io/ru/core/build-steps"
+    A --> B["Установка ядра"]
+    style A fill:#99ccff;
+    B --> C["Загрузка цели"]
+    style C fill:#ffffcc;
+    C --> U["Запуск проверки evl"]
+    style U fill:#ffffcc;
+    click U href "/ru/core/commands/#evl-check-command"
+    U --> UU{OK?}
+    style UU fill:#fff;
+    UU -->|No| R[Исправление Kconfig]
+    UU -->|Yes| D["Запуск тестов"]
+    click R href "/ru/core/caveat/"
+    style R fill:#99ccff;
+    R --> A
+    style D fill:#ffffcc;
+    click D "/ru/core/testing/#evl-unit-testing"
+    D --> Тестирование
+    subgraph "Тестирование"
+		L{OK?}
+		style L fill:#fff;
+		L -->|Yes| E["Тест с 'hectic'"]
+		L -->|No| Z["Отчёт в upstream"]
+		style Z fill:#ff420e;
+		click E "/core/testing#hectic-program"
+		click Z "https://xenomai.org/mailman/listinfo/xenomai/"
+		E --> M{OK?}
+		style M fill:#fff;
+		M -->|Yes| F["Калибровка таймера"]
+		M -->|No| Z
+		click F "/core/runtime-settings#calibrate-core-timer"
+		style E fill:#ffffcc;
+		F --> G["Тест с 'latmus'"]
+		style F fill:#ffffcc;
+		style G fill:#ffffcc;
+		click G "/core/testing#latmus-program"
+		G --> N{OK?}
+		style N fill:#fff;
+		N -->|Yes| O["Иди праздновать"]
+		N -->|No| Z
+		style O fill:#33cc66;
+    end
+</div>
+
+<h2 id="hahahugoshortcode-s18-hbhb">
+<div class="mermaid" align="left">
+flowchart LR
+  subgraph TOP
+    subgraph B1
+        i1 -->f1
+    end
+    subgraph B2
+        i2 -->f2
+    end
+
+  end
+  A --> TOP --> B
+  B1 o==o B2
+</div>
+</h2>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/overview/" title="Обзор"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/" title="Ядро EVL"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636142420"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636142420"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636142420"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636142420"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636142420"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636142420"></script>
+    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1636142420"></script>
+    <script>
+      if (typeof mermaid != 'undefined' && typeof mermaid.mermaidAPI != 'undefined') {
+        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
+      }
+    </script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636142420"></script>
+  </body>
+</html>

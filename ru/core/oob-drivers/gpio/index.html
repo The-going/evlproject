@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>GPIO :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/oob-drivers/gpio/">English</option>
+                    <option id="ru" value="/ru/core/oob-drivers/gpio/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/oob-drivers/"><span itemprop="name">Real-time I/O drivers</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/" aria-disabled="true"><span itemprop="name">GPIO</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#out-of-band-gpio-operations-in-a-nutshell">Out-of-band GPIO operations in a nutshell</a></li>
+        <li><a href="#out-of-band-line-event-and-line-handle-requests">Out-of-band line event and line handle requests</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>GPIO</h1>
+
+<p>Dealing with GPIOs from the <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">out-of-band</a> execution stage
+enables the application to always respond to external signals within a
+few microseconds regardless of the <a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#stress-load">in-band workload</a> running in parallel on
+the system. Enabling <a href="https://the-going.github.io/evlproject/ru/core/build-steps/#core-kconfig">CONFIG_GPIOLIB_OOB</a> in the kernel configuration turns
+on such such capability in the regular <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/3451245cdc9846835f8a2786767b17037ee13dda/drivers/gpio/gpiolib-cdev.c#L463">GPIOLIB
+driver</a>,
+which depends on the EVL core.  The out-of-band GPIO support is
+available to applications using a couple of additional I/O requests to
+the character device interface exported by this driver to application
+code running in user-space (i.e. based on
+<a href="http://man7.org/linux/man-pages/man2/ioctl.2.html">ioctl(2)</a> and
+<a href="http://man7.org/linux/man-pages/man2/read.2.html">read(2)</a> calls for
+the most part). This inner interface is tersely documented, but you
+may find your way by having a look at this demo code available from
+the <a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/gpio">mainline kernel
+tree</a>.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>This driver interface is used by the
+<a href="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/">libgpiod</a>
+API internally.</p>
+
+</div>
+<h3 id="out-of-band-gpio-operations-in-a-nutshell">Out-of-band GPIO operations in a nutshell</h3>
+<p>As stated in the <a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">introduction</a>, the out-of-band I/O logic slips
+into the regular Linux device driver model as much as possible,
+without imposing a separate driver stack. In the GPIO case, we have
+been able to add the out-of-band support to an existing driver such as
+the <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/3451245cdc9846835f8a2786767b17037ee13dda/drivers/gpio/gpiolib-cdev.c">GPIOLIB
+core</a>
+instead of providing a dedicated driver.</p>
+<p>This translates as follows:</p>
+<ul>
+<li>
+<p>Common GPIO handling operations in this driver are extended with the
+specific
+<a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/devices/gpio.h#L8">GPIOHANDLE_REQUEST_OOB</a>
+flag, which tells the GPIOLIB core about our intent to operate a
+GPIO pin directly from the out-of-band execution stage, for input
+and/or output. Line set up and configuration are still done using
+the regular
+<a href="http://man7.org/linux/man-pages/man2/ioctl.2.html">ioctl(2)</a>
+interface, since these are in-band operations by design.</p>
+</li>
+<li>
+<p>Waiting for a GPIO event is done by calling the <a href="https://the-going.github.io/evlproject/ru/core/user-api/io/#oob_read">oob_read()</a> I/O service,
+instead of
+<a href="http://man7.org/linux/man-pages/man2/read.2.html">read(2)</a>.</p>
+</li>
+<li>
+<p>Toggling a GPIO state is done by calling the <a href="https://the-going.github.io/evlproject/ru/core/user-api/io/#oob_ioctl">oob_ioctl()</a> I/O service, instead of
+<a href="http://man7.org/linux/man-pages/man2/ioctl.2.html">ioctl(2)</a>.</p>
+</li>
+</ul>
+<h3 id="out-of-band-line-event-and-line-handle-requests">Out-of-band line event and line handle requests</h3>
+<p>In order to use the out-of-band GPIO features, one simply needs to add
+the
+<a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/devices/gpio.h#L8">GPIOHANDLE_REQUEST_OOB</a>
+flag defined by the EVL core to the common <code>GPIOHANDLE_REQUEST_INPUT</code>,
+<code>GPIOHANDLE_REQUEST_OUTPUT</code> operation flags, when issuing the
+<code>GPIO_GET_LINEEVENT_IOCTL</code> and <code>GPIO_GET_LINEHANDLE_IOCTL</code>
+<a href="http://man7.org/linux/man-pages/man2/ioctl.2.html">ioctl(2)</a> requests
+respectively. For instance, this is a fragment of code adapted from the
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-gpio-response-time">latmus application</a> which
+measures response time to GPIO events:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;sys/ioctl.h&gt;
+#include &lt;linux/gpio.h&gt;
+#include &lt;uapi/evl/devices/gpio.h&gt;
+
+static void setup_gpio_pins(int *fds)
+{
+	struct gpiohandle_request out;
+	struct gpioevent_request in;
+	int ret;
+
+	in.handleflags = GPIOHANDLE_REQUEST_INPUT | GPIOHANDLE_REQUEST_OOB;
+	in.eventflags = GPIOEVENT_REQUEST_RISING_EDGE;
+	in.lineoffset = gpio_inpin; /* Input pin number */
+	strcpy(in.consumer_label, &#34;latmon-pulse&#34;);
+
+	ret = ioctl(gpio_infd, GPIO_GET_LINEEVENT_IOCTL, &amp;in);
+	if (ret)
+		error(1, errno, &#34;ioctl(GPIO_GET_LINEEVENT_IOCTL)&#34;);
+
+	/* in.fd now contains the oob-capable line event descriptor. */
+
+	out.lineoffsets[0] = gpio_outpin; /* Output pin number */
+        out.lines = 1;
+	out.flags = GPIOHANDLE_REQUEST_OUTPUT | GPIOHANDLE_REQUEST_OOB;
+        out.default_values[0] = 1;
+	strcpy(out.consumer_label, &#34;latmon-ack&#34;);
+
+	ret = ioctl(gpio_outfd, GPIO_GET_LINEHANDLE_IOCTL, &amp;out);
+	if (ret)
+		error(1, errno, &#34;ioctl(GPIO_GET_LINEHANDLE_IOCTL)&#34;);
+
+	/* out.fd now contains the oob-capable line handle descriptor. */
+
+	fds[0] = in.fd;
+	fds[1] = out.fd;
+}
+</code></pre></div><p>Once a file descriptor is obtained on the GPIO controller - like
+<code>/dev/gpiochip0</code> - for input (<code>gpio_infd</code>) and output (<code>gpio_outfd</code>),
+the application may ask for:</p>
+<ul>
+<li>
+<p>a line event descriptor for receiving GPIO interrupts directly from
+the out-of-band stage, by waiting on the <a href="https://the-going.github.io/evlproject/ru/core/user-api/io/#oob_read">oob_read()</a> I/O service.</p>
+</li>
+<li>
+<p>a line handle descriptor for changing the state of GPIO pins
+directly from the out-of-band stage, by calling the
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/io/#oob_ioctl">oob_ioctl()</a>
+I/O service, with the <code>GPIOHANDLE_SET_LINE_VALUES_IOCTL</code> request code.</p>
+</li>
+</ul>
+<p>A thread which responds to GPIO events on an input pin by flipping the
+state of an output pin, all from the out-of-band stage could look like
+this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static void *gpio_responder_thread(void *arg)
+{
+	struct gpiohandle_data data = { 0 };
+	struct gpioevent_data event;
+	const int ackval = 0;	/* Remote observes falling edges. */
+	int fds[2], efd, ret;
+
+	setup_gpio_pins(fds);
+
+	/*
+	 * Attach to the EVL core so that we may issue out-of-band
+	 * requests.
+	 */
+	efd = evl_attach_self(&#34;/gpio-responder:%d&#34;, getpid());
+	if (efd &lt; 0)
+		error(1, -efd, &#34;evl_attach_self() failed&#34;);
+
+	/*
+	 * Loop: wait for the next event, then trigger an edge by flipping
+	 * the pin state.
+	 */
+	for (;;) {
+		data.values[0] = !ackval;
+		ret = oob_ioctl(fds[1], GPIOHANDLE_SET_LINE_VALUES_IOCTL, &amp;data);
+		if (ret)
+			error(1, errno,
+			&#34;ioctl(GPIOHANDLE_SET_LINE_VALUES_IOCTL) failed&#34;);
+
+		/* Wait for the next interrupt on the input pin. */
+		ret = oob_read(fds[0], &amp;event, sizeof(event));
+		if (ret != sizeof(event))
+			break;
+
+		/* Start flipping the output pin. */
+		data.values[0] = ackval;
+		ret = oob_ioctl(fds[1], GPIOHANDLE_SET_LINE_VALUES_IOCTL, &amp;data);
+		if (ret)
+			error(1, errno,
+				&#34;ioctl(GPIOHANDLE_SET_LINE_VALUES_IOCTL) failed&#34;);
+	}
+
+	return NULL;
+}
+</code></pre></div><hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/" title="SPI"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/under-the-hood/" title="Под капотом"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

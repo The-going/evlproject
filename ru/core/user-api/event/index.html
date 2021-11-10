@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title> :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/user-api/event/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/event/" title="" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/event/">Event<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/event/">English</option>
+                    <option id="ru" value="/ru/core/user-api/event/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/"><span itemprop="name">Using libevl</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/event/" aria-disabled="true"><span itemprop="name"></span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#synchronizing-on-event">Synchronizing on arbitrary events</a></li>
+        <li><a href="#event-services">Event services</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1></h1>
+
+<h3 id="synchronizing-on-event">Synchronizing on arbitrary events</h3>
+<p>An EVL event object has the same semantics than a POSIX <a href="https://pubs.opengroup.org/onlinepubs/7908799/xsh/pthread_cond_wait.html">condition
+variable</a>. It
+can be used for synchronizing EVL threads on the state of some shared
+information in a raceless way. Proper serialization is enforced by
+pairing an event with a <a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">mutex</a>. The typical usage pattern is as
+follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/mutex.h&gt;
+#include &lt;evl/event.h&gt;
+
+struct evl_mutex lock = EVL_MUTEX_INITIALIZER(&#34;this_lock&#34;,
+       		 EVL_CLOCK_MONOTONIC, 0, EVL_MUTEX_NORMAL|EVL_CLONE_PRIVATE);
+struct evl_event event = EVL_EVENT_INITIALIZER(&#34;this_event&#34;,
+       		 EVL_CLOCK_MONOTONIC, EVL_CLONE_PRIVATE);
+bool condition = false;
+
+void waiter(void)
+{
+	evl_lock_mutex(&amp;lock);
+	/*
+	 * Check whether the wait condition is satisfied, go
+	 * sleeping if not. EVL drops the lock and puts the thread
+	 * to sleep atomically, then re-acquires it automatically
+	 * once the event is signaled before returning to the
+	 * caller.
+	 */
+	while (!condition)
+	      evl_wait_event(&amp;event, &amp;lock);
+
+	evl_unlock_mutex(&amp;lock);
+}
+	
+void poster(void)
+{
+	/*
+	 * Post the condition and signal the event to the waiter,
+	 * all atomically by holding the lock. CAUTION: actual wake
+	 * up happens when dropping the lock protecting the event.
+	 */
+	evl_lock_mutex(&amp;lock);
+	condition = true;
+	evl_signal_event(&amp;event);
+	evl_unlock_mutex(&amp;lock);
+}
+	
+</code></pre></div><p>Of course, the way you would express the condition to be satisfied is
+fully yours. It could be a simple boolean condition like illustrated,
+or the combination of multiple tests and/or computations, whatever
+works.</p>
+
+<div class="notices info">
+    <div class="label">Информация</div><p>EVL optimizes the wake up sequence on event receipt by implementing a
+<em>wait morphing</em> technique. As a result, the waiter resumes execution
+once the lock which protects access to the condition is released by
+the thread posting the awaited event. This spares us a useless context
+switch to the waiter in case it has a higher priority than the poster.</p>
+
+</div>
+<h3 id="event-services">Event services</h3>
+<hr>
+
+<div class="proto"><a name="evl_create_event"></a>
+int evl_create_event(struct evl_event *evt, int clockfd, int flags, const char *fmt, ...)
+</div>
+
+<p>To create an event, you need to call <a href="#evl_create_event">evl_create_event()</a> which returns a file descriptor representing
+the new object upon success. This is the generic call form; for
+creating an event with common pre-defined settings, see
+<a href="#evl_new_event">evl_new_event()</a>.</p>
+
+<p><li><i>evt</i><p>An in-memory event descriptor is constructed by
+<a href="#evl_create_event">evl_create_event()</a>,
+which contains ancillary information other calls will need. <em>evt</em>
+is a pointer to such descriptor of type <code>struct evl_event</code>.</p>
+</li></p>
+
+
+<p><li><i>clockfd</i><p>Some event-related calls are timed like
+<a href="#evl_timedwait_event">evl_timedwait_event()</a> which
+receives a timeout value. You can specify the <a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/">EVL clock</a> this timeout refers to by passing
+its file descriptor as <em>clockfd</em>. <a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/#builtin-clocks">Built-in EVL clocks</a> are accepted here.</p>
+</li></p>
+
+
+<p><li><i>flags</i><p>A set of creation flags for the new element, defining its
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-visibility">visibility</a>:</p>
+<ul>
+<li>
+<p><code>EVL_CLONE_PUBLIC</code> denotes a public element which is represented
+by a device file in the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl</a> file hierarchy,
+which makes it visible to other processes for sharing.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_PRIVATE</code> denotes an element which is private to the
+calling process. No device file appears for it in the
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl</a> file hierarchy.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_NONBLOCK</code> sets the file descriptor of the new event in
+non-blocking I/O mode (<code>O_NONBLOCK</code>). By default, <code>O_NONBLOCK</code> is
+cleared for the file descriptor.</p>
+</li>
+</ul>
+</li></p>
+
+
+<p><li><i>fmt</i><p>A <a href="http://man7.org/linux/man-pages/man3/printf.3.html">printf</a>-like
+format string to generate the event name. See this description of the
+[naming convention]
+(/ru/core/user-api/#element-naming-convention).</p>
+</li></p>
+
+
+<p><li><i>...</i><p>The optional variable argument list completing the format.</p>
+</li></p>
+
+<p><a href="#evl_create_event">evl_create_event()</a> returns the file descriptor of the newly created
+event on success. Otherwise, a negated error code is returned:</p>
+<ul>
+<li>
+<p>-EEXIST	The generated name is conflicting with an existing mutex,
+event, semaphore or flag group name.</p>
+</li>
+<li>
+<p>-EINVAL	Either <em>flags</em> is wrong, <em>clockfd</em> does not refer to a valid EVL clock,
+or the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-naming-convention">generated name</a> is badly formed.</p>
+</li>
+<li>
+<p>-ENAMETOOLONG	The overall length of the device element&rsquo;s file path including
+the generated name exceeds PATH_MAX.</p>
+</li>
+<li>
+<p>-EMFILE	The per-process limit on the number of open file descriptors
+has been reached.</p>
+</li>
+<li>
+<p>-ENFILE	The system-wide limit on the total number of open files
+has been reached.</p>
+</li>
+<li>
+<p>-ENOMEM	No memory available.</p>
+</li>
+<li>
+<p>-ENXIO	The EVL library is not initialized for the current process.
+Such initialization happens implicitly when
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_self">evl_attach_self()</a>
+is called by any thread of your
+process, or by explicitly calling <a href="https://the-going.github.io/evlproject/ru/core/user-api/init/#evl_init">evl_init()</a>. You have to bootstrap the library services in a
+way or another before creating an EVL event.</p>
+</li>
+</ul>
+
+<div class="notices info">
+    <div class="label">Информация</div><p>An event object cannot be used alone, it has to be paired with an <a href="">EVL
+mutex</a> for proper operation.</p>
+
+</div>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/event.h&gt;
+
+static struct evl_event event;
+
+void create_new_event(void)
+{
+	int evfd;
+
+	evfd = evl_create_event(&amp;event, EVL_CLOCK_MONOTONIC, &#34;name_of_event&#34;);
+	/* skipping checks */
+	
+	return evfd;
+}
+</code></pre></div><p>An event is based on the <a href="https://the-going.github.io/evlproject/ru/core/#evl-core-elements">EVL monitor</a> element. For this reason, the
+device representing the new element appears in the
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl/monitor</a> hierarchy.</p>
+<hr>
+
+<div class="proto"><a name="evl_new_event"></a>
+int evl_new_event(struct evl_event *evt, const char *fmt, ...)
+</div>
+
+<p>This call is a shorthand for creating a private event timed on the built-in
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/#builtin-clocks">EVL monotonic clock</a>. It is identical
+to calling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	evl_create_event(evt, EVL_CLOCK_MONOTONIC, EVL_CLONE_PRIVATE, fmt, ...);
+</code></pre></div>
+<div class="notices info">
+    <div class="label">Информация</div><p>Note that if the [generated name] (/ru/core/user-api/#element-naming-convention) starts with a
+slash ('/') character, <code>EVL_CLONE_PRIVATE</code> would be automatically turned
+into <code>EVL_CLONE_PUBLIC</code> internally.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="EVL_EVENT_INITIALIZER"></a>
+EVL_EVENT_INITIALIZER((const char *) name, (int) clockfd, (int) flags)
+</div>
+
+<p>The static initializer you can use with events. All arguments to this
+macro refer to their counterpart in the call to
+<a href="#evl_create_event">evl_create_event()</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_open_event"></a>
+int evl_open_event(struct evl_event *evt, const char *fmt, ...)
+</div>
+
+<p>Knowing its name in the EVL device hierarchy, you may want to open
+an existing event, possibly from a different process, obtaining a new
+file descriptor on such object. You can do so by calling
+<a href="#evl_open_event">evl_open_event()</a>.</p>
+
+<p><li><i>evt</i><p>An in-memory event descriptor is constructed by <a href="#evl_open_event">evl_open_event()</a>,
+which contains ancillary information other calls will need. <em>evt</em> is a
+pointer to such descriptor of type <code>struct evl_event</code>. The information
+is retrieved from the existing event which was opened.</p>
+</li></p>
+
+
+<p><li><i>fmt</i><p>A printf-like format string to generate the name of the event to
+open. This name must exist in the EVL device file hierarchy at
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl/monitor</a>.
+See this description of the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-naming-convention">naming convention</a>.</p>
+</li></p>
+
+
+<p><li><i>...</i><p>The optional variable argument list completing the format.</p>
+</li></p>
+
+<p><a href="#evl_open_event">evl_open_event()</a> returns the file descriptor referring to the opened
+event on success, Otherwise, a negated error code is returned:</p>
+<ul>
+<li>
+<p>-EINVAL	The name refers to an existing object, but not to an event.</p>
+</li>
+<li>
+<p>-EMFILE	The per-process limit on the number of open file descriptors
+has been reached.</p>
+</li>
+<li>
+<p>-ENFILE	The system-wide limit on the total number of open files
+has been reached.</p>
+</li>
+<li>
+<p>-ENOMEM	No memory available.</p>
+</li>
+</ul>
+<hr>
+
+<div class="proto"><a name="evl_wait_event"></a>
+int evl_wait_event(struct evl_event *evt, struct evl_mutex *mutex)
+</div>
+
+<p>You should use this call to <a href="#synchronizing-on-event">wait for the condition</a> associated with an EVL event to become
+true. Access to such condition must be protected by an <a href="">EVL mutex</a>. The caller is put to sleep by the
+core until this happens, dropping the lock protecting the condition in
+the same move, all atomically so that no wake up event can be
+missed. Waiters are queued by order of <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/">scheduling priority</a>.</p>
+<p>Keep in mind that events may be subject to spurious wake ups, meaning
+that the condition might turn to false again before the waiter can
+resume execution for consuming the event. Therefore, abiding by the
+documented <a href="#synchronizing-on-event">usage pattern</a>
+for waiting for an event is very important.</p>
+
+<p><li><i>evt</i><p>The in-memory event descriptor constructed by
+either <a href="#evl_create_event">evl_create_event()</a> or
+<a href="#evl_open_event">evl_open_event()</a>, or statically built
+with <a href="#EVL_EVENT_INITIALIZER">EVL_EVENT_INITIALIZER</a>. In the latter case, an implicit call to
+<a href="#evl_create_event">evl_create_event()</a> is
+issued for <em>evt</em> before a wait is attempted, which may trigger a transition
+to the in-band execution mode for the caller.</p>
+</li></p>
+
+
+<p><li><i>mutex</i><p>The in-memory mutex descriptor returned by either
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#evl_create_mutex">evl_create_mutex()</a> or
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#evl_open_mutex">evl_open_mutex()</a>.
+This lock should be used to serialize access to the
+shared information representing the condition.</p>
+</li></p>
+
+<p><a href="#evl_wait_event">evl_wait_event()</a>
+returns zero if the event was signaled by a call to
+<a href="#evl_signal_event">evl_signal_event()</a> or
+<a href="#evl_broadcast_event">evl_broadcast_event()</a>. Otherwise, a negated
+error code may be returned if:</p>
+<p>-EINVAL	      <em>evt</em> does not represent a valid in-memory event
+descriptor. If that pointer is out of the caller&rsquo;s
+address space or points to read-only memory, the
+caller bluntly gets a memory access exception.</p>
+<p>-EBADFD	      A thread is currently pending on <em>evt</em> protected by a
+different mutex. When multiple threads issue concurrent
+wait requests on the same event, they must use the same
+mutex to serialize.</p>
+<p>If <em>evt</em> was statically initialized with
+<a href="#EVL_EVENT_INITIALIZER">EVL_EVENT_INITIALIZER</a>, then any error returned by
+<a href="#evl_create_event">evl_create_event()</a> may be
+passed back to the caller in case the implicit initialization call
+fails.</p>
+<hr>
+
+<div class="proto"><a name="evl_timedwait_event"></a>
+int evl_timedwait_event(struct evl_event *evt, struct evl_mutex *mutex, const struct timespec *timeout)
+</div>
+
+<p>This call is a variant of <a href="#evl_wait_event">evl_wait_event()</a> which allows specifying a timeout on the wait
+operation, so that the caller is unblocked after a specified delay
+sleeping without the event being signaled.</p>
+
+<p><li><i>evt</i><p>The in-memory event descriptor constructed by
+either <a href="#evl_create_event">evl_create_event()</a> or
+<a href="#evl_open_event">evl_open_event()</a>, or statically built
+with <a href="#EVL_EVENT_INITIALIZER">EVL_EVENT_INITIALIZER</a>. In the latter case, an implicit call to <a href="#evl_create_event">evl_create_event()</a> for
+<em>evt</em> is issued before a wait is attempted, which may trigger a transition
+to the in-band execution mode for the caller.</p>
+</li></p>
+
+
+<p><li><i>mutex</i><p>The in-memory mutex descriptor returned by either
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#evl_create_mutex">evl_create_mutex()</a> or
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#evl_open_mutex">evl_open_mutex()</a>.</p>
+</li></p>
+
+
+<p><li><i>timeout</i><p>A time limit to wait for the event to be signaled before the call
+returns on error. The clock mentioned in the call to
+<a href="#evl_create_event">evl_create_event()</a> will be used for
+tracking the elapsed time.</p>
+</li></p>
+
+<p>The possible return values include any status from
+<a href="#evl_wait_event">evl_wait_event()</a>, plus:</p>
+<p>-ETIMEDOUT	   The timeout fired, after the amount of time specified by
+<em>timeout</em>.</p>
+<hr>
+
+<div class="proto"><a name="evl_signal_event"></a>
+int evl_signal_event(struct evl_event *evt)
+</div>
+
+<p>This call notifies the thread heading the wait queue of an event at
+the time of the call (i.e. having the highest priority among waiters),
+indicating that the condition it has waited for may have become true.</p>
+<p>You must hold the <em>mutex</em> lock which protects accesses to the
+condition around the call to <a href="#evl_signal_event">evl_signal_event()</a>, because the
+notified thread will be actually <a href="#synchronizing-on-event">readied when such lock is
+dropped</a>, not at the time of
+the notification.</p>
+
+<p><li><i>evt</i><p>The in-memory event descriptor constructed by
+either <a href="#evl_create_event">evl_create_event()</a> or
+<a href="#evl_open_event">evl_open_event()</a>, or statically built
+with <a href="#EVL_EVENT_INITIALIZER">EVL_EVENT_INITIALIZER</a>. In the latter case, an implicit call to
+<a href="#evl_create_event">evl_create_event()</a> for <em>evt</em> is
+issued before the signal is sent, which may trigger a transition to
+the in-band execution mode for the caller.</p>
+</li></p>
+
+<p><a href="#evl_signal_event">evl_signal_event()</a> returns zero upon success, with the signal set
+pending for the event. Otherwise, a negated error code is returned:</p>
+<p>-EINVAL	      <em>evt</em> does not represent a valid in-memory event
+descriptor. If that pointer is out of the caller&rsquo;s
+address space or points to read-only memory, the
+caller bluntly gets a memory access exception.</p>
+<p>If <em>evt</em> was statically initialized with <a href="#EVL_EVENT_INITIALIZER">EVL_EVENT_INITIALIZER</a> but not passed to any
+event-related call yet, then any error status returned by
+<a href="#evl_create_event">evl_create_event()</a> may be passed
+back to the caller in case the implicit initialization call fails.</p>
+<p>If no thread was waiting on <em>evt</em> at the time of the call, no action
+is performed and <a href="#evl_signal_event">evl_signal_event()</a>
+returns zero.</p>
+<hr>
+
+<div class="proto"><a name="evl_signal_thread"></a>
+int evl_signal_thread(struct evl_event *evt, int thrfd)
+</div>
+
+<p>This service is a variant of <a href="#evl_signal_event">evl_signal_event()</a>, which directs the wake up signal to a
+specific waiter instead of waking up the thread heading the wait
+queue.</p>
+
+<p><li><i>evt</i><p>The in-memory event descriptor constructed by
+either <a href="#evl_create_event">evl_create_event()</a> or <a href="#evl_open_event">evl_open_event()</a>,
+or statically built
+with <a href="#EVL_EVENT_INITIALIZER">EVL_EVENT_INITIALIZER</a>. In the latter case, an implicit call to
+<a href="#evl_create_event">evl_create_event()</a> for <em>evt</em> is
+issued before the signal is sent, which may trigger a transition to
+the in-band execution mode for the caller.</p>
+</li></p>
+
+
+<p><li><i>thrfd</i><p>The file descriptor of the target thread, which must be attached to
+the EVL core by a call to <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">evl_attach_self()</a>.</p>
+</li></p>
+
+<p>The possible return values include any status from
+<a href="#evl_signal_event">evl_signal_event()</a>, plus:</p>
+<p>-EINVAL		   <em>thrfd</em> is not a valid file descriptor referring
+to an EVL thread.</p>
+<p>If the target thread was not waiting on <em>evt</em> at the time of the call,
+no action is performed and <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_signal_thread">evl_signal_thread()</a> returns zero.</p>
+<hr>
+
+<div class="proto"><a name="evl_broadcast_event"></a>
+int evl_broadcast(struct evl_event *evt)
+</div>
+
+<p>This service is yet another variant of <a href="#evl_signal_event">evl_signal_event()</a>, which wakes up <em>all</em> waiters currently
+sleeping on the event wait queue at the time of the call.</p>
+
+<p><li><i>evt</i><p>The in-memory event descriptor constructed by
+either <a href="#evl_create_event">evl_create_event()</a>
+or <a href="#evl_open_event">evl_open_event()</a>,
+or statically built with
+<a href="#EVL_EVENT_INITIALIZER">EVL_EVENT_INITIALIZER</a>. In the latter case, an implicit call to
+<a href="#evl_create_event">evl_create_event()</a> for <em>evt</em> is
+issued before the signal is sent, which may trigger a transition to
+the in-band execution mode for the caller.</p>
+</li></p>
+
+<p>The possible return values include any status from
+<a href="#evl_signal_event">evl_signal_event()</a>.</p>
+<p>If no thread was waiting on <em>evt</em> at the time of the call, no action
+is performed and <a href="#evl_broadcast_event">evl_broadcast_event()</a> returns zero.</p>
+<hr>
+
+<div class="proto"><a name="evl_close_event"></a>
+int evl_close_event(struct evl_event *evt)
+</div>
+
+<p>You can use <a href="#evl_close_event">evl_close_event()</a>
+to dispose of an EVL event, releasing
+the associated file descriptor, at which point <em>evt</em> will not be valid
+for any subsequent operation from the current process. However, this
+event object is kept alive in the EVL core until all file descriptors
+opened on it by call(s) to <a href="#evl_open_event">evl_open_event()</a> have been released, whether from the current
+process or any other process.</p>
+
+<p><li><i>evt</i><p>The in-memory descriptor of the event to dismantle.</p>
+</li></p>
+
+<p><a href="#evl_close_event">evl_close_event()</a>
+returns zero upon success. Otherwise, a negated
+error code is returned:</p>
+<p>-EINVAL	      <em>evt</em> does not represent a valid in-memory event
+descriptor. If that pointer is out of the caller&rsquo;s
+address space or points to read-only memory, the
+caller bluntly gets a memory access exception.</p>
+<p>Closing a <a href="#EVL_EVENT_INITIALIZER">statically initialized</a> event descriptor which has never
+been used in wait or signal operations always returns zero.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/" title="Mutex"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/" title="Semaphore"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

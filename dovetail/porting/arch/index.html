@@ -3,21 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="generator" content="Hugo 0.89.1" />
     <meta name="description" content="Xenomai 4 project">
     <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
-    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    
     <title>Architecture-specific bits :: Xenomai 4</title>
-    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/variant.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/print.css?1634415569" rel="stylesheet" media="print">
-    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634415569"></script>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572174" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572174" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572174"></script>
     <style>
       :root #header + #content > #left > #rlblock_left{
         display:none !important;
@@ -28,6 +29,11 @@
     </style>
   </head>
   <body class="" data-url="https://the-going.github.io/evlproject/dovetail/porting/arch/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
     <nav id="sidebar" class="showVisitedLinks">
       <div id="header-wrapper">
         <div id="header">
@@ -39,20 +45,16 @@
           <input data-search-input id="search-by" type="search" placeholder="Search...">
           <span data-search-clear=""><i class="fas fa-times"></i></span>
         </div>
-        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634415569"></script>
-        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572174"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572174"></script>
         <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
         <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
-        <script>
-          var index_url="https://the-going.github.io/evlproject/index.json";
-          var root_url="https://the-going.github.io/evlproject/";
-          var baseUri=root_url.replace(/\/$/, '');
-        </script>
-        <script src="https://the-going.github.io/evlproject/js/search.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572174"></script>
       </div>
       <div class="highlightable">
         <ul class="topics">
-          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/overview/testing-page/" title="Testing the page rendering" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/testing-page/">Test page<i class="fas fa-check read-icon"></i></a></li></ul></li>
           <li data-nav-id="/core/" title="The EVL core" class="dd-item"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core<i class="fas fa-check read-icon"></i></a><ul>
           <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL<i class="fas fa-check read-icon"></i></a></li>
           <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings<i class="fas fa-check read-icon"></i></a></li>
@@ -129,6 +131,25 @@
         <div id="prefooter">
           <hr/>
           <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/dovetail/porting/arch/" selected>English</option>
+                    <option id="ru" value="/ru/dovetail/porting/arch/">Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
             <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
           </ul>
         </div>
@@ -198,16 +219,16 @@ interrupt control operations are inherited from the in-band kernel
 implementation. The virtual ones should be built upon services
 provided by the <a href="https://the-going.github.io/evlproject/dovetail/porting/irqflow/">interrupt pipeline core</a>.</p>
 <ul>
-<li>firstly, the original *arch_local_** helpers should be renamed as
-*native_** helpers, affecting the hardware interrupt state in the
+<li>firstly, the original <em>arch_local_</em>* helpers should be renamed as
+<em>native_</em>* helpers, affecting the hardware interrupt state in the
 CPU. This naming convention is imposed on the architecture code by the
-generic helpers in _include/asm-generic/irq_pipeline.h_.</li>
+generic helpers in <em>include/asm-generic/irq_pipeline.h</em>.</li>
 </ul>
 <blockquote>
 <p>Example: introducing the <em>native</em> interrupt state accessors for the
 ARM architecture</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/include/asm/irqflags.h
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/include/asm/irqflags.h
 +++ b/arch/arm/include/asm/irqflags.h
  #if __LINUX_ARM_ARCH__ &gt;= 6
  
@@ -347,7 +368,7 @@ file available for inclusion from <em>&lt;asm/irq_pipeline.h&gt;</em>.</li>
 <p>Example: providing the virtual interrupt state accessors for the ARM
 architecture</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- /dev/null
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- /dev/null
 +++ b/arch/arm/include/asm/irq_pipeline.h
 @@ -0,0 +1,138 @@
 +#ifndef _ASM_ARM_IRQ_PIPELINE_H
@@ -476,7 +497,7 @@ with the CPU&rsquo;s interrupt bit position.</p>
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/include/asm/irqflags.h
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/include/asm/irqflags.h
 +++ b/arch/arm/include/asm/irqflags.h
 /*
  * CPU interrupt mask handling.
@@ -501,7 +522,7 @@ state in the combo word. This position can&rsquo;t conflict with <code>IRQMASK_I
 which is an alias to <code>PSR_I_BIT</code> (bit position 0 or 7).</p>
 
 </div>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- /dev/null
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- /dev/null
 +++ b/arch/arm/include/asm/irq_pipeline.h
 +
 +static inline notrace
@@ -584,7 +605,7 @@ have been made aware that they might receive an event under such
 conditions.</p>
 <p>For instance, the original ARM code for handling an IRQ which has
 preempted a kernel context would look like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">__irq_svc:
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">__irq_svc:
 	svc_entry
 	irq_handler
 
@@ -604,7 +625,7 @@ the event to a trampoline routine instead
 whether or not the epilogue code should run next. In the illustration
 below, this decision is returned as a boolean status to the caller,
 non-zero meaning that we may run the epilogue, zero otherwise.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/entry-armv.S
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/entry-armv.S
 +++ b/arch/arm/kernel/entry-armv.S
  	.macro	irq_handler
  #ifdef CONFIG_MULTI_IRQ_HANDLER
@@ -629,7 +650,7 @@ non-zero meaning that we may run the epilogue, zero otherwise.</p>
 </code></pre></div><p>The trampoline routine added to the original code, first delivers the
 interrupt to the machine-defined handler, then tells the caller
 whether the regular epilogue may run for such event.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/irq.c
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/irq.c
 +++ b/arch/arm/kernel/irq.c
 @@ -112,6 +112,15 @@ void __init set_handle_irq(void (*handle_irq)(struct pt_regs *))
  }
@@ -648,7 +669,7 @@ whether the regular epilogue may run for such event.</p>
 event is adapted, in order to carry out the earlier decision by
 <code>handle_arch_irq_pipelined()</code>, skipping the epilogue code if required
 to.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/entry-armv.S
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/entry-armv.S
 +++ b/arch/arm/kernel/entry-armv.S
  __irq_svc:
  	svc_entry
@@ -685,7 +706,7 @@ by out-of-band code.</p>
 </blockquote>
 <p>For instance, the original ARM code for returning from an exception
 event would be modified as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/entry-armv.S
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/entry-armv.S
 +++ b/arch/arm/kernel/entry-armv.S
 @@ -754,7 +772,7 @@ ENTRY(ret_from_exception)
   UNWIND(.cantunwind	)
@@ -697,7 +718,7 @@ event would be modified as follows:</p>
 </code></pre></div><p>With the implementation of <code>ret_to_user_pipelined</code> checking for the
 current stage, skipping the epilogue if the faulting code was running
 over an out-of-band context:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/entry-header.S
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/arch/arm/kernel/entry-header.S
 +++ b/arch/arm/kernel/entry-header.S
 +/*
 + * Branch to the exception epilogue, skipping the in-band work
@@ -765,7 +786,7 @@ the autonomous core lives.</p>
 <blockquote>
 <p>Reconciling the interrupt state in ARM64 epilogue</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> #include &lt;linux/errno.h&gt;
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> #include &lt;linux/errno.h&gt;
  #include &lt;linux/kernel.h&gt;
  #include &lt;linux/signal.h&gt;
 +#include &lt;linux/irq_pipeline.h&gt;
@@ -875,7 +896,7 @@ time an IPI event is received from the hardware, by calling
 <blockquote>
 <p>IPI domain for ARM</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static struct irq_domain *sipic_domain;
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static struct irq_domain *sipic_domain;
 
 static void sipic_irq_noop(struct irq_data *data) { }
 
@@ -1105,7 +1126,7 @@ TIMER_OOB_IPI or RESCHEDULE_OOB_IPI before it is fed into the
 pipeline (i.e. IRQ2056 or IRQ2057).</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static DEFINE_PER_CPU(unsigned long, ipi_messages);
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static DEFINE_PER_CPU(unsigned long, ipi_messages);
 
 static inline
 void send_IPI_message(const struct cpumask *target, unsigned int ipinr)
@@ -1260,7 +1281,7 @@ dedicated interrupt descriptor, the out-of-band code may request it
 directly, installing its own handler by a call to <a href="https://the-going.github.io/evlproject/dovetail/pipeline/irq_handling/">__request_percpu_irq()</a>.</p>
 
 </div>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static DEFINE_PER_CPU(unsigned long, ipi_messages);
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static DEFINE_PER_CPU(unsigned long, ipi_messages);
 
 static void smp_cross_call(const struct cpumask *target, unsigned int ipinr)
 {
@@ -1295,7 +1316,10 @@ static irqreturn_t ipi_handler(int irq, void *data)
 	return IRQ_HANDLED;
 }
 </code></pre></div><hr>
-<p style="text-align:right">Last modified: Sun, 10 Jan 2021 12:43:10 &#43;0100</p>
+<p style="text-align:right">Last modified: Sun, 10 Jan 2021 12:43:10 &#43;0100
+
+	
+</p>
 
 
           <footer class="footline">
@@ -1310,18 +1334,12 @@ static irqreturn_t ipi_handler(int irq, void *data)
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634415569"></script>
-    <script>
-      if (typeof mermaid != 'undefined') {
-        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
-      }
-    </script>
-    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634415569"></script>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572174"></script>
   </body>
 </html>

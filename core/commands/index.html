@@ -3,21 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="generator" content="Hugo 0.89.1" />
     <meta name="description" content="Xenomai 4 project">
     <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
-    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    
     <title>The &#39;evl&#39; command :: Xenomai 4</title>
-    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/variant.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/print.css?1634415568" rel="stylesheet" media="print">
-    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634415568"></script>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572173" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572173" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572173"></script>
     <style>
       :root #header + #content > #left > #rlblock_left{
         display:none !important;
@@ -28,6 +29,11 @@
     </style>
   </head>
   <body class="" data-url="https://the-going.github.io/evlproject/core/commands/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
     <nav id="sidebar" class="showVisitedLinks">
       <div id="header-wrapper">
         <div id="header">
@@ -39,20 +45,16 @@
           <input data-search-input id="search-by" type="search" placeholder="Search...">
           <span data-search-clear=""><i class="fas fa-times"></i></span>
         </div>
-        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634415568"></script>
-        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634415568"></script>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572173"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572173"></script>
         <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
         <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
-        <script>
-          var index_url="https://the-going.github.io/evlproject/index.json";
-          var root_url="https://the-going.github.io/evlproject/";
-          var baseUri=root_url.replace(/\/$/, '');
-        </script>
-        <script src="https://the-going.github.io/evlproject/js/search.js?1634415568"></script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572173"></script>
       </div>
       <div class="highlightable">
         <ul class="topics">
-          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/overview/testing-page/" title="Testing the page rendering" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/testing-page/">Test page<i class="fas fa-check read-icon"></i></a></li></ul></li>
           <li data-nav-id="/core/" title="The EVL core" class="dd-item parent"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core<i class="fas fa-check read-icon"></i></a><ul>
           <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL<i class="fas fa-check read-icon"></i></a></li>
           <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings<i class="fas fa-check read-icon"></i></a></li>
@@ -129,6 +131,25 @@
         <div id="prefooter">
           <hr/>
           <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/commands/" selected>English</option>
+                    <option id="ru" value="/ru/core/commands/">Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
             <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
           </ul>
         </div>
@@ -188,7 +209,7 @@ implemented by an external plugin, which can be a mere executable, or
 a script in whatever language. The only requirement is that the caller
 must have execute permission on such file to run it.</p>
 <p>The general syntax is as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">evl <span style="color:#ff6ac1">[</span>-V<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>-P &lt;cmddir&gt;<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>-h<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>&lt;command&gt; <span style="color:#ff6ac1">[</span>command-args<span style="color:#ff6ac1">]]</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">evl <span style="color:#5bc4bf">[</span>-V<span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span>-P &lt;cmddir&gt;<span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span>-h<span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span>&lt;command&gt; <span style="color:#5bc4bf">[</span>command-args<span style="color:#5bc4bf">]]</span>
 </code></pre></div><ul>
 <li>
 <p>&lt;command&gt; may be any command word listed by &lsquo;evl -h&rsquo;, such as:
@@ -213,8 +234,8 @@ part of, and <strong>&lt;revision&gt;</strong> refers to the kernel ABI this bin
 distribution is compatible with. For instance:</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#78787e"># evl -V</span>
-evl.0 -- <span style="color:#78787e">#1c6115c (2020-03-06 16:24:00 +0100) [requires ABI 19]</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#8d8687"># evl -V</span>
+evl.0 -- <span style="color:#8d8687">#1c6115c (2020-03-06 16:24:00 +0100) [requires ABI 19]</span>
 </code></pre></div>
 <div class="notices info">
     <div class="label">Info</div><p>The information following the double dash may be omitted if the built
@@ -226,30 +247,30 @@ sources were not version-controlled by GIT.</p>
 help, along with a short help string for each of the supported
 commands found in <strong>&lt;cmddir&gt;</strong>, such as:</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#78787e"># evl</span>
-usage: evl <span style="color:#ff6ac1">[</span>options<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>&lt;command&gt; <span style="color:#ff6ac1">[</span>&lt;args&gt;<span style="color:#ff6ac1">]]</span>
--P --prefix<span style="color:#ff6ac1">=</span>&lt;path&gt;   <span style="color:#ff5c57">set</span> <span style="color:#ff5c57">command</span> path prefix
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#8d8687"># evl</span>
+usage: evl <span style="color:#5bc4bf">[</span>options<span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span>&lt;command&gt; <span style="color:#5bc4bf">[</span>&lt;args&gt;<span style="color:#5bc4bf">]]</span>
+-P --prefix<span style="color:#5bc4bf">=</span>&lt;path&gt;   set command path prefix
 -V --version         print library and required ABI versions
--h --help            this <span style="color:#ff5c57">help</span>
+-h --help            this help
 
 available commands:
 
 check        check kernel configuration
-gdb          debug EVL <span style="color:#ff5c57">command</span> plugin with GDB
+gdb          debug EVL command plugin with GDB
 ps           report a snapshot of the current EVL threads
-<span style="color:#ff5c57">test</span>         run EVL tests
-trace        ftrace control front-end <span style="color:#ff6ac1">for</span> EVL
+test         run EVL tests
+trace        ftrace control front-end <span style="color:#815ba4">for</span> EVL
 </code></pre></div><h3 id="evl-check-command">Checking a kernel configuration (check)</h3>
 <p><code>evl check</code> may be the very first <code>evl</code> command you should run from a
 newly installed target system which is going to run the EVL core. This
 command checks a kernel configuration for common issues which may
 increase latency. The general syntax is as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl check <span style="color:#ff6ac1">[</span>-f --file<span style="color:#ff6ac1">=</span>&lt;.config&gt;<span style="color:#ff6ac1">]</span>
-      	    <span style="color:#ff6ac1">[</span>-L --check-list<span style="color:#ff6ac1">=</span>&lt;file&gt;<span style="color:#ff6ac1">]</span>
-      	    <span style="color:#ff6ac1">[</span>-a --arch<span style="color:#ff6ac1">=</span>&lt;cpuarch&gt;<span style="color:#ff6ac1">]</span>
-	    <span style="color:#ff6ac1">[</span>-H --hash-size<span style="color:#ff6ac1">=</span>&lt;N&gt;<span style="color:#ff6ac1">]</span>
-	    <span style="color:#ff6ac1">[</span>-q --quiet<span style="color:#ff6ac1">]</span>
-	    <span style="color:#ff6ac1">[</span>-h --help<span style="color:#ff6ac1">]</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl check <span style="color:#5bc4bf">[</span>-f --file<span style="color:#5bc4bf">=</span>&lt;.config&gt;<span style="color:#5bc4bf">]</span>
+      	    <span style="color:#5bc4bf">[</span>-L --check-list<span style="color:#5bc4bf">=</span>&lt;file&gt;<span style="color:#5bc4bf">]</span>
+      	    <span style="color:#5bc4bf">[</span>-a --arch<span style="color:#5bc4bf">=</span>&lt;cpuarch&gt;<span style="color:#5bc4bf">]</span>
+	    <span style="color:#5bc4bf">[</span>-H --hash-size<span style="color:#5bc4bf">=</span>&lt;N&gt;<span style="color:#5bc4bf">]</span>
+	    <span style="color:#5bc4bf">[</span>-q --quiet<span style="color:#5bc4bf">]</span>
+	    <span style="color:#5bc4bf">[</span>-h --help<span style="color:#5bc4bf">]</span>
 </code></pre></div><p>The kernel configuration to verify is a regular <code>.config</code> file which
 contains all the settings for building a kernel image. If none is
 specified using the <code>-f</code> option, the command defaults to reading
@@ -261,24 +282,24 @@ tested against the contents of the kernel configuration. You can
 override the default check list stored at
 <code>$prefix/libexec/kconf-checklist.evl</code> with our own set of checks with
 the <code>-L</code> option.  Each assertion follows the BNF-like syntax below:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">assertion   : expr conditions
-            | <span style="color:#5af78e">&#34;!&#34;</span> expr conditions
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">assertion   : expr conditions
+            | <span style="color:#48b685">&#34;!&#34;</span> expr conditions
 
-expr        : symbol /* <span style="color:#ff5c57">matches</span> <span style="color:#ff6ac1">=</span>y <span style="color:#ff5c57">and</span> <span style="color:#ff6ac1">=</span>m */
-            | symbol <span style="color:#5af78e">&#34;=&#34;</span> tristate
+expr        : symbol /* <span style="color:#ef6155">matches</span> <span style="color:#5bc4bf">=</span>y <span style="color:#ef6155">and</span> <span style="color:#5bc4bf">=</span>m */
+            | symbol <span style="color:#48b685">&#34;=&#34;</span> tristate
 
-tristate  : <span style="color:#5af78e">&#34;y&#34;</span>
-          | <span style="color:#5af78e">&#34;m&#34;</span>
-          | <span style="color:#5af78e">&#34;n&#34;</span>
+tristate  : <span style="color:#48b685">&#34;y&#34;</span>
+          | <span style="color:#48b685">&#34;m&#34;</span>
+          | <span style="color:#48b685">&#34;n&#34;</span>
 
 conditions  : dependency
             | dependency arch
 
-dependency  : <span style="color:#5af78e">&#34;if&#34;</span> symbol       /* <span style="color:#ff5c57">true</span> <span style="color:#ff6ac1">if</span> <span style="color:#ff5c57">set</span> as y/m */
+dependency  : <span style="color:#48b685">&#34;if&#34;</span> symbol       /* true <span style="color:#815ba4">if</span> set as y/m */
 
-arch        : <span style="color:#5af78e">&#34;on&#34;</span> cputype
+arch        : <span style="color:#48b685">&#34;on&#34;</span> cputype
 
-cputype     : <span style="color:#ff6ac1">$(</span>uname -m<span style="color:#ff6ac1">)</span>
+cputype     : <span style="color:#815ba4">$(</span>uname -m<span style="color:#815ba4">)</span>
 </code></pre></div><p>For instance:</p>
 <ul>
 <li>
@@ -311,7 +332,7 @@ it. However, <em>arm64</em> and <em>arm</em> are automatically translated to
 <code>-a</code> option.</p>
 <p>The <a href="https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/utils/kconf-checklist.evl">default check list</a>
 translates the configuration-related information gathered in the <a href="https://the-going.github.io/evlproject/core/caveat/">caveat section</a> as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE=y if CONFIG_CPU_FREQ
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE=y if CONFIG_CPU_FREQ
 CONFIG_DEBUG_HARD_LOCKS=n
 CONFIG_ACPI_PROCESSOR_IDLE=n
 CONFIG_LOCKDEP=n
@@ -333,22 +354,22 @@ code ($?).</p>
 <blockquote>
 <p>Example: checking the current kernel configuration</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#78787e"># evl check</span>
-<span style="color:#ff5c57">CONFIG_ACPI_PROCESSOR_IDLE</span><span style="color:#ff6ac1">=</span>y
-~ <span style="color:#78787e"># echo $?</span>
-<span style="color:#ff9f43">1</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#8d8687"># evl check</span>
+<span style="color:#ef6155">CONFIG_ACPI_PROCESSOR_IDLE</span><span style="color:#5bc4bf">=</span>y
+~ <span style="color:#8d8687"># echo $?</span>
+<span style="color:#f99b15">1</span>
 </code></pre></div><h3 id="evl-ps-command">Reporting a snapshot of the current EVL threads (ps)</h3>
 <p>When you need to know which threads are currently present in your
 system, <strong>evl ps</strong> comes in handy. The command syntax - which
 supports short and long options formats - is as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl ps <span style="color:#ff6ac1">[</span>-c --cpu<span style="color:#ff6ac1">=</span>&lt;cpu&gt;<span style="color:#ff6ac1">[</span>,&lt;cpu&gt;...<span style="color:#ff6ac1">]]</span>
-         <span style="color:#ff6ac1">[</span>-s --state<span style="color:#ff6ac1">]</span>
-         <span style="color:#ff6ac1">[</span>-t --times<span style="color:#ff6ac1">]</span>
-         <span style="color:#ff6ac1">[</span>-p --policy<span style="color:#ff6ac1">]</span>
-         <span style="color:#ff6ac1">[</span>-l --long<span style="color:#ff6ac1">]</span>
-         <span style="color:#ff6ac1">[</span>-n --numeric<span style="color:#ff6ac1">]</span>
-         <span style="color:#ff6ac1">[</span>-S --sort<span style="color:#ff6ac1">=</span>&lt;key&gt;<span style="color:#ff6ac1">]</span>
-         <span style="color:#ff6ac1">[</span>-h --help<span style="color:#ff6ac1">]</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl ps <span style="color:#5bc4bf">[</span>-c --cpu<span style="color:#5bc4bf">=</span>&lt;cpu&gt;<span style="color:#5bc4bf">[</span>,&lt;cpu&gt;...<span style="color:#5bc4bf">]]</span>
+         <span style="color:#5bc4bf">[</span>-s --state<span style="color:#5bc4bf">]</span>
+         <span style="color:#5bc4bf">[</span>-t --times<span style="color:#5bc4bf">]</span>
+         <span style="color:#5bc4bf">[</span>-p --policy<span style="color:#5bc4bf">]</span>
+         <span style="color:#5bc4bf">[</span>-l --long<span style="color:#5bc4bf">]</span>
+         <span style="color:#5bc4bf">[</span>-n --numeric<span style="color:#5bc4bf">]</span>
+         <span style="color:#5bc4bf">[</span>-S --sort<span style="color:#5bc4bf">=</span>&lt;key&gt;<span style="color:#5bc4bf">]</span>
+         <span style="color:#5bc4bf">[</span>-h --help<span style="color:#5bc4bf">]</span>
 </code></pre></div><p>This command fetches the information it needs from the <a href="https://the-going.github.io/evlproject/core/user-api/thread/#thread-sysfs-data">/sysfs
 attributes</a> the EVL core
 exports for every thread it manages. The output is organized in groups
@@ -454,7 +475,7 @@ numbers. Ranges are also supported via the usual dash separator. For
 instance, the following command would report threads pinned on CPU0,
 and all CPUs from CPU3 to CPU15.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl ps -c 0,3-15
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl ps -c 0,3-15
 </code></pre></div><ul>
 <li>
 <p><code>-s</code> includes information about the thread state, which is ISW,
@@ -493,27 +514,27 @@ order. The following sort keys are understood:</p>
 </ul>
 <p>For instance, the following command would list the times of all
 threads from CPU14 by decreasing CPU time consumption:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl ps -t -Srt -c14
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl ps -t -Srt -c14
 CPU   PID   TIMEOUT      %CPU   CPUTIME     NAME
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2603</span>     -           0.6  00:435.952  rtup_ufpp14-5:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2604</span>     -           0.6  00:430.147  rtup_ufpp14-6:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2599</span>     -           0.5  00:423.118  rtup14-3:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2600</span>     -           0.5  00:420.293  rtup14-4:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2595</span>     -           0.3  00:207.143  <span style="color:#ff6ac1">[</span>rtk1@14:2069<span style="color:#ff6ac1">]</span>
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2597</span>     -           0.3  00:204.301  <span style="color:#ff6ac1">[</span>rtk2@14:2069<span style="color:#ff6ac1">]</span>
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2619</span>     -           0.2  00:186.139  rtuo_ufpp14-14:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2617</span>     -           0.2  00:185.497  rtuo_ufpp14-13:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2623</span>     -           0.2  00:184.812  rtuo_ufpp_ufps14-18:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2622</span>     -           0.2  00:184.772  rtuo_ufpp_ufps14-17:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2621</span>     -           0.2  00:181.692  rtuo_ufps14-16:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2616</span>     -           0.2  00:181.329  rtuo14-12:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2615</span>     -           0.2  00:181.230  rtuo14-11:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2620</span>     -           0.2  00:180.604  rtuo_ufps14-15:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2572</span>     -           0.0  00:000.006  rtus_ufps13-9:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2125</span>     -           0.0  00:000.006  rtus1-7:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2646</span>     -           0.0  00:000.005  rtus15-8:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2650</span>     -           0.0  00:000.005  rtus_ufps15-10:2069
- <span style="color:#ff9f43">14</span>   <span style="color:#ff9f43">2310</span>     -           0.0  00:000.005  rtus6-7:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2603</span>     -           0.6  00:435.952  rtup_ufpp14-5:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2604</span>     -           0.6  00:430.147  rtup_ufpp14-6:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2599</span>     -           0.5  00:423.118  rtup14-3:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2600</span>     -           0.5  00:420.293  rtup14-4:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2595</span>     -           0.3  00:207.143  <span style="color:#5bc4bf">[</span>rtk1@14:2069<span style="color:#5bc4bf">]</span>
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2597</span>     -           0.3  00:204.301  <span style="color:#5bc4bf">[</span>rtk2@14:2069<span style="color:#5bc4bf">]</span>
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2619</span>     -           0.2  00:186.139  rtuo_ufpp14-14:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2617</span>     -           0.2  00:185.497  rtuo_ufpp14-13:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2623</span>     -           0.2  00:184.812  rtuo_ufpp_ufps14-18:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2622</span>     -           0.2  00:184.772  rtuo_ufpp_ufps14-17:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2621</span>     -           0.2  00:181.692  rtuo_ufps14-16:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2616</span>     -           0.2  00:181.329  rtuo14-12:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2615</span>     -           0.2  00:181.230  rtuo14-11:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2620</span>     -           0.2  00:180.604  rtuo_ufps14-15:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2572</span>     -           0.0  00:000.006  rtus_ufps13-9:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2125</span>     -           0.0  00:000.006  rtus1-7:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2646</span>     -           0.0  00:000.005  rtus15-8:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2650</span>     -           0.0  00:000.005  rtus_ufps15-10:2069
+ <span style="color:#f99b15">14</span>   <span style="color:#f99b15">2310</span>     -           0.0  00:000.005  rtus6-7:2069
 </code></pre></div><ul>
 <li><code>-h</code> displays the command help string.</li>
 </ul>
@@ -540,10 +561,10 @@ features in your <a href="https://the-going.github.io/evlproject/core/build-step
 <li>CONFIG_FUNCTION_TRACER</li>
 </ul>
 <p>The command syntax is as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">evl trace <span style="color:#ff6ac1">[</span>-e<span style="color:#ff6ac1">[</span>&lt;trace_group&gt;<span style="color:#ff6ac1">][</span>-E&lt;tracepoint_file&gt;<span style="color:#ff6ac1">][</span>-s&lt;buffer_size&gt;<span style="color:#ff6ac1">][</span>-t<span style="color:#ff6ac1">]]</span>
-    	  <span style="color:#ff6ac1">[</span>-d<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>-p<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>-f<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>-h<span style="color:#ff6ac1">]</span>
-	  <span style="color:#ff6ac1">[</span>-c &lt;cpu&gt;<span style="color:#ff6ac1">]</span>
-	  <span style="color:#ff6ac1">[</span>-h<span style="color:#ff6ac1">]</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">evl trace <span style="color:#5bc4bf">[</span>-e<span style="color:#5bc4bf">[</span>&lt;trace_group&gt;<span style="color:#5bc4bf">][</span>-E&lt;tracepoint_file&gt;<span style="color:#5bc4bf">][</span>-s&lt;buffer_size&gt;<span style="color:#5bc4bf">][</span>-t<span style="color:#5bc4bf">]]</span>
+    	  <span style="color:#5bc4bf">[</span>-d<span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span>-p<span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span>-f<span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span>-h<span style="color:#5bc4bf">]</span>
+	  <span style="color:#5bc4bf">[</span>-c &lt;cpu&gt;<span style="color:#5bc4bf">]</span>
+	  <span style="color:#5bc4bf">[</span>-h<span style="color:#5bc4bf">]</span>
 </code></pre></div>
 <div class="notices tip">
     <div class="label">Tip</div><p>Arguments to options must immediately follow the option letter, without any
@@ -572,10 +593,10 @@ file is specified relative to FTRACE&rsquo;s <code>tracing/</code> hierarchy, su
 <code>-f</code>).</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~# evl trace -eirq
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~# evl trace -eirq
 tracing enabled
 
-~ <span style="color:#78787e"># cat /usr/evl/libexec/trace.irq </span>
+~ <span style="color:#8d8687"># cat /usr/evl/libexec/trace.irq </span>
 irq/irq_pipeline_entry
 irq/irq_pipeline_exit
 irq/irq_handler_entry
@@ -597,7 +618,7 @@ custom set of tracepoints.</p>
 ignored.</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~# cat &gt; /tmp/custom_traces
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~# cat &gt; /tmp/custom_traces
 evl/evl_schedule
 evl/evl_pick_next
 evl/evl_switch_context
@@ -640,7 +661,7 @@ buffer of &lt;cpu&gt; is dumped.</p>
 </ul>
 <p>For instance, the following command starts tracing all kernel
 routines:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl trace -ef
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl trace -ef
 </code></pre></div><h4 id="interpreting-the-dovetail-specific-trace-information">Interpreting the Dovetail-specific trace information</h4>
 <p>The Dovetail-specific information is about:</p>
 <ul>
@@ -664,24 +685,24 @@ the notion of interrupt stage Dovetail implements.</p>
 
 </div>
 <p>For instance:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#78787e">/* hard irqs off, running in-band */</span>
-<span style="color:#ff6ac1">&lt;</span>...<span style="color:#ff6ac1">&gt;-</span><span style="color:#ff9f43">4164</span>  [<span style="color:#ff9f43">003</span>] D...   <span style="color:#ff9f43">122.047972</span><span style="color:#ff6ac1">:</span> do_syscall_64 <span style="color:#ff6ac1">&lt;-</span>entry_SYSCALL_64_after_hwframe
-<span style="color:#78787e">/* in-band stalled and hard irqs off, running out-of-band */</span>
-<span style="color:#ff6ac1">&lt;</span>...<span style="color:#ff6ac1">&gt;-</span><span style="color:#ff9f43">4164</span>  [<span style="color:#ff9f43">003</span>] <span style="color:#ff6ac1">*</span>.<span style="color:#ff6ac1">~</span>.   <span style="color:#ff9f43">122.048021</span><span style="color:#ff6ac1">:</span> __evl_schedule <span style="color:#ff6ac1">&lt;-</span>run_oob_call
-<span style="color:#78787e">/* in-band stalled, hard irqs on, running in-band */</span>
-<span style="color:#ff6ac1">&lt;</span>...<span style="color:#ff6ac1">&gt;-</span><span style="color:#ff9f43">4164</span>  [<span style="color:#ff9f43">003</span>] d...   <span style="color:#ff9f43">122.048082</span><span style="color:#ff6ac1">:</span> rcu_lockdep_current_cpu_online <span style="color:#ff6ac1">&lt;-</span>rcu_read_lock_sched_held
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#8d8687">/* hard irqs off, running in-band */</span>
+<span style="color:#5bc4bf">&lt;</span>...<span style="color:#5bc4bf">&gt;-</span><span style="color:#f99b15">4164</span>  [<span style="color:#f99b15">003</span>] D...   <span style="color:#f99b15">122.047972</span><span style="color:#5bc4bf">:</span> do_syscall_64 <span style="color:#5bc4bf">&lt;-</span>entry_SYSCALL_64_after_hwframe
+<span style="color:#8d8687">/* in-band stalled and hard irqs off, running out-of-band */</span>
+<span style="color:#5bc4bf">&lt;</span>...<span style="color:#5bc4bf">&gt;-</span><span style="color:#f99b15">4164</span>  [<span style="color:#f99b15">003</span>] <span style="color:#5bc4bf">*</span>.<span style="color:#5bc4bf">~</span>.   <span style="color:#f99b15">122.048021</span><span style="color:#5bc4bf">:</span> __evl_schedule <span style="color:#5bc4bf">&lt;-</span>run_oob_call
+<span style="color:#8d8687">/* in-band stalled, hard irqs on, running in-band */</span>
+<span style="color:#5bc4bf">&lt;</span>...<span style="color:#5bc4bf">&gt;-</span><span style="color:#f99b15">4164</span>  [<span style="color:#f99b15">003</span>] d...   <span style="color:#f99b15">122.048082</span><span style="color:#5bc4bf">:</span> rcu_lockdep_current_cpu_online <span style="color:#5bc4bf">&lt;-</span>rcu_read_lock_sched_held
 </code></pre></div><p>In addition to this basic information, <a href="https://the-going.github.io/evlproject/core/testing/">latmus</a> emits a special tracepoint named
 <em>evl_latspot</em> in the trace event log before taking a trace snapshot,
 each time the observed maximum latency increases. The frozen trace is
 visible in the corresponding per-CPU snapshot buffer. From that point,
 you may be able to backtrack to the source(s) of the extra latency. A
 typical debug session would look like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#78787e"># evl trace -ef</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#8d8687"># evl trace -ef</span>
 tracing enabled
 
-~ <span style="color:#78787e"># latmus</span>
+~ <span style="color:#8d8687"># latmus</span>
 warming up on CPU1...
-RTT|  00:00:01  <span style="color:#ff6ac1">(</span>user, <span style="color:#ff9f43">1000</span> us period, priority 98, CPU1<span style="color:#ff6ac1">)</span>
+RTT|  00:00:01  <span style="color:#5bc4bf">(</span>user, <span style="color:#f99b15">1000</span> us period, priority 98, CPU1<span style="color:#5bc4bf">)</span>
 RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
 RTD|     26.675|     26.951|     27.826|       0|     0|     26.675|     27.826
 RTD|     26.712|     27.067|     31.204|       0|     0|     26.675|     31.204
@@ -692,45 +713,45 @@ RTD|     26.770|     27.079|     29.266|       0|     0|     26.653|     31.204
 ^C---|-----------|-----------|-----------|--------|------|-------------------------
 RTS|     10.119|     27.029|     31.204|       0|     0|    00:00:06/00:00:06
 
-~ <span style="color:#78787e"># evl trace -c 1</span>
+~ <span style="color:#8d8687"># evl trace -c 1</span>
  ...
-          &lt;idle&gt;-0     <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363256: do_trace_write_msr &lt;-__switch_to
-          &lt;idle&gt;-0     <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363256: write_msr: c0000100, value 7ff90973e700
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363256: switch_fpu_return &lt;-dovetail_context_switch
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363257: do_raw_spin_unlock &lt;-__evl_schedule
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363257: do_raw_spin_lock &lt;-evl_wait_schedule
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363258: do_raw_spin_unlock &lt;-evl_wait_schedule
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363258: do_raw_spin_lock &lt;-latmus_oob_ioctl
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363258: do_raw_spin_unlock &lt;-latmus_oob_ioctl
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363259: evl_oob_sysexit: <span style="color:#ff5c57">result</span><span style="color:#ff6ac1">=</span><span style="color:#ff9f43">0</span>
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363262: pipeline_syscall &lt;-do_syscall_64
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363262: handle_oob_syscall &lt;-pipeline_syscall
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363263: do_oob_syscall &lt;-handle_oob_syscall
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363263: evl_oob_sysentry: <span style="color:#ff5c57">syscall</span><span style="color:#ff6ac1">=</span>oob_ioctl
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363264: EVL_ioctl &lt;-do_oob_syscall
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363264: evl_get_file &lt;-EVL_ioctl
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363264: do_raw_spin_lock &lt;-evl_get_file
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> *.~.   135.363265: do_raw_spin_unlock &lt;-evl_get_file
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363265: latmus_oob_ioctl &lt;-EVL_ioctl
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363266: add_measurement_sample &lt;-latmus_oob_ioctl
- timer-responder-234   <span style="color:#ff6ac1">[</span>001<span style="color:#ff6ac1">]</span> d.~.   135.363266: evl_latspot: ** latency peak: 31.204 us **
+          &lt;idle&gt;-0     <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363256: do_trace_write_msr &lt;-__switch_to
+          &lt;idle&gt;-0     <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363256: write_msr: c0000100, value 7ff90973e700
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363256: switch_fpu_return &lt;-dovetail_context_switch
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363257: do_raw_spin_unlock &lt;-__evl_schedule
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363257: do_raw_spin_lock &lt;-evl_wait_schedule
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363258: do_raw_spin_unlock &lt;-evl_wait_schedule
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363258: do_raw_spin_lock &lt;-latmus_oob_ioctl
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363258: do_raw_spin_unlock &lt;-latmus_oob_ioctl
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363259: evl_oob_sysexit: <span style="color:#ef6155">result</span><span style="color:#5bc4bf">=</span><span style="color:#f99b15">0</span>
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363262: pipeline_syscall &lt;-do_syscall_64
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363262: handle_oob_syscall &lt;-pipeline_syscall
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363263: do_oob_syscall &lt;-handle_oob_syscall
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363263: evl_oob_sysentry: <span style="color:#ef6155">syscall</span><span style="color:#5bc4bf">=</span>oob_ioctl
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363264: EVL_ioctl &lt;-do_oob_syscall
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363264: evl_get_file &lt;-EVL_ioctl
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363264: do_raw_spin_lock &lt;-evl_get_file
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> *.~.   135.363265: do_raw_spin_unlock &lt;-evl_get_file
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363265: latmus_oob_ioctl &lt;-EVL_ioctl
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363266: add_measurement_sample &lt;-latmus_oob_ioctl
+ timer-responder-234   <span style="color:#5bc4bf">[</span>001<span style="color:#5bc4bf">]</span> d.~.   135.363266: evl_latspot: ** latency peak: 31.204 us **
 </code></pre></div><p>In the <a href="https://the-going.github.io/evlproject/core/testing/">latmus</a> case,
 part of this analysis would include estimating the delay between the
 latest tick date programmed in the hardware and the actual receipt of
 the timer interrupt. When tracing is enabled, this information is
 automatically produced in the trace log:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#78787e">/* This is when the timer chip is programmed for the next tick. */</span>
-<span style="color:#ff6ac1">&lt;</span>idle<span style="color:#ff6ac1">&gt;-</span><span style="color:#ff9f43">0</span>     [<span style="color:#ff9f43">001</span>] <span style="color:#ff6ac1">*</span>.<span style="color:#ff6ac1">~</span>.   <span style="color:#ff9f43">135.362244</span><span style="color:#ff6ac1">:</span> <span style="color:#ff5c57">evl_timer_shot</span>: latmus_pulse_handler at <span style="color:#ff9f43">135.363228</span> (<span style="color:#ff5c57">delay</span>: <span style="color:#ff9f43">984</span> us, <span style="color:#ff9f43">196195</span> cycles
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#8d8687">/* This is when the timer chip is programmed for the next tick. */</span>
+<span style="color:#5bc4bf">&lt;</span>idle<span style="color:#5bc4bf">&gt;-</span><span style="color:#f99b15">0</span>     [<span style="color:#f99b15">001</span>] <span style="color:#5bc4bf">*</span>.<span style="color:#5bc4bf">~</span>.   <span style="color:#f99b15">135.362244</span><span style="color:#5bc4bf">:</span> evl_timer_shot: latmus_pulse_handler at <span style="color:#f99b15">135.363228</span> (delay: <span style="color:#f99b15">984</span> us, <span style="color:#f99b15">196195</span> cycles
 ...
-<span style="color:#78787e">/* This is when the corresponding timer interrupt is received by Dovetail. */</span>
-<span style="color:#ff6ac1">&lt;</span>idle<span style="color:#ff6ac1">&gt;-</span><span style="color:#ff9f43">0</span>     [<span style="color:#ff9f43">001</span>] <span style="color:#ff6ac1">*</span>.<span style="color:#ff6ac1">~</span>.   <span style="color:#ff9f43">135.363233</span><span style="color:#ff6ac1">:</span> <span style="color:#ff5c57">irq_handler_entry</span>: irq<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">4354</span> name<span style="color:#ff6ac1">=</span>Out<span style="color:#ff6ac1">-</span>of<span style="color:#ff6ac1">-</span>band LAPIC timer interrupt
+<span style="color:#8d8687">/* This is when the corresponding timer interrupt is received by Dovetail. */</span>
+<span style="color:#5bc4bf">&lt;</span>idle<span style="color:#5bc4bf">&gt;-</span><span style="color:#f99b15">0</span>     [<span style="color:#f99b15">001</span>] <span style="color:#5bc4bf">*</span>.<span style="color:#5bc4bf">~</span>.   <span style="color:#f99b15">135.363233</span><span style="color:#5bc4bf">:</span> irq_handler_entry: irq<span style="color:#5bc4bf">=</span><span style="color:#f99b15">4354</span> name<span style="color:#5bc4bf">=</span>Out<span style="color:#5bc4bf">-</span>of<span style="color:#5bc4bf">-</span>band LAPIC timer interrupt
 </code></pre></div><h3 id="evl-test-command">Running the test suite (test)</h3>
 <p>This command is a short-hand for running the <a href="https://the-going.github.io/evlproject/core/testing/#evl-unit-testing">EVL test suite</a>. The usage is as
 follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl <span style="color:#ff5c57">test</span> <span style="color:#ff6ac1">[</span>-l<span style="color:#ff6ac1">][</span>-L<span style="color:#ff6ac1">][</span>-k<span style="color:#ff6ac1">]</span> <span style="color:#ff6ac1">[</span>test-list<span style="color:#ff6ac1">]</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl test <span style="color:#5bc4bf">[</span>-l<span style="color:#5bc4bf">][</span>-L<span style="color:#5bc4bf">][</span>-k<span style="color:#5bc4bf">]</span> <span style="color:#5bc4bf">[</span>test-list<span style="color:#5bc4bf">]</span>
 </code></pre></div><p>With no argument, this command runs all of the tests available from
 the default installation path at $prefix/tests:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl <span style="color:#ff5c57">test</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl test
 duplicate-element: OK
 monitor-pp-dynamic: OK
 monitor-pi: OK
@@ -738,12 +759,12 @@ clone-fork-exec: OK
 ...
 </code></pre></div><p>You can also chose to run a specific set of tests by mentioning them
 as arguments to the command, such as:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl <span style="color:#ff5c57">test</span> duplicate-element monitor-pi
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl test duplicate-element monitor-pi
 duplicate-element: OK
 monitor-pi: OK
 </code></pre></div><p>You may ask for listing the available tests instead of executing them,
 by using the <code>-l</code> switch:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl <span style="color:#ff5c57">test</span> -l
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl test -l
 duplicate-element
 monitor-pp-dynamic
 monitor-pi
@@ -751,7 +772,7 @@ clone-fork-exec
 ...
 </code></pre></div><p>In a variant aimed at making scripting easier, you can ask for the
 absolute paths instead:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl <span style="color:#ff5c57">test</span> -L proxy-pipe mapfd
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ evl test -L proxy-pipe mapfd
 /usr/evl/tests/proxy-pipe
 /usr/evl/tests/mapfd
 </code></pre></div><p>If some test goes wrong, the command normally stops
@@ -768,15 +789,15 @@ your own implementation whenever you see fit.</p>
 <blockquote>
 <p>Crash course: adding the &lsquo;foo&rsquo; command script to ~/tools</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkdir ~/tools
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ mkdir ~/tools
 $ cat &gt; ~/tools/evl-foo
-<span style="color:#78787e">#! /bin/sh</span>
-<span style="color:#ff5c57">echo</span> <span style="color:#5af78e">&#34;this is your &#39;evl foo&#39; command&#34;</span>
+<span style="color:#8d8687">#! /bin/sh</span>
+echo <span style="color:#48b685">&#34;this is your &#39;evl foo&#39; command&#34;</span>
 ^D
 $ chmod +x ~/tools/evl-foo
-$ <span style="color:#ff5c57">export</span> <span style="color:#ff5c57">PATH</span><span style="color:#ff6ac1">=</span><span style="color:#ff5c57">$PATH</span>:~/tools
+$ export <span style="color:#ef6155">PATH</span><span style="color:#5bc4bf">=</span><span style="color:#ef6155">$PATH</span>:~/tools
 $ evl foo
-this is your <span style="color:#5af78e">&#39;evl foo&#39;</span> <span style="color:#ff5c57">command</span>
+this is your <span style="color:#48b685">&#39;evl foo&#39;</span> command
 </code></pre></div><p>In addition, &lsquo;evl&rsquo; sets a few environment variables before calling a
 plugin. Your plugin executable/script can retrieve them using
 <a href="http://man7.org/linux/man-pages/man3/getenv.3.html">getenv(3)</a> from a
@@ -814,7 +835,10 @@ C program, or directly dereference those variables from a shell:</p>
 </table>
 <p>(*) may be overriden using the <code>-P</code> option.</p>
 <hr>
-<p style="text-align:right">Last modified: Sat, 16 Oct 2021 23:13:14 MSK</p>
+<p style="text-align:right">Last modified: Sat, 16 Oct 2021 23:13:14 MSK
+
+	
+</p>
 
 
           <footer class="footline">
@@ -829,18 +853,12 @@ C program, or directly dereference those variables from a shell:</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634415568"></script>
-    <script>
-      if (typeof mermaid != 'undefined') {
-        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
-      }
-    </script>
-    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634415568"></script>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572173"></script>
   </body>
 </html>

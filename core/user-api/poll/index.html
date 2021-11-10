@@ -3,22 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.88.1" />
-    <link rel="alternate" type="application/rss+xml" href="https://the-going.github.io/evlproject/core/user-api/poll/index.xml" title="Xenomai 4" />
+    <meta name="generator" content="Hugo 0.89.1" />
+    <link rel="alternate" type="application/rss&#43;xml" href="https://the-going.github.io/evlproject/core/user-api/poll/index.xml" title="Xenomai 4" />
     <meta name="description" content="Xenomai 4 project">
     <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
-    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    
     <title>Polling file descriptors :: Xenomai 4</title>
-    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/variant.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/print.css?1634415569" rel="stylesheet" media="print">
-    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634415569"></script>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572174" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572174" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572174"></script>
     <style>
       :root #header + #content > #left > #rlblock_left{
         display:none !important;
@@ -29,6 +30,11 @@
     </style>
   </head>
   <body class="" data-url="https://the-going.github.io/evlproject/core/user-api/poll/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
     <nav id="sidebar" class="showVisitedLinks">
       <div id="header-wrapper">
         <div id="header">
@@ -40,20 +46,16 @@
           <input data-search-input id="search-by" type="search" placeholder="Search...">
           <span data-search-clear=""><i class="fas fa-times"></i></span>
         </div>
-        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634415569"></script>
-        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572174"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572174"></script>
         <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
         <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
-        <script>
-          var index_url="https://the-going.github.io/evlproject/index.json";
-          var root_url="https://the-going.github.io/evlproject/";
-          var baseUri=root_url.replace(/\/$/, '');
-        </script>
-        <script src="https://the-going.github.io/evlproject/js/search.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572174"></script>
       </div>
       <div class="highlightable">
         <ul class="topics">
-          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/overview/testing-page/" title="Testing the page rendering" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/testing-page/">Test page<i class="fas fa-check read-icon"></i></a></li></ul></li>
           <li data-nav-id="/core/" title="The EVL core" class="dd-item parent"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core<i class="fas fa-check read-icon"></i></a><ul>
           <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL<i class="fas fa-check read-icon"></i></a></li>
           <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings<i class="fas fa-check read-icon"></i></a></li>
@@ -130,6 +132,25 @@
         <div id="prefooter">
           <hr/>
           <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/poll/" selected>English</option>
+                    <option id="ru" value="/ru/core/user-api/poll/">Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
             <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
           </ul>
         </div>
@@ -196,7 +217,7 @@ access point for registering other file descriptors to monitor, then
 <a href="#evl_poll">evl_poll()</a> or <a href="#evl_timedpoll">evl_timedpoll()</a> fill an array of structures indicating
 which events have been received on each notified file descriptor. The
 type of this structure is as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct evl_poll_event {
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct evl_poll_event {
 	int32_t fd;
 	int32_t events;
 };
@@ -491,7 +512,10 @@ polling set.</p>
 </li>
 </ul>
 <hr>
-<p style="text-align:right">Last modified: Sun, 03 May 2020 11:13:49 &#43;0200</p>
+<p style="text-align:right">Last modified: Sun, 03 May 2020 11:13:49 &#43;0200
+
+	
+</p>
 
 
           <footer class=" footline">
@@ -506,18 +530,12 @@ polling set.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634415569"></script>
-    <script>
-      if (typeof mermaid != 'undefined') {
-        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
-      }
-    </script>
-    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634415569"></script>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572174"></script>
   </body>
 </html>

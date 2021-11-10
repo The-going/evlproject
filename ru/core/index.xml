@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ядро EVL on Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/ru/core/</link>
+    <description>Recent content in Ядро EVL on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright>
+    <lastBuildDate>Sat, 16 Feb 2019 16:10:44 +0100</lastBuildDate><atom:link href="https://the-going.github.io/evlproject/ru/core/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Запуск benchmarks</title>
+      <link>https://the-going.github.io/evlproject/ru/core/benchmarks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/benchmarks/</guid>
+      <description>Проблема надлежащего бенчмаркинга - это сизифов, бесконечный разговор, который перезагружается по мере изменения технологий и требований пользователей. У каждого теста есть какая-то программа; это нормально, если он не принимает читателя за дурака. По этим причинам данный раздел является незавершенным проектом, в котором обсуждаются только тестовые случаи, для которых полностью доступен исходный код, который не требует никакого черного ящика, чтобы вы могли проверить и воспроизвести их довольно легко.
+Любые комментарии и другие материалы, улучшающие этот раздел и/или EVL в целом, приветствуются.</description>
+    </item>
+    <item>
+      <title>Using libevl</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/</guid>
+      <description>What is an &amp;ldquo;EVL application process&amp;rdquo;? An EVL application process is composed of one or more EVL threads, running along with any number of regular POSIX threads.
+  an EVL thread is initially a plain regular POSIX thread spawned by a call to pthread_create(3) or the main() context which has issued the evl_attach_self() system call. This service binds the caller to the EVL core, which enables it to invoke the real-time, ultra-low latency services the latter delivers.</description>
+    </item>
+    <item>
+      <title>Real-time I/O drivers</title>
+      <link>https://the-going.github.io/evlproject/ru/core/oob-drivers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/oob-drivers/</guid>
+      <description>The real-time I/O support EVL provides for is based on the ability some kernel drivers have to handle out-of-band interrupts triggered by the hardware, along with out-of-band requests issued by applications. To achieve this, such driver may depend on the EVL kernel API which in turn depends on Dovetail. This way, both the incoming events and outgoing requests are expedited by the EVL core, without being delayed by the regular GPOS work which is still handled normally on the in-band execution stage.</description>
+    </item>
+    <item>
+      <title>Под капотом</title>
+      <link>https://the-going.github.io/evlproject/ru/core/under-the-hood/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/under-the-hood/</guid>
+      <description>Этот раздел (незавершенное производство) поможет вам сориентироваться в разработке и реализации ядра EVL. Он написан с точки зрения разработчика в качестве практического примера реализации сопутствующего ядра, живущего в ядре Linux, с акцентом на деталях того, как для этой цели используется интерфейс Dovetail. Эта информация предназначена для того, чтобы помочь всем, кто интересуется или просто интересуется &amp;ldquo;другим путем к режиму реального времени в Linux&amp;rdquo;, независимо от того, полезно ли это для разработки вашей собственной двухъядерной системы на базе Linux, внесения вклада в EVL или в образовательных целях.</description>
+    </item>
+    <item>
+      <title>Сборка EVL</title>
+      <link>https://the-going.github.io/evlproject/ru/core/build-steps/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/build-steps/</guid>
+      <description>Построение EVL из исходного кода   Процесс сборки. Сборка EVL из исходного кода - это процесс в два этапа: мы должны собрать ядро Linux включив EVL ядро, и библиотеку реализующую API пользователя для этого ядра - т.е. libevl - с использованием соответствующего инструментария. Эти шаги могут выполняться в любом порядке. Результатом этого процесса является:
+  образ ядра Linux с изображением Dovetail и ядром EVL поверх него.
+  общая библиотека* libevl.</description>
+    </item>
+    <item>
+      <title>Конфигурация времени выполнения</title>
+      <link>https://the-going.github.io/evlproject/ru/core/runtime-settings/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/runtime-settings/</guid>
+      <description>Калибровка основного таймера При включении в ядре EVL прозрачно управляет аппаратным чипом таймера через прокси-устройство, обслуживающего все запросы синхронизации, включая запросы, исходящие из внутриполосной логики ядра. Чтобы максимально повысить точность синхронизации, EVL необходимо определить базовую задержку целевой платформы.
+После получения прерывания, время которое тратится на прохождение кода ядра от кода ввода низкого уровня до вызова обработчика прерываний, установленного каким-либо драйвером, меньше, чем время, которое потребовалось бы для возобновления потока ядра при таком событии.</description>
+    </item>
+    <item>
+      <title>Тестирование установки</title>
+      <link>https://the-going.github.io/evlproject/ru/core/testing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/testing/</guid>
+      <description>EVL поставляется с серией тестов, которые вы можете выполнить, чтобы убедиться, что ядро работает правильно в вашей целевой системе.
+Модульное тестирование Серия программ модульного тестирования создается в $prefix/tests как часть построения libevl. Вы должны запустить каждый из них, чтобы убедиться, что все в порядке. Самый простой способ сделать это заключается в следующем:
+ Запуск модульных тестов EVL
+ # evl test duplicate-element: OK monitor-pp-dynamic: OK monitor-pi: OK clone-fork-exec: OK clock-timer-periodic: OK poll-close: OK sem-wait: OK monitor-pp-raise: OK monitor-pp-tryenter: OK heap-torture: OK monitor-pp-lower: OK poll-read: OK monitor-deadlock: OK monitor-wait-multiple: OK monitor-event: OK proxy-eventfd: OK monitor-flags.</description>
+    </item>
+    <item>
+      <title>Команда &#39;evl&#39;</title>
+      <link>https://the-going.github.io/evlproject/ru/core/commands/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/commands/</guid>
+      <description>Универсальная утилита &amp;ldquo;evl&amp;rdquo; может запускать набор базовых команд, доступных для управления, проверки и тестирования состояния ядра EVL, и любую команду, соответствующую шаблону &amp;ldquo;evl-*&amp;rdquo;, которая может быть доступна из переменной $PATH оболочки. Способ, которым утилита &amp;lsquo;evl&amp;rsquo; централизует доступ к различным командам, связанным с EVL, намеренно очень похож на способ git. Каждая из команд EVL реализуется внешним плагином, который может быть простым исполняемым файлом или сценарием на любом языке. Единственное требование состоит в том, что вызывающий должен иметь разрешение на выполнение для такого файла, чтобы запустить его.</description>
+    </item>
+    <item>
+      <title>Это вы определенно хотите знать</title>
+      <link>https://the-going.github.io/evlproject/ru/core/caveat/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/caveat/</guid>
+      <description>Общие вопросы isolcpus это тоже наш друг Изолировать некоторые процессоры в командной строке ядра с помощью опции isolcpus=, чтобы не допустить, чтобы балансировщик нагрузки перегружал на них внутриполосную работу, - это не только хорошая идея с PREEMPT_RT, но и для любого инструмента настройки двойного ядра.
+Таким образом, некоторая случайная внутриполосная работа по удалению строк кэша на процессоре, где потоки реального времени ненадолго отключаются, менее вероятна, что увеличивает вероятность дорогостоящих пропусков кэша, что положительно сказывается на значениях задержек, которые вы можете получить.</description>
+    </item>
+    <item>
+      <title>ABI revisions</title>
+      <link>https://the-going.github.io/evlproject/ru/core/abi-revs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/abi-revs/</guid>
+      <description>#abimap { width: 35%; margin-left: auto; margin-right: auto; } #abimap th { text-align: center; } #abimap td { text-align: center; } #abimap tr:nth-child(even) { background-color: #f2f2f2; }   Revision Purpose libevl release   27 Handle prctl()-based syscall form. This enables Valgrind for EVL applications, while keeping backward compatibility for the legacy call form. r28   26 Add socket interface. r21   25 Add latmus request for measuring in-band response time to synthetic interrupt latency.</description>
+    </item>
+  </channel>
+</rss>

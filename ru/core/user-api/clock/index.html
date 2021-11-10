@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title> :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/user-api/clock/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/clock/" title="" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/">Clocks<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/clock/">English</option>
+                    <option id="ru" value="/ru/core/user-api/clock/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/"><span itemprop="name">Using libevl</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/clock/" aria-disabled="true"><span itemprop="name"></span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#clock-element">Clock element</a></li>
+        <li><a href="#clock-services">Clock services</a></li>
+        <li><a href="#builtin-clocks">Pre-defined clocks</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1></h1>
+
+<h3 id="clock-element">Clock element</h3>
+<p>The target platform can provide particular clock chips and/or clock
+source drivers in addition to the architecture-specific ones. For
+instance, some device on a PCI bus could implement a timer chip which
+the application wants to use for timing its threads, in addition to
+the architected timer found on ARM64 and some ARM-based SoCs. In this
+case, we would need a specific <em>clock driver</em>, binding the timer
+hardware to the EVL core.</p>
+<p>EVL&rsquo;s clock element ensures all clock drivers present the same
+interface to applications in user-space. In addition, the clock
+element can export individual software timers to applications which
+comes in handy for running periodic loops or waiting for oneshot
+events on a specific time base.</p>
+<p>Some <a href="#builtin-clocks">built-in clocks</a> are
+pre-defined by the EVL core for reading the monotonic and wallclock
+time of the system.</p>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>EVL abstracts clock event devices and clock sources
+(timekeeping hardware) into a single <em>clock element</em>.</p>
+
+</div>
+<h3 id="clock-services">Clock services</h3>
+
+<div class="proto"><a name="evl_read_clock"></a>
+int evl_read_clock(int clockfd, struct timespec *tp)
+</div>
+
+<p>This call is the EVL equivalent of the POSIX
+<a href="http://man7.org/linux/man-pages/man3/clock_gettime.3.html">clock_gettime(3)</a>
+service, for reading the time from a specified EVL clock.  It reads
+the current time maintained by the EVL clock, which is returned as
+counts of seconds and microseconds since the clock&rsquo;s <em>epoch</em>.</p>
+
+<p><li><i>clockfd</i><p>The clock file descriptor, which can be:</p>
+<ul>
+<li>
+<p>any valid file descriptor received as a result of opening a clock
+device in <code>/dev/evl/clock</code>.</p>
+</li>
+<li>
+<p>the identifier of a <a href="#builtin-clocks">built-in EVL clock</a>, such as <code>EVL_CLOCK_MONOTONIC</code> or
+<code>EVL_CLOCK_REALTIME</code>.</p>
+</li>
+</ul>
+</li></p>
+
+
+<p><li><i>tp</i><p>A pointer to a <em>timespec</em> structure which should receive the time
+stamp.</p>
+</li></p>
+
+<p><a href="#evl_read_clock">evl_read_clock()</a> writes the
+timestamp to <em>tp</em> then returns zero on success, otherwise:</p>
+<ul>
+<li>
+<p>-EBADF if <em>clockfd</em> is neither a built-in clock identifier or a valid
+file descriptor.</p>
+</li>
+<li>
+<p>-ENOTTY if <em>clockfd</em> does not refer to an EVL clock device.</p>
+</li>
+<li>
+<p>-EFAULT if <em>tp</em> points to invalid memory.</p>
+</li>
+</ul>
+<hr>
+
+<div class="proto"><a name="evl_set_clock"></a>
+int evl_set_clock(int clockfd, const struct timespec *tp)
+</div>
+
+<p>This call is the EVL equivalent of the POSIX
+<a href="http://man7.org/linux/man-pages/man3/clock_settime.3.html">clock_settime(3)</a>
+service, for setting the time of a specified EVL clock.</p>
+
+<p><li><i>clockfd</i><p>The clock file descriptor, which can be:</p>
+<ul>
+<li>
+<p>any valid file descriptor received as a result of opening a clock
+device in <code>/dev/evl/clock</code>.</p>
+</li>
+<li>
+<p>the identifier of a <a href="#builtin-clocks">built-in EVL clock</a>, such as <code>EVL_CLOCK_MONOTONIC</code> or
+<code>EVL_CLOCK_REALTIME</code>.</p>
+</li>
+</ul>
+</li></p>
+
+
+<p><li><i>tp</i><p>A pointer to a <em>timespec</em> structure which should receive the time
+stamp.</p>
+</li></p>
+
+<p><a href="#evl_set_clock">evl_set_clock()</a> returns zero and
+the clock is set to the specified time on success, otherwise:</p>
+<ul>
+<li>
+<p>-EINVAL if the time specification referred to by <em>ts</em> is invalid
+(e.g. <code>ts-&gt;tv_nsec</code> not in the [0..1e9] range).</p>
+</li>
+<li>
+<p>-EBADF if <em>clockfd</em> is neither a built-in clock identifier or a valid
+file descriptor.</p>
+</li>
+<li>
+<p>-EPERM if the caller does not have the permission to set some
+built-in clock via
+<a href="http://man7.org/linux/man-pages/man3/clock_settime.3.html">clock_settime(3)</a>. See
+note.</p>
+</li>
+<li>
+<p>-ENOTTY if <em>clockfd</em> does not refer to an EVL clock device.</p>
+</li>
+<li>
+<p>-EFAULT if <em>tp</em> points to invalid memory.</p>
+</li>
+</ul>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>Setting <code>EVL_CLOCK_MONOTONIC</code> or <code>EVL_CLOCK_REALTIME</code> may imply a
+transition to the <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">in-band execution stage</a> as
+<a href="http://man7.org/linux/man-pages/man3/clock_settime.3.html">clock_settime()</a>
+is called internally for carrying out the request.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="evl_get_clock_resolution"></a>
+int evl_get_clock_resolution(int clockfd, struct timespec *tp)
+</div>
+
+<p>This call is the EVL equivalent of the POSIX
+<a href="http://man7.org/linux/man-pages/man3/clock_getres.3.html">clock_getres(3)</a>
+service, for reading the resolution of a specified EVL clock.  It
+returns this value as counts of seconds and microseconds. The
+resolution of clocks depends on the implementation and cannot be
+configured.</p>
+
+<p><li><i>clockfd</i><p>The clock file descriptor, which can be:</p>
+<ul>
+<li>
+<p>any valid file descriptor received as a result of opening a clock
+device in <code>/dev/evl/clock</code>.</p>
+</li>
+<li>
+<p>the identifier of a <a href="#builtin-clocks">built-in EVL clock</a>, such as <code>EVL_CLOCK_MONOTONIC</code> or
+<code>EVL_CLOCK_REALTIME</code>.</p>
+</li>
+</ul>
+</li></p>
+
+
+<p><li><i>tp</i><p>A pointer to a <em>timespec</em> structure which should receive the resolution.</p>
+</li></p>
+
+<p><a href="#evl_get_clock_resolution">evl_get_clock_resolution()</a> writes the resolution to <em>tp</em> then returns zero on success,
+otherwise:</p>
+<ul>
+<li>
+<p>-EBADF if <em>clockfd</em> is neither a built-in clock identifier or a valid
+file descriptor.</p>
+</li>
+<li>
+<p>-ENOTTY if <em>clockfd</em> does not refer to an EVL clock device.</p>
+</li>
+<li>
+<p>-EFAULT if <em>tp</em> points to invalid memory.</p>
+</li>
+</ul>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>Setting <code>EVL_CLOCK_MONOTONIC</code> or <code>EVL_CLOCK_REALTIME</code> may imply a
+transition to the <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">in-band execution stage</a> as
+<a href="http://man7.org/linux/man-pages/man3/clock_getres.3.html">clock_getres(3)</a>
+is called internally for carrying out the request.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="evl_sleep_until"></a>
+int evl_sleep_until(int clockfd, const struct timespec *timeout)
+</div>
+
+<p>This call is the EVL equivalent of the POSIX
+<a href="http://man7.org/linux/man-pages/man3/clock_nanosleep.3.html">clock_nanosleep(3)</a>
+service, for blocking the caller until an arbitrary date expires on a
+specified EVL clock. Unlike its POSIX counterpart,
+<a href="#evl_sleep_until">evl_sleep_until()</a> only accepts
+absolute timeout specifications though.</p>
+
+<p><li><i>clockfd</i><p>The clock file descriptor, which can be:</p>
+<ul>
+<li>
+<p>any valid file descriptor received as a result of opening a clock
+device in <code>/dev/evl/clock</code>.</p>
+</li>
+<li>
+<p>the identifier of a <a href="#builtin-clocks">built-in EVL clock</a>, such as <code>EVL_CLOCK_MONOTONIC</code> or
+<code>EVL_CLOCK_REALTIME</code>.</p>
+</li>
+</ul>
+</li></p>
+
+
+<p><li><i>timeout</i><p>A pointer to a <em>timespec</em> structure which specifies the wake up date.</p>
+</li></p>
+
+<p><a href="#evl_sleep_until">evl_sleep_until()</a> blocks the
+caller until the wake up date expires then returns zero on success,
+otherwise:</p>
+<ul>
+<li>
+<p>-EBADF if <em>clockfd</em> is neither a built-in clock identifier or a valid
+file descriptor.</p>
+</li>
+<li>
+<p>-ENOTTY if <em>clockfd</em> does not refer to an EVL clock device.</p>
+</li>
+<li>
+<p>-EFAULT if <em>timeout</em> points to invalid memory.</p>
+</li>
+<li>
+<p>-EINTR if the call was interrupted by an in-band signal, or forcibly
+unblocked by the EVL core.</p>
+</li>
+</ul>
+<hr>
+
+<div class="proto"><a name="evl_usleep"></a>
+int evl_usleep(useconds_t usecs)
+</div>
+
+<p>This call puts the caller to sleep until a count of microseconds has
+elapsed. <a href="#evl_usleep">evl_usleep()</a> invokes
+<a href="#evl_sleep_until">evl_sleep_until()</a> for sleeping
+until the delay expires on the <code>EVL_CLOCK_MONOTONIC</code> clock.</p>
+
+<p><li><i>usecs</i><p>The count of microseconds to sleep for.</p>
+</li></p>
+
+<p><a href="#evl_usleep">evl_usleep()</a> blocks the caller until
+the delay expires then returns zero on success, otherwise:</p>
+<ul>
+<li>-EINTR if the call was interrupted by an in-band signal, or forcibly
+unblocked by the EVL core.</li>
+</ul>
+<h3 id="builtin-clocks">Pre-defined clocks</h3>
+<p>EVL defines two built-in clocks, you can pass any of the following
+identifiers to EVL calls which ask for a clock file descriptor
+(usually noted as <em>clockfd</em>):</p>
+<ul>
+<li>
+<p><code>EVL_CLOCK_MONOTONIC</code> is identical to the <code>CLOCK_MONOTONIC</code> POSIX
+clock, which is a monotonically increasing clock that cannot be set
+and represents time since some unspecified starting point (aka <em>the
+epoch</em>). This identifier has the same meaning than a file descriptor
+opened on <code>/dev/evl/clock/monotonic</code>.</p>
+</li>
+<li>
+<p><code>EVL_CLOCK_REALTIME</code> is identical to the <code>CLOCK_REALTIME</code> POSIX
+clock, which is a non-monotonic wall clock which can be manually set
+to an arbitrary value with proper privileges, and can also be
+subject to dynamic adjustements by the NTP system. This identifier
+has the same meaning than a file descriptor opened on
+<code>/dev/evl/clock/realtime</code>.</p>
+</li>
+</ul>
+<p>If you are to measure the elapsed time between two events, you
+definitely want to use <code>EVL_CLOCK_MONOTONIC</code>.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/" title="Semaphore"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/user-api/observable/" title="Observable"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title> :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/scheduling/" title="" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/">Scheduling<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/scheduling/">English</option>
+                    <option id="ru" value="/ru/core/user-api/scheduling/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/"><span itemprop="name">Using libevl</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/" aria-disabled="true"><span itemprop="name"></span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-out-of-band-scheduler">The out-of-band scheduler</a></li>
+    <li><a href="#sched-services">Scheduler services</a></li>
+    <li><a href="#scheduling-policies">Scheduling policies</a>
+      <ul>
+        <li><a href="#SCHED_FIFO">SCHED_FIFO policy</a></li>
+        <li><a href="#SCHED_RR">SCHED_RR policy</a></li>
+        <li><a href="#SCHED_QUOTA">SCHED_QUOTA policy</a></li>
+        <li><a href="#SCHED_TP">SCHED_TP policy</a></li>
+        <li><a href="#SCHED_WEAK">SCHED_WEAK policy</a></li>
+        <li><a href="#SCHED_IDLE">SCHED_IDLE policy</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1></h1>
+
+<h2 id="the-out-of-band-scheduler">The out-of-band scheduler</h2>
+<p>EVL defines five scheduling policies for running out-of-band threads.
+These policies are hierarchized: every time the core needs to pick the
+next eligible thread to run on the current CPU, it queries each policy
+module for a runnable thread in the following order:</p>
+<ol>
+<li>
+<p><a href="#SCHED_FIFO">SCHED_FIFO</a>, which is the common
+first-in, first-out real-time policy, also dealing with the
+<a href="#SCHED_RR">SCHED_RR</a> round-robin policy
+internally.</p>
+</li>
+<li>
+<p><a href="#SCHED_TP">SCHED_TP</a>, which enforces temporal
+partitioning of multiple sets of threads in a way which prevents
+those sets from overlapping time-wise on the CPU which runs such
+policy.</p>
+</li>
+<li>
+<p><a href="#SCHED_QUOTA">SCHED_QUOTA</a>, which enforces a
+limitation on the CPU consumption of threads over a fixed period of
+time.</p>
+</li>
+<li>
+<p><a href="#SCHED_WEAK">SCHED_WEAK</a>, which is a <em>non
+real-time</em> policy allowing its members to run in-band most of the
+time, while retaining the ability to request EVL services.</p>
+</li>
+<li>
+<p><a href="#SCHED_IDLE">SCHED_IDLE</a>, which is the fallback
+option the EVL core considers only when other policies have no
+runnable task on the CPU.</p>
+</li>
+</ol>
+<p>The SCHED_QUOTA and SCHED_TP policies are optionally supported by the
+core, make sure to enable <code>CONFIG_EVL_SCHED_QUOTA</code> or
+<code>CONFIG_EVL_SCHED_TP</code> respectively in the kernel configuration if you
+need them.</p>
+<p><strong>Only <code>SCHED_FIFO</code>, <code>SCHED_QUOTA</code> and <code>SCHED_TP</code> are real-time
+scheduling policies.</strong></p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Before a thread can be assigned to any EVL class, its has to attach
+itself to the core by a call to <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">evl_attach_thread</a>.</p>
+
+</div>
+<h2 id="sched-services">Scheduler services</h2>
+
+<div class="proto"><a name="evl_set_schedattr"></a>
+int evl_set_schedattr(int efd, const struct evl_sched_attrs *attrs)
+</div>
+
+<p>This call changes the scheduling attributes for the thread referred to
+by <em>efd</em> in the EVL core.</p>
+
+<p><li><i>efd</i><p>A file descriptor referring to the target thread, as returned by
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">evl_attach_thread()</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_get_self">evl_get_self()</a>, or opening a
+thread element device in <em>/dev/evl/thread</em> using
+<a href="http://man7.org/linux/man-pages/man2/open.2.html">open(2)</a>.</p>
+</li></p>
+
+
+<p><li><i>attrs</i><p>A structure defining the new set of attributes, which depends
+on the scheduling policy mentioned in
+<code>attrs-&gt;sched_policy</code>. EVL currently implement the following
+policies:</p>
+</li></p>
+
+<ul>
+<li>
+<p><a href="#SCHED_FIFO">SCHED_FIFO</a>, which is the common
+first-in, first-out real-time policy.</p>
+</li>
+<li>
+<p><a href="#SCHED_RR">SCHED_RR</a>, defining a real-time,
+round-robin policy in which each member of the class is allotted an
+individual time quantum before the CPU is given to the next thread.</p>
+</li>
+<li>
+<p><a href="#SCHED_TP">SCHED_TP</a>, which enforces temporal
+partitioning of multiple sets of threads based on a cycle-based
+scheduling.</p>
+</li>
+<li>
+<p><a href="#SCHED_QUOTA">SCHED_QUOTA</a>, which enforces a
+limitation on the CPU consumption of threads over a fixed period of
+time, known as the global quota period. Threads undergoing this
+policy are pooled in groups, with each group being given a share of
+the period.</p>
+</li>
+<li>
+<p><a href="#SCHED_WEAK">SCHED_WEAK</a>, which is a <em>non
+real-time</em> policy allowing its members to run in-band most of the
+time, while retaining the ability to request EVL services, at the
+expense of briefly switching to the out-of-band execution stage on
+demand.</p>
+</li>
+</ul>
+<p><a href="#evl_set_schedattr">evl_set_schedattr()</a> returns
+zero on success, otherwise a negated error code is returned:</p>
+<p>-EBADF		<em>efd</em> is not a valid thread descriptor.</p>
+<p>-EINVAL		Some of the parameters in <em>attrs</em> are wrong. Check
+<code>attrs-&gt;sched_policy</code>, and the policy-specific
+information may EVL expect for more.</p>
+<p>-ESTALE		<em>efd</em> refers to a stale thread, see these <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_detach_self">notes</a>.</p>
+<p><a href="#evl_set_schedattr">evl_set_schedattr()</a> immediately
+applies the changes to the scheduling attributes of the target thread
+when the latter runs in out-of-band context. Later on, the next time
+such thread transitions from out-of-band to in-band context, the
+in-band kernel will apply an extrapolated version of those changes to
+its own scheduler as well.</p>
+<p>The extrapolation of the out-of-band scheduling attributes passed to
+<a href="#evl_set_schedattr">evl_set_schedattr()</a> to the
+in-band ones applied by the mainline kernel works as follows:</p>
+<table>
+<thead>
+<tr>
+<th>out-of-band policy</th>
+<th>in-band policy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SCHED_FIFO, prio</td>
+<td>SCHED_FIFO, prio</td>
+</tr>
+<tr>
+<td>SCHED_RR, prio</td>
+<td>SCHED_FIFO, prio</td>
+</tr>
+<tr>
+<td>SCHED_TP, prio</td>
+<td>SCHED_FIFO, prio</td>
+</tr>
+<tr>
+<td>SCHED_QUOTA, prio</td>
+<td>SCHED_FIFO, prio</td>
+</tr>
+<tr>
+<td>SCHED_WEAK, prio &gt; 0</td>
+<td>SCHED_FIFO, prio</td>
+</tr>
+<tr>
+<td>SCHED_WEAK, prio == 0</td>
+<td>SCHED_OTHER</td>
+</tr>
+</tbody>
+</table>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>Calling
+<a href="http://man7.org/linux/man-pages/man3/pthread_setschedparam.3.html">pthread_setschedparam(3)</a>
+from the C library does not affect the scheduling attributes of an EVL
+thread. It only affects the scheduling parameters of such thread from
+the standpoint of the in-band kernel. Because the C library may cache the
+current scheduling attributes for the in-band context of a thread -
+<em>glibc</em> does so typically - the cached value may not reflect the
+actual scheduling attributes of the thread after this call.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="evl_get_schedattr"></a>
+int evl_get_schedattr(int efd, struct evl_sched_attrs *attrs)
+</div>
+
+<p>This is the call for retrieving the current scheduling attributes of
+the thread referred to by <em>efd</em>.</p>
+
+<p><li><i>efd</i><p>A file descriptor referring to the target thread, as returned by
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">evl_attach_thread()</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_get_self">evl_get_self()</a>, or opening a
+thread element device in <em>/dev/evl/thread</em> using <code>open(2)</code>.</p>
+</li></p>
+
+
+<p><li><i>attrs</i><p>A pointer to a structure where the EVL core should write back the
+scheduling attributes.</p>
+</li></p>
+
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/sched.h&gt;
+#include &lt;evl/thread.h&gt;
+
+int retrieve_self_schedparams(void)
+{
+	struct evl_sched_attrs attrs;
+
+	return evl_get_schedattr(evl_get_self(), &amp;attrs);
+}
+</code></pre></div><p>The value returned in <code>attrs.sched_priority</code> is the base priority
+level of the thread within its scheduling class, which does <em>not</em>
+reflect any priority inheritance/ceiling boost that might be ongoing.</p>
+<p><a href="#evl_get_schedattr">evl_get_schedattr()</a> returns
+zero on success, otherwise a negated error code is returned:</p>
+<p>-EBADF		<em>efd</em> is not a valid thread descriptor.</p>
+<p>-ESTALE		<em>efd</em> refers to a stale thread, see these <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_detach_self">notes</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_control_sched"></a>
+int evl_control_sched(int policy, const union evl_sched_ctlparam *param, union evl_sched_ctlinfo *info, int cpu)
+</div>
+
+<p>Some policies require specific configuration for each CPU,
+<a href="#evl_control_sched">evl_control_sched()</a> passes such
+information to the core. Which parameters should be filled into the
+<em>param</em> union depends on the <em>policy</em>. For instance, you would need to
+call this routine for defining the <a href="#SCHED_TP">SCHED_TP</a> schedule on a given CPU.</p>
+
+<p><li><i>policy</i><p>Either <code>SCHED_QUOTA</code> or <code>SCHED_TP</code>.</p>
+</li></p>
+
+
+<p><li><i>param</i><p>A pointer to the scheduling parameters which should
+be applied to <em>cpu</em> for the <em>policy</em> mentioned. These parameters
+are described in the <a href="#managing-quota-groups">SCHED_QUOTA</a>
+and <a href="#setting-tp-information">SCHED_TP</a> documentation.</p>
+</li></p>
+
+
+<p><li><i>info</i><p>A pointer to a control information block where the core may write some
+useful data about the current settings. Except for the <em>get</em>
+operations, this pointer is optional and may be passed as NULL.</p>
+</li></p>
+
+
+<p><li><i>cpu</i><p>A CPU which belongs to the set of CPUs EVL runs out-of-band activity
+on (see the <code>evl.oobcpus</code> kernel parameter).</p>
+</li></p>
+
+<p>This call returns zero on success, or a negated error code:</p>
+<ul>
+<li>
+<p>-EINVAL	Either <em>policy</em>, <em>cpu</em>, or some information
+in <em>param</em> is wrong.</p>
+</li>
+<li>
+<p>-EFAULT	Either <em>param</em> or <em>info</em> are invalid addresses.</p>
+</li>
+<li>
+<p>-ENOMEM	The core could not allocate memory for carrying
+out the operation. Scary.</p>
+</li>
+<li>
+<p>-EOPNOTSUPP <em>policy</em> is valid but not available from the
+core. <code>CONFIG_EVL_SCHED_TP</code> or <code>CONFIG_EVL_SCHED_QUOTA</code>
+are likely disabled in the <a href="https://the-going.github.io/evlproject/ru/core/build-steps/">kernel configuration</a>.</p>
+</li>
+</ul>
+<hr>
+
+<div class="proto"><a name="evl_yield"></a>
+int evl_yield(void)
+</div>
+
+<p>In some cases, EVL threads undergoing the <code>SCHED_FIFO</code> or <code>SCHED_RR</code>
+policies might need to perform manual round-robin, like
+<a href="http://man7.org/linux/man-pages/man2/sched_yield.2.html">sched_yield()</a>
+allows for plain POSIX threads. <a href="#evl_yield">evl_yield()</a> can be used for that purpose.</p>
+<p>Manual round-robin moves the caller at the end of its priority group,
+yielding the CPU to other threads with the same priority. If there are
+none, then <a href="#evl_yield">evl_yield()</a> returns
+immediately with no effect.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Although that would work, calling <a href="#evl_yield">evl_yield()</a> for a thread undergoing the <a href="#SCHED_WEAK">SCHED_WEAK</a> policy would make no sense. In that case, the
+caller would be immediately demoted to the in-band stage on return
+from the call, leaving the EVL scheduler right after it was promoted
+to the out-of-band stage for executing <a href="#evl_yield">evl_yield()</a>. Pretty much a useless CPU burner with no upside.</p>
+
+</div>
+<p>On success, <a href="#evl_yield">evl_yield()</a> returns
+zero, otherwise a negated error code:</p>
+<p>-EPERM		The caller is not
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">attached</a>
+to the EVL core.</p>
+<hr>
+<h2 id="scheduling-policies">Scheduling policies</h2>
+<h3 id="SCHED_FIFO">SCHED_FIFO policy</h3>
+<p>The first-in, first-out policy, fixed priority, preemptive scheduling
+policy. If you really need a refresher about this one, you can still
+have a look at this inspirational piece of post-modern poetry for
+<a href="https://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_08.html">background info</a>.
+Or you can just go for the short version: with SCHED_FIFO, the
+scheduler always picks the runnable thread with the highest priority
+which spent the longest time waiting for the CPU to be available.</p>
+<p>EVL provides 99 fixed priority levels starting a 1, which maps 1:1 to
+the in-band kernel&rsquo;s SCHED_FIFO implementation as well.</p>
+<h4 id="sched-fifo-parameters">Setting the SCHED_FIFO parameters</h4>
+<p>Switching a thread to FIFO scheduling is achieved by calling
+<a href="#evl_set_schedattr">evl_set_schedattr()</a> with the
+file descriptor of the target thread. The <code>evl_sched_attrs</code> attribute
+structure should be filled in as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/sched.h&gt;
+
+	struct evl_sched_attrs attrs;
+	int ret;
+
+	attrs.sched_policy = SCHED_FIFO;
+	attrs.sched_priority = &lt;priority&gt;; /* [1-99] */
+	ret = evl_set_schedattr(efd, &amp;attrs);
+</code></pre></div><hr>
+<h3 id="SCHED_RR">SCHED_RR policy</h3>
+<p>The round-robin policy is based on SCHED_FIFO
+internally. Additionally, it limits the execution time of its members
+to a given <em>timeslice</em>, moving a thread which fully consumed its
+current timeslice to the tail of the scheduling queue for its priority
+level. This is designed as a simple way to prevent threads from
+over-consuming the CPU within their own priority level.</p>
+<p>Unlike the in-band kernel which defines a global timeslice value for all
+members of the SCHED_RR class, EVL defines a per-thread quantum
+instead. Since EVL is tickless, this quantum may be any valid
+duration, and may differ among threads from the same priority group.</p>
+<h4 id="sched-rr-parameters">Setting the SCHED_RR parameters</h4>
+<p>Switching a thread to round-robin scheduling is achieved by calling
+<a href="#evl_set_schedattr">evl_set_schedattr()</a> with the
+file descriptor of the target thread. The <code>evl_sched_attrs</code> attribute
+structure should be filled in as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/sched.h&gt;
+
+	struct evl_sched_attrs attrs;
+	int ret;
+
+	attrs.sched_policy = SCHED_RR;
+	attrs.sched_priority = &lt;priority&gt;; /* [1-99] */
+	attrs.sched_rr_quantum = (struct timespec){
+			       .tv_sec = &lt;seconds&gt;,
+			       .tv_nsec = &lt;nanoseconds&gt;,
+			       };
+	ret = evl_set_schedattr(efd, &amp;attrs);
+</code></pre></div><h3 id="SCHED_QUOTA">SCHED_QUOTA policy</h3>
+
+<div class="mixed-grid-right-container">
+<div style="align-self: center;">
+  <p>The quota-based policy enforces a limitation on the CPU consumption of
+threads over a fixed period of time, known as the global quota
+period. Threads undergoing this policy are pooled in groups, with each
+group being given a share of the period (expressed as a
+percentage). Within a SCHED_QUOTA group, the SCHED_FIFO policy
+applies to all its members.</p>
+
+</div>
+<div>
+   <img src=https://the-going.github.io/evlproject/images/quota_scheduling.png>
+</div>
+</div>
+
+<p>For instance, say that we have five distinct thread groups, each of
+which is given a runtime budget which represents a portion of the
+global period: 35%, 25%, 15%, 10% and finally 5% of a global period
+set to one second. The first group would be allotted 350 milliseconds
+over a second, the second group would get 250 milliseconds from the
+same period and so on.</p>
+<p>Every time a thread undergoing the SCHED_QUOTA policy is given the
+CPU, the time it consumes is charged to the group it belongs
+to. Whenever the group as a whole reaches the alloted time budget, all
+its members stall until the next period starts, at which point the
+runtime budget of every group is replenished for the next round of
+execution, resuming all its members in the process.</p>
+<p>You may attach as many threads as you need to a single group, and the
+number of threads may vary among groups. The alloted runtime quota for
+a group is decreased by the execution time of every thread in that
+group. Therefore, a group with no thread does not consume its quota.</p>
+<h4 id="sched-peak-quota">Runtime budget and peak quota</h4>
+<p>Each thread group is given its full quota every time the global period
+starts, according to the <a href="#modify-quota-group">configuration set</a> for this group. If the group did not
+consume its quota entirely by the end of the current period, the
+remaining budget is added to the group&rsquo;s quota for the next period, up
+to a limit defined as the <em>peak quota</em>. If the accumulated budget
+would cause the quota to exceed the peak value, the extra time is
+spread over multiple subsequent periods until the budget is fully
+consumed.</p>
+<h4 id="managing-quota-groups">Managing quota scheduling groups</h4>
+<p><a href="#create-quota-group">Creating</a>, <a href="#modify-quota-group">modifying</a> and <a href="#remove-quota-group">removing</a> thread groups is achieved by calling
+<a href="#evl_control_sched">evl_control_sched()</a>.</p>
+<h5 id="create-quota-group">Creating a quota group</h5>
+<p>EVL supports up to 1024 distinct thread groups for quota-based
+scheduling system-wide. Each thread group is assigned to a specific
+CPU by the application code which creates it, among the set of CPUs
+EVL runs out-of-band activity on (see the <code>evl.oobcpus</code> kernel
+parameter).</p>
+<p>A thread group is represented by a unique integer returned by the core
+upon creation, aka the <em>group identifier</em>.</p>
+<p>Creating a new thread group is achieved by calling
+<a href="#evl_control_sched">evl_sched_contol()</a>. Some
+information including the new group identifier is returned in the
+ancillary <code>evl_sched_ctlinfo</code> structure passed to the request. The
+<code>evl_sched_ctlparams</code> control structure should be filled in as
+follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/sched.h&gt;
+
+	union evl_sched_ctlparam param;
+	union evl_sched_ctlinfo info;
+	int ret;
+
+	param.quota.op = evl_quota_add;
+	ret = evl_control_sched(SCHED_QUOTA, &amp;param, &amp;info, &lt;cpu-number&gt;);
+</code></pre></div><p>On success, the following information is received from the core
+regarding the new group:</p>
+<ul>
+<li>
+<p>info.quota.tgid contains the new group identifier.</p>
+</li>
+<li>
+<p>info.quota.quota_percent is the current percentage of the global
+period allotted to the new group. At creation time, this value is
+set to 100%. You may want to <a href="#modify-quota-group">change it</a> to reflect the final value.</p>
+</li>
+<li>
+<p>info.quota.quota_peak_percent reflects the current <a href="#sched-peak-quota"><em>peak
+percentage</em></a> of the global
+period allotted to the new group, which is also set to 100% at
+creation time. This means that by default, a new group might double
+its quota value by accumulating runtime budget, consuming up to 100%
+of the CPU time during the next period. Likewise, you may want to
+<a href="#modify-quota-group">change it</a> to reflect the
+final value.</p>
+</li>
+<li>
+<p>info.quota.quota_sum is the sum of the quota values of all groups
+assigned to the CPU specified in the <a href="#evl_control_sched">evl_control_sched()</a> request. This gives the overall CPU
+business as far as SCHED_QUOTA is concerned. This sum should not
+exceed 100% for a CPU in a properly configured system.</p>
+</li>
+</ul>
+<h5 id="modify-quota-group">Modifying a quota group</h5>
+<h5 id="remove-quota-group">Removing a quota group</h5>
+<h4 id="sched-quota-parameters">Setting the SCHED_QUOTA parameters</h4>
+<p>Switching a thread to quota-based scheduling is achieved by calling
+<a href="#evl_set_schedattr">evl_set_schedattr()</a> with the
+file descriptor of the target thread, in order to attach such thread
+to a quota group along with setting its priority. To do so, the
+<code>evl_sched_attrs</code> attribute structure should be filled in as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/sched.h&gt;
+
+	struct evl_sched_attrs attrs;
+	int ret;
+
+	attrs.sched_policy = SCHED_QUOTA;
+	attrs.sched_priority = &lt;priority&gt;; /* [1-99] */
+	attrs.sched_quota_group = &lt;grpid&gt;; /* Quota group id. */
+	ret = evl_set_schedattr(efd, &amp;attrs);
+</code></pre></div><hr>
+<h3 id="SCHED_TP">SCHED_TP policy</h3>
+
+<div class="mixed-grid-right-container">
+<div style="align-self: center;">
+  <p>This policy enforces a so-called <em>temporal partitioning</em>, which is a
+way to schedule thread activities on a given CPU so that they cannot
+overlap time-wise. To this end, the policy defines a global, <em>major</em>
+time frame of fixed duration repeating cyclically, which is divided
+into smaller <em>minor</em> frames or <em>time windows</em> also of fixed durations,
+but not necessarily equal.  Therefore, a minor frame is bounded by its
+time offset from the beginning of the major frame, and its own
+duration. The sum of all minor frame durations defines the duration of
+the global time frame.</p>
+<p>Each minor frame contributes to the run-time allotted within the
+global time frame to a group of thread called a <em>partition</em>.  The
+maximum number of partitions in the system is defined by
+<code>CONFIG_EVL_TP_NR_PART</code> in the kernel configuration. Each thread
+undergoing this policy is attached to one of such <em>partitions</em>.</p>
+
+</div>
+<div>
+   <img src=https://the-going.github.io/evlproject/images/temporal_partitioning.png>
+</div>
+</div>
+
+<p>When a minor frame elapses on a CPU, the threads attached to its
+partition are immediately suspended, and threads from the partition
+assigned to the next minor frame may be picked for scheduling. When
+the last minor frame elapses, the process repeats from the minor frame
+leading the major time frame. You may assign as many threads as you
+need to a single partition, and the number of threads may vary among
+partitions. A partition with no thread simply runs no SCHED_TP thread
+until the next minor frame assigned a non-empty partition starts.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Valid partition numbers range from 0 to <code>CONFIG_EVL_TP_NR_PART - 1</code>. The special partition number <code>EVL_TP_IDLE</code> can be used when
+configuring the scheduler to designate the <em>idle</em> partition when
+assigning it to a minor frame, creating a time hole in the schedule
+which will not run any SCHED_TP thread until this minor frame elapses.</p>
+
+</div>
+<h4 id="setting-tp-information">Setting the temporal partitioning information for a CPU</h4>
+<p>Temporal partitioning is defined on a per-CPU basis, you have to
+configure each CPU involved in this policy independently, enumerating
+the minor frames which compose the major one as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	union evl_sched_ctlparam param;
+	int ret;
+
+	param.tp.op = evl_tp_install;
+	param.tp.nr_windows = &lt;number_of_minor_frames&gt;;
+	param.tp.windows[0].offset = &lt;offset_from_start_of_major_frame&gt;;
+	param.tp.windows[0].duration = &lt;duration_of_minor_frame&gt;;
+	param.tp.windows[0].ptid = &lt;assigned_partition_id&gt;;
+	...
+	param.tp.windows[&lt;number_of_minor_frames&gt; - 1].offset = &lt;offset_from_start_of_major_frame&gt;;
+	param.tp.windows[&lt;number_of_minor_frames&gt; - 1].duration = &lt;duration_of_minor_frame&gt;;
+	param.tp.windows[&lt;number_of_minor_frames&gt; - 1].ptid = &lt;assigned_partition_id&gt;;
+
+	ret = evl_control_sched(SCHED_TP, &amp;param, NULL, &lt;cpu-number&gt;);
+</code></pre></div><p>If the special value <code>EVL_TP_IDLE</code> is assigned to a minor time frame
+(<em>ptid</em>), no thread undergoing the SCHED_TP policy will run until such
+frame elapses. This is a way to create a <em>time hole</em> within the major
+time frame.</p>
+<p>This operation implicitly overrides the previous TP settings for the
+CPU, leaving the TP scheduling in stopped state. Generally speaking,
+once a TP scheduling plan is installed for a CPU, it is left in standby mode
+until explicitly started.</p>
+<p>No information is passed back by the core when installing a TP
+schedule, you may pass the <em>info</em> parameter as NULL to
+<a href="#evl_control_sched">evl_control_sched()</a>.</p>
+<h4 id="starting-the-tp-scheduling-on-a-cpu">Starting the TP scheduling on a CPU</h4>
+<p>The following request enables the TP scheduler for the given CPU; you
+have to issue this request for activating a TP scheduling plan:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	union evl_sched_ctlparam param;
+	int ret;
+
+	param.tp.op = evl_tp_start;
+	ret = evl_control_sched(SCHED_TP, &amp;param, NULL, &lt;cpu-number&gt;);
+</code></pre></div><p>No information is passed back by the core when starting a TP
+scheduling plan, you may pass the <em>info</em> parameter as NULL to
+<a href="#evl_control_sched">evl_control_sched()</a>.</p>
+<h4 id="stopping-the-tp-scheduling-on-a-cpu">Stopping the TP scheduling on a CPU</h4>
+<p>You can disable the scheduling of threads undergoing the SCHED_TP
+policy on a CPU by the following call:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	union evl_sched_ctlparam param;
+	int ret;
+
+	param.tp.op = evl_tp_stop;
+	ret = evl_control_sched(SCHED_TP, &amp;param, NULL, &lt;cpu-number&gt;);
+</code></pre></div><p>Upon success, the target CPU won&rsquo;t be considered for running SCHED_TP
+threads, until the converse request <code>evl_tp_start</code> is received for
+that CPU.</p>
+<p>No information is passed back by the core when stopping a TP
+scheduling plan, you may pass the <em>info</em> parameter as NULL to
+<a href="#evl_control_sched">evl_control_sched()</a>.</p>
+<h4 id="retrieving-the-temporal-partitioning-information-from-a-cpu">Retrieving the temporal partitioning information from a CPU</h4>
+<p>The following request fetches the current scheduling plan for a given
+CPU:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	union evl_sched_ctlparam param;
+	struct {
+		union evl_sched_ctlinfo info;
+		struct __sched_tp_window windows[&lt;max_number_of_minor_frames&gt;];
+	} result;
+	int ret;
+
+	param.tp.op = evl_tp_get;
+	param.tp.nr_windows = &lt;max_number_of_minor_frames&gt;;
+	ret = evl_control_sched(SCHED_TP, &amp;param, &amp;result.info, &lt;cpu-number&gt;);
+</code></pre></div><p><code>param.nr_windows[]</code> specifies the maximum number of minor frames the
+EVL core should dump into the <code>result.info.nr_windows[]</code> output
+variable array. This value is automatically capped to the actual
+number of minor frames defined for the target CPU at the time of the
+call.</p>
+<p>The minor frames active for the target CPU are readable from the
+<code>result.windows[]</code> array, up to <code>param.nr_windows[]</code> . The number of
+valid elements in this array is given by <code>result.info.nr_windows[]</code>.</p>
+<h4 id="removing-the-temporal-partitioning-information-from-a-cpu">Removing the temporal partitioning information from a CPU</h4>
+<p>This is the converse operation to <code>evl_tp_install</code>, removing temporal
+partitioning support for the target CPU, releasing all related
+resources. This request implicitly stops the TP scheduling on such CPU
+prior to uninstalling.</p>
+<h4 id="sched-tp-parameters">Setting the SCHED_TP parameters</h4>
+<p>Switching a thread to temporal partitioning is achieved by calling
+<a href="#evl_set_schedattr">evl_set_schedattr()</a> with the
+file descriptor of the target thread. The <code>evl_sched_attrs</code> attribute
+structure should be filled in as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/sched.h&gt;
+
+	struct evl_sched_attrs attrs;
+	int ret;
+
+	attrs.sched_policy = SCHED_TP;
+	attrs.sched_priority = &lt;priority&gt;; /* [1-99] */
+	attrs.sched_tp_partition = &lt;ptid&gt;; /* Partition id. */
+	ret = evl_set_schedattr(efd, &amp;attrs);
+</code></pre></div><p><em>ptid</em> should be a valid partition identifier between 0 and
+<code>CONFIG_EVL_TP_NR_PART</code> - 1.</p>
+<p>Within a minor time frame, threads undergo the SCHED_FIFO policy
+according to their fixed <em>priority</em> value.</p>
+<hr>
+<h3 id="SCHED_WEAK">SCHED_WEAK policy</h3>
+<p>You may want to run some POSIX threads in-band most of the time,
+except when they need to call some EVL services
+occasionally. Occasionally here means either non-repeatedly, or at any
+rate <em>not</em> from a high frequency loop.</p>
+<p>Members of this class are picked second to last in the hierarchy of
+EVL scheduling classes, right before the sole member of the
+<a href="#SCHED_IDLE">SCHED_IDLE</a> class which stands for the
+in-band execution stage of the kernel. The priority such threads have
+in the in-band context are preserved by this policy when they
+(normally briefly) run on the out-of-band execution stage. For this
+reason, SCHED_WEAK threads have a fixed priority ranging from 0 to 99
+included, which maps to in-band SCHED_OTHER (0), SCHED_FIFO and
+SCHED_RR (1-99) priority ranges.</p>
+<p>A thread scheduled in the SCHED_WEAK class may invoke any EVL service,
+including blocking ones for waiting for out-of-band events
+(e.g. depleting a semaphore), which will certainly switch it to the
+out-of-band execution stage. Before returning from the EVL system
+call, the thread will be automatically switched back to the in-band
+execution stage by the core. This means that <em>each and every EVL
+system call</em> issued by a thread assigned to the SCHED_WEAK class is
+going to trigger <em>two execution stage switches</em> back and forth, which
+is definitely <em>costly</em>. So make sure not to use this feature in any
+high frequency loop.</p>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>In a specific case the EVL core will keep the thread running on the
+out-of-band execution stage though: whenever this thread has returned
+from a successful call to <a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#evl_lock_mutex">evl_lock_mutex()</a>, holding an EVL
+mutex. This ensures no in-band activity on the same CPU can
+preempt the lock owner, which would certainly lead to a priority
+inversion would that lock be contended later on by another EVL
+thread. The lock owner is eventually switched back to in-band mode by
+the core as a result of <a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#evl_unlock_mutex">releasing</a> the last EVL mutex it
+was holding.</p>
+
+</div>
+<p>There are only a few legitimate use cases for assigning an EVL thread
+to the SCHED_WEAK scheduling class:</p>
+<ul>
+<li>
+<p>as part of some initialization, cleanup or any non real-time phase
+of your application, a thread needs to synchronize with another EVL
+thread which belongs to a real-time class like <a href="#SCHED_FIFO">SCHED_FIFO</a>.</p>
+</li>
+<li>
+<p>some in-band thread which purpose is to handle <em>fairly exceptional</em>
+events needs to be notified by a real-time thread to do so.</p>
+</li>
+</ul>
+<p>In all other cases where an in-band thread might need to be driven by
+out-of-band events which may occur at a moderate or higher rate, using
+a message-based mechanism such as a <a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/">cross-buffer</a> is the best way to go.</p>
+<p>Also note that some EVL services may be called by regular POSIX
+threads. Typically, a plain POSIX thread may <a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">post an EVL
+semaphore</a> for
+signaling an out-of-band EVL thread pending on it. You can find the
+allowed calling contexts for each EVL service from <code>libevl</code>
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">there</a>.</p>
+<p>Switching a thread to SCHED_WEAK is achieved by calling
+<a href="#evl_set_schedattr">evl_set_schedattr()</a> with the
+file descriptor of the target thread. The <code>evl_sched_attrs</code> attribute
+structure should be filled in as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
+
+	struct evl_sched_attrs attrs;
+	int ret;
+
+	attrs.sched_policy = SCHED_WEAK;
+	attrs.sched_priority = &lt;priority&gt;; /* [0-99] */
+	ret = evl_set_schedattr(efd, &amp;attrs);
+</code></pre></div><hr>
+<h3 id="SCHED_IDLE">SCHED_IDLE policy</h3>
+<p>The idle class has a single task on each CPU: the <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">low priority
+placeholder task</a>.</p>
+<p>SCHED_IDLE has the lowest priority among policies, its sole task is
+picked for scheduling only when other policies have no runnable task
+on the CPU. A task member of the SCHED_IDLE class cannot block, it is
+always runnable.</p>
+<p>This is an internal class, which is neither available to user
+applications nor drivers.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/user-api/io/" title="Out-of-band I/O services"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/user-api/misc/" title="Miscellanea"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

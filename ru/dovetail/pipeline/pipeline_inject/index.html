@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>IRQ injection :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/dovetail/pipeline/pipeline_inject/">English</option>
+                    <option id="ru" value="/ru/dovetail/pipeline/pipeline_inject/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/"><span itemprop="name">Интерфейс Dovetail</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/"><span itemprop="name">Interrupt pipeline</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/" aria-disabled="true"><span itemprop="name">IRQ injection</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#oob-ipi">Sending out-of-band IPIs to remote CPUs</a></li>
+    <li><a href="#injecting-an-irq-event-for-the-current-cpu">Injecting an IRQ event for the current CPU</a></li>
+    <li><a href="#direct-logging-of-an-irq-event">Direct logging of an IRQ event</a></li>
+    <li><a href="#irq-work">Extended IRQ work API</a></li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>IRQ injection</h1>
+
+<h2 id="oob-ipi">Sending out-of-band IPIs to remote CPUs</h2>
+<p>Although the pipeline does not directly use IPIs internally, it
+exposes two generic IPI vectors which autonomous cores may use in SMP
+configuration for signaling the following events across CPUs:</p>
+<ul>
+<li>
+<p><code>RESCHEDULE_OOB_IPI</code>, the cross-CPU task reschedule request. This is
+available to the core&rsquo;s scheduler for kicking the task rescheduling
+procedure on remote CPUs, when the state of their respective
+runqueue has changed. For instance, a task sleeping on CPU #1 may be
+unblocked by a system call issued from CPU #0: in this case, the
+scheduler code running on CPU #0 is supposed to tell CPU #1 that it
+should reschedule. Typically, the EVL core does so from its
+<code>test_resched()</code> routine.</p>
+</li>
+<li>
+<p><code>TIMER_OOB_IPI</code>, the cross-CPU timer reschedule request. Because
+software timers are in essence per-CPU beasts, this IPI is available
+to the core&rsquo;s timer management code for kicking the hardware timer
+programming procedure on remote CPUs, when the state of some
+software timer has changed. Typically, stopping a timer from a
+remote CPU, or migrating a timer from a CPU to another should
+trigger such signal. The EVL core does so from its
+<code>evl_program_remote_tick()</code> routine, which is called whenever the
+timer with the earliest timeout date enqueued on a remote CPU, may
+have changed.</p>
+</li>
+</ul>
+<p>As their respective name suggests, those two IPIs can be sent from
+out-of-band context (as well as in-band), by calling the
+<code>irq_send_oob_ipi()</code> service.</p>
+<hr>
+
+<div class="proto"><a name="irq_send_oob_ipi"></a>
+void irq_send_oob_ipi(unsigned int ipi, const struct cpumask *cpumask)
+</div>
+
+
+<p><li><i>ipi</i><p>The IPI number to send. There are only two legit values for this
+argument: either RESCHEDULE_OOB_IPI, or TIMER_OOB_IPI. This is a
+low-level service with not much parameter checking, so any other value
+is likely to cause havoc.</p>
+</li></p>
+
+
+<p><li><i>cpumask</i><p>A CPU bitmask defining the target CPUs for the signal. The current CPU
+is allowed to send a signal to itself, although this may not be the
+faster path to running a local handler.</p>
+</li></p>
+
+<p>In order to receive these IPIs, an out-of-band handler must have been
+set for them, mentioning the [IRQF_OOB flag]({{ &lt; relref
+&ldquo;dovetail/pipeline/irq_handling.md&rdquo; &gt;}}).</p>
+<p><code>irq_send_oob_ipi()</code> serializes callers internally so that it
+may be used from either stages: in-band or out-of-band.</p>
+<hr>
+<h2 id="injecting-an-irq-event-for-the-current-cpu">Injecting an IRQ event for the current CPU</h2>
+<p>In some very specific cases, we may need to inject an IRQ into the
+pipeline by software as if such hardware event had happened on the
+current CPU. <code>irq_inject_pipeline()</code> does exactly this.</p>
+<hr>
+
+<div class="proto"><a name="irq_inject_pipeline"></a>
+int irq_inject_pipeline(unsigned int irq)
+</div>
+
+
+<p><li><i>irq</i><p>The IRQ number to inject. A valid interrupt descriptor must exist
+for this interrupt.</p>
+</li></p>
+
+<p><code>irq_inject_pipeline()</code> fully emulates the receipt of a hardware
+event, which means that the common <a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/#genirq-flow">interrupt pipelining logic</a> applies
+to the new event:</p>
+<ul>
+<li>
+<p>first, any <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">out-of-band handler</a> is considered for
+delivery,</p>
+</li>
+<li>
+<p>then such event may be passed down the pipeline to the common
+in-band handler(s) in absence of out-of-band handler(s).</p>
+</li>
+</ul>
+<p>The pipeline priority rules apply accordingly:</p>
+<ul>
+<li>
+<p>if the caller is in-band, <em>and</em> an out-of-band handler is registered
+for the IRQ event, <em>and</em> the out-of-band stage is <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#optimistic-irq-protect">unstalled</a>,
+the execution stage is immediately switched to out-of-band for
+running the later, then restored to in-band before
+<code>irq_inject_pipeline()</code> returns.</p>
+</li>
+<li>
+<p>if the caller is out-of-band and there is no out-of-band handler,
+the IRQ event is deferred until the in-band stage resumes execution
+on the current CPU, at which point it is delivered to any in-band
+handler(s).</p>
+</li>
+<li>
+<p>in any case, should the current stage receive the IRQ event, the
+<a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#virtual-i-flag">virtual interrupt state</a> of that stage
+is always considered before deciding whether this event should be
+delivered immediately to its handler by <code>irq_inject_pipeline()</code>
+(<em>unstalled</em> case), or deferred until the stage is unstalled
+(<em>stalled</em> case).</p>
+</li>
+</ul>
+<p>This call returns zero on successful injection, or -EINVAL if the IRQ
+has no valid descriptor.</p>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>If you look for a way to schedule the execution of a routine in the
+in-band interrupt context from the out-of-band stage, you may want to
+consider the <a href="#irq-work">extended irq_work API</a> which
+provides a high level interface to this feature.</p>
+
+</div>
+<hr>
+<h2 id="direct-logging-of-an-irq-event">Direct logging of an IRQ event</h2>
+<p>Sometimes, running the full interrupt delivery logic
+<a href="#irq_inject_pipeline">irq_inject_pipeline()</a>
+implements for feeding an interrupt into the pipeline may be overkill
+when we may make assumptions about the current execution context, and
+which stage should handle the event. The following fast helpers can be
+used instead in this case:</p>
+<hr>
+
+<div class="proto"><a name="irq_post_inband"></a>
+void irq_post_inband(unsigned int irq)
+</div>
+
+
+<p><li><i>irq</i><p>The IRQ number to inject into the in-band stage. A valid interrupt
+descriptor must exist for this interrupt.</p>
+</li></p>
+
+<p>This routine may be used to mark an interrupt as pending directly into
+the current CPU&rsquo;s log for the in-band stage. This is useful in either
+of these cases:</p>
+<ul>
+<li>
+<p>you know that the out-of-band stage is current, therefore this event
+has to be deferred until the in-band stage resumes on the current
+CPU later on. This means that you can simply post it to the in-band
+stage directly.</p>
+</li>
+<li>
+<p>you know that the in-band stage is current but <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#virtual-i-flag">stalled</a>, therefore
+this event can&rsquo;t be immediately delivered, so marking it as pending
+into the in-band stage is enough.</p>
+</li>
+</ul>
+<p>Interrupts must be <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/##hard-irq-protection">hard disabled</a> in the CPU before calling this routine.</p>
+<hr>
+
+<div class="proto"><a name="irq_post_oob"></a>
+void irq_post_oob(unsigned int irq)
+</div>
+
+
+<p><li><i>irq</i><p>The IRQ number to inject into the out-of-band stage. A valid interrupt
+descriptor must exist for this interrupt.</p>
+</li></p>
+
+<p>This routine may be used to mark an interrupt as pending directly into
+the current CPU&rsquo;s log for the out-of-band stage. This is useful in
+only one situation: you know that the out-of-band stage is current but
+<a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#virtual-i-flag">stalled</a>, therefore this event can&rsquo;t be immediately delivered, so marking
+it as pending into the out-of-band stage is enough.</p>
+<p>Interrupts must be <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/#hard-irq-protection">hard disabled</a> in the CPU before calling this routine. If the out-of-band stage
+is stalled as expected on entry to this helper, then interrupts must
+be hard disabled in the CPU as well anyway.</p>
+<hr>
+<h2 id="irq-work">Extended IRQ work API</h2>
+<p>Due to the NMI-like nature of interrupts running out-of-band code from
+the standpoint of the main kernel, such code might preempt in-band
+activities in the middle of a <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#no-inband-reentry">critical section</a>. For this reason,
+it would be unsafe to call any in-band routine from an out-of-band
+context.</p>
+<p>However, we may schedule execution of in-band work handlers from
+out-of-band code, using the regular <code>irq_work_queue()</code> service which
+has been extended by the IRQ pipeline core. Such work request from the
+out-of-band stage is scheduled for running on the in-band stage on the
+issuing CPU as soon as the out-of-band activity quiesces on this
+processor. As its name implies, the work handler runs in (in-band)
+interrupt context.</p>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>The interrupt pipeline forces the use of a <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">synthetic IRQ</a> as a notification signal
+for the IRQ work machinery, instead of a hardware-specific interrupt
+vector. This special IRQ is labeled <em>in-band work</em> when reported by
+<code>/proc/interrupts</code>. <code>irq_work_queue()</code> may invoke the work handler
+immediately <em>only</em> if called from the in-band stage with hard irqs on.
+In all other cases, the handler execution is deferred until the in-band
+log is <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">synchronized</a>.</p>
+
+</div>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

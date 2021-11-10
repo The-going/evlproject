@@ -3,21 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="generator" content="Hugo 0.89.1" />
     <meta name="description" content="Xenomai 4 project">
     <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
-    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    
     <title>Testing the installation :: Xenomai 4</title>
-    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/variant.css?1634415568" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/print.css?1634415568" rel="stylesheet" media="print">
-    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634415568"></script>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572173" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572173" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572173" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572173"></script>
     <style>
       :root #header + #content > #left > #rlblock_left{
         display:none !important;
@@ -28,6 +29,11 @@
     </style>
   </head>
   <body class="" data-url="https://the-going.github.io/evlproject/core/testing/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
     <nav id="sidebar" class="showVisitedLinks">
       <div id="header-wrapper">
         <div id="header">
@@ -39,20 +45,16 @@
           <input data-search-input id="search-by" type="search" placeholder="Search...">
           <span data-search-clear=""><i class="fas fa-times"></i></span>
         </div>
-        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634415568"></script>
-        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634415568"></script>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572173"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572173"></script>
         <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
         <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
-        <script>
-          var index_url="https://the-going.github.io/evlproject/index.json";
-          var root_url="https://the-going.github.io/evlproject/";
-          var baseUri=root_url.replace(/\/$/, '');
-        </script>
-        <script src="https://the-going.github.io/evlproject/js/search.js?1634415568"></script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572173"></script>
       </div>
       <div class="highlightable">
         <ul class="topics">
-          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/overview/testing-page/" title="Testing the page rendering" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/testing-page/">Test page<i class="fas fa-check read-icon"></i></a></li></ul></li>
           <li data-nav-id="/core/" title="The EVL core" class="dd-item parent"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core<i class="fas fa-check read-icon"></i></a><ul>
           <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL<i class="fas fa-check read-icon"></i></a></li>
           <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings<i class="fas fa-check read-icon"></i></a></li>
@@ -129,6 +131,25 @@
         <div id="prefooter">
           <hr/>
           <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/testing/" selected>English</option>
+                    <option id="ru" value="/ru/core/testing/">Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
             <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
           </ul>
         </div>
@@ -181,57 +202,57 @@ everything is fine. The simplest way to do this is as follows:</p>
 <blockquote>
 <p>Running the EVL unit tests</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mk" data-lang="mk"><span style="color:#78787e"># evl test
-</span><span style="color:#78787e"></span><span style="color:#57c7ff">duplicate-element</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-pp-dynamic</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-pi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">clone-fork-exec</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">clock-timer-periodic</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">poll-close</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">sem-wait</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-pp-raise</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-pp-tryenter</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">heap-torture</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-pp-lower</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">poll-read</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-deadlock</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-wait-multiple</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-event</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">proxy-eventfd</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-flags.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-wait-multiple.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">sem-wait.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">detach-self.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">sem-timedwait.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">proxy-pipe.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">clock-timer-periodic.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">proxy-eventfd.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-event.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">heap-torture.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">poll-sem.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">poll-nested.eshi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">sem-close-unblock</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-steal</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">basic-xbuf</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">simple-clone</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-flags</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">poll-sem</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">sem-timedwait</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">mapfd</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">proxy-pipe</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">poll-flags</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">poll-nested</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-pp-pi</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">fault</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-pi-deadlock</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">detach-self</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-pp-nested</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">monitor-pp-weak</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">stax-lock</span><span style="color:#ff6ac1">:</span> OK
-<span style="color:#57c7ff">fpu-preload</span><span style="color:#ff6ac1">:</span> OK
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#8d8687"># evl test</span>
+duplicate-element: OK
+monitor-pp-dynamic: OK
+monitor-pi: OK
+clone-fork-exec: OK
+clock-timer-periodic: OK
+poll-close: OK
+sem-wait: OK
+monitor-pp-raise: OK
+monitor-pp-tryenter: OK
+heap-torture: OK
+monitor-pp-lower: OK
+poll-read: OK
+monitor-deadlock: OK
+monitor-wait-multiple: OK
+monitor-event: OK
+proxy-eventfd: OK
+monitor-flags.eshi: OK
+monitor-wait-multiple.eshi: OK
+sem-wait.eshi: OK
+detach-self.eshi: OK
+sem-timedwait.eshi: OK
+proxy-pipe.eshi: OK
+clock-timer-periodic.eshi: OK
+proxy-eventfd.eshi: OK
+monitor-event.eshi: OK
+heap-torture.eshi: OK
+poll-sem.eshi: OK
+poll-nested.eshi: OK
+sem-close-unblock: OK
+monitor-steal: OK
+basic-xbuf: OK
+simple-clone: OK
+monitor-flags: OK
+poll-sem: OK
+sem-timedwait: OK
+mapfd: OK
+proxy-pipe: OK
+poll-flags: OK
+poll-nested: OK
+monitor-pp-pi: OK
+fault: OK
+monitor-pi-deadlock: OK
+detach-self: OK
+monitor-pp-nested: OK
+monitor-pp-weak: OK
+stax-lock: OK
+fpu-preload: OK
 </code></pre></div><p>A few tests from the test suite may fail in case some kernel support
 is missing in order to support them, like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">sched-quota-accuracy.c:213: FAILED: evl_control_sched<span style="color:#ff6ac1">(</span>44, &amp;p, &amp;q, test_cpu<span style="color:#ff6ac1">)</span> <span style="color:#ff6ac1">(=</span>Operation not supported<span style="color:#ff6ac1">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">sched-quota-accuracy.c:213: FAILED: evl_control_sched<span style="color:#5bc4bf">(</span>44, &amp;p, &amp;q, test_cpu<span style="color:#5bc4bf">)</span> <span style="color:#5bc4bf">(=</span>Operation not supported<span style="color:#5bc4bf">)</span>
 sched-quota-accuracy: no kernel support
 </code></pre></div><p>In the example above, <em>sched-quota-accuracy</em> failed because
 <a href="https://the-going.github.io/evlproject/core/build-steps/#core-kconfig">CONFIG_EVL_SCHED_QUOTA</a> was not set in the kernel configuration. Likewise,
@@ -256,32 +277,32 @@ enabled in the kernel configuration, and loaded into the kernel under
 test if you built it as a dynamic module.</p>
 
 </div>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#78787e"># /usr/evl/bin/hectic -s 200</span>
-<span style="color:#ff6ac1">==</span> Testing FPU check routines...
-<span style="color:#ff6ac1">==</span> FPU check routines: OK.
-<span style="color:#ff6ac1">==</span> Threads: switcher_ufps0-0 rtk0-1 rtk0-2 rtup0-3 rtup0-4 rtup_ufpp0-5 rtup_ufpp0-6 rtus0-7 rtus0-8 rtus_ufps0-9 rtus_ufps0-10 rtuo0-11 rtuo0-12 rtuo_ufpp0-13 rtuo_ufpp0-14 rtuo_ufps0-15 rtuo_ufps0-16 rtuo_ufpp_ufps0-17 rtuo_ufpp_ufps0-18 fpu_stress_ufps0-19 switcher_ufps1-0 rtk1-1 rtk1-2 rtup1-3 rtup1-4 rtup_ufpp1-5 rtup_ufpp1-6 rtus1-7 rtus1-8 rtus_ufps1-9 rtus_ufps1-10 rtuo1-11 rtuo1-12 rtuo_ufpp1-13 rtuo_ufpp1-14 rtuo_ufps1-15 rtuo_ufps1-16 rtuo_ufpp_ufps1-17 rtuo_ufpp_ufps1-18 fpu_stress_ufps1-19 switcher_ufps2-0 rtk2-1 rtk2-2 rtup2-3 rtup2-4 rtup_ufpp2-5 rtup_ufpp2-6 rtus2-7 rtus2-8 rtus_ufps2-9 rtus_ufps2-10 rtuo2-11 rtuo2-12 rtuo_ufpp2-13 rtuo_ufpp2-14 rtuo_ufps2-15 rtuo_ufps2-16 rtuo_ufpp_ufps2-17 rtuo_ufpp_ufps2-18 fpu_stress_ufps2-19 switcher_ufps3-0 rtk3-1 rtk3-2 rtup3-3 rtup3-4 rtup_ufpp3-5 rtup_ufpp3-6 rtus3-7 rtus3-8 rtus_ufps3-9 rtus_ufps3-10 rtuo3-11 rtuo3-12 rtuo_ufpp3-13 rtuo_ufpp3-14 rtuo_ufps3-15 rtuo_ufps3-16 rtuo_ufpp_ufps3-17 rtuo_ufpp_ufps3-18 fpu_stress_ufps3-19
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#8d8687"># /usr/evl/bin/hectic -s 200</span>
+<span style="color:#5bc4bf">==</span> Testing FPU check routines...
+<span style="color:#5bc4bf">==</span> FPU check routines: OK.
+<span style="color:#5bc4bf">==</span> Threads: switcher_ufps0-0 rtk0-1 rtk0-2 rtup0-3 rtup0-4 rtup_ufpp0-5 rtup_ufpp0-6 rtus0-7 rtus0-8 rtus_ufps0-9 rtus_ufps0-10 rtuo0-11 rtuo0-12 rtuo_ufpp0-13 rtuo_ufpp0-14 rtuo_ufps0-15 rtuo_ufps0-16 rtuo_ufpp_ufps0-17 rtuo_ufpp_ufps0-18 fpu_stress_ufps0-19 switcher_ufps1-0 rtk1-1 rtk1-2 rtup1-3 rtup1-4 rtup_ufpp1-5 rtup_ufpp1-6 rtus1-7 rtus1-8 rtus_ufps1-9 rtus_ufps1-10 rtuo1-11 rtuo1-12 rtuo_ufpp1-13 rtuo_ufpp1-14 rtuo_ufps1-15 rtuo_ufps1-16 rtuo_ufpp_ufps1-17 rtuo_ufpp_ufps1-18 fpu_stress_ufps1-19 switcher_ufps2-0 rtk2-1 rtk2-2 rtup2-3 rtup2-4 rtup_ufpp2-5 rtup_ufpp2-6 rtus2-7 rtus2-8 rtus_ufps2-9 rtus_ufps2-10 rtuo2-11 rtuo2-12 rtuo_ufpp2-13 rtuo_ufpp2-14 rtuo_ufps2-15 rtuo_ufps2-16 rtuo_ufpp_ufps2-17 rtuo_ufpp_ufps2-18 fpu_stress_ufps2-19 switcher_ufps3-0 rtk3-1 rtk3-2 rtup3-3 rtup3-4 rtup_ufpp3-5 rtup_ufpp3-6 rtus3-7 rtus3-8 rtus_ufps3-9 rtus_ufps3-10 rtuo3-11 rtuo3-12 rtuo_ufpp3-13 rtuo_ufpp3-14 rtuo_ufps3-15 rtuo_ufps3-16 rtuo_ufpp_ufps3-17 rtuo_ufpp_ufps3-18 fpu_stress_ufps3-19
 RTT|  00:00:01
 RTH|---------cpu|ctx switches|-------total
-RTD|           0|         568|         <span style="color:#ff9f43">568</span>
-RTD|           3|         853|         <span style="color:#ff9f43">853</span>
-RTD|           2|         739|         <span style="color:#ff9f43">739</span>
-RTD|           1|         796|         <span style="color:#ff9f43">796</span>
-RTD|           0|         627|        <span style="color:#ff9f43">1195</span>
-RTD|           2|        1258|        <span style="color:#ff9f43">1997</span>
-RTD|           3|        1197|        <span style="color:#ff9f43">2050</span>
-RTD|           1|        1311|        <span style="color:#ff9f43">2107</span>
-RTD|           0|         627|        <span style="color:#ff9f43">1822</span>
-RTD|           2|        1250|        <span style="color:#ff9f43">3247</span>
-RTD|           3|        1254|        <span style="color:#ff9f43">3304</span>
-RTD|           1|        1254|        <span style="color:#ff9f43">3361</span>
-RTD|           2|        1254|        <span style="color:#ff9f43">4501</span>
-RTD|           1|        1254|        <span style="color:#ff9f43">4615</span>
-RTD|           0|         684|        <span style="color:#ff9f43">2506</span>
-RTD|           3|        1311|        <span style="color:#ff9f43">4615</span>
-RTD|           3|        1256|        <span style="color:#ff9f43">5871</span>
-RTD|           2|        1311|        <span style="color:#ff9f43">5812</span>
-RTD|           0|         684|        <span style="color:#ff9f43">3190</span>
-RTD|           1|        1311|        <span style="color:#ff9f43">5926</span>
+RTD|           0|         568|         <span style="color:#f99b15">568</span>
+RTD|           3|         853|         <span style="color:#f99b15">853</span>
+RTD|           2|         739|         <span style="color:#f99b15">739</span>
+RTD|           1|         796|         <span style="color:#f99b15">796</span>
+RTD|           0|         627|        <span style="color:#f99b15">1195</span>
+RTD|           2|        1258|        <span style="color:#f99b15">1997</span>
+RTD|           3|        1197|        <span style="color:#f99b15">2050</span>
+RTD|           1|        1311|        <span style="color:#f99b15">2107</span>
+RTD|           0|         627|        <span style="color:#f99b15">1822</span>
+RTD|           2|        1250|        <span style="color:#f99b15">3247</span>
+RTD|           3|        1254|        <span style="color:#f99b15">3304</span>
+RTD|           1|        1254|        <span style="color:#f99b15">3361</span>
+RTD|           2|        1254|        <span style="color:#f99b15">4501</span>
+RTD|           1|        1254|        <span style="color:#f99b15">4615</span>
+RTD|           0|         684|        <span style="color:#f99b15">2506</span>
+RTD|           3|        1311|        <span style="color:#f99b15">4615</span>
+RTD|           3|        1256|        <span style="color:#f99b15">5871</span>
+RTD|           2|        1311|        <span style="color:#f99b15">5812</span>
+RTD|           0|         684|        <span style="color:#f99b15">3190</span>
+RTD|           1|        1311|        <span style="color:#f99b15">5926</span>
 ...
 </code></pre></div><h2 id="latmus-program">latmus: the litmus test for latency</h2>
 
@@ -500,7 +521,10 @@ this set.</p>
 
 </div>
 <hr>
-<p style="text-align:right">Last modified: Fri, 15 Oct 2021 22:06:25 MSK</p>
+<p style="text-align:right">Last modified: Fri, 15 Oct 2021 22:06:25 MSK
+
+	
+</p>
 
 
           <footer class="footline">
@@ -515,18 +539,12 @@ this set.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634415568"></script>
-    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634415568"></script>
-    <script>
-      if (typeof mermaid != 'undefined') {
-        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
-      }
-    </script>
-    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634415568"></script>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572173"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572173"></script>
   </body>
 </html>

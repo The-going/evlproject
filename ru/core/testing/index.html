@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Тестирование установки :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/testing/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/testing/">English</option>
+                    <option id="ru" value="/ru/core/testing/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/testing/" aria-disabled="true"><span itemprop="name">Тестирование установки</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#evl-unit-testing">Модульное тестирование</a></li>
+    <li><a href="#hectic-program">hectic: биение механизма переключения контекста EVL</a></li>
+    <li><a href="#latmus-program">latmus: лакмусовая бумажка для проверки латентности</a></li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Тестирование установки</h1>
+
+<p>EVL поставляется с серией тестов, которые вы можете выполнить, чтобы убедиться,
+что ядро работает правильно в вашей целевой системе.</p>
+<h2 id="evl-unit-testing">Модульное тестирование</h2>
+<p>Серия программ модульного тестирования создается в <code>$prefix/tests</code> как часть
+построения <code>libevl</code>. Вы должны запустить каждый из них, чтобы убедиться, что
+все в порядке. Самый простой способ сделать это заключается в следующем:</p>
+<blockquote>
+<p>Запуск модульных тестов EVL</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mk" data-lang="mk"><span style="color:#8d8687"># evl test
+</span><span style="color:#8d8687"></span><span style="color:#06b6ef">duplicate-element</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-dynamic</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">clone-fork-exec</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">clock-timer-periodic</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">poll-close</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">sem-wait</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-raise</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-tryenter</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">heap-torture</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-lower</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">poll-read</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-deadlock</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-wait-multiple</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-event</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">proxy-eventfd</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-flags.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-wait-multiple.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">sem-wait.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">detach-self.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">sem-timedwait.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">proxy-pipe.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">clock-timer-periodic.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">proxy-eventfd.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-event.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">heap-torture.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">poll-sem.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">poll-nested.eshi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">sem-close-unblock</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-steal</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">basic-xbuf</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">simple-clone</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-flags</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">poll-sem</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">sem-timedwait</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">mapfd</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">proxy-pipe</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">poll-flags</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">poll-nested</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-pi</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">fault</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pi-deadlock</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">detach-self</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-nested</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">monitor-pp-weak</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">stax-lock</span><span style="color:#5bc4bf">:</span> OK
+<span style="color:#06b6ef">fpu-preload</span><span style="color:#5bc4bf">:</span> OK
+</code></pre></div><p>Несколько тестов из набора могут завершиться неудачей, если для их поддержки
+отсутствует какая-либо поддержка в ядре, например:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">sched-quota-accuracy.c:213: FAILED: evl_control_sched<span style="color:#5bc4bf">(</span>44, &amp;p, &amp;q, test_cpu<span style="color:#5bc4bf">)</span> <span style="color:#5bc4bf">(=</span>Operation not supported<span style="color:#5bc4bf">)</span>
+sched-quota-accuracy: no kernel support
+</code></pre></div><p>В приведенном выше примере ошибка с <em>sched-quota-accuracy</em> произошла из-за того,
+что параметр <a href="https://the-going.github.io/evlproject/ru/core/build-steps/#core-kconfig">CONFIG_EVL_SCHED_QUOTA</a>
+не была задан в конфигурации ядра. Аналогично, <em>sched-tp-accuracy</em> требует,
+чтобы <a href="https://the-going.github.io/evlproject/ru/core/build-steps/#core-kconfig">CONFIG_EVL_SCHED_TP</a> был
+включен в конфигурации ядра.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Цикл тестирования прерывается сразу же после сбоя теста. Вы можете отключить это
+поведение, запустив вместо этого <code>evl test -k</code> (т.е. <em>keep going</em>).</p>
+
+</div>
+<h2 id="hectic-program">hectic: биение механизма переключения контекста EVL</h2>
+<p>По умолчанию программа <code>hectic</code> запускает множество потоков EVL как в
+пространстве пользователя, так и в пространстве ядра для выполнения планировщика
+автономного ядра. Кроме того, этот тест может специально подчеркнуть код
+управления с плавающей запятой, чтобы убедиться, что FPU безупречно
+распределяется между внешними и внутренними контекстами потоков.</p>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>Чтобы запустить этот тест, вам потребуется включить &ldquo;CONFIG_EVL_HECTIC&rdquo;
+в конфигурации ядра и загрузить его в тестируемое ядро, если вы создали
+его как динамический модуль.</p>
+
+</div>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd"># /usr/evl/bin/hectic -s 200
+== Testing FPU check routines...
+== FPU check routines: OK.
+== Threads: switcher_ufps0-0 rtk0-1 rtk0-2 rtup0-3 rtup0-4 rtup_ufpp0-5 rtup_ufpp0-6 rtus0-7 rtus0-8 rtus_ufps0-9 rtus_ufps0-10 rtuo0-11 rtuo0-12 rtuo_ufpp0-13 rtuo_ufpp0-14 rtuo_ufps0-15 rtuo_ufps0-16 rtuo_ufpp_ufps0-17 rtuo_ufpp_ufps0-18 fpu_stress_ufps0-19 switcher_ufps1-0 rtk1-1 rtk1-2 rtup1-3 rtup1-4 rtup_ufpp1-5 rtup_ufpp1-6 rtus1-7 rtus1-8 rtus_ufps1-9 rtus_ufps1-10 rtuo1-11 rtuo1-12 rtuo_ufpp1-13 rtuo_ufpp1-14 rtuo_ufps1-15 rtuo_ufps1-16 rtuo_ufpp_ufps1-17 rtuo_ufpp_ufps1-18 fpu_stress_ufps1-19 switcher_ufps2-0 rtk2-1 rtk2-2 rtup2-3 rtup2-4 rtup_ufpp2-5 rtup_ufpp2-6 rtus2-7 rtus2-8 rtus_ufps2-9 rtus_ufps2-10 rtuo2-11 rtuo2-12 rtuo_ufpp2-13 rtuo_ufpp2-14 rtuo_ufps2-15 rtuo_ufps2-16 rtuo_ufpp_ufps2-17 rtuo_ufpp_ufps2-18 fpu_stress_ufps2-19 switcher_ufps3-0 rtk3-1 rtk3-2 rtup3-3 rtup3-4 rtup_ufpp3-5 rtup_ufpp3-6 rtus3-7 rtus3-8 rtus_ufps3-9 rtus_ufps3-10 rtuo3-11 rtuo3-12 rtuo_ufpp3-13 rtuo_ufpp3-14 rtuo_ufps3-15 rtuo_ufps3-16 rtuo_ufpp_ufps3-17 rtuo_ufpp_ufps3-18 fpu_stress_ufps3-19
+RTT|  00:00:01
+RTH|---------cpu|ctx switches|-------total
+RTD|           0|         568|         568
+RTD|           3|         853|         853
+RTD|           2|         739|         739
+RTD|           1|         796|         796
+RTD|           0|         627|        1195
+RTD|           2|        1258|        1997
+RTD|           3|        1197|        2050
+RTD|           1|        1311|        2107
+RTD|           0|         627|        1822
+RTD|           2|        1250|        3247
+RTD|           3|        1254|        3304
+RTD|           1|        1254|        3361
+RTD|           2|        1254|        4501
+RTD|           1|        1254|        4615
+RTD|           0|         684|        2506
+RTD|           3|        1311|        4615
+RTD|           3|        1256|        5871
+RTD|           2|        1311|        5812
+RTD|           0|         684|        3190
+RTD|           1|        1311|        5926
+...
+</code></pre></div><h2 id="latmus-program">latmus: лакмусовая бумажка для проверки латентности</h2>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Если вы планируете измерить задержку наихудшего случая в вашей целевой системе,
+вам следует выполнить команду <a href="https://the-going.github.io/evlproject/ru/core/commands/#evl-check-command">evl check</a>
+в этой системе, чтобы на ранней стадии обнаружить любую очевидную неправильную
+конфигурацию ядра.</p>
+
+</div>
+<p>С единственной опцией <code>-m</code> или без каких-либо аргументов приложение
+<a href="https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c">latmus</a>
+запускает цикл выборки 1 кГц, собирая минимальные, максимальные и средние
+значения задержки, полученные для потока EVL, работающего в пространстве
+пользователя, который реагирует на
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-timer-response-time">события таймера</a>.
+Это базовый тест задержки, который не требует какого-либо дополнительного
+источника прерываний, кроме встроенного аппаратного таймера, легко доступного ядру.</p>
+<p>Кроме того, вы можете использовать это приложение для измерения времени отклика
+потока, запущенного в пользовательском пространстве, на внешние прерывания, в частности на
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-timer-response-time">события GPIO</a>.
+Эта вторая форма вызова выбирается переключателями опций <code>-Z</code> и <code>-z</code>.</p>
+<p>Наконец, прохождение с <code>-t</code> запускает
+<a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">калибровку таймера ядра EVL</a>,
+находя наилучшие значения конфигурации.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Если вы не планируете измерять только
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-gpio-response-time">внутриполосное время отклика на события GPIO</a>,
+вам потребуется включить <code>CONFIG_EVL_LATMUS</code> в конфигурации ядра для запуска
+калибровки таймера или
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-timer-response-time">ответа на тест таймера</a>.
+Этот драйвер должен быть загружен в тестируемое ядро, если вы создали его как
+динамический модуль. Для тех, кто знаком с
+<a href="https://git.xenomai.org/xenomai/-/wikis/home">Xenomai 3 Cobalt</a>,
+эта программа сочетает в себе и расширяет возможности утилит
+<a href="https://xenomai.org/documentation/xenomai-3/html/man1/latency/index.html">latency</a>
+и
+<a href="https://xenomai.org/documentation/xenomai-3/html/man1/autotune/index.html">autotune</a>.</p>
+
+</div>
+<p><a href="https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c">latmus</a>
+принимает следующие аргументы, заданные в виде коротких или длинных имен параметров:</p>
+
+<p><li><i>-i --irq</i><p>Соберите данные о задержке или настройте таймер ядра EVL из контекста обработчика прерываний в ядре.</p>
+</li></p>
+
+
+<p><li><i>-k --kernel</i><p>Соберите данные о задержке или настройте таймер ядра EVL из контекста потока EVL на основе ядра.</p>
+</li></p>
+
+
+<p><li><i>-u --user</i><p>Соберите данные о задержке или настройте таймер ядра EVL из контекста потока EVL,
+запущенного в пространстве пользователя. Это режим по умолчанию, при отсутствии <code>-i</code> и <code>-k</code>.</p>
+</li></p>
+
+
+<p><li><i>-s --sirq</i><p>Измерьте задержку между моментом отправки
+<a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">синтетического прерывания</a>
+с внеполосной стадии и моментом, когда оно в конечном итоге будет получено его
+внутриполосным обработчиком. При измерении под значительным давлением рабочей
+нагрузки это дает наихудшую задержку прерывания, с которой сталкивается
+<strong>внутриполосное ядро</strong> из-за отключения локального прерывания (т.е. <em>stalling</em>
+этапа внутриполосного конвейера). Следовательно, это не имеет ничего общего с
+гораздо более короткой и ограниченной задержкой прерывания, наблюдаемой на
+внеполосной стадии приложениями EVL.</p>
+</li></p>
+
+
+<p><li><i>-r --reset</i><p>Сбросьте значения силы тяжести основного таймера EVL до заводских значений по
+умолчанию. Эти значения по умолчанию статически определяются кодом платформы EVL.</p>
+</li></p>
+
+
+<p><li><i>-q --quiet</i><p>Сведите детализацию теста к минимуму, когда вступит в силу только окончательный
+отчет о задержке. Для передачи этой опции требуется установить тайм-аут с помощью
+параметра <code>-T</code>.</p>
+</li></p>
+
+
+<p><li><i>-b --background</i><p>Запустите тест в фоновом режиме оболочки. Все выходные данные подавляются до
+окончательного отчета о задержке.</p>
+</li></p>
+
+
+<p><li><i>-K --keep-going</i><p>Продолжайте выполнение при неожиданном переключении потока ответчика во внутриполосный режим.
+Обычно любое <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#thread-services">переключение в режим внутри полосы</a>
+из потока, реагирующего на события таймера/GPIO, приведет к остановке выполнения
+с сообщением об ошибке, поскольку показатели задержки будут испорчены переходом
+в контекст, отличный от реального времени. Этот параметр указывает <code>latmus</code>
+продолжать работу независимо от этого; это имеет смысл только для целей отладки,
+при сборе показателей задержки из потока EVL, работающего в пользовательском пространстве (т.е. <code>-u</code>).</p>
+</li></p>
+
+
+<p><li><i>-m --measure</i><p>Измерьте время отклика на
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-timer-response-time">события таймера</a>.
+В дополнение к этой опции <code>-i</code>, <code>-k</code> и <code>-u</code> выбирают конкретный контекст измерения,
+<code>-u</code> применяется по умолчанию. Измерение времени отклика на события таймера
+является режимом по умолчанию при отсутствии параметров <code>-t</code>, <code>-Z</code> и <code>-z</code>
+в командной строке.</p>
+</li></p>
+
+
+<p><li><i>-t --tune</i><p>Запустите процедуру калибровки основного таймера. <code>-i</code>, <code>-k</code> и <code>-u</code> можно
+использовать для выбора определенного контекста настройки, все они применяются
+последовательно в противном случае.
+См. <a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">ниже</a>.
+Этот вариант является взаимоисключающим с <code>-m</code>, <code>-Z</code> и <code>-z</code>.</p>
+</li></p>
+
+
+<p><li><i>-p --period=&lt;мкс.&gt;</i><p>Установите период выборки в микросекундах &lt;мкс.&gt;. По умолчанию используется
+1000 (один тик каждую миллисекунду или 1 кГц). Самый медленный период выборки
+составляет 1000000 (1 Гц).</p>
+</li></p>
+
+
+<p><li><i>-T --timeout=&lt;duration&gt;[dhms]</i><p>Продолжительность теста, исключая период прогрева в одну секунду. Этот параметр
+включает тайм-аут, который автоматически останавливает тест по истечении
+указанного времени выполнения. По умолчанию тест выполняется бесконечно или до
+тех пор, пока не будет нажата кнопка ^C. Продолжительность интерпретируется в
+соответствии с суффиксом модификатора как количество <strong>d</strong>(дней), <strong>m</strong>(минут),
+<strong>h</strong>(часов) или <strong>s</strong>(секунд). При отсутствии модификатора предполагаются секунды.</p>
+</li></p>
+
+
+<p><li><i>-A --maxlat-abort=&lt;maxlat&gt;</i><p>Автоматически прерывайте тест всякий раз, когда наблюдаемый показатель
+максимальной задержки превышает &lt;maxlat&gt;.</p>
+</li></p>
+
+
+<p><li><i>-v --verbose=&lt;уровень&gt;</i><p>Установите уровень детализации на &lt;уровень&gt;. Установка 0 идентична переходу в
+тихий режим с помощью <code>-q</code>. Любое ненулевое значение учитывается при настройке
+таймера ядра EVL (опция <code>-t</code>), чтобы контролировать объем отладочной информации,
+которую сопутствующий драйвер <code>latmus</code> отправляет в журнал ядра.
+По умолчанию 1, максимум 2.</p>
+</li></p>
+
+
+<p><li><i>-l --lines=&lt;количество&gt;</i><p>Установите количество строк результатов на странице. В режиме измерения (<code>-m</code>)
+новый заголовок результата выводится после каждых &lt;количество&gt; строк результата.</p>
+</li></p>
+
+
+<p><li><i>-g --plot=&lt;file&gt;</i><p>Выведите гистограмму собранных значений задержки в &lt;файл&gt; в формате,
+который легко читается утилитой <code>gnuplot</code>.</p>
+</li></p>
+
+
+<p><li><i>-H --histogram=&lt;ячеек&gt;</i><p>Установите количество ячеек на гистограмме, каждая ячейка покрывает одну
+микросекунду дополнительной задержки от 1 до &lt;ячеек&gt; микросекунд. Это значение
+используется только в том случае, если в командной строке указано <code>-g</code>.
+По умолчанию установлено значение 200, охватывающее до 200 микросекунд в худшем
+случае задержки, которая никогда не должна быть такой высокой на любой
+целевой платформе с EVL.</p>
+</li></p>
+
+
+<p><li><i>-P --priority=&lt;prio&gt;</i><p>Установите приоритет планирования потока ответчика в классе SCHED_FIFO.
+Этот параметр имеет смысл только при сборе показателей задержки или настройке
+таймера ядра EVL из контекста потока EVL (т.е. <code>-u</code> или <code>-k</code>).
+По умолчанию установлено значение 90.</p>
+</li></p>
+
+
+<p><li><i>-c --cpu=&lt;nr&gt;</i><p>Установите соответствие процессора потоку ответчика. Этот параметр имеет смысл
+только при сборе показателей задержки или настройке таймера ядра EVL из
+контекста потока EVL (т.е. <code>-u</code> или <code>-k</code>). Значение по умолчанию равно 0.</p>
+</li></p>
+
+
+<p><li><i>-Z --oob-gpio=&lt;host&gt;</i><p>Запустите внеполосный тест, измеряющий
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-gpio-response-time">время отклика на события GPIO</a>
+с внеполосной стадии, т.е. полагаясь на возможности ядра EVL в режиме реального
+времени. Аргументом является имя хоста или IPv4-адрес удаленной платы, которая
+отслеживает время отклика от тестируемой платы, на которой запущено приложение
+<a href="https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c">latmus</a>.
+Этот параметр должен быть связан с <code>-I</code> и <code>-O</code>, чтобы указать используемые
+названия GPIO чипа и номена PIN.</p>
+</li></p>
+
+
+<p><li><i>-z --inband-gpio=&lt;host&gt;</i><p>Запустите внутриполосный тест, измеряющий
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-gpio-response-time">время отклика на события GPIO</a>
+в обычном внутриполосном режиме. Аргументом является имя хоста или IPv4-адрес
+удаленной платы, которая отслеживает время отклика от тестируемой платы,
+на которой запущено приложение
+<a href="https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/latmus.c">latmus</a>.
+Этот параметр должен быть связан с <code>-I</code> и <code>-O</code>, чтобы указать используемые
+названия GPIO чипа и номена PIN.</p>
+</li></p>
+
+
+<p><li><i>-I --gpio-in=&lt;gpiochip-name&gt;,&lt;pin-number&gt;[,rising-edge|falling-edge]</i><p>Укажите название GPIO чипа и номер pin, которые будут использоваться для приема
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-gpio-response-time">импульсов GPIO</a>
+с платы удаленного монитора. При необходимости вы можете выбрать, должны ли
+события GPIO запускаться по восходящему фронту (по умолчанию) или по падающему
+фронту сигналов GPIO. Этот параметр имеет смысл только тогда, когда <code>-Z</code> или
+<code>-z</code> также присутствуют в командной строке.</p>
+</li></p>
+
+
+<p><li><i>-O --gpio-out=&lt;gpiochip-name&gt;,&lt;pin-number&gt;</i><p>Укажите название GPIO чипа и номер pin, которые будут использоваться для отправки
+<a href="https://the-going.github.io/evlproject/ru/core/benchmarks/#latmus-gpio-response-time">импульсов GPIO</a>
+и подтверждения их на плате монитора. Этот параметр имеет смысл только тогда,
+когда <code>-Z</code> или <code>-z</code> также присутствуют в командной строке.</p>
+</li></p>
+
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Если <a href="#latmus-program">latmus</a> при запуске завершается с ошибкой
+<em>Invalid argument</em> (недопустимый аргумент), дважды проверьте номер процессора,
+переданный в опции -c как аргумент, если он указан. Назначенный процессор должен
+быть частью внеполосного набора процессоров, известного ядру EVL. Проверьте
+этот файл <em>/sys/devices/virtual/evl/control/cpus</em>, чтобы узнать, какие процессоры
+входят в этот набор.</p>
+
+</div>
+<hr>
+<p style="text-align:right">Последнее изменение: Sun, 07 Nov 2021 11:51:49 MSK
+
+	
+		
+		content/core/testing.md
+
+		
+		c56874c
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/runtime-settings/" title="Конфигурация времени выполнения"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/commands/" title="Команда &#39;evl&#39;"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

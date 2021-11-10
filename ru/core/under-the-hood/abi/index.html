@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>The EVL ABI :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/under-the-hood/abi/">English</option>
+                    <option id="ru" value="/ru/core/under-the-hood/abi/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/under-the-hood/"><span itemprop="name">Под капотом</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/" aria-disabled="true"><span itemprop="name">The EVL ABI</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>The EVL ABI</h1>
+
+<p>Since we have service calls between the applications and the EVL core,
+we depend on a certain format of request codes, arguments and return
+values when exchanging information between both ends, like the
+contents of the argument structure passed to the various
+<a href="http://man7.org/linux/man-pages/man2/ioctl.2.html">ioctl(2)</a> and
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/io/#oob_ioctl">oob_ioctl()</a>
+requests. This convention forms the EVL ABI. As hard as we might try
+to keep the ABI stable over time, there are times when this cannot be
+achieved, at the very least because we may want to make new features
+added to the EVL core visible to applications. Generally speaking, EVL
+being a new kid in the old dual kernel town, it is too early - for the
+time being - to write the current convention in stone. This fact of
+life calls for a way to unambiguously:</p>
+<ul>
+<li>
+<p>determine which (range of subsequent) revision(s) of the ABI is
+<em>implemented</em> by the running EVL core, from the application side.</p>
+</li>
+<li>
+<p>state which revision of the ABI an application <em>requires</em>.</p>
+</li>
+</ul>
+<p>In some instance, the EVL core may also be able to provide a
+backward-compatible interface to applications which spans multiple
+subsequent ABI revisions. Because <strong>ABI stability is a strong goal</strong>,
+backward compatibility may become the norm as the EVL core feature set
+stabilizes.</p>
+<p>To this end, the following apply (since ABI revision #19):</p>
+<ul>
+<li>
+<p>an ABI is versioned. Each version is represented by a non-null
+integer starting at 1, incremented by one after each revision.</p>
+</li>
+<li>
+<p>the EVL core defines two symbols, namely
+<a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/control.h#L14">EVL_ABI_BASE</a>
+and
+<a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/include/uapi/evl/control.h#L21">EVL_ABI_LEVEL</a>,
+which represent the range of ABI revisions the core supports
+(inclusively), from oldest (EVL_ABI_BASE) to current (EVL_ABI_LEVEL)
+respectively. Differing values means that the EVL core honors
+multiple subsequent revisions by way of backward compatible support
+of some sort.</p>
+</li>
+</ul>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>By convention, changes to EVL_ABI_BASE and/or
+EVL_ABI_LEVEL belong to the same GIT commit which triggered the ABI
+revision. This way, it is easy to map a revision to a particular
+change unambiguously. For the same reason, non-related changes to the
+ABI appear in separate commits, each one forming a particular ABI
+revision.</p>
+
+</div>
+<ul>
+<li>
+<p><a href="https://the-going.github.io/evlproject/ru/core/user-api/">libevl</a> states the ABI
+revision it follows by defining the
+<a href="https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/include/evl/evl.h#L25">EVL_ABI_PREREQ</a>
+symbol. When <a href="https://the-going.github.io/evlproject/ru/core/user-api/init/">libevl initializes</a>, this prerequisite is checked
+against the range of ABI revisions the running EVL core
+advertises. If a mismatch is detected, the initialization fails and
+-ENOEXEC is returned to the caller; otherwise the execution proceeds
+normally. An easy way to figure out which ABI a <a href="https://the-going.github.io/evlproject/ru/core/user-api/">libevl</a> installation requires is to ask the
+<a href="https://the-going.github.io/evlproject/ru/core/commands/">evl command</a> about it as
+follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">~ # evl -V
+evl.0 -- #1c6115c (2020-03-06 16:24:00 +0100) [requires ABI 19]
+</code></pre></div></li>
+</ul>
+<h4 id="locating-abi-boundaries-and-prereqs-git-evlabi">Locating ABI boundaries and prereqs {git-evlabi}</h4>
+<p>When developing (with) the EVL core, it may sometimes be useful to
+find which code changes in the GIT commit history correspond to ABI
+revisions and conversely. It may also be useful to determine the
+history of ABI prerequisites in <a href="https://the-going.github.io/evlproject/ru/core/user-api/">libevl</a>, so that you can map any particular
+point the commit history with the ABI revision it is compatible
+with. For this, you can use a simple script called
+<a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/scripts/git-evlabi">git-evlabi</a>,
+which is available in the
+<a href="https://git.xenomai.org/xenomai4/linux-evl.git">linux-evl</a> repository. You
+just need to make sure this script is executable and reachable from
+the $PATH variable.</p>
+<p>git-evlabi looks for EVL ABI definitions or prereqs in GIT trees
+cloned from either
+<a href="https://git.xenomai.org/xenomai4/linux-evl.git">linux-evl</a> or
+<a href="https://git.xenomai.org/xenomai4/libevl.git">libevl</a> respectively. It does
+so depending on the value and type of the GIT object mentioned (or
+not) in the command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ git evlabi -h
+usage: git-evlabi [-r &lt;rev&gt;][--git-dir &lt;dir&gt;][-s][-h] [&lt;object&gt;]
+</code></pre></div><ul>
+<li>
+<p>if &lt;object&gt; is a regular commit (SHA-1) hash, it extracts the ABI
+information for that particular commit.</p>
+</li>
+<li>
+<p>if &lt;object&gt; matches a GIT refname (typically a branch name), it
+scans the commit history backward from that point, displaying the
+ABI information for each revision encountered during the traversal.</p>
+</li>
+<li>
+<p>if &lt;object&gt; is omitted, it defaults to HEAD, which falls back to
+the refname case above.</p>
+</li>
+</ul>
+<p>The output is of the form:</p>
+<p>&lt;start&gt; &lt;range&gt; &lt;revision&gt;  [&lt;shortlog&gt;], where:</p>
+<ul>
+<li>
+<p>&lt;start&gt; is the predecessor of the earliest commit
+implementing/requesting the ABI revision</p>
+</li>
+<li>
+<p>&lt;range&gt; is the span of the ABI revision in the history (usable
+with <em>git log</em> for instance).</p>
+</li>
+<li>
+<p>&lt;revision&gt; is the ABI revision number</p>
+</li>
+<li>
+<p>&lt;shortlog&gt; is the subject line describing &lt;start&gt;</p>
+</li>
+</ul>
+<blockquote>
+<p>e.g. asking for all EVL ABI revisions in the kernel tree</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{rpm@cobalt} cd ~/git/linux-evl &amp;&amp; git evlabi evl/master
+4bc9b71134f0 96c899ef3a6c..bc7ca4ad0b5c  19
+02ae0b8783cb 7f082bc5bef1..96c899ef3a6c  18
+c2a51a7e68a7 56e217799766..7f082bc5bef1  17
+5266e26ca729 857c199beead..56e217799766  16
+54559813955b 91f7d9d3bc73..857c199beead  15
+fb0de980dac9 7795aa5979a1..91f7d9d3bc73  14
+437fee2b84ee 1b627b1977a1..7795aa5979a1  13
+60c937d72a72 03f35888596c..1b627b1977a1  12
+db431047b9bd 68b176e50081..03f35888596c  11
+8f5b07b678ea 92f04516c8dd..68b176e50081  10
+b0eb03db5c77 8f9bb48957ba..92f04516c8dd   9
+b5f675b3e2c0 5e640e734385..8f9bb48957ba   8
+7892bfe4886e 9ddba326d41b..5e640e734385   7
+9ddba326d41b 61e9a6b78aa5..9ddba326d41b   6
+badb3bf8cee8 ba708547b903..61e9a6b78aa5   5
+ba708547b903 7d9aa309a81d..ba708547b903   4
+06b78dd09bfa 3dd263191153..7d9aa309a81d   3
+6170f4f1d9fd fd56dfbfdbbf..3dd263191153   2
+800484643595 f8ef2539553e..fd56dfbfdbbf   1
+f8ef2539553e fec5d8902f49..f8ef2539553e   0
+</code></pre></div><p>With the information above, it is easy to figure out the span of a
+given ABI revision in the kernel code (here ABI 17 starting at commit
+#c2a51a7e68a7), as follows:</p>
+<blockquote>
+<p>e.g. looking for span of ABI 17 in the kernel tree</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{rpm@cobalt} git log --oneline 56e217799766..7f082bc5bef1
+7f082bc5bef1 evl/work: export interface to modules
+54b365d416c7 evl/stax: export interface to modules
+c268cadb0396 evl/stax: force the caller to in-band mode on WOSX
+77d1de6add6e evl/clock: y2038: remove use of struct timex
+05fc1d0e5e96 evl/thread: fix rescheduling leak
+c2a51a7e68a7 evl/thread: replace SIGEVL_ACTION_HOME with a RETUSER event
+</code></pre></div><p>The same logic applies to the
+<a href="https://git.xenomai.org/xenomai4/libevl.git">libevl</a> tree, this time for
+determining the ABI prerequisites of commits in the API.</p>
+<blockquote>
+<p>e.g. walking the history of ABI prerequisites</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{rpm@cobalt} git evlabi next
+dde33b5 1c6115c..dde33b5  19
+</code></pre></div><p>Which means that looking at the current state of branch <em>next</em> in the
+<a href="https://git.xenomai.org/xenomai4/libevl.git">libevl</a> tree, ABI revision 19
+in the EVL core starts being a prerequisite for the code starting at
+commit #dde33b5.</p>
+<p>Conversely, you could ask for matching a particular ABI revision to a
+commit, using the -r switch.</p>
+<blockquote>
+<p>e.g. matching a particular ABI revision (asking for the subject line too)</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{rpm@cobalt} git evlabi -r 16 -s
+5266e26ca729 857c199beead..56e217799766  16  evl: introduce synchronous breakpoint support
+</code></pre></div>
+<div class="notices info">
+    <div class="label">Информация</div><p>git-evlabi cannot detect ABI revisions earlier than 19 in the
+<a href="https://git.xenomai.org/xenomai4/libevl.git">libevl</a> tree, since the
+marker it looks for was introduced by that particular revision.</p>
+
+</div>
+<h4 id="list-of-abi-revisions">List of ABI revisions</h4>
+<p><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">This document</a> summarizes the
+various ABI revisions and their respective purpose, matching them to
+the corresponding <a href="https://the-going.github.io/evlproject/ru/core/user-api/">libevl</a>
+release implementing the change.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+		
+		content/core/under-the-hood/abi.md
+
+		
+		09017f1
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/under-the-hood/" title="Под капотом"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/abi-revs/" title="ABI revisions"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

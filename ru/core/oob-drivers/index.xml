@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Real-time I/O drivers on Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/ru/core/oob-drivers/</link>
+    <description>Recent content in Real-time I/O drivers on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright><atom:link href="https://the-going.github.io/evlproject/ru/core/oob-drivers/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DMA</title>
+      <link>https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/</guid>
+      <description>A cornerstone of many real-time capable drivers which can process requests from the out-of-band stage is DMA support. Being able to offload data transfers to a DMA unit goes a long way toward implementing efficient acquisition loops, especially if they have to run at high frequency, sparing precious CPU cycles.
+In order to support out-of-band transactions, a DMA controller (e.g. bcm2835-dma, or imx-sdma) must include Dovetail-specific changes. Since DMA drivers are commonly based on the virtual channel layer (aka virt-dma), Dovetail adds the required changes to this layer in order to cope with execution from the out-of-band stage.</description>
+    </item>
+    <item>
+      <title>SPI</title>
+      <link>https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/</guid>
+      <description>EVL provides support for running high frequency SPI transfers which are useful in implementing closed-loop control systems. Applications manage the out-of-band transfers from user space via requests sent to the SPIDEV driver, which exports a user-space API to reach the SPI devices overs a given bus. To this end, EVL makes a few of strong assumptions:
+  a DMA is available for transferring the data over the SPI bus between the controller and the device.</description>
+    </item>
+    <item>
+      <title>GPIO</title>
+      <link>https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/</guid>
+      <description>Dealing with GPIOs from the out-of-band execution stage enables the application to always respond to external signals within a few microseconds regardless of the in-band workload running in parallel on the system. Enabling CONFIG_GPIOLIB_OOB in the kernel configuration turns on such such capability in the regular GPIOLIB driver, which depends on the EVL core. The out-of-band GPIO support is available to applications using a couple of additional I/O requests to the character device interface exported by this driver to application code running in user-space (i.</description>
+    </item>
+  </channel>
+</rss>

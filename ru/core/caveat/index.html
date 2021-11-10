@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Это вы определенно хотите знать :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/caveat/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/caveat/">English</option>
+                    <option id="ru" value="/ru/core/caveat/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/caveat/" aria-disabled="true"><span itemprop="name">Это вы определенно хотите знать</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#общие-вопросы">Общие вопросы</a>
+      <ul>
+        <li><a href="#caveat-isocpus"><code>isolcpus</code> это тоже наш друг</a></li>
+        <li><a href="#config_debug_hard_locks-это-круто-но-разрушает-гарантии-в-реальном-времени"><code>CONFIG_DEBUG_HARD_LOCKS</code> это круто, но разрушает гарантии в реальном времени</a></li>
+        <li><a href="#caveat-cpufreq">Масштабирование частоты процессора (обычно) оказывает негативное влияние на задержку</a></li>
+        <li><a href="#отключите-config_smp-для-лучшей-задержки-в-одноядерных-системах">Отключите <code>CONFIG_SMP</code> для лучшей задержки в одноядерных системах</a></li>
+      </ul>
+    </li>
+    <li><a href="#проблемы-связанные-с-архитектурой">Проблемы, связанные с архитектурой</a>
+      <ul>
+        <li><a href="#x86-caveat">x86</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Это вы определенно хотите знать</h1>
+
+<h2 id="общие-вопросы">Общие вопросы</h2>
+<h3 id="caveat-isocpus"><code>isolcpus</code> это тоже наш друг</h3>
+<p>Изолировать некоторые процессоры в командной строке ядра с помощью опции
+<em>isolcpus=</em>, чтобы не допустить, чтобы балансировщик нагрузки перегружал на них
+внутриполосную работу, - это не только хорошая идея с
+<a href="https://wiki.linuxfoundation.org/realtime/rtl/blog">PREEMPT_RT</a>, но и для
+любого инструмента настройки двойного ядра.</p>
+<p>Таким образом, некоторая случайная внутриполосная работа по удалению строк кэша
+на процессоре, где потоки реального времени ненадолго отключаются, менее вероятна,
+что увеличивает вероятность дорогостоящих пропусков кэша, что положительно
+сказывается на значениях задержек, которые вы можете получить. Даже если
+небольшое ядро EVL имеет ограниченную подверженность воздействию такого рода помех,
+экономия нескольких микросекунд стоит того, когда наихудший показатель
+уже находится в пределах десятых долей микросекунд.</p>
+<h3 id="config_debug_hard_locks-это-круто-но-разрушает-гарантии-в-реальном-времени"><code>CONFIG_DEBUG_HARD_LOCKS</code> это круто, но разрушает гарантии в реальном времени</h3>
+<p>Когда включена функция <code>CONFIG_DEBUG_HARD_LOCKS</code>, механизм зависимостей
+блокировки (<code>CONFIG_LOCKDEP</code>), который помогает отслеживать взаимоблокировки и
+другие проблемы, связанные с блокировками, также включен для
+<a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/#new-spinlocks">жестких блокировок</a>
+Ласточкиного хвоста (Dovetail), который лежит в основе большинства механизмов
+сериализации, используемых ядром EVL.</p>
+<p>Это хорошо, так как у него есть валидатор блокировки, который также контролирует
+жесткие блокировки, используемые EVL. Однако это связано с высокой ценой с точки
+зрения задержки: не редкость видеть сотни микросекунд, проведенных в валидаторе,
+время от времени с жесткими прерываниями. Запуск утилиты мониторинга задержки
+(она же <code>latmus</code>) которая является частью <code>libevl</code> в этой конфигурации, должен
+дать вам довольно уродливые цифры.</p>
+<p>Короче говоря, это нормально, если включить <code>CONFIG_DEBUG_HARD_LOCKS</code> для отладки
+некоторого шаблона блокировки в EVL, но вы не сможете одновременно выполнять
+требования в режиме реального времени в такой конфигурации.</p>
+<h3 id="caveat-cpufreq">Масштабирование частоты процессора (обычно) оказывает негативное влияние на задержку</h3>
+<p>Включение регулятора <em>ondemand</em> CPUFreq - или любого регулятора, выполняющего
+динамическую настройку частоты процессора, - может привести к значительной
+задержке EVL в вашей системе, от десяти микросекунд до более чем ста
+в зависимости от оборудования. Выбор так называемого регулятора производительности
+(<em>performance</em>) является безопасным вариантом, который гарантирует, что никогда
+не произойдет никакого частотного перехода, сохраняя процессоры на максимальной
+скорости обработки.</p>
+<p>Другими словами, если <code>CONFIG_CPU_FREQ</code> должен быть включен в вашей конфигурации,
+включение исключительно <code>CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE</code> и
+<code>CONFIG_CPU_FREQ_GOV_PERFORMANCE</code> чаще всего является лучшим способом
+предотвращения неожиданно высоких пиков задержки.</p>
+<h3 id="отключите-config_smp-для-лучшей-задержки-в-одноядерных-системах">Отключите <code>CONFIG_SMP</code> для лучшей задержки в одноядерных системах</h3>
+<p>На одноядерном оборудовании может по-прежнему выполняться некоторый
+нестандартный код для работы с различными типами спин-блокировок с помощью
+сборки SMP, что приводит к дополнительным ветвям процессора и пропускам кэша.
+На низкоуровневом оборудовании эти накладные расходы могут быть заметны.</p>
+<p>Поэтому, если вам не нужна поддержка SMP или параметры отладки ядра
+которые зависят от инструментирования конструкций spinlock (например
+<code>CONFIG_DEBUG_PREEMPT</code>), вы можете отключить все связанные параметры ядра,
+начиная с <code>CONFIG_SMP</code>.</p>
+<h2 id="проблемы-связанные-с-архитектурой">Проблемы, связанные с архитектурой</h2>
+<h3 id="x86-caveat">x86</h3>
+<ul>
+<li>
+<p>GCC 10.x может генерировать код, вызывающий преждевременный сбой процесса
+загрузки SMP, как сообщается в <a href="https://lkml.org/lkml/2020/3/14/186">этом сообщении</a>.
+В качестве обходного решения вы можете отключить <code>CONFIG_STACKPROTECTOR_STRONG</code>
+в конфигурации ядра.</p>
+</li>
+<li>
+<p><code>CONFIG_ACPI_PROCESSOR_IDLE</code> может увеличить задержку при пробуждении по IRQ
+из режима ожидания на некоторых SoC (до 30 наблюдаемых нами) на x86. Этот
+параметр неявно выбирается следующей цепочкой конфигурации:
+<code>CONFIG_SCHED_MC_PRIO</code> → <code>CONFIG_INTEL_PSTATE</code> →
+<code>CONFIG_ACPI_PROCESSOR</code>. Если на вашем оборудовании x86 наблюдаются показатели
+задержки вне диапазона, отключение этой цепочки может помочь.</p>
+</li>
+<li>
+<p>Когда HPET отключен, сторожевой таймер, который отслеживает работоспособность
+текущего источника синхронизации (clocksource) для ядра, может использовать
+<em>refined-jiffies</em> в качестве эталонного источника синхронизации для сравнения.
+К сожалению, такой источник синхронизации довольно неточен для хронометража,
+так как прерывания таймера могут быть пропущены. Это, в свою очередь, может
+вызвать ложные срабатывания сторожевого таймера, что в конечном итоге приведет
+к объявлению источника синхронизации TSC &lsquo;нестабильным&rsquo;. Например, было замечено,
+что включение <code>CONFIG_FUNCTION_GRAPH_TRACER</code> на некотором устаревшем
+оборудовании будет систематически вызывать такое поведение при загрузке.
+Следующее предупреждение, появляющееся в журнале ядра, является симптомом этой
+проблемы:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mk" data-lang="mk"><span style="color:#06b6ef">clocksource</span><span style="color:#5bc4bf">:</span> timekeeping watchdog on CPU0: Marking clocksource
+             <span style="color:#48b685">&#39;tsc-early&#39;</span> as unstable because the skew is too large:
+<span style="color:#06b6ef">clocksource</span><span style="color:#5bc4bf">:</span> &#39;refined-jiffies&#39; wd_now: fffb7018 wd_last: fffb6e9d
+             mask: ffffffff
+<span style="color:#06b6ef">clocksource</span><span style="color:#5bc4bf">:</span> &#39;tsc-early&#39; cs_now: 68a6a7070f6a0 cs_last: 68a69ab6f74d6
+             mask: ffffffffffffffff
+<span style="color:#06b6ef">tsc</span><span style="color:#5bc4bf">:</span> Marking TSC unstable due to clocksource watchdog
+</code></pre></div><p>Это проблема, потому что TSC является источником синхронизации с лучшим
+рейтингом и напрямую доступен из vDSO,](/ru/dovetail/porting/clocksource/#time-vdso-access), что ускоряет операции с
+отметкой времени. Если известно, что TSC на вашем оборудовании в порядке и, тем
+не менее, вы столкнулись с этой проблемой, вы можете передать <code>tsc=nowatchdog</code>
+ядру, чтобы предотвратить это, или даже <code>tsc=reliable</code>, если все TSC достаточно
+надежны для синхронизации между процессорами. Если TSC действительно нестабилен
+на каком-либо устаревшем оборудовании, и вы не можете игнорировать предупреждение
+сторожевого таймера, вы все равно можете оставить его другим источникам
+синхронизации, таким как  <em>acpi_pm</em>. Вызовы <a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/#evl_read_clock">evl_read_clock()</a> были бы медленнее по
+сравнению с прямым считыванием без системного вызова из vDSO, но ядру EVL, тем
+не менее, удалось бы получить временные метки из своих <a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/#builtin-clocks">встроенных
+часов</a> за счет
+внеполосного системного вызова, хотя и без участия внутриполосной стадии.
+Вы определенно хотите убедиться, что на вашей платформе все правильно в
+отношении считывания временных меток, запустив тест
+<a href="https://the-going.github.io/evlproject/ru/core/testing/#latmus-program">latmus</a>, который может
+обнаружить любую связанную с этим проблему.</p>
+<p>Вы можете получить текущий источник синхронизации, используемый ядром, следующим образом:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#8d8687"># cat /sys/devices/system/clocksource/clocksource0/current_clocksource</span>
+tsc
+</code></pre></div></li>
+<li>
+<p>Сбор данных <em>perf</em> на основе NMI может привести к тому, что ядро будет выполнять
+крайне медленный код драйвера ACPI при каждом событии. Поскольку отключение
+<code>CONFIG_PERF</code> не является опцией, передача <code>nmi_watchdog=0</code> в командной строке
+ядра при загрузке может помочь.</p>
+</li>
+</ul>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>Передача <code>nmi_watchdog=0</code> отключает обнаружение жесткой блокировки для
+внутриполосного ядра. Однако EVL по-прежнему будет обнаруживать запущенные
+потоки EVL, застрявшие во внеполосном выполнении, если включена функция
+<code>CONFIG_EVL_WATCHDOG</code>.</p>
+
+</div>
+<hr>
+<p><p style="text-align:right">Последнее изменение: Wed, 03 Nov 2021 13:47:15 MSK
+
+	
+		
+		content/core/caveat.md
+
+		
+		129a74f
+
+	
+</p>
+
+<p style="text-align:left">Последнее изменение:
+	03-11-2021 13:47:15 MSK
+
+	
+		
+		___Оригинал: content/core/caveat.md
+
+		
+		Коммит: 129a74f
+
+	
+</p>
+</p>
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/" title="API revisions"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/oob-drivers/" title="Real-time I/O drivers"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

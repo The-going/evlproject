@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <link rel="alternate" type="application/rss&#43;xml" href="https://the-going.github.io/evlproject/ru/core/benchmarks/index.xml" title="Xenomai 4" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Запуск benchmarks :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/benchmarks/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/benchmarks/">English</option>
+                    <option id="ru" value="/ru/core/benchmarks/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/benchmarks/" aria-disabled="true"><span itemprop="name">Запуск benchmarks</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#measuring-irq-response-time">Измерение времени отклика на прерывания</a></li>
+        <li><a href="#latmus-timer-response-time">Измерение времени отклика на события таймера</a></li>
+        <li><a href="#latmus-gpio-response-time">Measuring response time to GPIO events</a></li>
+        <li><a href="#test-kernel-config">Configuring the test kernel for benchmarking</a></li>
+        <li><a href="#stress-load">The issue of proper stress load</a></li>
+        <li><a href="#common-set-up-rules-for-all-benchmarks">Common set up rules for all benchmarks</a></li>
+        <li><a href="#preempt_rt-specific-tweaks-for-benchmarking">PREEMPT_RT specific tweaks for benchmarking</a></li>
+        <li><a href="#the-benchmark-scenarios">The benchmark scenarios</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Запуск benchmarks</h1>
+
+<p>Проблема надлежащего бенчмаркинга - это сизифов, бесконечный разговор, который
+перезагружается по мере изменения технологий и требований пользователей.
+У каждого теста есть какая-то программа; это нормально, если он не принимает
+читателя за дурака. По этим причинам данный раздел является незавершенным проектом,
+в котором обсуждаются только тестовые случаи, для которых полностью доступен
+исходный код, который не требует никакого черного ящика, чтобы вы могли проверить
+и воспроизвести их довольно легко.</p>
+<p>Любые <a href="https://xenomai.org/mailman/listinfo/xenomai/">комментарии</a> и другие
+материалы, улучшающие этот раздел и/или EVL в целом, приветствуются.</p>
+<h3 id="measuring-irq-response-time">Измерение времени отклика на прерывания</h3>
+<p>Поскольку инфраструктура реального времени должна обеспечивать надежное время
+отклика на внешние события - быть <em>строго ограничено</em> - независимо от того, какая
+система может работать, когда они происходят, мы должны измерить задержку между
+идеальной датой доставки такого события и фактическим моментом, когда приложение
+начинает его обрабатывать. Затем мы можем оценить дрожание как изменение задержки.
+С Linux, работающим на аппаратном обеспечении, надежность означает, что можно
+определить верхнюю границу такой задержки, хотя мы используем неформальный
+вероятностный метод с помощью бесчисленных часов тестирования при значительной
+нагрузке. Хотя результат такого теста сам по себе не отражает общую способность
+системы поддерживать приложения в реальном времени, такой неправильный тест явно
+был бы демонстрационным. Без сомнения, каждая существующая инфраструктура
+реального времени хочет блистать на этом. Для измерения времени отклика на
+прерывания в различных контекстах EVL предоставляет утилиту
+<a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a>. На следующем рисунке
+показаны потенциальные задержки, которые могут существовать между моментом,
+когда устройство запрашивает прерывание, и временем, когда поток ответчика,
+запущенный в пространстве приложения, может воздействовать на него:</p>
+<p><img src="https://the-going.github.io/evlproject/images/irq-response-measurement.png" alt="Alt text" title="Response time to IRQ"></p>
+<p><sup>(1)</sup> Может быть несколько причин задержки, вызванной аппаратным
+обеспечением, таких как (но и не только):</p>
+<ul>
+<li>
+<p>некоторые устройства могут временно блокировать выполнение процессором
+транзакций ввода-вывода, что может привести к остановке. Например, некоторые
+графические процессоры на короткое время запрещают процессорам получать
+доступ к своей памяти ввода-вывода или DMA в пакетном режиме, влияющем на
+скорость выполнения инструкций в ЦП, отключая его от шины памяти во время
+передачи.</p>
+</li>
+<li>
+<p>процессору необходимо выполнить внутреннюю синхронизацию с запросом на
+прерывание, на конвейер команд могут повлиять операции, связанные с выполнением
+прерывания, что приведет к дополнительной задержке.</p>
+</li>
+<li>
+<p>Временные прерывания маскируются в процессоре по запросу программного
+обеспечения, эффективно предотвращая его выполнение IRQ.</p>
+</li>
+</ul>
+<p><sup>(2)</sup> Хотя обработка IRQ в некоторой служебной процедуре из ядра
+реального времени (надеюсь) является коротким процессом, который заканчивается
+подготовкой потока ответчика в планировщике, это может быть еще более отложено:</p>
+<ul>
+<li>
+<p>Кэш памяти ввода-вывода, возможно, был загрязнен действиями, не относящимися
+к реальному времени, в то время как система реального времени ожидала
+следующего события.  Это увеличивает уровень пропусков кэша как для кода,
+так и для данных и, следовательно, замедляет выполнение инфраструктуры
+реального времени в целом, когда она начинает обрабатывать входящее событие.</p>
+</li>
+<li>
+<p>время, необходимое для обработки пропуска записи, увеличивается, когда в
+контроллере кэша включена <em>политика выделения записи</em>, что замедляет выполнение,
+когда это происходит.</p>
+</li>
+</ul>
+<p><sup>(3)</sup> В конце концов, планировщик вызывается для того, чтобы пересмотреть,
+какой поток должен выполняться на процессоре, на котором поток ответчика
+находился в спящем режиме при подготовке, что может привести к большим
+потенциальным задержкам:</p>
+<ul>
+<li>
+<p>процессор, принимающий IRQ, может быть не тем, на котором спит ответчик, и в
+этом случае первый должен отправить последнему запрос на изменение расписания,
+чтобы он возобновил работу ответчика. Обычно это делается с помощью
+межпроцессорного прерывания, известного как
+<a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">IPI</a>. Время,
+необходимое для передачи IPI на удаленный процессор и обработки там, еще больше
+увеличивает задержку. Тривиальный обходной путь будет включать установку
+<a href="https://www.kernel.org/doc/Documentation/IRQ-affinity.txt">привязки IRQ</a>
+к тому же процессору, на котором работает ответчик, но это может быть невозможно,
+если контроллер прерываний не разрешит это на вашем SoC.</p>
+</li>
+<li>
+<p>как только код планировщика определит, что поток ответчика должен возобновить
+выполнение, выполняется код переключения контекста для восстановления контекста
+памяти и файла регистрации, чтобы этот поток возобновился с того места, где он
+остановился. Переключение контекста памяти может быть длительной операцией на
+некоторых архитектурах, так как это влияет на кэш и требует сильной синхронизации.</p>
+</li>
+<li>
+<p>также применяются аппаратные замедления, упомянутые для шага <sup>(2)</sup>.</p>
+</li>
+</ul>
+
+<div class="notices info">
+    <div class="label">Информация</div><p>Вникание в эти проблемы - это не вопрос следования подходу с двойным ядром и
+собственным упреждением: все они кусаются одинаково, независимо от того.</p>
+
+</div>
+<h3 id="latmus-timer-response-time">Измерение времени отклика на события таймера</h3>
+<p>Система реального времени обычно поставляется с возможностью измерения задержки
+ее потоков в событиях таймера.
+Для Xenomai 3 это <a href="https://xenomai.org/documentation/xenomai-3/html/man1/latency/">latency</a>,
+для PREEMPT_RT <a href="https://rt.wiki.kernel.org/index.php/Cyclictest">cyclictest</a>,
+а EVL поставляется с программой <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a>.
+Неудивительно, почему выполнение точно рассчитанных рабочих циклов является
+основным требованием для приложений реального времени. Кроме того, такой тест
+требует лишь небольшой подготовки: для его проведения нам не нужен никакой
+внешний источник событий, не требуется никакого специального оборудования,
+встроенного высокоточного тактового таймера тестируемой системы должно быть
+достаточно, поэтому мы можем легко измерить задержку непосредственно оттуда.</p>
+<p>Xenomai 4 реализует этот тест с помощью
+<a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/evl/latmus.c#L561">драйвера latmus</a>
+который отправляет событие пробуждения
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">потоку ответчика с поддержкой EVL</a>,
+создаваемому <a href="https://the-going.github.io/evlproject/ru/core/testing/">приложением latmus</a>,
+каждый раз, когда происходит новое прерывание таймера. Поток ответчика получает
+временную метку от <a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/#builtin-clocks">монотонных часов</a>
+EVL сразу после возобновления после пробуждения, затем отправляет эту информацию
+драйверу, который, в свою очередь, вычисляет значение задержки, т.е. задержку
+между идеальным временем, когда должно было быть получено прерывание, и
+фактическим временем пробуждения, сообщенным потоком ответчика. Таким образом,
+мы учитываем все задержки <a href="#measuring-irq-response-time">упомянутые ранее</a>,
+которые могут повлиять на точность запроса на своевременное пробуждение.</p>
+<p>Драйвер накапливает эти результаты, каждую секунду отправляя промежуточную
+сводку в поток регистратора с минимальными, максимальными и средними значениями
+задержки, наблюдаемыми за этот период. Цикл отображения 1 Гц, который виден во
+время работы <a href="https://the-going.github.io/evlproject/ru/core/testing/">приложения latmus</a>,
+синхронизируется при получении такой сводки. На следующем рисунке показан этот
+процесс выполнения:</p>
+<p><img src="https://the-going.github.io/evlproject/images/timer-response-test.png" alt="Alt text" title="Response time to timer events"></p>
+<p>When the test completes, the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a> determines the minimum, worst
+case and average latency values over the whole test duration. Upon
+request by passing the <code>-g</code> option, the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a> dumps an histogram
+showing the frequency distribution of the worst case figures which
+have been observed over time. The output format can be parsed by
+<a href="http://gnuplot.info">gnuplot</a>.</p>
+<h4 id="running-the-timer-based-test">Running the timer-based test</h4>
+<p>First, we need the <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/evl/latmus.c">latmus
+driver</a>
+to be loaded into the kernel for the SUT. Therefore
+<code>CONFIG_EVL_LATMUS</code> should be enabled in the kernel
+configuration. From the command line, the entire test is controlled by
+the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a> using the <code>-m</code> option, which can be omitted since measuring the
+response time to timer events is the default test.</p>
+<blockquote>
+<p>Measuring response time to timer events</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#8d8687"># latmus</span>
+RTT|  00:00:01  <span style="color:#5bc4bf">(</span>user, <span style="color:#f99b15">1000</span> us period, priority 98, CPU1<span style="color:#5bc4bf">)</span>
+RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
+RTD|      1.211|      1.325|      2.476|       0|     0|      1.211|      2.476
+RTD|      1.182|      1.302|      3.899|       0|     0|      1.182|      3.899
+RTD|      1.189|      1.314|      2.486|       0|     0|      1.182|      3.899
+RTD|      1.201|      1.315|      2.510|       0|     0|      1.182|      3.899
+RTD|      1.192|      1.329|      2.457|       0|     0|      1.182|      3.899
+RTD|      1.183|      1.307|      2.418|       0|     0|      1.182|      3.899
+RTD|      1.206|      1.318|      2.375|       0|     0|      1.182|      3.899
+RTD|      1.206|      1.316|      2.418|       0|     0|      1.182|      3.899
+^C
+---|-----------|-----------|-----------|--------|------|-------------------------
+RTS|      1.182|      1.316|      3.899|       0|     0|    00:00:08/00:00:08
+</code></pre></div><blockquote>
+<p>Collecting plottable histogram data (timer test)</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">RTT|  00:00:01  <span style="color:#5bc4bf">(</span>user, <span style="color:#f99b15">1000</span> us period, priority 98, CPU1<span style="color:#5bc4bf">)</span>
+RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
+RTD|      1.156|      1.273|      1.786|       0|     0|      1.156|      1.786
+RTD|      1.170|      1.288|      4.188|       0|     0|      1.156|      4.188
+RTD|      1.135|      1.253|      3.175|       0|     0|      1.135|      4.188
+RTD|      1.158|      1.275|      2.974|       0|     0|      1.135|      4.188
+...
+^C
+<span style="color:#8d8687"># test started on: Fri Jan 24 15:36:34 2020</span>
+<span style="color:#8d8687"># Linux version 5.5.0-rc7+ (rpm@cobalt) (gcc version 9.2.1 20190827 (Red Hat 9.2.1-1) (GCC)) #45 SMP PREEMPT IRQPIPE Wed Jan 22 12:24:03 CET 2020</span>
+<span style="color:#8d8687"># BOOT_IMAGE=(tftp)/tqmxe39/switch/bzImage rw ip=dhcp root=/dev/nfs nfsroot=192.168.3.1:/var/lab/tftpboot/tqmxe39/switch/rootfs,tcp,nfsvers=3 nmi_watchdog=0 console=ttyS0,115200 isolcpus=1 evl.oob_cpus=1</span>
+<span style="color:#8d8687"># libevl version: evl.0 -- #a3ceb80 (2020-01-22 11:57:11 +0100)</span>
+<span style="color:#8d8687"># sampling period: 1000 microseconds</span>
+<span style="color:#8d8687"># clock gravity: 2000i 3500k 3500u</span>
+<span style="color:#8d8687"># clocksource: tsc</span>
+<span style="color:#8d8687"># vDSO access: architected</span>
+<span style="color:#8d8687"># context: user</span>
+<span style="color:#8d8687"># thread priority: 98</span>
+<span style="color:#8d8687"># thread affinity: CPU1</span>
+<span style="color:#8d8687"># C-state restricted</span>
+<span style="color:#8d8687"># duration (hhmmss): 00:01:12</span>
+<span style="color:#8d8687"># peak (hhmmss): 00:00:47</span>
+<span style="color:#8d8687"># min latency: 0.205</span>
+<span style="color:#8d8687"># avg latency: 3.097</span>
+<span style="color:#8d8687"># max latency: 25.510</span>
+<span style="color:#8d8687"># sample count: 71598</span>
+<span style="color:#f99b15">0</span> <span style="color:#f99b15">95</span>
+<span style="color:#f99b15">1</span> <span style="color:#f99b15">25561</span>
+<span style="color:#f99b15">2</span> <span style="color:#f99b15">18747</span>
+<span style="color:#f99b15">3</span> <span style="color:#f99b15">2677</span>
+<span style="color:#f99b15">4</span> <span style="color:#f99b15">6592</span>
+<span style="color:#f99b15">5</span> <span style="color:#f99b15">17056</span>
+<span style="color:#f99b15">6</span> <span style="color:#f99b15">664</span>
+<span style="color:#f99b15">7</span> <span style="color:#f99b15">48</span>
+<span style="color:#f99b15">8</span> <span style="color:#f99b15">18</span>
+<span style="color:#f99b15">9</span> <span style="color:#f99b15">12</span>
+<span style="color:#f99b15">10</span> <span style="color:#f99b15">18</span>
+<span style="color:#f99b15">11</span> <span style="color:#f99b15">24</span>
+<span style="color:#f99b15">12</span> <span style="color:#f99b15">14</span>
+<span style="color:#f99b15">13</span> <span style="color:#f99b15">2</span>
+<span style="color:#f99b15">14</span> <span style="color:#f99b15">6</span>
+<span style="color:#f99b15">15</span> <span style="color:#f99b15">5</span>
+<span style="color:#f99b15">16</span> <span style="color:#f99b15">5</span>
+<span style="color:#f99b15">17</span> <span style="color:#f99b15">6</span>
+<span style="color:#f99b15">18</span> <span style="color:#f99b15">23</span>
+<span style="color:#f99b15">19</span> <span style="color:#f99b15">17</span>
+<span style="color:#f99b15">20</span> <span style="color:#f99b15">3</span>
+<span style="color:#f99b15">21</span> <span style="color:#f99b15">1</span>
+<span style="color:#f99b15">22</span> <span style="color:#f99b15">1</span>
+<span style="color:#f99b15">23</span> <span style="color:#f99b15">1</span>
+<span style="color:#f99b15">24</span> <span style="color:#f99b15">1</span>
+<span style="color:#f99b15">25</span> <span style="color:#f99b15">1</span>
+</code></pre></div><p>The output format starts with a comment section which gives specifics
+about the test environment and the overall results (all lines from
+this section begin with a hash sign). The comment section is followed
+by the frequency distribution forming the histogram, in the form of a
+series of value pairs: &lt;latency-µs&gt; <number-of-occurrences>. For
+instance, &ldquo;1 25561&rdquo; means that 25561 wake ups were delayed between 1
+(inclusive) and 2 (exclusive) microseconds from the ideal time. A plus
+(+) sign appearing after the last count of occurrences means that
+there are outliers beyond the limit of the histogram size. In such
+event, raising the numnber of cells with the <a href="https://the-going.github.io/evlproject/ru/core/testing/">&ndash;histogram=<cells>
+option</a> may be a good idea.</p>
+<h4 id="interpreting-the-comment-section-of-a-data-distribution">Interpreting the comment section of a data distribution</h4>
+<ul>
+<li>
+<p><em># test started on: Fri Jan 24 15:36:34 2020</em></p>
+<p>Date the test was started (no kidding).</p>
+</li>
+<li>
+<p><em># Linux version 5.5.0-rc7+ (rpm@cobalt) (gcc version 9.2.1 20190827 (Red Hat 9.2.1-1) (GCC)) #45 SMP PREEMPT IRQPIPE Wed Jan 22 12:24:03 CET 2020</em></p>
+<p>The output of <a href="http://man7.org/linux/man-pages/man1/uname.1.html">uname -a</a> on the system under test.</p>
+</li>
+<li>
+<p><em># BOOT_IMAGE=(tftp)/tqmxe39/switch/bzImage rw ip=dhcp root=/dev/nfs nfsroot=192.168.3.1:/var/lab/tftpboot/tqmxe39/switch/rootfs,tcp,nfsvers=3 nmi_watchdog=0 console=ttyS0,115200 isolcpus=1 evl.oob_cpus=1</em></p>
+<p>The kernel command line as returned by /proc/cmdline.</p>
+</li>
+<li>
+<p><em># libevl version: evl.0 &ndash; #a3ceb80 (2020-01-22 11:57:11 +0100)</em></p>
+<p>The version information extracted from <a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-application">libevl</a> including its major
+version number, and optionally the <a href="https://git-scm.com/">GIT</a>
+commit hash and date thereof <a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-application">libevl</a> was built from.</p>
+</li>
+<li>
+<p><em># sampling period: 1000 microseconds</em></p>
+<p>The frequency of the event to be responded to by the system under
+test, which can either be a timer tick or a GPIO signal.</p>
+</li>
+<li>
+<p><em># clock gravity: 2000i 3500k 3500u</em></p>
+<p>The <a href="(/ru/core/runtime-settings/)">calibration settings</a> of the EVL core clock which applied during the test.</p>
+</li>
+<li>
+<p><em># clocksource: tsc</em></p>
+<p>The name of the <a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">kernel clock source</a> used by the EVL core for
+reading timestamps. This value depends on the processor
+architecture, <em>tsc</em> commonly refers to x86.</p>
+</li>
+<li>
+<p><em># vDSO access: architected</em></p>
+<p>Since kernel v5.5, the core reports the type of access the EVL
+applications have to the <a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">clock source</a> via the vDSO. The following
+values are defined:</p>
+<ul>
+<li>
+<p><em>architected</em> denotes a fast (syscall-less) vDSO access to a
+built-in clock source defined by the architecture itself. This is
+the best case.</p>
+</li>
+<li>
+<p><em>mmio</em> denotes a fast (syscall-less) vDSO access to a [clock source]
+(/ru/dovetail/porting/clocksource/)
+exported via Dovetail&rsquo;s generic access to MMIO-based devices. This
+is the second best case.</p>
+</li>
+<li>
+<p><em>none</em> denotes a not-so-fast access to the kernel clock source
+without vDSO support, which is one of the possible <a href="https://the-going.github.io/evlproject/ru/core/caveat/">issues with
+legacy x86 hardware</a>.
+You could also have such value due to an incomplete port of
+Dovetail to your target system, which may be missing the
+<a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">conversion of existing MMIO clock source</a> to
+a user-mappable one visible from the generic vDSO mechanism.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><em># context: user</em></p>
+<p>Which was the context of the responder, among:</p>
+<ul>
+<li>
+<p><em>user</em> for EVL threads running in user-space waiting for timer
+events,</p>
+</li>
+<li>
+<p><em>kernel</em> for EVL kernel threads waiting for timer events,</p>
+</li>
+<li>
+<p><em>irq</em> for EVL interrupt handlers receiving timer events,</p>
+</li>
+<li>
+<p><em>oob-gpio</em> for EVL threads running in user-space waiting for
+GPIO events,</p>
+</li>
+<li>
+<p><em>inband-gpio</em> for regular (non-EVL) threads running in
+user-space waiting for GPIO events.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><em># thread priority: 98</em></p>
+<p>The priority of the responder thread in the out-of-band
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#SCHED_FIFO">SCHED_FIFO</a>
+class. By definition, any legit value starting from 1 and on gives the
+responder thread higher priority than any in-band task running in the
+system, including kernel threads of any sort.</p>
+</li>
+<li>
+<p><em># thread affinity: CPU1</em></p>
+<p>The processor affinity of the responder thread. If the CPU id. is
+suffixed by <strong>-noisol</strong>, then the responder was not running on an
+isolated processor during the test, which most likely entailed higher
+latency values compared to isolating this CPU - unless you did not
+<a href="#stress-load">stress</a> the SUT enough or at all while
+measuring, which would make the figures obtained quite flawed and
+probably worthless anyway.</p>
+</li>
+<li>
+<p><em># C-state restricted</em></p>
+<p>Whether the processor C-State was restricted to the shallowest
+level, preventing it to enter deeper sleep states which are known to
+induce extra latency.</p>
+</li>
+<li>
+<p><em># duration (hhmmss): 00:01:12</em></p>
+<p>How long the test ran (according to the wall clock).</p>
+</li>
+<li>
+<p><em># peak (hhmmss): 00:00:47</em></p>
+<p>When the worst case value was observed, relatively to the beginning of the test.</p>
+</li>
+<li>
+<p><em># min latency: 0.205</em></p>
+<p>The best/shortest latency value observed throughout the test.</p>
+</li>
+<li>
+<p><em># avg latency: 3.097</em></p>
+<p>The average latency value observed, accounting for all measurement
+samples collected during the test.</p>
+</li>
+<li>
+<p><em># max latency: 25.510</em></p>
+<p>The maximum value observed throughout the test. This is the <strong>worst
+case</strong> value we should definitely care about, <strong><a href="#stress-load">provided the stress
+load and test duration are meaningful</a></strong>.</p>
+</li>
+<li>
+<p><em># sample count: 71598</em></p>
+<p>The number of samples collected. The larger, the better (71598
+samples in this example is obviously way too small for drawing any
+meaningful conclusion). Running a test for a period of 24 hours
+<a href="#stress-workloads">under significant stress load</a> is
+common practice to get reliable results.</p>
+</li>
+</ul>
+<h3 id="latmus-gpio-response-time">Measuring response time to GPIO events</h3>
+<p>In addition to timer events, you will likely need to get a sense of
+the worst case response time to common device interrupts you may
+expect from EVL. Since you want the common programming model to be
+available for developing real-time applications, the responder has to
+be a thread running in user space. This test mode is also available
+from the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a>
+program, when paired with a <a href="https://zephyrproject.org">Zephyr-based</a>
+application which monitors the response time from a remote system to
+the GPIO events it sends.</p>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>From the perspective of the monitor system, we will measure the
+time it takes the SUT to not only receive the incoming event, but
+also to respond to it by sending a converse GPIO acknowledge. Therefore
+we expect the worst case figures to be higher than those reported by a
+plain <a href="#latmus-timer-response-time">timer test</a> which
+only gets a timestamp on wake up.</p>
+
+</div>
+<p>For implementing this test, we need:</p>
+<ul>
+<li>
+<p>a small development board which supports the <a href="https://zephyrproject.org">Zephyr
+RTOS</a>, and offers external GPIO pins. This
+GPIO test was originally developed on a
+<a href="https://www.nxp.com/design/development-boards/freedom-development-boards/mcu-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F">FRDM-K64F</a>
+board, a low-cost development platform from
+<a href="https://www.nxp.com/">NXP</a>. For this reason, the Zephyr <em>device tree</em>
+and <em>pinmux</em> bits for enabling the GPIO lines are readily available
+from <a href="https://git.xenomai.org/xenomai4/libevl/-/blob/d12db5d2688ca3aa06a738a924171ef5fe85c6ab/benchmarks/zephyr/frdm_k64f-enable-EVL-latency-monitor.patch">this
+patch</a>.</p>
+</li>
+<li>
+<p>the latency monitoring application, aka
+<a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon</a>,
+which runs on the Zephyr board. This application periodically sends a
+pulse on one GPIO (output) line to be received by the system under
+test, then waits for an acknowledge on another GPIO (input) line,
+measuring the time elapsed between the two events.</p>
+</li>
+<li>
+<p>the EVL-based system under test, also offering external GPIO
+pins. This board runs <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a> which sets up the test system,
+asking
+<a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon</a>
+to configure according to the settings requested by the user, then
+enters a responder loop which listens to then acknowledges GPIO events
+to the latency monitor using two separate GPIO lines. The period is
+chosen by calling <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a> using the <code>-p</code> option (which defaults to 1 ms, i.e. 1 Khz
+sampling loop). This setting and a few others are passed by
+<a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a> to
+<a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon</a>
+during the setup phase via the TCP/IP connection they share.</p>
+</li>
+<li>
+<p>a couple of wires between the GPIO pins of system under test and
+those of the Zephyr board running
+<a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon</a>,
+for transmitting pulses and receiving acknowledges to/from the
+system under test.</p>
+</li>
+<li>
+<p>a network connection between both systems so that <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a> can establish a TCP/IP
+stream with the remote
+<a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon</a>
+application.</p>
+</li>
+<li>
+<p>a DHCP server reachable from the Zephyr board running on your
+LAN. The latency monitor asks for its IPv4 address by issuing a DHCP
+request at boot up.</p>
+</li>
+</ul>
+<p>The <a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon
+application</a>
+running on the monitor board periodically raises a GPIO pulse event on
+the TX wire, which causes the SUT to receive an interrupt. By calling
+into the [EVL-enabled gpiolib]
+(<a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/3451245cdc9846835f8a2786767b17037ee13dda/drivers/gpio/gpiolib-cdev.c">https://git.xenomai.org/xenomai4/linux-evl/-/blob/3451245cdc9846835f8a2786767b17037ee13dda/drivers/gpio/gpiolib-cdev.c</a>)
+driver, the <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">responder thread</a>
+created by the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a> waits for such interrupt by
+monitoring edges on the GPIO pulse signal. Upon receipt, it
+immediately acknowledges the event by raising an edge on the GPIO ack
+signal, which
+<a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon</a>
+monitors for calculating the latency value as the delay between the
+acknowledge and pulse events. The latter accumulates these results,
+sending an intermediate summary every second over a TCP/IP stream to a
+logger thread running on the remote <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a>.  This summary includes the
+minimum, maximum and average latency values observed over the last 1Hz
+period. Here again, the 1Hz display loop you can observe while
+<a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a> is running
+is synchronized on the receipt of such summary.  The following figure
+illustrates this execution flow:</p>
+<p><img src="https://the-going.github.io/evlproject/images/gpio-response-test.png" alt="Alt text" title="Response time to GPIO events"></p>
+<h4 id="quick-recipe-monitoring-a-raspberry-pihttpswwwraspberrypiorgproducts-board-with-the-frdm-k64fhttpswwwnxpcomdesigndevelopment-boardsfreedom-development-boardsmcu-boardsfreedom-development-platform-for-kinetis-k64-k63-and-k24-mcusfrdm-k64f">Quick recipe: monitoring a <a href="https://www.raspberrypi.org/products/">Raspberry PI</a> board with the <a href="https://www.nxp.com/design/development-boards/freedom-development-boards/mcu-boards/freedom-development-platform-for-kinetis-k64-k63-and-k24-mcus:FRDM-K64F">FRDM-K64F</a></h4>
+<p>This recipe works with any Raspberry PI board featuring a 40-pin GPIO
+header. It has been successfully used for monitoring the response time
+to GPIO events from models
+<a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/">2B</a>,
+<a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/">3B</a> and
+<a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/">4B</a>.</p>
+<ol>
+<li>
+<p>Build and install EVL on your Raspberry PI as <a href="https://the-going.github.io/evlproject/ru/core/build-steps/">described in this
+document</a>.</p>
+</li>
+<li>
+<p>Install the <a href="https://docs.zephyrproject.org/latest/getting_started/installation_linux.html">Zephyr
+SDK</a>
+on your development system. Once the SDK is installed, if your are
+using <a href="https://zephyrproject.org">Zephyr</a> for the first time, you may
+want to get your feet wet with the <a href="https://docs.zephyrproject.org/latest/samples/basic/blinky/README.html">blinky
+example</a>. The
+rest of the description assumes that the <a href="https://docs.zephyrproject.org/latest/getting_started/installation_linux.html">Zephyr
+SDK</a>
+is rooted at ~/zephyrproject, and the <a href="https://git.xenomai.org/xenomai4/libevl.git">libevl source
+tree</a> was cloned into ~/libevl.</p>
+</li>
+<li>
+<p>Patch the device tree and <em>pinmux</em> changes to the FRDM-K64F board
+which enable the GPIO lines in the Zephyr source tree:</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cd ~/zephyrproject/zephyr
+$ patch -p1 &lt; ~/libevl/benchmarks/zephyr/frdm_k64f-enable-EVL-latency-monitor.patch
+</code></pre></div><ol start="3">
+<li>
+<p>Connect the GPIO lines between both boards:</p>
+<ul>
+<li>
+<p>GPIO24 on the FRDM-K64F (pulse signal) should be wired to GPIO23
+on the RPI3 (ack signal, BCM numbering).</p>
+</li>
+<li>
+<p>GPIO25 on the FRDM-K64F (ack signal) should be wired to GPIO24
+on the RPI3 (pulse signal, BCM numbering).</p>
+</li>
+</ul>
+</li>
+<li>
+<p>An <a href="https://docs.zephyrproject.org/1.14.0/guides/debugging/probes.html#opensda-daplink-onboard-debug-probe">OpenSDA J-Link Onboard Debug
+Probe</a>
+is present on the FRDM-K64F, which can be used to flash the board. On
+your development system, the <a href="https://docs.zephyrproject.org/1.14.0/guides/debugging/host-tools.html#openocd-debug-host-tools">OpenOCD</a>
+suite provides GDB remote debugging and flash programming support
+compatible with this probe over USB. In most cases, a binary OpenOCD
+package should be readily available from your favorite Linux
+distribution. Once the OpenOCD suite is installed, you may need to add
+some <em>udev</em> rules in order for the USB device to appear on your
+development system, such as <a href="https://github.com/zephyrproject-rtos/openocd/blob/master/contrib/60-openocd.rules">these
+ones</a>.</p>
+</li>
+<li>
+<p>Connect a USB cable from the <em>Open SDA</em> micro-USB connector of the
+FRDM-K64F to your development system. This will power on the FRDM-K64F
+board, enabling firmware upload.</p>
+</li>
+<li>
+<p>Build the <a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon
+application</a>
+using the <a href="https://docs.zephyrproject.org/latest/getting_started/installation_linux.html">Zephyr
+SDK</a>,
+then flash it to the FRDM-K64F.</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ cd ~/zephyrproject/zephyr
+$ source zephyr-env.sh
+$ west build -p auto -b frdm_k64f ~/libevl/benchmarks/zephyr/latmon
+-- west build: build configuration:
+       source directory: ~/libevl/benchmarks/zephyr/latmon
+       build directory: ~/zephyrproject/zephyr/build
+       BOARD: frdm_k64f <span style="color:#5bc4bf">(</span>origin: command line<span style="color:#5bc4bf">)</span>
+...
+Memory region         Used Size  Region Size  %age Used
+           FLASH:      <span style="color:#f99b15">100452</span> B         <span style="color:#f99b15">1</span> MB      9.58%
+            SRAM:       <span style="color:#f99b15">45044</span> B       <span style="color:#f99b15">192</span> KB     22.91%
+        IDT_LIST:         <span style="color:#f99b15">168</span> B         <span style="color:#f99b15">2</span> KB      8.20%
+<span style="color:#5bc4bf">[</span>156/160<span style="color:#5bc4bf">]</span> Generating linker_pass_final.cmd
+<span style="color:#5bc4bf">[</span>157/160<span style="color:#5bc4bf">]</span> Generating isr_tables.c
+<span style="color:#5bc4bf">[</span>158/160<span style="color:#5bc4bf">]</span> Building C object zephyr/CMakeFiles/zephyr_final.dir/misc/empty_file.c.obj
+<span style="color:#5bc4bf">[</span>159/160<span style="color:#5bc4bf">]</span> Building C object zephyr/CMakeFiles/zephyr_final.dir/isr_tables.c.obj
+<span style="color:#5bc4bf">[</span>160/160<span style="color:#5bc4bf">]</span> Linking C executable zephyr/zephyr.elf
+$ west flash
+-- west flash: rebuilding
+ninja: no work to <span style="color:#815ba4">do</span>.
+-- west flash: using runner pyocd
+-- runners.pyocd: Flashing file: /home/rpm/git/zephyrproject/zephyr/build/zephyr/zephyr.bin
+<span style="color:#5bc4bf">[====================]</span> 100%
+</code></pre></div><pre><code>Once (re-)flashed, the FRDM-K64F is automatically reset, with the
+</code></pre>
+<p>latency monitor taking over. You should see the following output in
+the serial console of the FRDM-K64F:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">*** Booting Zephyr OS build zephyr-&lt;some version information&gt; ***
+
+<span style="color:#5bc4bf">[</span>00:00:00.006,000<span style="color:#5bc4bf">]</span> &lt;inf&gt; latency_monitor: DHCPv4 binding...
+<span style="color:#5bc4bf">[</span>00:00:03.001,000<span style="color:#5bc4bf">]</span> &lt;inf&gt; eth_mcux: Enabled 100M full-duplex mode.
+<span style="color:#5bc4bf">[</span>00:00:03.003,000<span style="color:#5bc4bf">]</span> &lt;inf&gt; net_dhcpv4: Received: &lt;IP address of the FRDM-K64F&gt;
+<span style="color:#5bc4bf">[</span>00:00:03.003,000<span style="color:#5bc4bf">]</span> &lt;inf&gt; latency_monitor: DHCPv4 ok, listening on &lt;IP&gt;:2306
+<span style="color:#5bc4bf">[</span>00:00:03.003,000<span style="color:#5bc4bf">]</span> &lt;inf&gt; latency_monitor: waiting <span style="color:#815ba4">for</span> connection...
+</code></pre></div><p>From that point, the latency monitor running on the FRDM-K64F is ready
+to accept incoming connections from the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a> running on the Raspberry PI (SUT).</p>
+<h4 id="irq-threading">Native preemption and IRQ threading</h4>
+<p>The GPIO response time of the standard or
+<a href="https://wiki.linuxfoundation.org/realtime/rtl/blog">PREEMPT_RT</a>
+kernel may be delayed by <a href="https://www.kernel.org/doc/htmldocs/kernel-api/API-request-threaded-irq.html">threading the GPIO
+interrupt</a>
+the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a> monitors, since this behavior is built in the generic GPIOLIB
+driver, and forced by PREEMPT_RT for most interrupts anyway. The
+overhead involved in waiting for a context switch to be performed to
+the threaded handler increases the latency under stress
+load. Disabling IRQ threading entirely in a single kernel
+configuration (i.e. without EVL) would be the wrong option though,
+making the latency figures generally really bad. However, you can
+raise the priority of the IRQ thread serving the latency pulse above
+any activity which should not be in its way, so that it is not delayed
+even further.</p>
+<p>In order to do this, you first need to locate the IRQ thread which
+handles the GPIO pulse interrupts. A simple way to achieve this is to
+check the output of <code>/proc/interrupts</code> once the test runs, looking for
+the GPIO consumer called <em>latmon-pulse</em>. For instance, the following
+output was obtained from a PREEMPT_RT kernel running on an i.MX8M SoM:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#8d8687"># cat /proc/interrupts </span>
+           CPU0       CPU1       CPU2       CPU3       
+  3:     <span style="color:#f99b15">237357</span>      <span style="color:#f99b15">90193</span>     <span style="color:#f99b15">227077</span>     <span style="color:#f99b15">224949</span>     GICv3  <span style="color:#f99b15">30</span> Level     arch_timer
+  6:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>     GICv3  <span style="color:#f99b15">79</span> Level     timer@306a0000
+  7:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>     GICv3  <span style="color:#f99b15">23</span> Level     arm-pmu
+  8:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>     GICv3 <span style="color:#f99b15">128</span> Level     sai
+  9:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>     GICv3  <span style="color:#f99b15">82</span> Level     sai
+ 20:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>     GICv3 <span style="color:#f99b15">110</span> Level     30280000.watchdog
+ 21:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>     GICv3 <span style="color:#f99b15">135</span> Level     sdma
+ 22:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>     GICv3  <span style="color:#f99b15">66</span> Level     sdma
+...
+ 52:    <span style="color:#f99b15">1355491</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>  gpio-mxc  <span style="color:#f99b15">12</span> Edge      latmon-pulse   <span style="color:#5bc4bf">&lt;&lt;&lt;</span> The one we look <span style="color:#815ba4">for</span>
+ 55:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>  gpio-mxc  <span style="color:#f99b15">15</span> Edge      ds1337
+ 80:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>  gpio-mxc   <span style="color:#f99b15">8</span> Edge      bd718xx-irq
+ 84:          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>          <span style="color:#f99b15">0</span>  gpio-mxc  <span style="color:#f99b15">12</span> Edge      30b50000.mmc cd
+...
+</code></pre></div><p>With this information, we can now figure out which IRQ thread is
+handling the pulse events monitored by <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a>, raising its priority as
+needed. By default, all IRQ threads are normally set to priority 50 in
+the SCHED_FIFO class. Typically, you may want to raise the priority of
+this particular IRQ handler so that it does not have to compete with
+other handlers. For instance, continuing the previous example we would
+raise the priority of the kernel thread handling IRQ52 to 99:</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>You can refine even futher the runtime configuration of a kernel threading
+its interrupts by locking the <a href="https://www.kernel.org/doc/Documentation/IRQ-affinity.txt">SMP
+affinity</a>
+of the device IRQ threads on particular CPUs, in order to either optimize
+the wake up time of processes waiting for such events, or reduce the jitter in
+processing the real-time workload. Whether you should move
+an IRQ thread to the isolated CPU also running the real-time workload
+in order to favour locality, or keeping them spatially separate in
+order to reduce the disturbance of interrupt handling on the workload
+is something you may have to determine on a case-by-case basis.</p>
+
+</div>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#8d8687"># pgrep irq/52</span>
+<span style="color:#f99b15">345</span>
+~ <span style="color:#8d8687"># chrt -f -p 99 345</span>
+pid 345<span style="color:#48b685">&#39;s current scheduling policy: SCHED_FIFO
+</span><span style="color:#48b685">pid 345&#39;</span>s current scheduling priority: <span style="color:#f99b15">50</span>
+pid 345<span style="color:#48b685">&#39;s new scheduling policy: SCHED_FIFO
+</span><span style="color:#48b685">pid 345&#39;</span>s new scheduling priority: <span style="color:#f99b15">99</span>
+</code></pre></div><p>Which can be shortened as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#8d8687"># chrt -f -p 99 $(pgrep irq/52)</span>
+pid 345<span style="color:#48b685">&#39;s current scheduling policy: SCHED_FIFO
+</span><span style="color:#48b685">pid 345&#39;</span>s current scheduling priority: <span style="color:#f99b15">50</span>
+pid 345<span style="color:#48b685">&#39;s new scheduling policy: SCHED_FIFO
+</span><span style="color:#48b685">pid 345&#39;</span>s new scheduling priority: <span style="color:#f99b15">99</span>
+</code></pre></div>
+<div class="notices warning">
+    <div class="label">Внимание</div><p>In a single kernel configuration, the IRQ thread process varies
+between runs of the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a> for the GPIO test, because the
+interrupt descriptor is released at the end of each execution by
+GPIOLIB. Make sure to apply the procedure explained above each time
+you spawn a new test.</p>
+
+</div>
+<h4 id="running-the-gpio-based-test">Running the GPIO-based test</h4>
+<p>Once the Zephyr board is started with the <a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon
+application</a>
+flashed in, we can run the benchmark tests on the system under test.</p>
+<p>This is done by running the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a> on the SUT, passing either of
+the <code>-Z</code> or <code>-z</code> option switch to select the <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/#altsched-theory">execution stage</a>, depending
+on whether we look for out-of-band response time figures (i.e. using
+EVL) or plain in-band response time figures (i.e. <em>without</em> relying on
+EVL&rsquo;s real-time capabilities) respectively. In the latter case, we
+would not even need EVL to be present in the kernel of the SUT;
+typically we would use a
+<a href="https://wiki.linuxfoundation.org/realtime/rtl/blog">PREEMPT_RT</a>
+kernel instead.</p>
+<p>Regardless of the execution stage they should run on, both tests are
+configured the same way. On the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus application</a> command line, we need to specify
+which GPIO chip and pin number should be used for receiving GPIO
+events (<strong>-I &lt;gpiochip-name&gt;,&lt;pin-number&gt;</strong>) and sending
+acknowledge signals (<strong>-O &lt;gpiochip-name&gt;,&lt;pin-number&gt;</strong>).</p>
+<p>When the test is started on the SUT, the <a href="https://git.xenomai.org/xenomai4/libevl/-/tree/master/benchmarks/zephyr/latmon/">latmon
+application</a>
+should start monitoring the GPIO response times of the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus
+application</a>
+indefinitely until the latter stops, at which point the latency
+monitor goes back waiting for another connection.</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#5bc4bf">[</span>00:04:15.651,000<span style="color:#5bc4bf">]</span> &lt;inf&gt; latency_monitor: monitoring started
+/* ...remote latmus runs <span style="color:#815ba4">for</span> some time... */
+<span style="color:#5bc4bf">[</span>00:04:24.877,000<span style="color:#5bc4bf">]</span> &lt;inf&gt; latency_monitor: monitoring stopped
+<span style="color:#5bc4bf">[</span>00:04:24.879,000<span style="color:#5bc4bf">]</span> &lt;inf&gt; latency_monitor: waiting <span style="color:#815ba4">for</span> connection...
+</code></pre></div><blockquote>
+<p>Measuring out-of-band response time to GPIO events (on the SUT)</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/*
+ * Caution: the following output was produced by running the test only
+ * a few seconds on an idle EVL-enabled system: the results displayed <span style="color:#815ba4">do</span> not
+ * reflect the worst <span style="color:#815ba4">case</span> latency <span style="color:#5bc4bf">(</span>which is higher<span style="color:#5bc4bf">)</span> on this platform when
+ * the test runs long enough under proper stress load.
+ */
+<span style="color:#8d8687"># latmus -Z zephyr -I gpiochip0,23 -O gpiochip0,24</span>
+connecting to latmon at 192.168.3.60:2306...
+RTT|  00:00:02  <span style="color:#5bc4bf">(</span>oob-gpio, <span style="color:#f99b15">1000</span> us period, priority 98, CPU1<span style="color:#5bc4bf">)</span>
+RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
+RTD|     11.541|     15.627|     18.125|       0|     0|     11.541|     18.125
+RTD|     10.916|     15.617|     30.950|       0|     0|     10.916|     30.950
+RTD|     12.500|     15.598|     25.908|       0|     0|     10.916|     30.950
+RTD|      1.791|     15.571|     25.908|       0|     0|      1.791|     30.950
+RTD|     13.958|     15.647|     26.075|       0|     0|      1.791|     30.950
+^C
+---|-----------|-----------|-----------|--------|------|-------------------------
+RTS|      1.791|     15.606|     30.950|       0|     0|    00:00:05/00:00:05
+</code></pre></div><blockquote>
+<p>Measuring in-band response time to GPIO events (on the SUT)</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/*
+ * Caution: the following output was produced by running the test only
+ * a few seconds on an idle PREEMPT_RT-enabled system: the results displayed <span style="color:#815ba4">do</span>
+ * not reflect the worst <span style="color:#815ba4">case</span> latency <span style="color:#5bc4bf">(</span>which is higher<span style="color:#5bc4bf">)</span> on this platform when
+ * the test runs long enough under proper stress load.
+ */
+<span style="color:#8d8687"># latmus -z zephyr -I gpiochip0,23 -O gpiochip0,24</span>
+connecting to latmon at 192.168.3.60:2306...
+CAUTION: measuring in-band response time <span style="color:#5bc4bf">(</span>no EVL there<span style="color:#5bc4bf">)</span>
+RTT|  00:00:02  <span style="color:#5bc4bf">(</span>inband-gpio, <span style="color:#f99b15">1000</span> us period, priority 98, CPU1<span style="color:#5bc4bf">)</span>
+RTH|----lat min|----lat avg|----lat max|-overrun|---msw|---lat best|--lat worst
+RTD|     38.075|     52.401|     93.733|       0|     0|     38.075|     93.733
+RTD|     39.700|     53.289|     91.608|       0|     0|     38.075|     93.733
+RTD|     41.283|     54.914|     93.900|       0|     0|     38.075|     93.900
+RTD|     38.075|     54.615|     91.608|       0|     0|     38.075|     93.900
+RTD|     38.075|     54.767|     96.108|       0|     0|     38.075|     96.108
+RTD|     41.283|     54.563|     91.608|       0|     0|     38.075|     96.108
+^C
+---|-----------|-----------|-----------|--------|------|-------------------------
+RTS|     38.075|     54.037|     96.108|       0|     0|    00:00:07/00:00:07
+</code></pre></div><h3 id="test-kernel-config">Configuring the test kernel for benchmarking</h3>
+<h4 id="hints-for-configuring-any-test-kernel">Hints for configuring any test kernel</h4>
+<ul>
+<li>
+<p>turn off all debug features and tracers in the kernel configuration.</p>
+</li>
+<li>
+<p>ensure all CPUs keep running at maximum frequency by enabling
+the &ldquo;performance&rdquo; CPU_FREQ governor, or disabling CPU_FREQ entirely.</p>
+</li>
+<li>
+<p>have a look at the <a href="https://the-going.github.io/evlproject/ru/core/caveat/">caveats here</a>.</p>
+</li>
+<li>
+<p>make sure the GPU driver does not cause ugly latency peaks.</p>
+</li>
+<li>
+<p>isolate a CPU for running the latency test. For instance, you could
+reserve CPU1 for this purpose, by passing <strong>isolcpus=1</strong> on the
+kernel command line at boot.</p>
+</li>
+<li>
+<p>verify your kernel configuration either offline or online using the
+<a href="https://the-going.github.io/evlproject/ru/core/commands/">evl check</a>
+command.</p>
+</li>
+</ul>
+<h4 id="specific-hints-to-configure-a-native-preemption-kernel">Specific hints to configure a native preemption kernel</h4>
+<ul>
+<li>
+<p>enable maximum preemption (<code>CONFIG_PREEMPT_RT_FULL</code> if available).</p>
+</li>
+<li>
+<p>The <a href="#latmus-gpio-response-time">GPIO response test</a> over PREEMPT_RT involves a threaded interrupt handler for
+processing GPIO events. This interrupt thread must have higher
+scheduling priority than other interrupt threads. See this
+<a href="#irq-threading">illustration</a> for more.</p>
+</li>
+<li>
+<p>check that no common thread can compete with the responder thread on
+the same priority level. Some kernel housekeeping threads might, but
+regular threads should not. For latency measurement, setting the
+scheduling parameters of the responder thread to [SCHED_FIFO, 98] is
+recommended. Setting the responder to priority 99 would work for
+this purpose as well (with no observable gain actually), however it
+is not recommended to allow real-world application threads to
+compete with threaded IRQ handlers and other critical housekeeping
+tasks running in kernel space, since the latter might assume that no
+user code may preempt in tricky corner cases.</p>
+</li>
+<li>
+<p>switch to a non-serial terminal (ssh, telnet). Although this problem
+is being worked on upstream, significant output to a serial device
+might affect the worst case latency on some platforms with native
+preemption because of the implementation issues in console drivers,
+so the console should be kept quiet. You could also add the &ldquo;quiet&rdquo;
+option to the kernel boot arguments as an additional precaution.</p>
+</li>
+</ul>
+<h4 id="specific-hints-to-configure-an-evl-enabled-kernel">Specific hints to configure an EVL-enabled kernel</h4>
+<ul>
+<li>
+<p>turn on <a href="https://the-going.github.io/evlproject/ru/core/build-steps/">CONFIG_EVL</a> in the configuration.</p>
+</li>
+<li>
+<p>turn off all features from the <a href="https://the-going.github.io/evlproject/ru/core/build-steps/">CONFIG_EVL_DEBUG</a> section. The cost of leaving
+the watchdog enabled should be marginal on the latency figures
+though.</p>
+</li>
+<li>
+<p>if you plan to measure the <a href="#latmus-gpio-response-time">response time to GPIO interrupts</a>, you will need
+<code>CONFIG_GPIOLIB</code> and <code>CONFIG_GPIOLIB_OOB</code> to be enabled in the
+<a href="https://the-going.github.io/evlproject/ru/core/build-steps/#core-kconfig">kernel configuration</a>. You will also need to enable the GPIO pin control driver for
+your hardware platform, which must be GPIOLIB-compliant (most are
+these days), and <a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/#oob-driver-list">out-of-band capable</a>.</p>
+</li>
+</ul>
+<h3 id="stress-load">The issue of proper stress load</h3>
+<p>Finding the worst case latency in measuring the response time to
+interrupts requires applying a significant stress load to the system
+in parallel to running the test itself. There have been many
+discussions about what <em>significant</em> should mean in this context. Some
+have argued that real-time applications should have <em>reasonable</em>
+requirements, defined by a set of restrictions on their behavior and
+environment, so that bounded response time can be guaranteed, which
+sounds like asking application developers to abide by the rules
+defined by kernel folks. When was the last time any of them did so
+anyway?</p>
+<p>Obviously, we cannot ask the infrastructure to be resilient to any
+type of issue, including broken hardware or fatal kernel
+bugs. Likewise, it is ok to define and restrict which API should be
+used by applications to meet their real-time requirements. For
+instance, there would be no point in expecting low and bounded latency
+from all flavours of
+<a href="http://man7.org/linux/man-pages/man2/clone.2.html">clone(2)</a> calls,
+or whenever talking to some device involves a slow bus interface like
+<a href="https://i2c.info/">i2c</a>. Likewise, we may impose some restrictions on
+the kernel when it deals with these applications, like disabling
+ondemand loading and copy-on-write mechanisms with
+<a href="http://man7.org/linux/man-pages/man2/mlock.2.html">mlock(2)</a>.</p>
+<hr>
+<p>Per <a href="http://www.murphys-laws.com/murphy/murphy-computer.html">Murphy&rsquo;s
+laws</a>, we do
+know that there is no point in wishful thinking, like hoping for
+issues to never happen provided that we always do <em>reasonable</em> things
+which would meet some hypothetical standard of the
+industry. Application developers do not always do <em>reasonable</em> things,
+they just do what they think is best doing, which almost invariably
+differs from what kernel folks want or initially envisioned. After
+all, the whole point of using Linux in this field is the ability to
+combine real-time processing with the extremely rich GPOS feature set
+such system provides, so there is no shortage of options and
+varieties.  Therefore, when it comes to testing a real-time
+infrastructure, let&rsquo;s <em>tickle the dragon&rsquo;s tail</em>.</p>
+<hr>
+<p>There are many ways to stress a system, often depending on which kind
+of issues we would like to trigger, and what follows does not pretend
+to exhaustiveness. This said, these few aspects have proved to be
+relevant over time when it comes to observing the worst case latency:</p>
+<ul>
+<li>
+<p>Each time the kernel needs to switch between tasks which belong to
+distinct user address spaces, some MMU operations have to be
+performed in order to change the active memory context, which might
+also include costly cache maintenance in some cases. Those
+operations tend to take longer when the cache and memory subsystems
+have been under pressure at the time of the switch. Because the
+context switching process runs with interrupts disabled in the CPU,
+the higher the task switch rate, the more likely such extended
+interrupt masking may delay the response time to an external event.</p>
+</li>
+<li>
+<p>How the response time of the real-time infrastructure is affected by
+unfavourable cache situations is important. While no real-time work
+is pending, the real-time infrastructure just sleeps until the next
+event to be processed arrives. In the meantime, GPOS (as in
+non-realtime) activities may jump in, mobilizing all the available
+hardware resources for carrying out their work. As they do this,
+possibly treading on a lot of code and manipulating large volumes of
+data, the real-time program is gradually evicted from the CPU
+caches. When it resumes eventually in order to process an incoming
+event, it faces many cache misses, which induce delays. For this
+reason, and maybe counter-intuitively at first, the faster the timed
+loop the responder thread undergoes, the fewer the opportunities for
+the GPOS work to disturb the environment, the better the latency
+figures (up to a certain rate of course). On the contrary, a slower
+loop increases the likeliness of cache evictions when the kernel
+runs GPOS tasks while the real-time system is sleeping, waiting for
+the next event. If the CPU caches have been disturbed enough by the
+GPOS activities from the standpoint of the real-time work, then you
+may get closer to the actual worst case latency figures.</p>
+<p>In this respect, the - apparently - dull
+<a href="http://man7.org/linux/man-pages/man1/dd.1.html">dd(1)</a> utility may
+become your worst nightmare as a real-time developer if you actually
+plan to assess the worst-case latency with your system. For
+instance, you may want to run this stupid workload in parallel to
+your favourite latency benchmark (hint: CPU isolation for the
+real-time workload won&rsquo;t save the day on most platforms):</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ dd <span style="color:#815ba4">if</span><span style="color:#5bc4bf">=</span>/dev/zero <span style="color:#ef6155">of</span><span style="color:#5bc4bf">=</span>/dev/null <span style="color:#ef6155">bs</span><span style="color:#5bc4bf">=</span>128M &amp;
+</code></pre></div>
+<div class="notices warning">
+    <div class="label">Внимание</div><p>Using a block factor of 128M is to make sure the loop will be
+disturbing the CPU caches enough. Too small a value here would only
+create a mild load, barely noticeable in the latency figures
+on many platforms.</p>
+
+</div>
+</li>
+<li>
+<p>A real-time application system is unlikely to be only composed of a
+single time-critical responder thread. We may have more real-time
+threads involved, likely at a lower priority though. So we need to
+assess the ability of the real-time infrastructure to schedule all
+of these threads efficiently. In this case, we want the responder
+thread to compete with other real-time threads for traversing the
+scheduler core across multiple CPUs in parallel. Efficient
+serialization of these threads within a CPU and between CPUs is
+key.</p>
+</li>
+<li>
+<p>Since we have to follow a probabilistic approach for determining the
+worst case latency, we ought to run the test long enough in order to
+increase the likeliness of exercizing the code path(s) which might
+cause the worst latency. Practically, running the test under load
+for 24 hours uninterrupted may deliver a worst case value we can
+trust.</p>
+</li>
+</ul>
+<h4 id="stress-workloads">Defining the stress workloads</h4>
+<hr>
+<p><strong>A WORD OF CAUTION:</strong> several stress workloads mentioned in this
+section are likely to ignite the CPUs of your test machine(s) quite
+badly. Before any attempt is made at running any stress workload,
+you do have to check for potential thermal issues with your hardware
+<em>first</em>. Typically, the Raspberry PI 4B was known to suffer from
+overheating until <a href="https://www.raspberrypi.org/blog/thermal-testing-raspberry-pi-4/">a firmware
+revision</a>
+greatly improved the situation.</p>
+<hr>
+<p>Using Linux for running real-time workloads means that we have to meet
+contradictory requirements on a shared hardware, maximum throughtput
+and guaranteed response time at the same time, which on the face of it
+looks pretty insane, therefore interesting. Whichever real-time
+infrastructure we consider, we have to assess how badly non real-time
+applications might hurt the performances of real-time ones. With this
+information, we can decide which is best for supporting a particular
+real-time application on a particular hardware. To this end, the
+following stress workloads are applied when running benchmarks:</p>
+<ol>
+<li>
+<p>As its name suggests, the <em>Idler</em> workload is no workload at
+all. Under such conditions, the response time of the real-time
+system to some event (i.e. timer or GPIO interrupt) is measured
+while the GPOS is doing nothing in particular except waiting for
+something to do. The purpose is to get a sense of the best case we
+might achieve with a particular hardware and software
+configuration, unimpeded by GPOS activities.</p>
+</li>
+<li>
+<p>The <em>Scary Grinder</em> workload combines
+<a href="https://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git">hackbench</a>
+loops to a continuous
+<a href="http://man7.org/linux/man-pages/man1/dd.1.html">dd(1)</a> copy from
+<code>/dev/zero</code> to <code>/dev/null</code> with a large block size (128Mb). This
+workload most often causes the worst latency spots on a platform
+for any type of real-time infrastructure, dual kernel and native
+preemption (PREEMPT_RT). As it pounds the CPU caches quite badly,
+it reveals the inertia of the real-time infrastructure when it has
+to ramp up quickly from an idle state in order to handle an
+external event. The more complex the code code paths involved in
+doing so, the longer the response time. Do not expect ugly figures
+on Big Irons and other high-end x86 though, however this workload
+is likely to thrash common embedded systems. The shell commands to
+start this workload are:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">~ <span style="color:#8d8687"># while :; do hackbench; done &amp;</span>
+~ <span style="color:#8d8687"># dd if=/dev/zero of=/dev/null bs=128M &amp;</span>
+</code></pre></div></li>
+<li>
+<p>The <em>Pesky Neighbour</em> workload is based on the <a href="https://github.com/ColinIanKing/stress-ng.git">stress-ng test
+suite</a>. Several
+&ldquo;stressors&rdquo; imposing specific loads on various kernel subsystems
+are run sequentially. The goal is to assess how sensitive the
+real-time infrastructure is to the pressure non real-time
+applications might put on the system by using common kernel
+interfaces. Given the ability some <code>stress-ng</code> stressors have to
+thrash and even break the system, we limit the amount of damage
+they can do with specific settings, so that the machine stays
+responsive throughout long-running tests. With this workload, we
+generally focus on stressors which affect the scheduler and the
+memory subsystem.</p>
+</li>
+</ol>
+<h3 id="common-set-up-rules-for-all-benchmarks">Common set up rules for all benchmarks</h3>
+<ul>
+<li>
+<p>The kernel configuration is double-checked for features which may
+have an <a href="https://the-going.github.io/evlproject/ru/core/caveat/">adverse impact</a> on the
+latency figures. Typically, for benchmarking purpose only, all debug
+options are turned off for both types of real-time infrastructures,
+dual kernel like EVL or native preemption (PREEMPT_RT).
+<a href="https://the-going.github.io/evlproject/ru/core/commands/">evl check</a> can be
+used to verify a kernel configuration.</p>
+</li>
+<li>
+<p>On a multi-core system, we always reserve CPU1 for running the test
+code which is monitored for response time, since native preemption
+requires some CPU(s) to be dedicated to the real-time workload for
+best results. This implies that <code>isolcpus=1 evl.oobcpus=1</code> are
+passed to the kernel as boot options. With <code>stress-ng</code>, we also
+restrict the CPUs usable for running the stress load using the
+<code>--taskset</code> option. Assuming CPU1 is the only isolated CPU running a
+test, this shell expression should produce the correct CPU set for
+that option: <code>0,2-$(nproc)</code>.</p>
+</li>
+<li>
+<p>Some limits should be put on what the <a href="#stress-workloads">stress workload</a> is allowed to do, in order to avoid
+bringing the machine down to a complete stall, or triggering OOM
+situations which may have unwanted outcomes such as wrecking the
+test (or even the machine) entirely. Since we are not in the
+business of crash testing, we need to set these limits depending on
+the compute power of the test hardware.</p>
+</li>
+<li>
+<p>All threads running some stress workload should belong to the
+<a href="http://man7.org/linux/man-pages/man7/sched.7.html">SCHED_OTHER</a>
+scheduling class. They should NOT compete with the real-time threads
+whose response time is being monitored during the test. Although
+this would have actually no impact on the real-time performances of
+a dual kernel system, this would lead to an unfair comparison with a
+native preemption system such as PREEMPT_RT which is sensitive to
+this issue by design. For instance, we ensure this with <code>stress-ng</code>
+by excluding all stressors implicitly involving the <code>SCHED_FIFO</code> or
+<code>SCHED_RR</code> policies, setting the <code>--sched</code> parameter to <code>other</code> for
+good measure.</p>
+</li>
+</ul>
+<h3 id="preempt_rt-specific-tweaks-for-benchmarking">PREEMPT_RT specific tweaks for benchmarking</h3>
+<ul>
+<li>
+<p>With native preemption, if a particular test involves responding to
+a device interrupt such as the <a href="#latmus-gpio-response-time">GPIO response test</a> served by a threaded handler, we
+make sure to raise the task priority of such handler above all
+others. This rule does not apply to a dual kernel infrastructure
+like EVL, which always processes IRQ events immediately from the
+interrupt context.</p>
+</li>
+<li>
+<p>on x86, PREEMPT_RT v5.6.10-rt5 may trigger a BUG() assertion then
+crash as a result of <code>stress-ng</code> injecting a memory error via the
+<a href="https://www.man7.org/linux/man-pages/man2/madvise.2.html">madvise(2)</a>
+interface if <code>CONFIG_MEMORY_FAILURE</code> is enabled in the kernel
+configuration. This is typically something the <em>Pesky</em> workload we
+apply while monitoring latency would do, so you need to disable
+<code>CONFIG_MEMORY_FAILURE</code> to prevent this.</p>
+</li>
+</ul>
+<h3 id="the-benchmark-scenarios">The benchmark scenarios</h3>
+<p>We want to characterize the following aspects of a real-time
+infrastructure:</p>
+<ul>
+<li>
+<p>its response time to external interrupts in the worst (observed)
+case when the GPOS side of the system is under stress. From this
+information we should be able to get a clear picture of the typical
+applications such infrastructure can best support, in terms of low
+latency and jitter requirements. We will be using the following test
+programs to do so, for measuring the response time to timer and GPIO
+events respectively:</p>
+<ul>
+<li>
+<p>for EVL, the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a> program in <a href="#latmus-timer-response-time">timer response mode</a> and <a href="#latmus-gpio-response-time">GPIO response mode</a>.</p>
+</li>
+<li>
+<p>for PREEMPT_RT, the
+<a href="https://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git">cyclictest</a>
+program, and the <a href="https://the-going.github.io/evlproject/ru/core/testing/">latmus</a> program in <a href="#latmus-gpio-response-time">GPIO response
+mode</a> which can run
+without EVL support.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>the overhead it adds to the GPOS side as a result of running the
+in-kernel real-time machinery. Because we aim at sharing a single
+hardware between GPOS and RTOS activities, we need hints about the
+actual cost of running the real-time infrastructure on the overall
+system. In many cases, especially in the embedded space, the ability
+to downsize the compute power required for running mixed
+applications is valuable. There is no test program ready for this
+part yet. Any thought about the way to best do this, contribution of
+any sort is welcome.</p>
+</li>
+</ul>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+		
+		content/core/benchmarks/_index.md
+
+		
+		737bee5
+
+	
+</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/commands/" title="Команда &#39;evl&#39;"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/user-api/" title="Using libevl"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

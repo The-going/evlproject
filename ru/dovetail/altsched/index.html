@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Alternate scheduling :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/dovetail/altsched/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/dovetail/altsched/">English</option>
+                    <option id="ru" value="/ru/dovetail/altsched/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/"><span itemprop="name">Интерфейс Dovetail</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/altsched/" aria-disabled="true"><span itemprop="name">Alternate scheduling</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#altsched-theory">Theory of operations</a></li>
+    <li><a href="#what-you-really-need-to-know-at-this-point">What you really need to know at this point</a></li>
+    <li><a href="#stage-migration">Switching between execution stages</a>
+      <ul>
+        <li><a href="#oob-switch">Out-of-band switch </a></li>
+        <li><a href="#inband-switch">In-band switch</a></li>
+      </ul>
+    </li>
+    <li><a href="#context-switching">Switching tasks out-of-band</a></li>
+    <li><a href="#event-notifier">The event notifier</a>
+      <ul>
+        <li><a href="#oob-events">Out-of-band exception handling</a></li>
+        <li><a href="#syscall-events">System calls</a></li>
+        <li><a href="#inband-events">In-band events</a></li>
+      </ul>
+    </li>
+    <li><a href="#dovetail-task-context">Alternate task context</a></li>
+    <li><a href="#dovetail-mm-context">Extended memory context</a></li>
+    <li><a href="#inband-ret-to-user">Intercepting return to in-band user mode</a></li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Alternate scheduling</h1>
+
+<p>For <a href="https://the-going.github.io/evlproject/ru/dovetail/#dual-kernel-upsides">specific use cases requiring reliable, ultra-low response
+times</a>, we
+want to enable hosted autonomous software cores to control common
+Linux tasks based on their own scheduler infrastructure, fully
+decoupled from the host&rsquo;s scheduler, with absolute priority over all
+other kernel activities.</p>
+<p>This being said, Dovetail also promotes the idea that a <em>dual kernel</em>
+system should keep the functional overlap between the main kernel and
+the autonomous core minimal. To this end, a task from such core should
+be merely seen as a regular Linux task with additional scheduling
+capabilities guaranteeing very low and bounded response times. To
+support such idea, Dovetail enables kthreads and regular user tasks to
+run alternatively in the out-of-band execution context introduced by
+the interrupt pipeline (aka <em>out-of-band</em> stage), or the common
+in-band kernel context for GPOS operations (aka <em>in-band</em>
+stage). These new capabilities are built on the <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">interrupt
+pipeline</a> machinery.</p>
+<p>As a result, autonomous core applications in user-space benefit from
+the common Linux programming model - including virtual memory
+protection -, and still have access to the main kernel services when
+carrying out non time-critical work.</p>
+<p>Dovetail provides mechanisms to autonomous cores for supporting this
+as follows:</p>
+<ul>
+<li>
+<p>services for moving Linux tasks back and forth between the in-band
+and out-of-band stages in an orderly and safe way, properly
+synchronizing the operation between the two schedulers involved.</p>
+</li>
+<li>
+<p>notifications about in-band events the autonomous core may want to
+know about for maintaining its own version of the current task&rsquo;s
+state.</p>
+</li>
+<li>
+<p>notifications about events such as faults, syscalls and other
+exceptions issued from the out-of-band execution stage.</p>
+</li>
+<li>
+<p>integrated support for performing context switches between
+out-of-band tasks, including memory context and FPU management.</p>
+</li>
+</ul>
+<h2 id="altsched-theory">Theory of operations</h2>
+<ul>
+<li>
+<p>a Linux task running in user-space, or a kernel thread, need to
+initialize the alternate scheduling feature for themselves with a
+call to <a href="#dovetail_init_altsched">dovetail_init_altsched()</a>. For instance, the EVL core does so
+as part of the attachment process of a thread to the autonomous core
+when <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_self">evl_attach_self()</a> is called by
+the application.</p>
+</li>
+<li>
+<p>once the alternate scheduling feature is initialized, the task
+should enable it by a call to <a href="#dovetail_start_altsched">dovetail_start_altsched()</a>. From this point, that task:</p>
+<ul>
+<li>
+<p>can switch between the in-band and out-of-band execution stages
+freely.</p>
+</li>
+<li>
+<p>can emit out-of-band system calls the autonomous core can handle.</p>
+</li>
+<li>
+<p>is tracked by Dovetail&rsquo;s notification system, so that in-band and
+out-of-band events which may involve such task are dispatched to
+the core.</p>
+</li>
+<li>
+<p>can be involved in Dovetail-based context switches triggered by
+the autonomous core, independently from the scheduling operations
+carried out by the main kernel.</p>
+<p>Conversely, <a href="#dovetail_stop_altsched">dovetail_stop_altsched()</a> disables the notifications for a
+task, which is likely to be detached from the autonomous core
+later on.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>at any point in time, any Linux task is either controlled by the
+main kernel or by the autonomous core, scheduling-wise. There cannot
+be any overlap (for obvious reasons):</p>
+<ul>
+<li>
+<p>a task which is currently scheduled by the autonomous core runs or
+sleeps on the out-of-band stage. At the same time, such task is
+deemed to be sleeping in <code>TASK_INTERRUPTIBLE</code> state for the main
+kernel.</p>
+</li>
+<li>
+<p>conversely, a task which is controlled by the main kernel runs or
+sleeps on the in-band stage. It must be considered as blocked on
+the other side. For instance, the EVL core defines the <code>T_INBAND</code>
+blocking condition for representing such state.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>since the out-of-band stage receives interrupts first, regardless of
+any interrupt masking which may be in effect for the ongoing in-band
+work, the autonomous core can run <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">high-priority interrupt
+handlers</a> then
+reschedule with no delay.</p>
+</li>
+<li>
+<p>tasks may switch back and forth between the in-band and out-of-band
+stages at will. However, this comes at a cost:</p>
+<ul>
+<li>
+<p>the process of switching stages is heavyweight, it includes a
+double scheduling operation at least (i.e. one to suspend on the
+exited stage, one to resume from the opposite stage).</p>
+</li>
+<li>
+<p><strong>only</strong> the out-of-band stage guarantees bounded response times
+to external and internal events. Therefore, a task which leaves
+the out-of-band stage for resuming in-band looses such guarantee,
+until it has fully switched back to out-of-band context at some
+point later.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>at any point in time, the autonomous core keeps the CPU busy until
+no more task it knows about is runnable on that CPU, on the
+out-of-band stage. When the out-of-band activity quiesces, the core
+is expected to relinquish the CPU to the in-band stage by scheduling
+in the context which was originally preempted. This is commonly done
+by having a task placeholder with the lowest possible priority
+represent the main kernel and its in-band context linked to each
+per-CPU run queue maintained by the autonomous core. For instance,
+the EVL core assigns such a placeholder task to its <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#SCHED_IDLE">SCHED_IDLE
+policy</a>, which get picked when other policies have no runnable task
+on the CPU.</p>
+</li>
+<li>
+<p>once the in-band context resumes, interrupt events which have no
+out-of-band handlers are delivered to the regular in-band IRQ
+handlers installed by the main kernel, if the <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#virtual-i-flag">virtual masking
+state</a> allows it.</p>
+</li>
+</ul>
+<p><img src="https://the-going.github.io/evlproject/images/altsched.png" alt="Alt text" title="Alternate scheduling"></p>
+<hr>
+
+<div class="proto"><a name="dovetail_init_altsched"></a>
+void dovetail_init_altsched(struct dovetail_altsched_context *p)
+</div>
+
+<p>This call initializes the alternate scheduling context for the current
+task; this should be done once, before the task calls
+<a href="#dovetail_start_altsched">dovetail_start_altsched()</a>.</p>
+
+<p><li><i>p</i><p>The alternate scheduling context is kept in a per-task structure of
+type <em>dovetail_altsched_context</em> which should be maintained by the
+autonomous core. This can be done as part of the <a href="#dovetail-task-context">per-task context
+management</a> feature
+Dovetail introduces.</p>
+</li></p>
+
+<hr>
+
+<div class="proto"><a name="dovetail_start_altsched"></a>
+void dovetail_start_altsched(void)
+</div>
+
+<p>This call tells the kernel that the current task may request alternate
+scheduling operations any time from now on, such as <a href="#oob-switch">switching
+out-of-band</a> or back <a href="#inband-switch">in-band</a>. It also activates the <a href="#event-notifier">event
+notifier</a> for the task, which allows
+it to emit out-of-band system calls to the core.</p>
+<hr>
+
+<div class="proto"><a name="dovetail_stop_altsched"></a>
+void dovetail_stop_altsched(void)
+</div>
+
+<p>This call disables the <a href="#event-notifier">event notifier</a> for the current task, which must be done before dismantling the
+alternate scheduling support for that task in the autonomous core.</p>
+<hr>
+<h2 id="what-you-really-need-to-know-at-this-point">What you really need to know at this point</h2>
+<p>There is a not-so-subtle but somewhat confusing distinction between
+<em>running a Linux task out-of-band</em>, and running whatever code from the
+<em>out-of-band execution stage</em>.</p>
+<ul>
+<li>
+<p>In the first case, the task is not controlled by the main kernel
+scheduler anymore, but runs under the supervision of the autonomous
+core. This is obtained by performing an <a href="#oob-switch">out-of-band switch</a> for a task.</p>
+</li>
+<li>
+<p>In the other case, the current underlying context (task or whatever
+else) may or may not be controlled by the main kernel, but the
+interrupt pipeline machinery has switched the CPU to the out-of-band
+execution mode, which means that only interrupts bearing the
+IRQF_OOB flag are delivered. Typically, <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">run_oob_call()</a> is a service provided
+by the interrupt pipeline which executes a function call over this
+context, without requiring the calling task to be scheduled by the
+autonomous core.</p>
+</li>
+</ul>
+<p>You will also find references to pseudo-routines called
+<code>core_schedule()</code>, <code>core_suspend_task()</code> or <code>core_resume_task()</code> in
+various places. Don&rsquo;t look for them into the code, they don&rsquo;t actually
+exist: those routines are mere placeholders for the corresponding
+services you would provide in your autonomous core. For instance, the
+EVL core implements them as <code>evl_schedule()</code>, <code>evl_suspend_thread()</code>
+and <code>evl_release_thread()</code>.</p>
+<p>You may want to keep this in mind when going through the rest of this
+document.</p>
+<h2 id="stage-migration">Switching between execution stages</h2>
+<h3 id="oob-switch">Out-of-band switch </h3>
+<p>Switching out-of-band is the operation by which a Linux task moves
+under the control of the alternate scheduler the autonomous core adds
+to the main kernel. From that point, the scheduling decisions are made
+by this core regarding that task. There are two reasons a Linux task
+may switch from in-band to out-of-band execution:</p>
+<ul>
+<li>
+<p>either such transition is explicitly requested via a system call of
+the autonomous core, such as EVL&rsquo;s <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_switch_oob">evl_switch_oob()</a>.</p>
+</li>
+<li>
+<p>or the autonomous core has forced such transition, in response to a
+user request, such as issuing a system call which can only be
+handled from the out-of-band stage. The EVL core <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">ensures this</a>.</p>
+</li>
+</ul>
+<p>Using Dovetail, a task which is executing on the in-band stage can
+switch out-of-band following this sequence of actions:</p>
+<ol>
+<li>
+<p>this task calls <a href="#dovetail_leave_inband">dovetail_leave_inband()</a> from the in-band stage it runs on
+(blue), which prepares for the transition, puts the caller to sleep
+(<code>TASK_INTERRUPTIBLE</code>) then reschedules immediately. At this point,
+the migrating task is in flight to the out-of-band stage (light
+red). Meanwhile, <code>schedule()</code> resumes the next in-band task which
+should run on the current CPU.</p>
+</li>
+<li>
+<p>as the next in-band task context resumes, the scheduling tail code
+checks for any task pending transition to out-of-band stage, <em>before</em>
+the CPU is fully relinquished to the resuming in-band task. This check
+is performed by the <code>inband_switch_tail()</code> call present in the main
+scheduler. Such call has two purposes:</p>
+<ul>
+<li>
+<p>detect when a task is in flight to the out-of-band stage, so that
+we can notify the autonomous core for finalizing the migration
+process.</p>
+</li>
+<li>
+<p>detect when a task is resuming on the out-of-band stage, which
+happens when the autonomous core switches context back to the
+current task, once the migration process is complete.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>When switching out-of-band, case #1 is met, which triggers a call to
+the <a href="#resume_oob_task">resume_oob_task()</a> handler the
+companion core should implement for completing the transition. This
+would typically mean: unblock the migrating task from the standpoint
+of its own scheduler, then reschedule. In the following flowchart,
+<code>core_resume_task()</code> and <code>core_schedule()</code> stand for these two
+operations, with each dotted link representing a context switch:</p>
+
+<div class="mermaid" align="left">
+graph LR;
+    S("start transition") --> A
+    style S fill:#99ccff;
+    A["dovetail_leave_inband()"] --> B["schedule()"]
+    style A fill:#99ccff;
+    style B fill:#99ccff;
+    B -.-> C["inband_switch_tail()"]
+    C --> D{task in flight?}
+    D -->|Yes| E["resume_oob_task()"]
+    style E fill:#99ccff;
+    D -->|No| F{out-of-band?}
+    E --> G["core_resume_task()"]
+    style G fill:#99ccff;
+    G --> H["core_schedule()"]
+    style H fill:#ff950e;
+    F -->|Yes| I(transition complete)
+    style I fill:#ff950e;
+    F -->|No| J(regular switch tail)
+    style J fill:#99ccff;
+    H -.-> C
+</div>
+
+<p>At the end of this process, we should have observed a double context
+switch, with the migrating task offloaded to the out-of-band
+scheduler:</p>
+<p><img src="https://the-going.github.io/evlproject/images/oob_switch.png" alt="Alt text" title="Out-of-band switch"></p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p><a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_switch_oob">evl_switch_oob()</a> implements the
+switch to out-of-band context in the EVL core, with support from
+<code>evl_release_thread()</code> and <code>evl_schedule()</code> for resuming and
+rescheduling threads respectively.</p>
+
+</div>
+<h3 id="inband-switch">In-band switch</h3>
+<p>Switching in-band is the operation by which a Linux task moves under
+the control of the main scheduler, coming from the out-of-band
+execution stage. From that point, the scheduling decisions are made by
+the main kernel regarding that task, and it may be subject to
+preemption by in-band interrupts as well. In other words, <em>a task
+switching in-band looses all guarantees regarding bounded response
+time</em>; however, it regains access to the entire set of GPOS services
+in the same move.</p>
+<p>There are several reasons a Linux task which was running out-of-band
+so far may have to switch in-band:</p>
+<ul>
+<li>
+<p>it has requested it explicitly using a system call provided by the
+autonomous core such as EVL&rsquo;s <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_switch_inband">evl_switch_inband()</a>.</p>
+</li>
+<li>
+<p>the autonomous core has forced such transition for a task running in
+user-space:</p>
+<ul>
+<li>
+<p>in response to some request this task did, such as issuing a
+regular system call which can only be handled from the in-band
+stage. Typically, this behavior is enforced by the <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">EVL core</a>.</p>
+</li>
+<li>
+<p>because the task received a synchronous fault or exception, such
+as a memory access violation, FPU exception and so on. A demotion
+is required, because handling such events directly from the
+out-of-band stage would require a fair amount of code duplication,
+and most likely raise all sorts of funky conflicts between the
+out-of-band handlers and several in-band sub-systems. Besides,
+there is not much point in expecting real-time guarantees from a
+code that basically fixes up a situation caused by a
+dysfunctioning application in the first place.</p>
+</li>
+<li>
+<p>a signal is pending for the task. Because the main kernel logic
+may require signals to be acknowledged by the recipient, we have
+to transition through the in-band stage to make sure the pending
+signal(s) will be delivered asap.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Using Dovetail, a task which executes on the out-of-band stage moves
+in-band following this sequence of actions:</p>
+<ol>
+<li>
+<p>the execution of an in-band handler is scheduled from the context
+of the migrating task on the out-of-band stage. Once it runs, this
+handler should call <code>wake_up_process()</code> to unblock that task from
+the standpoint of the main kernel scheduler, since it is sleeping
+in <code>TASK_INTERRUPTIBLE</code> state there. Typically, the
+<a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/#irq-work"><em>irq_work</em></a> mechanism can
+be used for this, because:</p>
+<ul>
+<li>
+<p>as extended by the interrupt pipeline support, this interface can
+be used from the out-of-band stage.</p>
+</li>
+<li>
+<p>the handler is guaranteed to run on the CPU from which the
+request was issued. Because the in-band work will wait until the
+out-of-band activity quiesces on that CPU, this in turn ensures
+all other operations we have to carry out from the
+out-of-band stage for preparing the migration are done before the
+task is woken up eventually.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>the autonomous core blocks/suspends the migrating task,
+rescheduling immediately afterwards. For instance, the EVL core
+adds the <code>T_INBAND</code> block bit to the task&rsquo;s state for this purpose.</p>
+</li>
+<li>
+<p>at some point later, the out-of-band context is exited by the
+current CPU when no more out-of-band work is left, causing the
+in-band kernel code to resume execution at the latest preemption
+point. The handler scheduled at step #1 eventually runs, waking up
+the migrating task from the standpoint of the main kernel. The
+<code>TASK_RUNNING</code> state is set for the task.</p>
+</li>
+<li>
+<p>the migrating task resumes from the tail scheduling code of the
+alternate scheduler, where it suspended in step #2. Noticing the
+migration, the core calls <a href="#dovetail_resume_inband">dovetail_resume_inband()</a> eventually, for finalizing the
+transition of the incoming task to the in-band stage.</p>
+</li>
+</ol>
+<p>In the following flowchart, <code>core_suspend_task()</code> and
+<code>core_schedule()</code> stand for the operations described at step #2, with
+each dotted link representing a context switch. The out-of-band idle
+state represents the CPU transitioning from out-of-band (light red) to
+in-band (blue) execution stage, as the core has no more out-of-band
+task to schedule:</p>
+
+<div class="mermaid" align="left">
+graph LR;
+    S("start transition") --> A
+    style S fill:#ff950e;
+    A["irq_work(wakeup_req)"] --> B["core_suspend_task()"]
+    style A fill:#ff950e;
+    style B fill:#ff950e;
+    B --> C["core_schedule()"]
+    style C fill:#ff950e;
+    C -.-> Y((OOB idle))
+    Y -.-> D["wake_up_process()"]
+    style D fill:#99ccff;
+    D --> E["schedule()"]
+    style E fill:#99ccff;
+    E -.-> X["out-of-band switch tail"]
+    style X fill:#99ccff;
+    X --> G["dovetail_resume_inband()"]
+    style G fill:#99ccff;
+    G --> I("transition complete")
+    style I fill:#99ccff;
+</div>
+
+<p>At the end of this process, the task has transitioned from a running
+state to a blocked state in the autonomous core, and conversely from
+<code>TASK_INTERRUPTIBLE</code> to <code>TASK_RUNNING</code> in the main scheduler.</p>
+<p><img src="https://the-going.github.io/evlproject/images/inband_switch.png" alt="Alt text" title="In-band switch"></p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p><a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_switch_inband">evl_switch_inband()</a> switches the caller to
+in-band context in the EVL core, with support from
+<code>evl_suspend_thread()</code> and <code>evl_schedule()</code> for suspending and
+rescheduling threads respectively.</p>
+
+</div>
+<h2 id="context-switching">Switching tasks out-of-band</h2>
+<p>Dovetail allows an autonomous core embedded into the main kernel to
+schedule a set of Linux tasks <em>out-of-band</em> compared to the regular
+<em>in-band</em> kernel work, so that:</p>
+<ul>
+<li>
+<p>the worse-case response time of such tasks only depends on the
+performance of a software core which has a limited complexity.</p>
+</li>
+<li>
+<p>the main kernel&rsquo;s logic does not have to cope with stringent bounded
+response time requirements, which otherwise tends to lower the
+throughput while making the design, implementation and maintenance
+significantly more complex.</p>
+</li>
+</ul>
+<p>The flowchart below represents the typical context switch sequence
+an autonomous core should implement, from the context of the outgoing
+<em>PREV</em> task to the incoming <em>NEXT</em> task:</p>
+
+<div class="mermaid" align="left">
+graph LR;
+    S(PREV) --> A["core_schedule()"]
+    A --> B{in-band IRQ stage?}
+    B -->|Yes| D["jump out-of-band"]
+    D --> A
+    B -->|No| C["pick NEXT"]
+    style C fill:#ff950e;
+    C --> P{PREV == NEXT?}
+    style P fill:#ff950e;
+    P -->|Yes| Q(no change)
+    style Q fill:#ff950e;
+    P -->|No| H["dovetail_context_switch()"]
+    style H fill:#ff950e;
+    H -.-> I(NEXT)
+</div>
+
+<p>Those steps are:</p>
+<ol>
+<li>
+<p><code>core_schedule()</code> is called over the <em>PREV</em> context for picking the
+<em>NEXT</em> task to schedule, by priority order. If <em>PREV</em> still has the
+highest priority among all runnable tasks on the current CPU, the
+sequence stops there. CAVEAT: the core <em>must make sure to perform
+context switches from the out-of-band execution stage</em>, otherwise
+weird things may happen down the road. <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">run_oob_call()</a> is a routine the
+interrupt pipeline provides which may help there. See the
+implementation of <code>evl_schedule()</code> in the EVL core for a typical
+usage.</p>
+</li>
+<li>
+<p><a href="#dovetail_context_switch">dovetail_context_switch()</a> is called, switching the memory context as/if required, and the
+CPU register file to <em>NEXT</em>&rsquo;s, saving <em>PREV</em>&rsquo;s in the same move.  If
+<em>NEXT</em> <strong>is not</strong> the <a href="#altsched-theory">low priority placeholder task</a> but <em>PREV</em> is, we will be preempting the
+in-band kernel: in this case, we must tell the kernel about such
+preemption by passing <em>leave_inband=true</em> to
+<a href="#dovetail_context_switch">dovetail_context_switch()</a>.</p>
+</li>
+<li>
+<p><em>NEXT</em> resumes from its latest switching point, which may be:</p>
+<ul>
+<li>
+<p>the switch tail code in <code>core_schedule()</code>, if <em>NEXT</em> was running
+out-of-band prior to sleeping, in which case
+<a href="#dovetail_context_switch">dovetail_context_switch()</a> returns <em>false</em>.</p>
+</li>
+<li>
+<p>the switch tail code of <code>schedule()</code> if <em>NEXT</em> is completing an
+<a href="#inband-switch">in-band switch</a>, in which case
+<a href="#dovetail_context_switch">dovetail_context_switch()</a> returns <em>true</em>.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+
+<div class="proto"><a name="dovetail_context_switch"></a>
+bool dovetail_context_switch(struct dovetail_altsched_context *prev, struct dovetail_altsched_context *next, bool leave_inband)
+</div>
+
+
+<p><li><i>prev</i><p>The <a href="#dovetail_init_altsched">alternate scheduling context block</a> of the outgoing task.</p>
+</li></p>
+
+
+<p><li><i>next</i><p>The <a href="#dovetail_init_altsched">alternate scheduling context block</a> of the incoming task.</p>
+</li></p>
+
+
+<p><li><i>leave_inband</i><p>A boolean indicating whether we are leaving the in-band tasking mode,
+which happens when <em>prev</em> is the autonomous core&rsquo;s <a href="#altsched-theory">low priority
+placeholder task</a> standing for the
+in-band kernel context as a whole.</p>
+</li></p>
+
+<p>This routine performs an out-of-band context switch. It must be called
+with hard IRQs off. The arch-specific
+<a href="#arch_dovetail_context_resume">arch_dovetail_context_resume()</a> handler is called by the resuming
+task before leaving <a href="#dovetail_context_switch">dovetail_context_switch()</a>. This <em>weak</em> handler should be
+overriden by a Dovetail port which requires arch-specific tweaks for
+completing the reactivation of <em>next</em>. For instance, the arm64 port
+performs the <em>fpsimd</em> management from this handler.</p>
+<p><a href="#dovetail_context_switch">dovetail_context_switch()</a> returns a boolean value telling the caller
+whether the current task just returned from a <a href="#inband-switch">transition from
+out-of-band to in-band context</a>.</p>
+<hr>
+
+<div class="proto"><a name="dovetail_leave_inband"></a>
+int dovetail_leave_inband(void)
+</div>
+
+<p><a href="#dovetail_leave_inband">dovetail_leave_inband()</a>
+should be called by your companion core in order to perform the
+<a href="#oob-switch">out-of-band switch</a> for the current
+task.</p>
+<p>On success, zero is returned, and the calling context is running on
+the <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">out-of-band stage</a>. Otherwise,
+-ERESTARTSYS is returned if a signal was pending at the time of the
+call, in which case the transition could not take place.</p>
+<blockquote>
+<p>The usage is illustrated by the <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/sched/core.c#L1037">implementation of
+evl_switch_oob()</a>
+in the EVL core.</p>
+</blockquote>
+<hr>
+
+<div class="proto"><a name="dovetail_resume_inband"></a>
+void dovetail_resume_inband(void)
+</div>
+
+<p><a href="#dovetail_resume_inband">dovetail_resume_inband()</a>
+should be called by your companion core as part of the <a href="#inband-switch">in-band switch
+process</a> for the current task,
+<em>after</em> the current task has resumed on the in-band execution stage
+from the out-of-band suspension call in step 2 of the <a href="#inband-switch">in-band switch
+process</a>. This <em>mandatory</em> call
+finalizes the transition to this stage, by reconciling the current
+task state with the internal state of the in-band scheduler.</p>
+<blockquote>
+<p>The usage is illustrated by the <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/sched/core.c#L1108">implementation of
+evl_switch_inband()</a>
+in the EVL core.</p>
+</blockquote>
+<hr>
+
+<div class="proto"><a name="resume_oob_task"></a>
+__weak void resume_oob_task(void)
+</div>
+
+<p>This handler should be implemented by your companion core, in order to
+complete step 2 of the <a href="#oob-switch">out-of-band switch process</a>. Basically, this handler should lift the blocking
+condition added to the task at step 2 of the <a href="#inband-switch">in-band switch
+process</a> which denotes in-band
+execution, such as <code>T_INBAND</code> for the EVL core.</p>
+<p><a href="#resume_oob_task">resume_oob_task</a> is called with
+interrupts <strong>disabled</strong> in the CPU, out-of-band stage is stalled.</p>
+<blockquote>
+<p>An <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/sched/core.c#L1017">implementation of
+resume_oob_task()</a>
+is present in the EVL core.</p>
+</blockquote>
+<h2 id="event-notifier">The event notifier</h2>
+<p>Once <a href="#dovetail_start_altsched">dovetail_start_altsched()</a> has been called for a regular in-band task, it may receive events
+of interest with respect to running under the supervision of an
+autonomous core. Those events are delivered by invoking handlers which
+should by implemented by this core.</p>
+<h3 id="oob-events">Out-of-band exception handling</h3>
+<p>If a processor exception is raised while the CPU is busy running a
+task on the out-of-band stage (e.g. due to some invalid memory access,
+bad instruction, FPU or alignment error etc.), the <a href="#inband-switch">task has to leave
+such context</a> before it may run the
+in-band fault handler. Dovetail notifies the core about incoming
+exceptions early from the low-level fault trampolines, but only when
+some out-of-band code was running when the exception was taken. The
+core may then fix up the current context, such as switching to the
+in-band execution stage.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Enabling debuggers to trace tasks running on the out-of-band stage
+involves dealing with debug traps <code>ptrace()</code> may poke into the
+debuggee&rsquo;s code for breakpointing.</p>
+
+</div>
+<p>The notification of entering a trap is delivered to the
+<a href="#handle_oob_trap_entry">handle_oob_trap_entry()</a>
+handler the core should override for receiving those events
+(<em>__weak</em> binding). <a href="#handle_oob_trap_entry">handle_oob_trap_entry()</a> is passed the exception code as defined
+in <em>arch/*/include/asm/dovetail.h</em>, and a pointer to the register
+frame of the faulting context (<em>struct pt_regs</em>).</p>
+<p>Before the in-band trap handler eventually exits, it invokes
+<a href="#handle_oob_trap_exit">handle_oob_trap_exit()</a> which
+the core should override if it needs to perform any fixup before the
+trap context is left (<em>__weak</em>
+binding). <a href="#handle_oob_trap_exit">handle_oob_trap_exit()</a> is passed the same arguments than <a href="#handle_oob_trap_entry">handle_oob_trap_entry()</a>.</p>
+<hr>
+
+<div class="proto"><a name="handle_oob_trap_entry"></a>
+__weak void handle_oob_trap_entry(unsigned int trapnr, struct pt_regs *regs)
+</div>
+
+<p>This handler is called when a CPU trap is received by a
+<a href="#dovetail_start_altsched">Dovetail-enabled task</a>
+while running on the <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">out-of-band execution stage</a>. In such an
+event, the caller must be switched to the in-band stage, in order to
+safely perform the normal trap handling operations on return.  In
+other words, Dovetail invokes this handler to ask your companion core
+to switch back to a safe in-band context, before the in-band kernel
+can actually handle such trap.</p>
+<p>Obviously, the caller would lose the benefit of running on the
+out-of-band stage, inducing latency in the process, but since it has
+taken a CPU trap, it looks like things did not go as expected already
+anyway. So the best option in this case is to switch the caller to
+in-band mode, leaving the actual trap handling and any related fixup
+to the in-band code once the transition is done.</p>
+
+<p><li><i>trapnr</i><p>The trap code number. Such code depends on the CPU architecture:</p>
+<ul>
+<li>the documented Intel trap numbers are used for x86 (#GP, #DE, #OF etc.)</li>
+<li>other architectures may use a Dovetail-specific enumeration defined in
+<code>arch/*/include/asm/dovetail.h</code>.</li>
+</ul>
+</li></p>
+
+
+<p><li><i>regs</i><p>The register file at the time of the trap.</p>
+</li></p>
+
+<p>Interrupts are <strong>disabled</strong> in the CPU when this handler is called.</p>
+<blockquote>
+<p>An <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/thread.c#L1482">implementation of
+handle_oob_trap_entry()</a>
+is present in the EVL core.</p>
+</blockquote>
+
+<div class="proto"><a name="handle_oob_trap_exit"></a>
+__weak void handle_oob_trap_exit(unsigned int trapnr, struct pt_regs *regs)
+</div>
+
+<p>This handler is called when the in-band trap handler is about to
+unwind a CPU trap context for a <a href="#dovetail_start_altsched">Dovetail-enabled task</a>.</p>
+<p><a href="#handle_oob_trap_exit">handle_oob_trap_exit</a> is
+paired with <a href="#handle_oob_trap_exit">handle_oob_trap_exit</a>, and receives the same arguments.</p>
+
+<p><li><i>trapnr</i><p>The trap code number. Such code depends on the CPU architecture:</p>
+<ul>
+<li>the documented Intel trap numbers are used for x86 (#GP, #DE, #OF etc.)</li>
+<li>other architectures may use a Dovetail-specific enumeration defined in
+<code>arch/*/include/asm/dovetail.h</code>.</li>
+</ul>
+</li></p>
+
+
+<p><li><i>regs</i><p>The register file at the time of the trap.</p>
+</li></p>
+
+<p>Interrupts are <strong>disabled</strong> in the CPU when this handler is called.</p>
+<blockquote>
+<p>An <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/thread.c#L1529">implementation of
+handle_oob_trap_exit()</a>
+is present in the EVL core.</p>
+</blockquote>
+<h3 id="syscall-events">System calls</h3>
+<p>The autonomous core is likely to introduce its own set of system calls
+application tasks may invoke. From the standpoint of the in-band
+kernel, this is a foreign set of calls, which can be distinguished
+unambiguously from regular ones. If a task attached to the core issues
+any system call, regardless of which of the kernel or the core should
+handle it, the latter must be given the opportunity to:</p>
+<ul>
+<li>
+<p>handle the request directly, possibly switching the caller to
+out-of-band context first if required.</p>
+</li>
+<li>
+<p>pass the request downward to the in-band system call path on the
+in-band stage, possibly switching the caller to in-band context if
+needed.</p>
+</li>
+</ul>
+<p>Dovetail intercepts system calls early in the kernel entry code,
+delivering them to one of these handlers the core should override:</p>
+<ul>
+<li>
+<p>the call is delivered to the <a href="#handle_oob_syscall">handle_oob_syscall()</a> handler if the system call number is not in
+the valid range for the in-band kernel - i.e. it has to belong to the
+core instead -, <em>and</em> the caller is currently running on the
+out-of-band stage. This is the fast path, when a task running
+out-of-band is requesting a service the core provides.</p>
+</li>
+<li>
+<p>otherwise the slow path is taken, in which
+<a href="#handle_pipelined_syscall">handle_pipelined_syscall()</a> is probed for handling the request from the appropriate execution
+stage.  In this case, Dovetail performs the following actions:</p>
+</li>
+</ul>
+
+<div class="mermaid" align="left">
+graph LR;
+    S("switch to out-of-band IRQ stage") --> A
+    style S fill:#ff950e;
+    A["handle_pipelined_syscall()"] --> B{returned zero?}
+    B -->|Yes| C{on in-band IRQ stage?}
+    B -->|No| R{on in-band IRQ stage?}
+    R -->|Yes| U(branch to in-band user mode exit)
+    R -->|No| V(done)
+    C -->|Yes| Q(branch to in-band syscall handler)
+    style Q fill:#99ccff;
+    C -->|No| P[switch to in-band IRQ stage]
+    style P fill:#ff950e;
+    P --> A
+</div>
+
+<p>In the flowchart above, <a href="#handle_pipelined_syscall">handle_pipelined_syscall()</a> should return zero if it wants
+Dovetail to propagate an unhandled system call down the pipeline at
+each of the two possible steps, non-zero if the request was
+handled. Branching to the in-band user mode exit code ensures any
+pending (in-band) signal is delivered to the current task and
+rescheduling opportunities are taken when (in-band) kernel preemption
+is enabled.</p>
+<p>What makes a system call number out-of-range for the in-band kernel is
+architecture-dependent. All architectures currently use the
+most-significant bit in the syscall number as a differentiator
+(i.e. regular if MSB cleared, foreign if LSB set).  See how
+<code>__EVL_SYSCALL_BIT</code> is used for this purpose in the <a href="https://the-going.github.io/evlproject/ru/core/user-api/">libevl</a> implementation for arm64, x86
+and ARM respectively.</p>
+<p>Interrupts are always <strong>enabled</strong> in the CPU when any of these
+handlers is called.</p>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>The core may need to switch the calling task to
+the converse execution stage (i.e. in-band &lt;-&gt; out-of-band) either
+from the <a href="#handle_oob_syscall">handle_oob_syscall()</a>
+or <a href="#handle_pipelined_syscall">handle_pipelined_syscall()</a> handlers, this is fine. Dovetail would notice and continue
+accordingly to the current stage on return of these handlers.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="handle_oob_syscall"></a>
+__weak void handle_oob_syscall(struct pt_regs *regs)
+</div>
+
+<p>This handler should implement the fast path for handling out-of-band
+system calls.  It is called by Dovetail when a system call is detected
+on entry of the common syscall path implemented by the in-band kernel,
+which should be handled directly by the companion core instead. Both
+of the following conditions must be met for this route to be taken:</p>
+<ul>
+<li>
+<p>the caller is a user task running on the <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">out-of-band execution
+stage</a>.</p>
+</li>
+<li>
+<p>the system call number is not in the range of the regular in-band
+system call numbers.</p>
+</li>
+</ul>
+<p>A system call meeting those conditions denotes a request issued by an
+application to a companion core which it can handle directly from its
+native execution stage (i.e. <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">out-of-band</a>). This handler
+should be defined in the code of your companion core implementation
+for receiving such system calls. Dovetail defines a dummy weak
+implementation of it, which the implementation of the core would
+supersede if defined (<em>__weak</em> binding).</p>
+
+<p><li><i>regs</i><p>The register file at the time of the system call, which contains the
+call arguments passed by the application.</p>
+</li></p>
+
+<p>The handler should write the error code of the request to the
+in-memory storage of the proper CPU register in <em>regs</em>, as defined by
+the ABI convention for the CPU architecture.</p>
+<p><a href="#handle_oob_syscall">handle_oob_syscall</a> is called
+with interrupts enabled in the CPU, out-of-band stage is
+unstalled. Whether the in-band stage accepts interrupts is undefined.</p>
+<blockquote>
+<p>The EVL core
+<a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/syscall.c#L428">exhibits</a>
+a typical implementation of such a handler.</p>
+</blockquote>
+<hr>
+
+<div class="proto"><a name="handle_pipelined_syscall"></a>
+__weak void handle_pipelined_syscall(struct irq_stage *stage, struct pt_regs *regs)
+</div>
+
+<p>This handler is called by Dovetail when a system call is detected on
+entry of the common syscall path implemented by the in-band kernel, if
+the requirements for delivering it to the companion core via the fast
+route implemented by <a href="#handle_oob_syscall">handle_oob_syscall</a> are not met, and any of the following
+condition is true:</p>
+<ul>
+<li>
+<p>the caller is a user task for which <a href="#dovetail_start_altsched">alternate scheduling</a> was enabled.</p>
+</li>
+<li>
+<p>the system call number is not in the range of the regular in-band
+system call numbers, which means that a companion core might be able
+to handle it (if not eventually, such a request would cause the caller
+to receive -ENOSYS).</p>
+</li>
+</ul>
+
+<p><li><i>stage</i><p>The descriptor address of the calling stage, either <em>oob_stage</em> or
+<em>inband_stage</em>.</p>
+</li></p>
+
+
+<p><li><i>regs</i><p>The register file at the time of the system call.</p>
+</li></p>
+
+<p>The handler should write the error code of the request to the
+in-memory storage of the proper CPU register in <em>regs</em>, as defined by
+the ABI convention for the CPU architecture.  In addition,
+<a href="#handle_pipelined_syscall">handle_pipelined_syscall</a>
+should return an integer status, which specifies the action Dovetail
+should take on return:</p>
+<ul>
+<li>
+<p>zero tells Dovetail to pass the system call to the regular in-band
+handler next. This status makes sense if the companion core did not
+handle the request, but did switch the calling context to in-band
+mode. This typically happens when the companion core wants to
+automatically demote the execution stage of the caller when it
+detects a regular in-band system call issued over the wrong
+(i.e. out-of-band) context, in which case it may <a href="#inband-switch">switch it
+in-band</a> automatically for
+preserving the system integrity, before asking Dovetail to forward
+the request to the right (in-band) handler.</p>
+</li>
+<li>
+<p>a strictly positive status tells Dovetail to branch to the system
+call exit path immediately. This status makes sense if the companion
+core did handle the request, leaving the caller on the out-of-band
+execution stage.</p>
+</li>
+<li>
+<p>a negative status tells Dovetail to branch to the regular system
+call epilogue, <em>without</em> passing the system call to the regular
+in-band handler though. This status makes sense if the companion
+core already handled the request, switching to in-band mode in the
+process. In such an event, the in-band kernel still wants to check
+for pending signals and rescheduling opportunity, which is the
+purpose of the epilogue code.</p>
+</li>
+</ul>
+<p><a href="#handle_pipelined_syscall">handle_pipelined_syscall</a>
+is called with interrupts enabled in the CPU, out-of-band stage is
+unstalled. If current, the in-band stage accepts interrupts, otherwise
+whether the in-band stage is stalled or not is undefined.</p>
+<blockquote>
+<p>An <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/syscall.c#L420">implementation of
+handle_pipelined_syscall()</a>
+is present in the EVL core.</p>
+</blockquote>
+<h3 id="inband-events">In-band events</h3>
+<p>The last set of notifications involves pure in-band events which the
+autonomous core may need to know about, as they may affect its own
+task management. Except for <code>INBAND_TASK_EXIT</code> and
+<code>INBAND_PROCESS_CLEANUP</code> which are called for <em>any</em> exiting user-space
+task, other notifications are only issued for tasks for which
+dovetailing is enabled (see <a href="#dovetail_start_altsched">dovetail_start_altsched()</a>).</p>
+<p>The notification is delivered to the <a href="#handle_inband_event">handle_inband_event()</a> handler. The execution context of
+this handler is always in-band. The out-of-band and in-band stages are
+both <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">unstalled</a> at the time of the
+call. The notification handler receives the event type code, and a
+single pointer argument which depends on the event type. The following
+events are defined (see <em>include/linux/dovetail.h</em>):</p>
+<ul>
+<li>
+<p>INBAND_TASK_SIGNAL(struct task_struct *target)</p>
+<p>sent when @target is about to receive a signal. The core may
+decide to schedule a transition of the recipient to the in-band
+stage in order to have it handle that signal asap, which is required
+for keeping the kernel sane. This notification is always sent from
+the context of the issuer.</p>
+</li>
+<li>
+<p>INBAND_TASK_MIGRATION(struct dovetail_migration_data *p)</p>
+<p>sent when p-&gt;task is about to move to CPU p-&gt;dest_cpu.</p>
+</li>
+<li>
+<p>INBAND_TASK_EXIT(struct task_struct *current)</p>
+<p>sent from <code>do_exit()</code> before the current task has dropped the
+files and mappings it owns.</p>
+</li>
+<li>
+<p>INBAND_PROCESS_CLEANUP(struct mm_struct *mm)</p>
+<p>sent before <em>mm</em> is entirely dropped, before the mappings are
+exited. Per-process resources which might still be maintained by the
+core could be released there, as all tasks sharing this memory
+context have exited. Unlike other events, this one is triggered for
+<em>every</em> user-space task which is being dismantled by the kernel,
+regardless of whether some of its threads were known from your
+autonomous core.</p>
+</li>
+<li>
+<p>INBAND_TASK_RETUSER(void)</p>
+<p>sent as a result of arming the return-to-user request via a
+call to <a href="#dovetail_request_ucall">dovetail_request_ucall()</a>. In other words, Dovetail fires this
+event because you asked for it by calling the latter service. The
+<a href="#inband-events">INBAND_TASK_RETUSER</a> event handler
+in your companion core is allowed to switch the caller to the
+out-of-band stage before returning, ensuring the application code
+resumes in that context.</p>
+</li>
+<li>
+<p>INBAND_TASK_PTSTOP(void)</p>
+<p>sent when the current in-band task is about to sleep in
+ptrace_stop(), which is the place a task is supposed to wait until a
+debugger allows it to continue. A user-space task which receives
+SIGTRAP as a result of hitting a breakpoint, or SIGSTOP from the
+<a href="http://man7.org/linux/man-pages/man2/ptrace.2.html">ptrace(2)</a>
+machinery parks itself by calling ptrace_stop(), until resumed by a
+<a href="http://man7.org/linux/man-pages/man2/ptrace.2.html">ptrace(2)</a>
+request.</p>
+</li>
+<li>
+<p>INBAND_TASK_PTCONT(void)</p>
+<p>sent when the current in-band task is waking up from
+ptrace_stop() after the debugger allowed it to continue. The task
+may return to user-space afterwards, or go handling some pending
+signals.</p>
+</li>
+<li>
+<p>INBAND_TASK_PTSTEP(struct task_struct *target)</p>
+<p>sent by the
+<a href="http://man7.org/linux/man-pages/man2/ptrace.2.html">ptrace(2)</a>
+implementation when it is about to (single-)step the @target
+task. Like PTSTOP and PTCONT, PTSTEP can be used to synchronize your
+companion core with the
+<a href="http://man7.org/linux/man-pages/man2/ptrace.2.html">ptrace(2)</a>
+logic. For instance, EVL uses these events to provide support for
+<a href="">synchronous breakpoints</a> when debugging applications
+over <a href="https://www.gnu.org/software/gdb/">gdb</a>.</p>
+</li>
+</ul>
+<hr>
+
+<div class="proto"><a name="handle_inband_event"></a>
+__weak void handle_inband_event(enum inband_event_type event, void *data)
+</div>
+
+<p>The handler which should be defined in the code of your companion core
+implementation for receiving <a href="#inband-events">in-band event</a> notifications. Dovetail defines a dummy weak
+implementation of it, which your implementation would supersede if
+defined.</p>
+
+<p><li><i>event</i><p>The <a href="#inband-events">event code</a> (INBAND_TASK_*)
+as defined above.</p>
+</li></p>
+
+
+<p><li><i>data</i><p>An opaque pointer to some data further qualifying the event, which
+actual type depends on the <a href="#inband-events">event code</a>.</p>
+</li></p>
+
+<p>The in-band stage is always current and accepts interrupts on entry to
+this call.</p>
+<blockquote>
+<p>An <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/kernel/evl/thread.c#L1870">implementation of
+handle_inband_event()</a>
+is present in the EVL core.</p>
+</blockquote>
+<h2 id="dovetail-task-context">Alternate task context</h2>
+<p>Your autonomous core will need to keep its own set of per-task data,
+starting with the <a href="#dovetail_init_altsched">alternate scheduling context block</a>. To help in maintaining such
+information on a per-task, per-architecture basis, Dovetail adds the
+<em>oob_state</em> <em>member of type struct oob_thread_state</em> to the
+(stack-based) thread information block (aka <em>struct thread_info</em>)
+each kernel architecture port defines.</p>
+<p>You may want to fill that structure reserved to out-of-band support
+with any information your core may need for maintaining a task
+context. By having this information defined in a file accessible from
+the architecture-specific code by including
+<em>&lt;dovetail/thread_info.h&gt;</em>, the core-specific structure is
+automatically added to <em>struct thread_info</em> as required. For
+instance:</p>
+<blockquote>
+<p>arch/arm/include/dovetail/thread_info.h</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct oob_thread_state {
+       /* Define your core-specific per-task data here. */
+};
+</code></pre></div><p>The core may then retrieve the address of the structure by calling
+<a href="#dovetail_current_state">dovetail_current_state()</a>. For instance, this is the definition the EVL core has for the
+<em>oob_thread_state</em> structure, storing a backpointer to its own task
+control block, along with a core-specific preemption count for fast
+stack-based access:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct evl_thread;
+
+struct oob_thread_state {
+	struct evl_thread *thread;
+	int preempt_count;
+};
+</code></pre></div><p>Which gives the following chain:</p>
+
+<div class="mermaid" align="left">
+graph LR;
+    T("struct thread_info") --> |includes| t
+    t("struct oob_thread_state") -.-> |refers to| c
+    c("struct evl_thread")
+</div>
+
+<p>Note that we should not add all of the out-of-band state data directly
+into the <em>oob_thread_state</em> structure, because the latter is present
+in <strong>every</strong> <em>task_struct</em> descriptor, although only a few tasks may
+actually need it. Hence the backpointer to the <em>evl_thread</em> structure
+which only consumes a few bytes, so leaving it unused (NULL) for all
+other - in-band only - tasks is no big deal.</p>
+<hr>
+
+<div class="proto"><a name="dovetail_current_state"></a>
+struct oob_thread_state *dovetail_current_state(void)
+</div>
+
+<p>This call retrieves the address of the out-of-band data structure for
+the current task, which is always a valid pointer. The content of this
+structure is zeroed when the task is created, and stays so until your
+autonomous core initializes it.</p>
+<h2 id="dovetail-mm-context">Extended memory context</h2>
+<p>Your autonomous core may also need to keep its own set of per-process
+data.  To help in maintaining such information on a per-<em>mm</em> basis,
+Dovetail adds the <code>oob_state</code> member of type <code>struct oob_mm_state</code> to
+the generic <code>struct mm_struct</code> descriptor . Because kernel threads can
+only borrow memory contexts temporarily but do not actually own any,
+this Dovetail extension is only available to EVL threads running in
+user-space, <em>not</em> to threads created by <a href="">evl_run_kthread()</a>.</p>
+<p>You may want to fill that structure reserved to out-of-band support
+with any information your core may need for maintaining a per-<em>mm</em>
+context. By having this information defined in a file accessible from
+the architecture-specific code by including <code>\&lt;dovetail/mm_info.h\&gt;</code>,
+the core-specific structure is automatically added to <code>struct mm_struct</code> as required. For instance:</p>
+<blockquote>
+<p>arch/arm/include/dovetail/mm_info.h</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct oob_mm_state {
+       /* Define your core-specific per-mm data here. */
+};
+</code></pre></div><p>The core may then retrieve the address of the structure for the
+current task by calling <a href="#dovetail_mm_state">dovetail_mm_state()</a>. The EVL core does not define any extended
+memory context yet, but it could be used to maintain a per-process
+file descriptor table for instance.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Catching the <a href="#inband-events">INBAND_PROCESS_CLEANUP</a>
+event would allow you to drop any resources attached to the extended
+memory context information, since it is called when this data is no
+longer in use by any thread of the exiting process.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="dovetail_mm_state"></a>
+struct oob_mm_state *dovetail_mm_state(void)
+</div>
+
+<p>This call retrieves the address of the out-of-band data structure
+within the <em>mm</em> descriptor of the current user-space task. The content
+of this structure is zeroed by the in-band kernel when it creates the
+memory context, and stays so until your autonomous core initializes
+it. If called from a kernel thread, NULL is returned instead.</p>
+<blockquote>
+<p>Definition of dovetail_mm_state()</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static inline
+struct oob_mm_state *dovetail_mm_state(void)
+{
+	if (current-&gt;flags &amp; PF_KTHREAD)
+		return NULL;
+
+	return &amp;current-&gt;mm-&gt;oob_state;
+}
+</code></pre></div><h2 id="inband-ret-to-user">Intercepting return to in-band user mode</h2>
+<p>In some specific cases, the implementation of your companion core may
+need some thread running in-band to call back before it resumes
+execution of the application code in user mode. For instance, you
+might want to force that thread to switch back to the out-of-band
+stage before it leaves the kernel and resumes user mode execution. For
+this to happen, you would need that thread to jump back to the core at
+that point, which would do the right thing from
+there. <a href="#dovetail_request_ucall">dovetail_request_ucall</a> allows that.</p>
+<hr>
+
+<div class="proto"><a name="dovetail_request_ucall"></a>
+void dovetail_request_ucall(struct task_struct *target)
+</div>
+
+
+<p><li><i>target</i><p>The task which should call back at the first opportunity. <em>target</em>
+should have enabled the alternate scheduling support by a previous
+call to <a href="#dovetail_start_altsched">dovetail_start_altsched()</a>. If not, <a href="#dovetail_request_ucall">dovetail_request_ucall</a> has no effect.</p>
+</li></p>
+
+<p>Pend a request for <em>target</em> to fire the <a href="#inband-events">INBAND_TASK_RETUSER</a> event at the first opportunity, which
+happens when the task is about to resume execution in user mode
+from the in-band stage.</p>
+<p>If the <a href="#inband-events">INBAND_TASK_RETUSER</a> event
+handler in the companion core sends any signal to the current task, it
+will be delivered before the application code resumes. The event
+handler may pend a request to be called back again using
+<a href="#dovetail_request_ucall">dovetail_request_ucall()</a>.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+		
+		content/dovetail/altsched.md
+
+		
+		e6f2cbe
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/" title="Rules Of Thumb"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1636572175"></script>
+    <script>
+      if (typeof mermaid != 'undefined' && typeof mermaid.mermaidAPI != 'undefined') {
+        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
+      }
+    </script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

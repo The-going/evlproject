@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Using libevl on Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/ru/core/user-api/</link>
+    <description>Recent content in Using libevl on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright><atom:link href="https://the-going.github.io/evlproject/ru/core/user-api/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>libevl function index</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/function_index/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/function_index/</guid>
+      <description>Thread services   #usvctable { width: 30%; } #usvctable td { text-align: center; }   Function name EVL Switch1 non-EVL2   evl_attach_thread() N/A &amp;#9989;   evl_attach_self() N/A &amp;#9989;   evl_detach_thread() &amp;#9661; &amp;#10005;   evl_detach_self() &amp;#9661; &amp;#10005;   evl_demote_thread() &amp;#9866; &amp;#9989;   evl_get_self() &amp;#9866; &amp;#10005;   evl_get_state() &amp;#9866; &amp;#9989;   evl_get_thread_mode() &amp;#9866; &amp;#9989;   evl_is_inband() &amp;#9866; &amp;#9989;   evl_set_thread_mode() &amp;#9866; &amp;#9989;   evl_subscribe() &amp;#9661; &amp;#10005;   evl_switch_inband() &amp;#9661; &amp;#10005;   evl_switch_oob() &amp;#9651; &amp;#10005;   evl_unblock_thread() &amp;#9866; &amp;#9989;   evl_unsubscribe() &amp;#9661; &amp;#10005;    Scheduler services   Function name EVL Switch1 non-EVL2   evl_get_schedattr() &amp;#9866; &amp;#9989;   evl_set_schedattr() &amp;#9866; &amp;#9989;  evl_control_sched() &amp;#9866; &amp;#9989;   evl_get_cpustate() &amp;#9866; &amp;#9989;   evl_yield() &amp;#9651; &amp;#10005;    Clock services   Function name EVL Switch1 non-EVL2   evl_new_clock() &amp;#9661; &amp;#9989;   evl_read_clock() &amp;#9866; &amp;#9989;   evl_set_clock() &amp;#9866; &amp;#9989;   evl_get_clock_resolution() &amp;#9866; &amp;#9989;   evl_sleep_until() &amp;#9651; &amp;#10005;   evl_udelay() &amp;#9651; &amp;#10005;    Timer services   Function name EVL Switch1 non-EVL2   evl_new_timer() &amp;#9661; &amp;#9989;   evl_set_timer() &amp;#9866; &amp;#9989;   evl_get_timer() &amp;#9866; &amp;#9989;    Mutex services   Function name EVL Switch1 non-EVL2   evl_create_mutex() &amp;#9661; &amp;#9989;   evl_new_mutex() &amp;#9661; &amp;#9989;   evl_open_mutex() &amp;#9661; &amp;#9989;   evl_lock_mutex() &amp;#9651;4 &amp;#10005;   evl_trylock_mutex() &amp;#9651;4 &amp;#10005;   evl_timedlock_mutex() &amp;#9651;4 &amp;#10005;   evl_unlock_mutex() &amp;#9866;3 &amp;#10005;   evl_get_mutex_ceiling() &amp;#9866; &amp;#9989;   evl_set_mutex_ceiling() &amp;#9866; &amp;#9989;   evl_close_mutex() &amp;#9661; &amp;#9989;    Event services   Function name EVL Switch1 non-EVL2   evl_create_event() &amp;#9661; &amp;#9989;   evl_new_event() &amp;#9661; &amp;#9989;   evl_open_event() &amp;#9661; &amp;#9989;   evl_wait_event() &amp;#9866;4 &amp;#10005;   evl_timedwait_event() &amp;#9866;4 &amp;#10005;   evl_signal_event() &amp;#9866;4 &amp;#10005;   evl_signal_thread() &amp;#9866;4 &amp;#10005;   evl_broadcast_event() &amp;#9866;4 &amp;#10005;   evl_close_event() &amp;#9661; &amp;#9989;    Flags services   Function name EVL Switch1 non-EVL2   evl_create_flags() &amp;#9661; &amp;#9989;   evl_new_flags() &amp;#9661; &amp;#9989;   evl_open_flags() &amp;#9661; &amp;#9989;   evl_wait_flags() &amp;#9651;4 &amp;#10005;   evl_timedwait_flags() &amp;#9651;4 &amp;#10005;   evl_trywait_flags() &amp;#9866;4 &amp;#9989;   evl_peek_flags() &amp;#9866; &amp;#9989;   evl_post_flags() &amp;#9866;4 &amp;#9989;   evl_close_flags() &amp;#9661; &amp;#9989;    Semaphore services   Function name EVL Switch1 non-EVL2   evl_create_sem() &amp;#9661; &amp;#9989;   evl_new_sem() &amp;#9661; &amp;#9989;   evl_open_sem() &amp;#9661; &amp;#9989;   evl_get_sem() &amp;#9651;4 &amp;#10005;   evl_timedget_sem() &amp;#9651;4 &amp;#10005;   evl_tryget_sem() &amp;#9866;4 &amp;#9989;   evl_peek_sem() &amp;#9866; &amp;#9989;   evl_put_sem() &amp;#9866;4 &amp;#9989;   evl_close_sem() &amp;#9661; &amp;#9989;    Observable services   Function name EVL Switch1 non-EVL2   evl_create_observable() &amp;#9661; &amp;#9989;   evl_new_observable() &amp;#9661; &amp;#9989;   evl_read_observable() &amp;#9651;5 &amp;#9989;   evl_update_observable() &amp;#9651;5 &amp;#9989;    Polling services   Function name EVL Switch1 non-EVL2   evl_new_poll() &amp;#9661; &amp;#9989;   evl_add_pollfd() &amp;#9651; &amp;#10005;   evl_mod_pollfd() &amp;#9651; &amp;#10005;   evl_del_pollfd() &amp;#9651; &amp;#10005;   evl_poll_sem() &amp;#9651; &amp;#10005;   evl_timedpoll_sem() &amp;#9651; &amp;#10005;    Memory heap services   Function name EVL Switch1 non-EVL2   evl_init_heap() &amp;#9661; &amp;#9989;   evl_extend_heap() &amp;#9866; &amp;#10005;   evl_alloc_block() &amp;#9651;3 &amp;#10005;   evl_free_block() &amp;#9651;3 &amp;#10005;   evl_check_block() &amp;#9651;3 &amp;#10005;   evl_destroy_heap() &amp;#9661; &amp;#9989;   evl_heap_raw_size() &amp;#9866; &amp;#9989;   evl_heap_size() &amp;#9866; &amp;#9989;   evl_heap_used() &amp;#9866; &amp;#9989;    Proxy services   Function name EVL Switch1 non-EVL2   evl_create_proxy() &amp;#9661; &amp;#9989;   evl_new_proxy() &amp;#9661; &amp;#9989;   evl_send_proxy() &amp;#9866; &amp;#9989;   evl_vprint_proxy() &amp;#9866; &amp;#9989;   evl_print_proxy() &amp;#9866; &amp;#9989;   evl_printf() &amp;#9866; &amp;#9989;    Cross-buffer services   Function name EVL Switch1 non-EVL2   evl_create_xbuf() &amp;#9661; &amp;#9989;   evl_new_xbuf() &amp;#9661; &amp;#9989;    I/O services   Function name EVL Switch1 non-EVL2   oob_read() &amp;#9651; &amp;#10005;   oob_write() &amp;#9651; &amp;#10005;   oob_ioctl() &amp;#9651; &amp;#10005;    Tube services   Function name EVL Switch1 non-EVL2   evl_init_tube() &amp;#9866; &amp;#9989;   evl_send_tube() &amp;#9866; &amp;#9989;   evl_receive_tube() &amp;#9866; &amp;#9989;   evl_get_tube_size() &amp;#9866; &amp;#9989;   evl_init_tube_rel() &amp;#9866; &amp;#9989;   evl_send_tube_rel() &amp;#9866; &amp;#9989;   evl_receive_tube_rel() &amp;#9866; &amp;#9989;   evl_get_tube_size_rel() &amp;#9866; &amp;#9989;    Misc routines   Function name EVL Switch1 non-EVL2   evl_init() N/A &amp;#9989;   evl_get_version() &amp;#9866; &amp;#9989;   evl_sigdebug_handler() N/A &amp;#9989;    1 Defines the stage switching behavior for EVL threads:</description>
+    </item>
+    <item>
+      <title>Mutex</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/mutex/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/mutex/</guid>
+      <description>Serializing threads with mutexes EVL provides common mutexes for serializing thread access to a shared resource from out-of-band context, with semantics close to the POSIX specification for the basic operations.
+Mutex services   int evl_create_mutex(struct evl_mutex *mutex, int clockfd, unsigned int ceiling, int flags, const char *fmt, ...)  This call creates a mutex, returning a file descriptor representing the new object upon success. This is the generic call form; for creating a mutex with common pre-defined settings, see [evl_new_mutex()}(#evl_new_mutex).</description>
+    </item>
+    <item>
+      <title>Semaphore</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/semaphore/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/semaphore/</guid>
+      <description>Synchronizing on a semaphore EVL implements the classic Dijkstra semaphore construct, with an API close to the POSIX specification for the basic operations.
+Semaphore services   int evl_create_sem(struct evl_sem *sem, int clockfd, init initval, int flags, const char *fmt, ...)  This call creates a semaphore, returning a file descriptor representing the new object upon success. This is the generic call form; for creating a semaphore with common pre-defined settings, see [evl_new_sem()}(#evl_new_sem).</description>
+    </item>
+    <item>
+      <title>Observable</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/observable/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/observable/</guid>
+      <description>Using the observer pattern for event-driven applications The EVL core provides a simple yet flexible support for implementing the observer design pattern in your application, based on the Observable element. The Observable receives a stream of so-called notices, which may be events, state changes or any data which fits within a 64bit word, delivering them as notifications (with additional meta-data) to subscribed threads called observers, when they ask for it. Subscribers do not have to be attached to the EVL core, any thread can observe an Observable element.</description>
+    </item>
+    <item>
+      <title>File proxy</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/proxy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/proxy/</guid>
+      <description>Zero-latency I/O to in-band files A common issue with dual kernel systems stems from the requirement not to issue in-band system calls while running time-critical code in out-of-band context. Problem is that sometimes, you may need - for instance - to write to regular files such as for logging information to the console or elsewhere from an out-of-band work loop. Doing so by calling common stdio(3) routines directly is therefore not an option for latency reasons.</description>
+    </item>
+    <item>
+      <title>Polling file descriptors</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/poll/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/poll/</guid>
+      <description>Waiting for events on file descriptors Every EVL element is represented by a device file accessible in the /dev/evl file hierarchy, and requests can be sent to any of those elements by writing to common file descriptors obtained on the corresponding files. Conversely, information is returned to the caller by reading from those file descriptors. EVL applications can poll for out-of-band events occurring on a set of file descriptors opened on elements, just like in-band applications can use poll(2) with other files.</description>
+    </item>
+    <item>
+      <title>Out-of-band I/O services</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/io/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/io/</guid>
+      <description>Talking to real-time capable device drivers Using the EVL kernel API, you can extend an existing driver for supporting out-of-band I/O operations, or even write one from scratch. Both character-based I/O and socket protocol drivers are supported.
+On the user side, application can exchange data with, send requests to these real-time capable drivers from the out-of-band execution stage with the a couple of additional services libevl provides.
+You may notice that several POSIX file I/O services such as open(2), socket(2), close(2), fcntl(2), mmap(2) and so on have no out-of-band counterpart in the following list.</description>
+    </item>
+    <item>
+      <title>Miscellanea</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/misc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/misc/</guid>
+      <description>A set of ancillary services which are not directly related to EVL elements.
+  struct evl_version evl_get_version(void)  This function returns the available version information about the current libevl API and EVL core.
+A structure of type struct evl_version containing such information is returned (this call cannot fail). The definition of this type is as follows:
+struct evl_version { int api_level;	/* libevl.so: __EVL__ */ int abi_level;	/* core: EVL_ABI_PREREQ, -1 for ESHI */ const char *version_string; };   api_level matches the value carried by the __EVL__ macro-definition when the libevl code was compiled.</description>
+    </item>
+    <item>
+      <title>API revisions</title>
+      <link>https://the-going.github.io/evlproject/ru/core/user-api/api-revs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/user-api/api-revs/</guid>
+      <description>You can obtain the current API revision of libevl either at compilation time using the value of the __EVL__ macro defined in the &amp;lt;evl/evl.h&amp;gt; main header file, or dynamically by calling evl_get_version().
+rev. 18 (libevl r26) Introduces the socket interface:
+  oob_recvmsg() to receive a message in out-of-band mode.
+  oob_sendmsg() to send a message in out-of-band mode.
+  The regular socket(2) call as extended by ABI 26 is capable of creating oob-capable sockets when receiving the SOCK_OOB type flag, so there is no EVL-specific call for this operation.</description>
+    </item>
+  </channel>
+</rss>

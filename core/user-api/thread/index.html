@@ -3,22 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="generator" content="Hugo 0.89.1" />
     <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
     <meta name="description" content="Xenomai 4 project">
     <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
-    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    
     <title> :: Xenomai 4</title>
-    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/variant.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/print.css?1634415569" rel="stylesheet" media="print">
-    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634415569"></script>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572174" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572174" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572174"></script>
     <style>
       :root #header + #content > #left > #rlblock_left{
         display:none !important;
@@ -29,6 +30,11 @@
     </style>
   </head>
   <body class="" data-url="https://the-going.github.io/evlproject/core/user-api/thread/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
     <nav id="sidebar" class="showVisitedLinks">
       <div id="header-wrapper">
         <div id="header">
@@ -40,20 +46,16 @@
           <input data-search-input id="search-by" type="search" placeholder="Search...">
           <span data-search-clear=""><i class="fas fa-times"></i></span>
         </div>
-        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634415569"></script>
-        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572174"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572174"></script>
         <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
         <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
-        <script>
-          var index_url="https://the-going.github.io/evlproject/index.json";
-          var root_url="https://the-going.github.io/evlproject/";
-          var baseUri=root_url.replace(/\/$/, '');
-        </script>
-        <script src="https://the-going.github.io/evlproject/js/search.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572174"></script>
       </div>
       <div class="highlightable">
         <ul class="topics">
-          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/overview/testing-page/" title="Testing the page rendering" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/testing-page/">Test page<i class="fas fa-check read-icon"></i></a></li></ul></li>
           <li data-nav-id="/core/" title="The EVL core" class="dd-item parent"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core<i class="fas fa-check read-icon"></i></a><ul>
           <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL<i class="fas fa-check read-icon"></i></a></li>
           <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings<i class="fas fa-check read-icon"></i></a></li>
@@ -131,6 +133,25 @@
         <div id="prefooter">
           <hr/>
           <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/thread/" selected>English</option>
+                    <option id="ru" value="/ru/core/user-api/thread/">Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
             <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
           </ul>
         </div>
@@ -293,7 +314,7 @@ it was originally assigned to any other in-band scheduling class
 (e.g. <code>SCHED_FIFO</code>).</p>
 <blockquote>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;sys/types.h&gt;
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;sys/types.h&gt;
 #include &lt;unistd.h&gt;
 #include &lt;sched.h&gt;
 #include &lt;pthread.h&gt;
@@ -409,7 +430,7 @@ memory.	You may start panicking.</p>
 <a href="https://the-going.github.io/evlproject/core/user-api/init/#evl_init">evl_init()</a>.</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
 
 static void *byte_crunching_thread(void *arg)
 {
@@ -421,7 +442,7 @@ static void *byte_crunching_thread(void *arg)
 }
 </code></pre></div><p>As a result of this call, you should see a new device appear into the
 <a href="https://the-going.github.io/evlproject/core/user-api/#evl-fs-hierarchy">/dev/evl/thread</a> hierarchy, e.g.:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ ls -l /dev/evl/thread
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ ls -l /dev/evl/thread
 total 0
 crw-rw----    1 root     root      248,   1 Jan  1  1970 clone
 crw-rw----    1 root     root      246,   0 Jan  1  1970 cruncher-2712
@@ -468,7 +489,7 @@ int evl_attach_self(const char *fmt, ...)
 <p>This call is a shorthand for attaching the calling thread to the EVL
 core, with the private <a href="https://the-going.github.io/evlproject/core/user-api/#element-visibility">visibility attribute</a> set. It is identical
 to calling:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	evl_attach_thread(EVL_CLONE_PRIVATE, fmt, ...);
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	evl_attach_thread(EVL_CLONE_PRIVATE, fmt, ...);
 </code></pre></div>
 <div class="notices info">
     <div class="label">Info</div><p>Note that if the <a href="https://the-going.github.io/evlproject/core/user-api/#element-naming-convention">generated name</a> starts with a
@@ -497,7 +518,7 @@ something went wrong:</p>
 
 <p>-EINVAL		<em>flags</em> is not zero.</p>
 <p>-EPERM		The current thread is not attached to the EVL core.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
 
 static void *byte_crunching_thread(void *arg)
 {
@@ -539,7 +560,7 @@ int evl_detach_self(void)
 
 <p>This call is a shorthand for detaching the calling thread from the EVL
 core. It is identical to calling:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	evl_detach_thread(0);
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	evl_detach_thread(0);
 </code></pre></div><hr>
 
 <div class="proto"><a name="evl_get_self"></a>
@@ -554,7 +575,7 @@ from the EVL library which ask for a thread file descriptor.  This
 call returns a valid file descriptor referring to the caller on
 success, otherwise a negated error code if something went wrong:</p>
 <p>-EPERM		The current thread is not attached to the EVL core.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
 
 static void get_caller_info(void)
 {
@@ -666,7 +687,7 @@ variant of <a href="https://the-going.github.io/evlproject/core/user-api/schedul
 retrieving runtime information about the state of a thread. The return
 buffer is of type <code>struct evl_thread_state</code>, which is defined as
 follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct evl_thread_state {
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct evl_thread_state {
 	struct evl_sched_attrs eattrs;
 	int cpu;
 };
@@ -904,7 +925,7 @@ global to the system via the kernel configuration. They are based on
 runtime error detection when performing user requests which involve
 threads. Each type of error is associated with a diagnostic code, such
 as:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/* Health monitoring diag codes (via observable or SIGDEBUG). */
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/* Health monitoring diag codes (via observable or SIGDEBUG). */
 #define EVL_HMDIAG_SIGDEMOTE	1
 #define EVL_HMDIAG_SYSDEMOTE	2
 #define EVL_HMDIAG_EXDEMOTE	3
@@ -1027,7 +1048,7 @@ SIGDEBUG was actually sent by the EVL core is recommended, using the
 <em>false</em> when passed the signal information block, then your thread has
 received <code>SIGXCPU</code> from another source, this is <em>not</em> a HM event sent
 by the EVL core.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;signal.h&gt;
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;signal.h&gt;
 #include &lt;evl/thread.h&gt;
 
 /* A basic SIGDEBUG (aka SIGXCPU) handler which only prints out the cause. */
@@ -1066,7 +1087,7 @@ routines from the wrong context.</strong></p>
 <h3 id="where-do-public-thread-devices-live">Where do public thread devices live?</h3>
 <p>Each time a new public thread element is created, it appears into the
 <a href="https://the-going.github.io/evlproject/core/user-api/#evl-fs-hierarchy">/dev/evl/thread</a> hierarchy, e.g.:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ ls -l /dev/evl/threads
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ ls -l /dev/evl/threads
 total 0
 crw-rw----    1 root     root      248,   1 Jan  1  1970 clone
 crw-rw----    1 root     root      246,   0 Mar  1 11:26 rtk1@0:1682
@@ -1102,7 +1123,7 @@ descriptor just obtained in the thread-related request you want to
 send it. For instance, we could change the scheduling parameters of an
 EVL kernel thread named rtk1@3:1682 from a companion application in
 userland as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	struct evl_sched_attrs attrs;
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	struct evl_sched_attrs attrs;
 	int efd, ret;
 
  	efd = open(&#34;/dev/evl/thread/rtk1@3:1682&#34;, O_RDWR);
@@ -1116,7 +1137,7 @@ userland as follows:</p>
 <h4 id="using-the-evl-ps-command">Using the &lsquo;evl ps&rsquo; command</h4>
 <p>Running the following command from the shell will report the current
 EVL thread activity on your system:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># evl ps
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># evl ps
 CPU   PID   SCHED   PRIO  NAME
   0   398      rt    90   [latmus-klat:394]
   0   399    weak     0   lat-measure:394
@@ -1130,7 +1151,7 @@ attributes available from the /sysfs hierarchy. The &lsquo;evl ps&rsquo; command
 actually parses this raw information before rendering it in a
 human-readable format. Let&rsquo;s have a look at the attributes exported by
 the sampling thread of some random run of EVL&rsquo;s <em>latmus</em> utility:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># cd /sys/devices/virtual/thread/timer-responder:2136
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># cd /sys/devices/virtual/thread/timer-responder:2136
 # ls -l
 total 0
 -r--r--r--    1 root     root          4096 Mar  1 12:01 pid
@@ -1264,7 +1285,10 @@ purpose, which made it observable to itself or to other threads.</p>
 </li>
 </ul>
 <hr>
-<p style="text-align:right">Last modified: Mon, 17 May 2021 16:48:45 &#43;0200</p>
+<p style="text-align:right">Last modified: Mon, 17 May 2021 16:48:45 &#43;0200
+
+	
+</p>
 
 
           <footer class=" footline">
@@ -1279,18 +1303,12 @@ purpose, which made it observable to itself or to other threads.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634415569"></script>
-    <script>
-      if (typeof mermaid != 'undefined') {
-        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
-      }
-    </script>
-    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634415569"></script>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572174"></script>
   </body>
 </html>

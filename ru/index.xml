@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/ru/</link>
+    <description>Recent content on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright>
+    <lastBuildDate>Sat, 16 Feb 2019 16:10:44 +0100</lastBuildDate><atom:link href="https://the-going.github.io/evlproject/ru/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Обзор</title>
+      <link>https://the-going.github.io/evlproject/ru/overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/overview/</guid>
+      <description>ИнформацияПроект EVL теперь называется Xenomai 4. Ядро EVL изначально было развилкой ядра Xenomai 3 Cobalt, которое прошло значительную модернизацию, чтобы сделать его SMP-масштабируемым, более простым в освоении и обслуживании. Однако оба они по-прежнему придерживаются одних и тех же принципов, когда речь заходит о технике двойного ядра. Проект Xenomai внедряет интерфейс конвейера EVL Dovetail для своего предстоящего выпуска 3.2. Таким же образом EVL становится проектом Xenomai 4.
+   Архитектура с двумя ядрами.</description>
+    </item>
+    <item>
+      <title>Ядро EVL</title>
+      <link>https://the-going.github.io/evlproject/ru/core/</link>
+      <pubDate>Sat, 16 Feb 2019 16:10:44 +0100</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/</guid>
+      <description>Сила ядра EVL в реальном времени Для определенных типов приложений выгрузка определенного набора критически важных по времени задач в автономное программное ядро, встроенное в ядро Linux, может обеспечить наилучшую производительность при минимальных затратах на разработку и время выполнения по сравнению с наложением поведения в реальном времени на всю логику ядра, чтобы уложиться в сроки, установленные только для этих задач, как того требует модель native preemption.
+В двух словах, проект Xenomai 4 посвящен внедрению простой, масштабируемой и надежной архитектуры с двумя ядрами для Linux, основанной на интерфейсе Dovetail для подключения высокоприоритетного программного ядра к основному ядру.</description>
+    </item>
+    <item>
+      <title>Интерфейс Dovetail</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/</link>
+      <pubDate>Tue, 26 Jun 2018 19:28:38 +0200</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/</guid>
+      <description>Представляем Dovetail Использование Linux в качестве хоста для легких программных ядер, специализирующихся на обеспечении очень короткого и ограниченного времени отклика, на протяжении многих лет было популярным способом поддержки приложений реального времени во встроенном пространстве.
+Этот двухъядерный дизайн вводит небольшую инфраструктуру реального времени в ядро Linux, которая немедленно обрабатывает критически важные по времени внеполосные действия независимо от текущей работы ядра общего назначения. Потоки приложений, совместно управляемые этой инфраструктурой, по-прежнему получают преимущества от общих служб ядра, таких как управление виртуальной памятью; они также могут использовать богатый набор функций объектов групповой политики, предоставляемых Linux, таких как сеть, хранилище данных или графические интерфейсы.</description>
+    </item>
+  </channel>
+</rss>

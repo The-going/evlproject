@@ -5,14 +5,14 @@
     <link>https://the-going.github.io/evlproject/core/kernel-api/</link>
     <description>Recent content in Writing drivers on Xenomai 4</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
+    <language>en</language>
     <copyright>Copyright 2021 - The Xenomai project.</copyright><atom:link href="https://the-going.github.io/evlproject/core/kernel-api/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kernel function index</title>
       <link>https://the-going.github.io/evlproject/core/kernel-api/function_index/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/core/kernel-api/function_index/</guid>
-      <description>Last modified: Fri, 13 Mar 2020 12:44:32 &amp;#43;0100</description>
+      <description> Last modified: Fri, 13 Mar 2020 12:44:32 &amp;#43;0100 </description>
     </item>
     <item>
       <title>File description</title>
@@ -49,42 +49,42 @@ EVL files are kernel file objects (struct file) which have been advertised by an
       <link>https://the-going.github.io/evlproject/core/kernel-api/mutex/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/core/kernel-api/mutex/</guid>
-      <description>void evl_init_kmutex(struct evl_kmutex *kmutex)  void evl_destroy_kmutex(struct evl_kmutex *kmutex)  int evl_trylock_kmutex(struct evl_kmutex *kmutex)  int evl_lock_kmutex(struct evl_kmutex *kmutex)  void evl_unlock_kmutex(struct evl_kmutex *kmutex)  DEFINE_EVL_MUTEX(__name)  Last modified: Thu, 28 Nov 2019 18:52:38 &amp;#43;0100</description>
+      <description>void evl_init_kmutex(struct evl_kmutex *kmutex)  void evl_destroy_kmutex(struct evl_kmutex *kmutex)  int evl_trylock_kmutex(struct evl_kmutex *kmutex)  int evl_lock_kmutex(struct evl_kmutex *kmutex)  void evl_unlock_kmutex(struct evl_kmutex *kmutex)  DEFINE_EVL_MUTEX(__name)  Last modified: Thu, 28 Nov 2019 18:52:38 &amp;#43;0100 </description>
     </item>
     <item>
       <title>Kernel semaphore</title>
       <link>https://the-going.github.io/evlproject/core/kernel-api/semaphore/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/core/kernel-api/semaphore/</guid>
-      <description>void evl_init_ksem(struct evl_ksem *ksem, unsigned int value)  void evl_destroy_ksem(struct evl_ksem *ksem)  int evl_down_timeout(struct evl_ksem *ksem, ktime_t timeout)  int evl_down(struct evl_ksem *ksem)  int evl_trydown(struct evl_ksem *ksem)  void evl_up(struct evl_ksem *ksem)  void evl_broadcast(struct evl_ksem *ksem)  Last modified: Sat, 15 Feb 2020 19:38:30 &amp;#43;0100</description>
+      <description>void evl_init_ksem(struct evl_ksem *ksem, unsigned int value)  void evl_destroy_ksem(struct evl_ksem *ksem)  int evl_down_timeout(struct evl_ksem *ksem, ktime_t timeout)  int evl_down(struct evl_ksem *ksem)  int evl_trydown(struct evl_ksem *ksem)  void evl_up(struct evl_ksem *ksem)  void evl_broadcast(struct evl_ksem *ksem)  Last modified: Sat, 15 Feb 2020 19:38:30 &amp;#43;0100 </description>
     </item>
     <item>
       <title>Kernel flag</title>
       <link>https://the-going.github.io/evlproject/core/kernel-api/flag/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/core/kernel-api/flag/</guid>
-      <description>void evl_init_flag(struct evl_flag *wf)  void evl_destroy_flag(struct evl_flag *wf)  int evl_wait_flag_timeout(struct evl_flag *wf, ktime_t timeout, enum evl_tmode timeout_mode)  int evl_wait_flag(struct evl_flag *wf)  struct evl_thread *evl_wait_flag_head(struct evl_flag *wf)  void evl_raise_flag_nosched(struct evl_flag *wf)  void evl_raise_flag(struct evl_flag *wf)  void evl_pulse_flag_nosched(struct evl_flag *wf)  void evl_pulse_flag(struct evl_flag *wf)  void evl_flush_flag_nosched(struct evl_flag *wf, int reason)  void evl_flush_flag(struct evl_flag *wf, int reason)  void evl_clear_flag(struct evl_flag *wf)  DEFINE_EVL_FLAG(__name)  Last modified: Sat, 15 Feb 2020 19:38:30 &amp;#43;0100</description>
+      <description>void evl_init_flag(struct evl_flag *wf)  void evl_destroy_flag(struct evl_flag *wf)  int evl_wait_flag_timeout(struct evl_flag *wf, ktime_t timeout, enum evl_tmode timeout_mode)  int evl_wait_flag(struct evl_flag *wf)  struct evl_thread *evl_wait_flag_head(struct evl_flag *wf)  void evl_raise_flag_nosched(struct evl_flag *wf)  void evl_raise_flag(struct evl_flag *wf)  void evl_pulse_flag_nosched(struct evl_flag *wf)  void evl_pulse_flag(struct evl_flag *wf)  void evl_flush_flag_nosched(struct evl_flag *wf, int reason)  void evl_flush_flag(struct evl_flag *wf, int reason)  void evl_clear_flag(struct evl_flag *wf)  DEFINE_EVL_FLAG(__name)  Last modified: Sat, 15 Feb 2020 19:38:30 &amp;#43;0100 </description>
     </item>
     <item>
       <title>EVL Spinlock</title>
       <link>https://the-going.github.io/evlproject/core/kernel-api/spinlock/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/core/kernel-api/spinlock/</guid>
-      <description>evl_spin_lock_init(__lock)  evl_spin_lock(__lock)  evl_spin_lock_irqsave(__lock, __flags)  evl_spin_unlock(__lock)  evl_spin_unlock_irqrestore(__lock, __flags)  DEFINE_EVL_SPINLOCK(__lock)  Last modified: Thu, 28 Nov 2019 18:52:38 &amp;#43;0100</description>
+      <description>evl_spin_lock_init(__lock)  evl_spin_lock(__lock)  evl_spin_lock_irqsave(__lock, __flags)  evl_spin_unlock(__lock)  evl_spin_unlock_irqrestore(__lock, __flags)  DEFINE_EVL_SPINLOCK(__lock)  Last modified: Thu, 28 Nov 2019 18:52:38 &amp;#43;0100 </description>
     </item>
     <item>
       <title>Timer</title>
       <link>https://the-going.github.io/evlproject/core/kernel-api/timer/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/core/kernel-api/timer/</guid>
-      <description>evl_init_timer(__timer, __clock, __handler, __rq, __flags)  evl_init_core_timer(__timer, __handler)  evl_init_timer_on_cpu(__timer, __cpu, __handler)  void evl_destroy_timer(struct evl_timer *timer)  void evl_start_timer(struct evl_timer *timer, ktime_t value, ktime_t interval)  void evl_stop_timer(struct evl_timer *timer)  ktime_t evl_get_timer_date(struct evl_timer *timer)  ktime_t evl_get_interval(struct evl_timer *timer)  ktime_t evl_get_timer_delta(struct evl_timer *timer)  ktime_t evl_get_stopped_timer_delta(struct evl_timer *timer)  Last modified: Sun, 13 Dec 2020 17:55:13 &amp;#43;0100</description>
+      <description>evl_init_timer(__timer, __clock, __handler, __rq, __flags)  evl_init_core_timer(__timer, __handler)  evl_init_timer_on_cpu(__timer, __cpu, __handler)  void evl_destroy_timer(struct evl_timer *timer)  void evl_start_timer(struct evl_timer *timer, ktime_t value, ktime_t interval)  void evl_stop_timer(struct evl_timer *timer)  ktime_t evl_get_timer_date(struct evl_timer *timer)  ktime_t evl_get_interval(struct evl_timer *timer)  ktime_t evl_get_timer_delta(struct evl_timer *timer)  ktime_t evl_get_stopped_timer_delta(struct evl_timer *timer)  Last modified: Sun, 13 Dec 2020 17:55:13 &amp;#43;0100 </description>
     </item>
     <item>
       <title>Cross-buffer access</title>
       <link>https://the-going.github.io/evlproject/core/kernel-api/xbuf/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/core/kernel-api/xbuf/</guid>
-      <description>struct evl_xbuf *evl_get_xbuf(int efd, struct evl_file **efilpp)  void evl_put_xbuf(struct evl_file *efilp)  ssize_t evl_read_xbuf(struct evl_xbuf *xbuf, void *buf, size_t count, int f_flags)  ssize_t evl_write_xbuf(struct evl_xbuf *xbuf, const void *buf, size_t count, int f_flags)  Last modified: Thu, 28 Nov 2019 18:52:38 &amp;#43;0100</description>
+      <description>struct evl_xbuf *evl_get_xbuf(int efd, struct evl_file **efilpp)  void evl_put_xbuf(struct evl_file *efilp)  ssize_t evl_read_xbuf(struct evl_xbuf *xbuf, void *buf, size_t count, int f_flags)  ssize_t evl_write_xbuf(struct evl_xbuf *xbuf, const void *buf, size_t count, int f_flags)  Last modified: Thu, 28 Nov 2019 18:52:38 &amp;#43;0100 </description>
     </item>
     <item>
       <title>Managing IRQs</title>
@@ -92,7 +92,7 @@ EVL files are kernel file objects (struct file) which have been advertised by an
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/core/kernel-api/interrupts/</guid>
       <description>EVL has no specific API for managing out-of-band interrupts. You can use the regular kernel API as updated by Dovetail for this purpose.
- Last modified: Tue, 26 Jun 2018 19:27:55 &amp;#43;0200</description>
+ Last modified: Tue, 26 Jun 2018 19:27:55 &amp;#43;0200 </description>
     </item>
     <item>
       <title>Stage exclusion lock</title>

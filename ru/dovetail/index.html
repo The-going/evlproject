@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <link rel="alternate" type="application/rss&#43;xml" href="https://the-going.github.io/evlproject/ru/dovetail/index.xml" title="Xenomai 4" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Интерфейс Dovetail :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/dovetail/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item active parent"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/dovetail/">English</option>
+                    <option id="ru" value="/ru/dovetail/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/" aria-disabled="true"><span itemprop="name">Интерфейс Dovetail</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#dual-kernel-upsides">Представляем Dovetail</a></li>
+    <li><a href="#зачем-нам-это-нужно">Зачем нам это нужно?</a></li>
+    <li><a href="#developing-dovetail">Развивающийся Dovetail</a></li>
+    <li><a href="#аудитория">Аудитория</a></li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Интерфейс Dovetail</h1>
+
+<h2 id="dual-kernel-upsides">Представляем Dovetail</h2>
+<p>Использование Linux в качестве хоста для легких программных ядер,
+специализирующихся на обеспечении очень короткого и ограниченного времени
+отклика, на протяжении многих лет было популярным способом поддержки приложений
+реального времени во встроенном пространстве.</p>
+<p>Этот <em>двухъядерный</em> дизайн вводит небольшую инфраструктуру реального времени в
+ядро Linux, которая немедленно обрабатывает критически важные по времени
+внеполосные действия независимо от текущей работы ядра общего назначения. Потоки
+приложений, совместно управляемые этой инфраструктурой, по-прежнему получают
+преимущества от общих служб ядра, таких как управление виртуальной памятью;
+они также могут использовать богатый набор функций объектов групповой политики,
+предоставляемых Linux, таких как сеть, хранилище данных или графические интерфейсы.</p>
+<p>Существует значительный потенциал в том, чтобы отделять ядро реального времени
+от инфраструктуры объектов групповой политики:</p>
+<ul>
+<li>
+<p>поскольку автономное ядро не зависит от основной логики ядра для выполнения
+критически важных по времени операций, операции в реальном времени не сериализуются
+с операциями объектов групповой политики внутри. Это устраняет потенциальные
+задержки, вызванные последним, в результате строительства. В результате нет
+необходимости в том, чтобы все операции объектов групповой политики были
+детализированы и в любое время могли быть вытеснены, что в противном случае может
+привести к заметным накладным расходам, поскольку наследование приоритетов задач
+и потоковая передача IRQ должны применяться в масштабах всей системы, затрагивая
+все задачи, включая те, которые имеют нулевые требования в реальном времени.
+Подводя итог, можно сказать, что чем меньше усилий для ядра по поддержанию
+внутренних гарантий в режиме реального времени, тем большая пропускная
+способность процессора доступна приложениям.</p>
+</li>
+<li>
+<p>при отладке проблемы в реальном времени функциональная изоляция инфраструктуры
+реального времени от остальной части кода ядра ограничивает поиск ошибок рамками
+небольшого автономного ядра, исключая большинство взаимодействий с очень большой
+базой ядра объектов групповой политики.</p>
+</li>
+<li>
+<p>благодаря выделенной инфраструктуре, предоставляющей определенный, четко
+определенный набор услуг в режиме реального времени, приложения могут
+однозначно определять, какие вызовы API доступны для поддержки критически
+важных по времени работ, исключая все остальные как потенциально
+недетерминированные в отношении времени отклика.<br>
+<br>
+Иными словами, ваше предположение, что каждая процедура из <em>glibc</em> становится
+доступной в режиме реального времени исключительно благодаря работе в системе
+собственного вытеснения (preemption)? Конечно, вы этого не сделаете, поэтому
+в любом случае тщательно выберите набор служб, которые ваше приложение
+реального времени может вызывать из своего критичного по времени рабочего цикла.
+По этой причине предоставление компактного специализированного API, который
+экспортирует набор услуг, специально предназначенных для использования в
+режиме реального времени, явно является преимуществом, а не ограничением.</p>
+</li>
+</ul>
+<p>В этой документации представлен <em>Dovetail</em>, интерфейс ядра, который вводит
+этап выполнения с высоким приоритетом в основную логику ядра. В любое время
+внеполосные действия, выполняемые на этом этапе, могут помешать общей работе.
+Программное ядро для конкретной задачи, такое как
+<a href="https://the-going.github.io/evlproject/ru/core/">ядро реального времени</a>, может подключаться
+к этому интерфейсу для получения ограниченного времени отклика на внешние
+прерывания и возможностю планирования с ультранизкой задержкой. Это приводит к
+реализации Dovetail следующим образом:</p>
+<ul>
+<li>
+<p>конвейер прерываний, который создает этап выполнения с высоким приоритетом
+для запуска автономного программного ядра.</p>
+</li>
+<li>
+<p>поддержка так называемого <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/"><em>альтернативного планирования</em></a> между основным ядром и автономным программным ядром
+для совместного использования <em>kthreads</em> и  <em>user</em> задач.</p>
+</li>
+</ul>
+<p>Хотя оба уровня, вероятно, потребуются для реализации некоторого автономного
+ядра, на ранней стадии переноса Ласточкиного хвоста необходимо включить только
+конвейер прерываний. Поддержка альтернативного планирования основывается на
+последнем и может - и должна - быть отложена до тех пор, пока конвейер не станет
+полностью функциональным на целевой архитектуре или платформе. База кода
+специально поддерживается таким образом, чтобы обеспечить такой инкрементный процесс.</p>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>Ласточкин хвост только вводит базовые механизмы размещения автономного ядра в
+ядро Linux, позволяя использовать общую модель программирования для своих
+приложений в пользовательском пространстве. Он <strong>не</strong> реализует ядро программного
+обеспечения как таковое, которое вместо этого должно предоставляться отдельным
+компонентом ядра, таким как <a href="https://the-going.github.io/evlproject/ru/core/">ядро EVL</a>.</p>
+
+</div>
+<h2 id="зачем-нам-это-нужно">Зачем нам это нужно?</h2>
+<p>Двухъядерные системы на базе Linux требуют некоторого уровня интерфейса для
+сопряжения вторичного ядра (обычно с поддержкой реального времени, такого как
+<a href="https://the-going.github.io/evlproject/ru/core/">ядро EVL</a>) с логикой ядра, в которое оно
+встроено, чтобы воспользоваться богатым набором функций Linux при запуске
+специализированных приложений с жесткими требованиями к реальному времени.
+Типичной реализацией такого рода интерфейса является
+<a href="https://git.xenomai.org/xenomai/wikis/home">I-pipe</a>, который на протяжении
+многих лет служил как <a href="http://rtai.org">RTAI</a> , так и
+<a href="https://git.xenomai.org/xenomai/wikis/home">Xenomai 3 Cobalt</a>. По нескольким
+причинам, описанным <a href="https://git.xenomai.org/xenomai/wikis/Dovetail">в этом документе</a>,
+поддержание I-pipe оказалось сложным, поскольку изменения в основном ядре
+регулярно вызывали нетривиальные конфликты кода, иногда неприятные регрессии для
+сопровождающих I-pipe ниже по потоку. Хотя концепция конвейерной обработки
+прерываний оказалась правильной в обеспечении короткого времени отклика с разумно
+ограниченными изменениями в исходном ядре, то, как этот механизм интегрирован
+в основной код, показывает его возраст.</p>
+<p>Dovetail является преемником <strong>I-pipe</strong>, со следующими целями:</p>
+<ul>
+<li>
+<p>ввод <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">этапа выполнения с высоким приоритетом</a>
+для критически важных по времени операций в логику ядра, позволяя всем
+прерываниям устройства вести себя как NMI с точки зрения ядра.</p>
+</li>
+<li>
+<p>предоставление простого интерфейса автономным ядрам для выполнения задач Linux
+на этом этапе выполнения с высоким приоритетом, когда это необходимо,
+обеспечивая сверхтонко раздробленное упреждение всех других действий ядра
+в таком случае.</p>
+</li>
+<li>
+<p>включение общей модели программирования Linux для приложений, которые должны
+управляться автономным ядром для предоставления услуг со сверхнизкой задержкой
+(адресное пространство частного пользователя, многопоточность, возможности SMP,
+системные вызовы и т.д.).</p>
+</li>
+<li>
+<p>сделать возможным поддерживать Dovetail (и, в конечном счете,
+<a href="https://the-going.github.io/evlproject/ru/core/">ядро EVL</a> , основанное на нем) с общими
+знаниями о разработке ядра, за небольшую долю затрат на проектирование и
+техническое обслуживание, которые требует собственное упреждение.
+Как правило, Ласточкин хвост всегда выступает за расширение существующих
+подсистем ядра с возможностью работы на новом этапе выполнения, вместо того,
+чтобы предпринимать побочные шаги. Например,
+<a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">логика конвейера прерываний</a>
+напрямую интегрирована в <a href="https://www.kernel.org/doc/html/latest/core-api/genericirq.html">общий слой IRQ</a>.</p>
+</li>
+</ul>
+<h2 id="developing-dovetail">Развивающийся Dovetail</h2>
+<p>Работа над &ldquo;Ласточкиным хвостом&rdquo; является обычной разработкой ядра Linux, следуя
+общему набору правил и рекомендаций, которые преобладают в основном ядре.</p>
+<p>Интерфейс &ldquo;Ласточкин хвост&rdquo; поддерживается в следующем репозитории GIT, который
+отслеживает <a href="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git">основную линию ядра Linux</a>:</p>
+<ul>
+<li><a href="mailto:git@git.xenomai.org">git@git.xenomai.org</a>:Xenomai/linux-dovetail.git</li>
+<li><a href="https://git.xenomai.org/linux-dovetail.git">https://git.xenomai.org/linux-dovetail.git</a></li>
+</ul>
+<h2 id="аудитория">Аудитория</h2>
+<p>Этот документ предназначен для людей, обладающих общими знаниями в области
+разработки ядра, которые могут быть заинтересованы в создании автономного
+программного ядра на Ласточкином хвосте, переносе его на свою архитектуру или
+платформу по выбору. Знание основ потока прерываний, драйверов микросхем IRQ и
+устройств синхронизации событий в дереве ядра было бы обязательным требованием
+для переноса этого кода.</p>
+<p>Однако этот документ не подходит для того, чтобы намочить ноги при разработке
+ядра, поскольку он предполагает, что читатель уже знаком с основами ядра.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Fri, 05 Nov 2021 22:21:21 MSK
+
+	
+		
+		content/dovetail/_index.md
+
+		
+		c56874c
+
+	
+</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/abi-revs/" title="ABI revisions"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/" title="Interrupt pipeline"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

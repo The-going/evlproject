@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Под капотом on Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/ru/core/under-the-hood/</link>
+    <description>Recent content in Под капотом on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright><atom:link href="https://the-going.github.io/evlproject/ru/core/under-the-hood/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The EVL ABI</title>
+      <link>https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/</guid>
+      <description>Since we have service calls between the applications and the EVL core, we depend on a certain format of request codes, arguments and return values when exchanging information between both ends, like the contents of the argument structure passed to the various ioctl(2) and oob_ioctl() requests. This convention forms the EVL ABI. As hard as we might try to keep the ABI stable over time, there are times when this cannot be achieved, at the very least because we may want to make new features added to the EVL core visible to applications.</description>
+    </item>
+  </channel>
+</rss>

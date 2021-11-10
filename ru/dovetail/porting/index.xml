@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Перенос Dovetail on Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/ru/dovetail/porting/</link>
+    <description>Recent content in Перенос Dovetail on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright><atom:link href="https://the-going.github.io/evlproject/ru/dovetail/porting/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Prerequisites</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/</guid>
+      <description>Generic requirements The interrupt pipeline requires the following features to be available from the target Linux kernel:
+  Generic IRQ handling (CONFIG_GENERIC_IRQ) and IRQ domains (CONFIG_IRQ_DOMAIN), which most architectures should support these days.
+  Generic clock event abstraction (CONFIG_GENERIC_CLOCKEVENTS).
+  Generic clock source abstraction (!CONFIG_ARCH_USES_GETTIMEOFFSET).
+  Other assumptions ARM   a target ARM machine port must be allowed to specify its own IRQ handler at run time (CONFIG_MULTI_IRQ_HANDLER).</description>
+    </item>
+    <item>
+      <title>Interrupt flow</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/</link>
+      <pubDate>Wed, 27 Jun 2018 15:20:04 +0200</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/</guid>
+      <description>Adapting the generic interrupt management (genirq) Interrupt pipelining involves a basic change in controlling the interrupt flow: handle_domain_irq() from the IRQ domain API redirects all parent IRQs to the pipeline entry by calling generic_pipeline_irq(), instead of generic_handle_irq().
+Generic flow handlers acknowledge the incoming IRQ event in the hardware as usual, by calling the appropriate irqchip routine (e.g. irq_ack(), irq_eoi()) according to the interrupt type. However, the flow handlers do not immediately invoke the in-band interrupt handlers.</description>
+    </item>
+    <item>
+      <title>Атомарные операции</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/</link>
+      <pubDate>Wed, 27 Jun 2018 17:17:25 +0200</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/</guid>
+      <description>Эффект виртуализации защиты от прерываний должен быть отменен для атомарных помощников везде, где требуется отключение прерываний для сериализации вызывающих абонентов, независимо от стадии, на которой они находятся. Как правило, речь идет о следующих файлах:
+ include/asm-generic/atomic.h include/asm-generic/cmpxchg-local.h include/asm-generic/cmpxchg.h  Аналогично в коде, зависящем от архитектуры:
+ arch/arm/include/asm/atomic.h arch/arm/include/asm/bitops.h arch/arm/include/asm/cmpxchg.h  Это необходимо для того, чтобы эти помощники могли работать с данными, к которым можно получить доступ с обоих этапов. Распространенный способ возврата к такой виртуализации включает замену вызовов API -виртуализированного - local_irq_save(), local_irq_restore() их жесткими невиртуализированными аналогами.</description>
+    </item>
+    <item>
+      <title>Биты, зависящие от архитектуры</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/arch/</link>
+      <pubDate>Wed, 27 Jun 2018 17:07:51 +0200</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/arch/</guid>
+      <description>Виртуализация маски прерывания Специфичный для архитектуры код, который управляет флагом прерывания в регистре состояния процессора в arch/&amp;lt;your-arch&amp;gt;/include/asm/irqflags.h следует разделить между реальным и виртуальным управлением прерываниями. Реальные операции управления прерываниями унаследованы от реализации внутриполосного ядра. Виртуальные должны быть построены на услугах, предоставляемых ядром конвейера прерываний.
+ во-первых, исходные помощники arch\_local_* следует переименовать в помощники native_* , влияющие на состояние аппаратного прерывания в ЦП. Это соглашение об именовании накладывается на код архитектуры универсальными помощниками в include/asm-generic/irq\_pipeline.</description>
+    </item>
+    <item>
+      <title>Tick devices</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/timer/</link>
+      <pubDate>Wed, 27 Jun 2018 17:15:23 +0200</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/timer/</guid>
+      <description>Proxy tick device The proxy tick device is a synthetic clock event device for handing over the control of the hardware tick device to a high-precision, out-of-band timing logic, which cannot be delayed by the in-band kernel code. With this proxy in place, any out-of-band code can gain control over the timer hardware for carrying out its own timing duties. In the same move, it is required to honor the timing requests received from the in-band timer layer (i.</description>
+    </item>
+    <item>
+      <title>Reading clock sources</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/</guid>
+      <description>Your autonomous core most likely needs a fast access to the current clock source from the out-of-band context, for reading precise timestamps which are in sync with the kernel&amp;rsquo;s idea of time. The best way to achieve this is by enabling the fast clock_gettime(3) helper in the vDSO support for the target CPU architecture. At least, you may want user-space tasks controlled by the core to have access to the POSIX-defined CLOCK_MONOTONIC and CLOCK_REALTIME clocks from the out-of-band context, using a vDSO call, with no execution and response time penalty involved in invoking an [in-band syscall] (/ru/dovetail/altsched/#inband-switch).</description>
+    </item>
+    <item>
+      <title>Syscall path</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/</guid>
+      <description> Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC </description>
+    </item>
+    <item>
+      <title>Raw printk support</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/</guid>
+      <description>Unless you are lucky enough to have an ICE for debugging hard issues involving out-of-band contexts, you might have to resort to basic printk-style debugging over a serial line. Although the printk() machinery can be used from out-of-band context when Dovetail is enabled, the output is deferred until the in-band stage gets back in control, which means that:
+  you can&amp;rsquo;t reliably trace out-of-band code on the spot, deferred output issued from an out-of-band context, or from a section of code running with interrupts disabled in the CPU may appear after subsequent in-band messages under some circumstances, due to a buffering effect.</description>
+    </item>
+    <item>
+      <title>Misc</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/misc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/misc/</guid>
+      <description>printk() support printk() may be called by out-of-band code safely, without encurring extra latency. The output is conveyed like NMI-originated output, which involves some delay until the in-band code resumes, and the console driver(s) can handle it.
+Tracing Tracepoints can be traversed by out-of-band code safely. Dynamic tracing is available to a kernel running the pipelined interrupt model too.
+ Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC </description>
+    </item>
+    <item>
+      <title>Developer&#39;s Notes</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/</guid>
+      <description>Generic Fundamentally preemption-safe contexts Over a few contexts, we may traverse code using unprotected, preemption-sensitive accessors such as percpu() without disabling preemption specifically, because either one condition is true;
+  if preempt_count() bears either of the PIPELINE_MASK or STAGE_MASK bits, which turns preemption off, therefore CPU migration cannot happen (debug_smp_processor_id() and preempt checks in percpu accessors would detect such context properly too).
+  if we are running over the context of the in-band stage&amp;rsquo;s event log syncer (sync_current_stage()) playing a deferred interrupt, in which case the virtual interrupt disable bit is set, so no CPU migration may occur either.</description>
+    </item>
+  </channel>
+</rss>

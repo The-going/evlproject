@@ -3,22 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.88.1" />
-    <link rel="alternate" type="application/rss+xml" href="https://the-going.github.io/evlproject/dovetail/pipeline/index.xml" title="Xenomai 4" />
+    <meta name="generator" content="Hugo 0.89.1" />
+    <link rel="alternate" type="application/rss&#43;xml" href="https://the-going.github.io/evlproject/dovetail/pipeline/index.xml" title="Xenomai 4" />
     <meta name="description" content="Xenomai 4 project">
     <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
-    <link rel="icon" href="https://the-going.github.io/evlproject/images/favicon.png" type="image/png">
+    
     <title>Interrupt pipeline :: Xenomai 4</title>
-    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/theme-evl.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/variant.css?1634415569" rel="stylesheet">
-    <link href="https://the-going.github.io/evlproject/css/print.css?1634415569" rel="stylesheet" media="print">
-    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1634415569"></script>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572174" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572174" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572174" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572174"></script>
     <style>
       :root #header + #content > #left > #rlblock_left{
         display:none !important;
@@ -29,6 +30,11 @@
     </style>
   </head>
   <body class="" data-url="https://the-going.github.io/evlproject/dovetail/pipeline/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
     <nav id="sidebar" class="showVisitedLinks">
       <div id="header-wrapper">
         <div id="header">
@@ -40,20 +46,16 @@
           <input data-search-input id="search-by" type="search" placeholder="Search...">
           <span data-search-clear=""><i class="fas fa-times"></i></span>
         </div>
-        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1634415569"></script>
-        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572174"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572174"></script>
         <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
         <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
-        <script>
-          var index_url="https://the-going.github.io/evlproject/index.json";
-          var root_url="https://the-going.github.io/evlproject/";
-          var baseUri=root_url.replace(/\/$/, '');
-        </script>
-        <script src="https://the-going.github.io/evlproject/js/search.js?1634415569"></script>
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572174"></script>
       </div>
       <div class="highlightable">
         <ul class="topics">
-          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/overview/" title="Overview" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/">&#8226; Get Started<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/overview/testing-page/" title="Testing the page rendering" class="dd-item"><a href="https://the-going.github.io/evlproject/overview/testing-page/">Test page<i class="fas fa-check read-icon"></i></a></li></ul></li>
           <li data-nav-id="/core/" title="The EVL core" class="dd-item"><a href="https://the-going.github.io/evlproject/core/">&#8226; Real-time core<i class="fas fa-check read-icon"></i></a><ul>
           <li data-nav-id="/core/build-steps/" title="Building EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/core/build-steps/">Building EVL<i class="fas fa-check read-icon"></i></a></li>
           <li data-nav-id="/core/runtime-settings/" title="Runtime configuration" class="dd-item"><a href="https://the-going.github.io/evlproject/core/runtime-settings/">Runtime settings<i class="fas fa-check read-icon"></i></a></li>
@@ -130,6 +132,25 @@
         <div id="prefooter">
           <hr/>
           <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/dovetail/pipeline/" selected>English</option>
+                    <option id="ru" value="/ru/dovetail/pipeline/">Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
             <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
           </ul>
         </div>
@@ -247,9 +268,8 @@ approach is said to be <em>optimistic</em> because it is assumed that the
 overhead of maintaining such mechanism should be small as the in-band
 code seldom receives an interrupt while masking them.</p>
 <p>This approach was fully described by <strong>Stodolsky</strong>, <strong>Chen</strong> &amp;
-<strong>Bershad</strong> in [<em>Fast Interrupt Priority Management in Operating
-System Kernels</em>]
-(<a href="https://www.usenix.org/legacy/publications/library/proceedings/micro93/full_papers/stodolsky.txt)">https://www.usenix.org/legacy/publications/library/proceedings/micro93/full_papers/stodolsky.txt)</a>.</p>
+<strong>Bershad</strong> in <a href="https://www.usenix.org/legacy/publications/library/proceedings/micro93/full_papers/stodolsky.txt"><em>Fast Interrupt Priority Management in Operating
+System Kernels</em></a>.</p>
 <h2 id="virtual-i-flag">Virtual interrupt disabling</h2>
 <p>To this end, a software logic managing a virtual interrupt disable
 flag is introduced by the interrupt pipeline between the hardware and
@@ -289,9 +309,9 @@ virtual interrupt disable flag by calling <code>local_irq_enable()</code> or any
 of its variants, which unstalls the in-band stage. When this happens, the
 interrupt state is resynchronized by playing the log, firing the
 in-band handlers for which an IRQ event is pending.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">   /* Both stages unstalled on entry */
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">   /* Both stages unstalled on entry */
    local_irq_save(flags);
-   &lt;<span style="color:#ff6ac1">IRQx</span> <span style="color:#57c7ff">received:</span> <span style="color:#57c7ff">no</span> <span style="color:#57c7ff">out-of-band</span> <span style="color:#57c7ff">handler</span>&gt;
+   &lt;<span style="color:#5bc4bf">IRQx</span> <span style="color:#06b6ef">received:</span> <span style="color:#06b6ef">no</span> <span style="color:#06b6ef">out-of-band</span> <span style="color:#06b6ef">handler</span>&gt;
        (pipeline logs IRQx event)
    ...
    local_irq_restore(flags);
@@ -307,19 +327,19 @@ virtually turns all device IRQs into NMIs, for running out-of-band
 handlers.</p>
 <p>For this reason, out-of-band code may generally <em>not</em> re-enter
 in-band code, for preventing creepy situations like this one:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">   /* in-band context */
-   spin_lock_irqsave(<span style="color:#ff5c57">&amp;</span>lock, flags);
-      &lt;<span style="color:#ff6ac1">IRQx</span> <span style="color:#57c7ff">received:</span> <span style="color:#57c7ff">out-of-band</span> <span style="color:#57c7ff">handler</span> <span style="color:#57c7ff">installed</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">   /* in-band context */
+   spin_lock_irqsave(<span style="color:#ef6155">&amp;</span>lock, flags);
+      &lt;<span style="color:#5bc4bf">IRQx</span> <span style="color:#06b6ef">received:</span> <span style="color:#06b6ef">out-of-band</span> <span style="color:#06b6ef">handler</span> <span style="color:#06b6ef">installed</span>&gt;
          handle_oob_event();
             /* attempted re-entry to in-band from out-of-band. */
             in_band_routine();
-               spin_lock_irqsave(<span style="color:#ff5c57">&amp;</span>lock, flags);
-               &lt;<span style="color:#ff6ac1">DEADLOCK</span>&gt;
+               spin_lock_irqsave(<span style="color:#ef6155">&amp;</span>lock, flags);
+               &lt;<span style="color:#5bc4bf">DEADLOCK</span>&gt;
                ...
             ...
          ...
    ...
-   spin_unlock irqrestore(<span style="color:#ff5c57">&amp;</span>lock, flags);
+   spin_unlock irqrestore(<span style="color:#ef6155">&amp;</span>lock, flags);
 </code></pre></div><p>Even in absence of an attempt to get a spinlock recursively, the outer
 in-band code in the example above is entitled to assume that no access
 race can occur on the current CPU while interrupts are (virtually)
@@ -360,7 +380,7 @@ hardware interrupts.</p>
 context alongside <code>in_nmi()</code>, which ends before the companion core is
 allowed to reschedule.</p>
 <p>On hardware interrupt, the execution flow is as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">   &lt;IRQ&gt; /* hard irqs off */
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">   &lt;IRQ&gt; /* hard irqs off */
 	core_notify_irq_entry /* disable oob reschedule */
 	&lt;pipeline_entry&gt;
 		rcu_nmi_enter
@@ -406,7 +426,10 @@ outside of the section marked as a pipeline entry.</p>
 </li>
 </ul>
 <hr>
-<p style="text-align:right">Last modified: Sun, 03 Oct 2021 11:41:49 &#43;0200</p>
+<p style="text-align:right">Last modified: Sun, 03 Oct 2021 11:41:49 &#43;0200
+
+	
+</p>
 
 
           <footer class=" footline">
@@ -421,18 +444,12 @@ outside of the section marked as a pipeline entry.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1634415569"></script>
-    <script src="https://the-going.github.io/evlproject/js/mermaid.min.js?1634415569"></script>
-    <script>
-      if (typeof mermaid != 'undefined') {
-        mermaid.mermaidAPI.initialize( Object.assign( { "securityLevel": "antiscript" }, JSON.parse("{ \"startOnLoad\": true }"), { startOnLoad: false } ) );
-      }
-    </script>
-    <script src="https://the-going.github.io/evlproject/js/relearn.js?1634415569"></script>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572174"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572174"></script>
   </body>
 </html>

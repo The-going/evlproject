@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Интерфейс Dovetail on Xenomai 4</title>
+    <link>https://the-going.github.io/evlproject/ru/dovetail/</link>
+    <description>Recent content in Интерфейс Dovetail on Xenomai 4</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru</language>
+    <copyright>Copyright 2021 - The Xenomai project.</copyright>
+    <lastBuildDate>Tue, 26 Jun 2018 19:28:38 +0200</lastBuildDate><atom:link href="https://the-going.github.io/evlproject/ru/dovetail/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Interrupt pipeline</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/pipeline/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/pipeline/</guid>
+      <description>The autonomous core has to act upon device interrupts with no delay, regardless of the other kernel operations which may be ongoing when the interrupt is received by the CPU. Therefore, there is a basic requirement for prioritizing interrupt masking and delivery between the autonomous core and GPOS operations, while maintaining consistent internal serialization for the kernel.
+However, to protect from deadlocks and maintain data integrity, Linux hard disables interrupts around any critical section of code which must not be preempted by interrupt handlers on the same CPU, enforcing a strictly serialized execution among those contexts.</description>
+    </item>
+    <item>
+      <title>Перенос Dovetail</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/porting/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/porting/</guid>
+      <description>Перенос интерфейса &amp;ldquo;Ласточкин хвост&amp;rdquo; на другой выпуск ядра или другую архитектуру процессора включает в себя сначала включение конвейера прерываний, а затем функцию альтернативного планирования, которая основана на первом.
+Конвейерная обработка прерываний включается путем включения CONFIG_IRQ_PIPELINE: обеспечение безупречной работы этой функции является необходимым условием для продолжения работы остальной части порта &amp;ldquo;Ласточкин хвост&amp;rdquo;. По крайней мере, вы должны убедиться, что эти функции ядра совместимы с конвейерной обработкой прерываний:
+ CONFIG_PREEMPT CONFIG_TRACE_IRQFLAGS (выбран с помощью CONFIG_IRQSOFF_TRACER, CONFIG_PROVE_LOCKING) CONFIG_LOCKDEP (выбран с помощью CONFIG_PROVE_LOCKING, CONFIG_LOCK_STAT, CONFIG_DEBUG_WW_MUTEX_SLOWPATH, CONFIG_DEBUG_LOCK_ALLOC) CONFIG_CPU_IDLE  Только тогда, когда этот слой будет прочным, вы должны начать работать над включением поддержки альтернативного планирования, которая позволит вашему автономному ядру планировать задачи, созданные ядром.</description>
+    </item>
+    <item>
+      <title>Alternate scheduling</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/altsched/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/altsched/</guid>
+      <description>For specific use cases requiring reliable, ultra-low response times, we want to enable hosted autonomous software cores to control common Linux tasks based on their own scheduler infrastructure, fully decoupled from the host&amp;rsquo;s scheduler, with absolute priority over all other kernel activities.
+This being said, Dovetail also promotes the idea that a dual kernel system should keep the functional overlap between the main kernel and the autonomous core minimal. To this end, a task from such core should be merely seen as a regular Linux task with additional scheduling capabilities guaranteeing very low and bounded response times.</description>
+    </item>
+    <item>
+      <title>Rules Of Thumb</title>
+      <link>https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/</guid>
+      <description>Turn on debug options in the kernel configuration! During the development phase, do yourself a favour: turn on CONFIG_DEBUG_IRQ_PIPELINE and CONFIG_DEBUG_DOVETAIL.
+The first one will catch many nasty issues, such as calling unsafe in-band code from out-of-band context. The second one checks the integrity of the alternate scheduling support, detecting issues in the architecture port.
+The runtime overhead induced by enabling these options is marginal. Just don&amp;rsquo;t port Dovetail or implement out-of-band client code without them enabled in your target kernel, seriously.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Developer&#39;s Notes :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/dovetail/porting/devnotes/">English</option>
+                    <option id="ru" value="/ru/dovetail/porting/devnotes/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/"><span itemprop="name">Интерфейс Dovetail</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/porting/"><span itemprop="name">Перенос Dovetail</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/" aria-disabled="true"><span itemprop="name">Developer&#39;s Notes</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#generic">Generic</a>
+      <ul>
+        <li><a href="#fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</a></li>
+        <li><a href="#checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</a></li>
+        <li><a href="#stop_machine-hard-disables-interrupts"><code>stop_machine()</code> hard disables interrupts</a></li>
+        <li><a href="#virtual-interrupt-disable-state-breakage">Virtual interrupt disable state breakage</a></li>
+        <li><a href="#losing-the-timer-tick">Losing the timer tick</a></li>
+        <li><a href="#hard-interrupt-masking-in-clock-chip-handlers">Hard interrupt masking in clock chip handlers</a></li>
+        <li><a href="#make-no-assumption-in-virtualizing-arch_local_irq_restore">Make no assumption in virtualizing arch_local_irq_restore()</a></li>
+        <li><a href="#rcu-and-out-of-band-context">RCU and out-of-band context</a></li>
+        <li><a href="#common-services-which-are-safe-in-out-of-band-context">Common services which are safe in out-of-band context</a></li>
+      </ul>
+    </li>
+    <li><a href="#arm">ARM</a>
+      <ul>
+        <li><a href="#context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Developer&#39;s Notes</h1>
+
+<h2 id="generic">Generic</h2>
+<h3 id="fundamentally-preemption-safe-contexts">Fundamentally preemption-safe contexts</h3>
+<p>Over a few contexts, we may traverse code using unprotected,
+preemption-sensitive accessors such as <code>percpu()</code> without disabling
+preemption specifically, because either one condition is true;</p>
+<ul>
+<li>
+<p>if <code>preempt_count()</code> bears either of the <code>PIPELINE_MASK</code> or
+<code>STAGE_MASK</code> bits, which turns preemption off, therefore CPU
+migration cannot happen (<code>debug_smp_processor_id()</code> and preempt
+checks in <code>percpu</code> accessors would detect such context properly
+too).</p>
+</li>
+<li>
+<p>if we are running over the context of the in-band stage&rsquo;s event log
+syncer (<code>sync_current_stage()</code>) playing a deferred interrupt, in
+which case the virtual interrupt disable bit is set, so no CPU
+migration may occur either.</p>
+</li>
+</ul>
+<p>For instance, the following contexts qualify:</p>
+<ul>
+<li>
+<p><code>clockevents_handle_event()</code>, which should either be called from the
+oob stage - therefore <code>STAGE_MASK</code> is set - when the [proxy tick
+device is active] (/ru/dovetail/porting/timer/#proxy-tick-logic) on the CPU,
+and/or from the in-band stage playing a timer interrupt event from the
+corresponding device.</p>
+</li>
+<li>
+<p>any IRQ flow handler <em>from kernel/irq/chip.c</em>. When called from
+<code>generic_pipeline_irq()</code> for pushing an external event to the
+pipeline, <code>on_pipeline_entry()</code> is true, which indicates that
+PIPELINE_MASK is set. When called for playing a deferred interrupt
+on the in-band stage, the virtual interrupt disable bit is set.</p>
+</li>
+</ul>
+<h3 id="checking-for-out-of-band-interrupt-property">Checking for out-of-band interrupt property</h3>
+<p>The <code>IRQF_OOB</code> action flag should <em>not</em> be used for testing whether
+an interrupt is out-of-band, because out-of-band handling may be
+turned on/off dynamically on an IRQ descriptor using
+<code>irq_switch_oob()</code>, which would not translate to <code>IRQF_OOB</code> being
+set/cleared for the attached action handlers.</p>
+<p><code>irq_is_oob()</code> is the right way to check for out-of-band handling.</p>
+<h3 id="stop_machine-hard-disables-interrupts"><code>stop_machine()</code> hard disables interrupts</h3>
+<p>The <code>stop_machine()</code> service guarantees that all online CPUs are
+spinning non-preemptible in a known code location before a subset of
+them may safely run a stop-context function. This service is typically
+useful for live patching the kernel code, or changing global memory
+mappings, so that no activity could run in parallel until the system
+has returned to a stable state after all stop-context operations have
+completed.</p>
+<p>When interrupt pipelining is enabled, Dovetail provides the same
+guarantee by restoring hard interrupt disabling where virtualizing the
+interrupt disable flag would defeat it.</p>
+<p>As those lines are written, all <code>stop_machine()</code> use cases must also
+exclude any oob stage activity (e.g. ftrace live patching the kernel
+code for installing tracepoints), or happen before any such activity
+can ever take place (e.g. KPTI boot mappings). Dovetail makes a basic
+assumption that <code>stop_machine()</code> could not get in the way of
+latency-sensitive processes, simply because the latter could not keep
+running safely until a call to the former has completed anyway.</p>
+<p>However, one should keep an eye on <code>stop_machine()</code> usage upstream,
+identifying new callers which might cause unwanted latency spots under
+specific circumstances (maybe even abusing the interface).</p>
+<h3 id="virtual-interrupt-disable-state-breakage">Virtual interrupt disable state breakage</h3>
+<p>When some WARN_ON() triggers due to a wrong interrupt disable state
+(e.g. entering the softirqs/bh code with IRQs unexpectedly [virtually]
+disabled), this may be due to the CPU and virtual interrupt states
+being out-of-sync when traversing the epilogue code after a syscall,
+IRQ or trap has been handled during the latest kernel entry.</p>
+<p>Typically, do_work_pending() or do_notify_resume() should make sure to
+reconcile both states in the work loop, and also to restore the
+virtual state they received on entry before returning to their caller.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>The routines just mentioned always enter from their assembly call site
+with interrupts hard disabled in the CPU. However, they may be entered
+with the virtual interrupt state enabled or disabled, depending on the
+kind of event which led to them eventually. Typically, a system call
+epilogue would always enter with the virtual state enabled, but a
+fault might also occur when the virtual state is disabled though. The
+epilogue routine called for finalizing some IRQ handling must enter with
+the virtual state enabled, since the latter is a pre-requisite for
+running such code.</p>
+
+</div>
+<h3 id="losing-the-timer-tick">Losing the timer tick</h3>
+<p>The symptom of a common issue in a Dovetail port is losing the timer
+interrupt when the autonomous core takes control over the <a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">tick
+device</a>, causing
+the in-band kernel to stall. After some time spent hanging, the
+in-band kernel may eventually complain about a RCU stall situation
+with a message like <code>INFO: rcu_preempt detected stalls on CPUs/tasks</code>
+followed by stack dump(s). In other cases, the machine may simply lock
+up due to an interrupt storm.</p>
+<p>This is typical of timer interrupt events not flowing down normally to
+the in-band kernel anymore because something went wrong as soon as the
+proxy tick device replaced the regular device for serving in-band
+timing requests. When this happens, you should check the following code
+spots for bugs:</p>
+<ul>
+<li>
+<p>the timer acknowledge code is wrong once called from the <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">oob
+stage</a>, which is going to be the case as soon as an autonomous core
+installs the <a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">proxy tick device</a> for interposing on the
+timer. Being wrong here means performing actions which are not legit
+from <a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/#safe-inband-code">such a context</a>.</p>
+</li>
+<li>
+<p>the <em>irqchip</em> driver managing the interrupt event for the timer tick
+is wrong somehow, causing such interrupt to stay masked or stuck for
+some reason whenever it is switched to <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">out-of-band mode</a>. You need to
+double-check the implementation of the <a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/#irqchip-fixups">chip handlers</a>,
+considering the effects and requirements of interrupt pipelining.</p>
+</li>
+<li>
+<p>power management (CONFIG_CPUIDLE) gets in the way, often due to the
+infamous C3STOP misfeature turning off the original timer hardware
+controlled by the proxy device. A detailed explanation is given in
+Documentation/irq_pipeline.rst when discussing the few changes to
+the scheduler core for supporting the Dovetail interface. If this is
+acceptable from a power saving perspective, having the autonomous
+core prevent the in-band kernel from entering a deeper C-state is
+enough to fix the issue, by overriding the <code>irq_cpuidle_control()</code>
+routine as follows:</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">bool irq_cpuidle_control(struct cpuidle_device *dev,
+			 struct cpuidle_state *state)
+{
+	/*
+	 * Deny entering sleep state if this entails stopping the
+	 * timer (i.e. C3STOP misfeature).
+	 */
+	if (state &amp;&amp; (state-&gt;flags &amp; CPUIDLE_FLAG_TIMER_STOP))
+		return false;
+
+	return true;
+}
+</code></pre></div>
+<div class="notices tip">
+    <div class="label">Совет</div><p>Printk-debugging such timer issue <em>requires</em> enabling <a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">raw
+printk()</a> support,
+you won&rsquo;t get away with tracing the kernel behavior using the plain
+<code>printk()</code> routine for this, because most of the output would remain
+stuck into a buffer, never reaching the console driver before the
+board hangs eventually.</p>
+
+</div>
+<h3 id="hard-interrupt-masking-in-clock-chip-handlers">Hard interrupt masking in clock chip handlers</h3>
+<p>The only valid way of sharing a clock tick device between the in-band
+and out-of-band stages is to access it through <a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">the tick
+proxy</a>. For this reason, we
+don&rsquo;t need to enforce <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">hard interrupt masking</a> in clock chip
+handlers to make them pipeline-safe, because once proxying is active
+for a tick device, hardware interrupts are off across calls to its
+handlers when applicable. As a result, either all accesses to the
+clock chip handlers are proxied and proper masking is already in
+place, or there is no proxy, which means the in-band kernel is still
+controlling the device, in which case there is no way we might
+conflict with out-of-band accesses.</p>
+<p>Obviously, this fact does not preclude why we would still want to
+serialize CPUs when accessing shared data there, in which case <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">hard
+locking</a> should be in
+place to ensure this.</p>
+<h3 id="make-no-assumption-in-virtualizing-arch_local_irq_restore">Make no assumption in virtualizing arch_local_irq_restore()</h3>
+<p>Do not make any assumption with respect to the current interrupt state
+when <code>arch_local_irq_restore()</code> is called, specifically don&rsquo;t expect
+the inband stage to be stalled on entry. Some archs use constructs
+like follows, which breaks such assumption:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	local_save_flags(flags);
+	local_irq_enable();
+	...
+	local_irq_restore(flags);
+</code></pre></div><p>In that case, we do want the stall bit to be restored unconditionally
+from <em>flags</em>. A correct implementation would be:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static inline notrace void arch_local_irq_restore(unsigned long flags)
+{
+	inband_irq_restore(arch_irqs_disabled_flags(flags));
+	barrier();
+}
+
+</code></pre></div><h3 id="rcu-and-out-of-band-context">RCU and out-of-band context</h3>
+<p>The out-of-band context is semantically equivalent to the NMI context,
+therefore the current CPU cannot be in an extended quiescent state
+RCU-wise if running oob. CAUTION: the converse assertion is <strong>NOT</strong>
+true (i.e. a CPU running code on the in-band stage may be idle
+RCU-wise).</p>
+<h3 id="common-services-which-are-safe-in-out-of-band-context">Common services which are safe in out-of-band context</h3>
+<p>Dovetail guarantees that the following services are safe to call from
+the out-of-band stage:</p>
+<ul>
+<li>
+<p>irq_work() may be called from the out-of-band stage to schedule a
+(synthetic) interrupt in the in-band stage.</p>
+</li>
+<li>
+<p>__raise_softirq_irqoff() may be called from the out-of-band stage to
+schedule a softirq. For instance, the EVL network stack uses this to
+kick the NET_TX_SOFTIRQ event in the in-band stage.</p>
+</li>
+<li>
+<p>printk() may be called from any context, including out-of-band
+interrupt handlers. Messages are queued, then passed to the output
+device(s) only when the in-band stage resumes though.</p>
+</li>
+</ul>
+<h2 id="arm">ARM</h2>
+<h3 id="context-assumption-with-outer-l2-cache">Context assumption with outer L2 cache</h3>
+<p>There is no reason for the outer cache to be
+invalidated/flushed/cleaned from an out-of-band context, all cache
+maintenance operations must happen from in-band code. Therefore, we
+neither need nor want to convert the spinlock serializing access to
+the cache maintenance operations for L2 to a hard lock.</p>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>This above assumption is unfortunately only partially right, because
+at some point in the future we may want to run DMA transfers from the
+out-of-band context, which could entail cache maintenance operations.</p>
+
+</div>
+<p>Conversion to hard lock may cause latency to skyrocket on some i.MX6
+hardware, equipped with PL22x cache units, or PL31x with errata 588369
+or 727915 for particular hardware revisions, as each background
+operation would be awaited for completion with hard irqs disabled, in
+order to work around some silicon bug.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/" title="Misc"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/dovetail/altsched/" title="Alternate scheduling"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

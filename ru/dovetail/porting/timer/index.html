@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Tick devices :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/dovetail/porting/timer/">English</option>
+                    <option id="ru" value="/ru/dovetail/porting/timer/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/"><span itemprop="name">Интерфейс Dovetail</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/porting/"><span itemprop="name">Перенос Dovetail</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/" aria-disabled="true"><span itemprop="name">Tick devices</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#proxy-tick-device">Proxy tick device</a>
+      <ul>
+        <li><a href="#adapting-clock-chip-devices-for-proxying">Adapting clock chip devices for proxying</a></li>
+        <li><a href="#proxy-tick-logic">Theory of operations</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Tick devices</h1>
+
+<h2 id="proxy-tick-device">Proxy tick device</h2>
+<p>The proxy tick device is a synthetic clock event device for handing
+over the control of the hardware tick device to a high-precision,
+out-of-band timing logic, <a href="https://the-going.github.io/evlproject/ru/#dual-kernel-upsides">which cannot be delayed</a> by the in-band kernel code.
+With this proxy in place, any out-of-band code can gain control over
+the timer hardware for carrying out its own timing duties. In the same
+move, it is required to honor the timing requests received from the
+in-band timer layer (i.e. hrtimers) since the latter won&rsquo;t be able to
+program timer events directly into the hardware while the proxy is
+active.</p>
+<p>In other words, the proxy tick device shares the functionality of the
+actual device between the in-band and out-of-band contexts, with only
+the latter actually programming the hardware.</p>
+<h3 id="adapting-clock-chip-devices-for-proxying">Adapting clock chip devices for proxying</h3>
+<p>The proxy tick device borrows a real clock chip device from the
+in-band kernel, controlling it under the hood while substituting for
+the current tick device. Clock chips which may be controlled by the
+proxy tick device need their drivers to be specifically adapted for
+such use, as follows:</p>
+<ul>
+<li>
+<p><code>clockevents_handle_event()</code> must be substituted to any open-coded
+invocation of the event handler in the interrupt handler.</p>
+</li>
+<li>
+<p><code>struct clock_event_device::irq</code> must be properly set to the actual
+IRQ number signaling an event from this device.</p>
+</li>
+<li>
+<p><code>struct clock_event_device::features</code> must include
+<code>CLOCK_EVT_FEAT_PIPELINE</code>.</p>
+</li>
+<li>
+<p><code>__IRQF_TIMER</code> must be set for the action handler of the timer
+device interrupt.</p>
+</li>
+</ul>
+<blockquote>
+<p>Adapting the ARM architected timer driver to out-of-band timing</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -585,7 +585,7 @@ static __always_inline irqreturn_t timer_handler(const int access,
+ 	if (ctrl &amp; ARCH_TIMER_CTRL_IT_STAT) {
+ 		ctrl |= ARCH_TIMER_CTRL_IT_MASK;
+ 		arch_timer_reg_write(access, ARCH_TIMER_REG_CTRL, ctrl, evt);
+-		evt-&gt;event_handler(evt);
++		clockevents_handle_event(evt);
+ 		return IRQ_HANDLED;
+ 	}
+ 
+@@ -704,7 +704,7 @@ static int arch_timer_set_next_event_phys_mem(unsigned long evt,
+ static void __arch_timer_setup(unsigned type,
+ 			       struct clock_event_device *clk)
+ {
+-	clk-&gt;features = CLOCK_EVT_FEAT_ONESHOT;
++	clk-&gt;features = CLOCK_EVT_FEAT_ONESHOT | CLOCK_EVT_FEAT_PIPELINE;
+ 
+ 	if (type == ARCH_TIMER_TYPE_CP15) {
+ 		if (arch_timer_c3stop)
+</code></pre></div>
+<div class="notices note">
+    <div class="label">Заметка</div><p>Only oneshot-capable clock event devices can be shared via the proxy tick device.</p>
+
+</div>
+<blockquote>
+<p>Adapting the ARM Global timer driver to out-of-band timing</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">--- a/drivers/clocksource/arm_global_timer.c
++++ b/drivers/clocksource/arm_global_timer.c
+@@ -156,11 +156,11 @@ static irqreturn_t gt_clockevent_interrupt(int irq, void *dev_id)
+ 	 *	the Global Timer flag _after_ having incremented
+ 	 *	the Comparator register	value to a higher value.
+ 	 */
+-	if (clockevent_state_oneshot(evt))
++	if (clockevent_is_oob(evt) || clockevent_state_oneshot(evt))
+ 		gt_compare_set(ULONG_MAX, 0);
+ 
+ 	writel_relaxed(GT_INT_STATUS_EVENT_FLAG, gt_base + GT_INT_STATUS);
+-	evt-&gt;event_handler(evt);
++	clockevents_handle_event(evt);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -171,7 +171,7 @@ static int gt_starting_cpu(unsigned int cpu)
+ 
+ 	clk-&gt;name = &#34;arm_global_timer&#34;;
+ 	clk-&gt;features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT |
+-		CLOCK_EVT_FEAT_PERCPU;
++		CLOCK_EVT_FEAT_PERCPU | CLOCK_EVT_FEAT_PIPELINE;
+ 	clk-&gt;set_state_shutdown = gt_clockevent_shutdown;
+ 	clk-&gt;set_state_periodic = gt_clockevent_set_periodic;
+ 	clk-&gt;set_state_oneshot = gt_clockevent_shutdown;
+@@ -195,11 +195,6 @@ static int gt_dying_cpu(unsigned int cpu)
+ 	return 0;
+ }
+ 
+@@ -302,8 +307,8 @@ static int __init global_timer_of_register(struct device_node *np)
+ 		goto out_clk;
+ 	}
+ 
+-	err = request_percpu_irq(gt_ppi, gt_clockevent_interrupt,
+-				 &#34;gt&#34;, gt_evt);
++	err = __request_percpu_irq(gt_ppi, gt_clockevent_interrupt,
++				   IRQF_TIMER, &#34;gt&#34;, gt_evt);
+ 	if (err) {
+ 		pr_warn(&#34;global-timer: can&#39;t register interrupt %d (%d)\n&#34;,
+ 			gt_ppi, err);
+</code></pre></div><p>This is another example of adapting an existing clock chip driver for
+serving out-of-band timing requests, with a subtle change in the way
+we should test for the current state of the clock device in the
+interrupt handler:</p>
+<ul>
+<li>
+<p>A real/original device (such as the ARM global timer in this
+example) is switched to <em>reserved</em> mode when the proxy tick driver
+hands it over to the autonomous core, which is similar to the
+<em>detached</em> mode in effect. Therefore, the ARM global timer state is
+always <em>reserved</em> from the standpoint of the kernel when proxied,
+never <em>oneshot</em>. For this reason, <code>clockevent_state_oneshot()</code> would
+always lead to <em>false</em> in this case.</p>
+</li>
+<li>
+<p>However, since a real device controlled by the proxy for receiving
+out-of-band events has to be driven in one-shot mode under the hood,
+testing for <code>clockevent_state_oob()</code> in addition to
+<code>clockevent_state_oneshot()</code> guarantees that we do take the branch,
+setting the comparator register to ULONG_MAX when proxied too.</p>
+</li>
+</ul>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>Failing to fix up the way we test for the clock device state would
+certainly lead to an interrupt storm with any ARM global timer
+suffering erratum 740657, quickly locking up the board.</p>
+
+</div>
+<h3 id="proxy-tick-logic">Theory of operations</h3>
+<p>Calling <code>tick_install_proxy()</code> registers an instance of the proxy tick
+device on each CPU mentioned in the <code>cpumask</code> it receives.  This
+routine is also passed the address of a routine which should setup the
+given <code>struct clock_proxy_device</code> descriptor for the current CPU. This
+routine is called indirectly by <code>tick_install_proxy()</code>, for each CPU
+marked in <code>cpumask</code>.</p>
+<blockquote>
+<p>Initializing the proxy descriptor</p>
+</blockquote>
+<p><code>tick_install_proxy()</code> prepares the new proxy device for the current
+CPU, pre-initializing it with settings compatible with the real
+device&rsquo;s it interposes on, then calls the <code>setup_proxy()</code> routine.
+The descriptor is defined as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct clock_proxy_device {
+	struct clock_event_device proxy_device;
+	struct clock_event_device *real_device;
+	void (*handle_oob_event)(struct clock_event_device *dev);
+	/* Internal data - don&#39;t depend on this. */
+	void (*__setup_handler)(struct clock_proxy_device *dev);
+	void (*__original_handler)(struct clock_event_device *dev);
+};
+</code></pre></div><p>The user setup call must at least set the <code>.handle_oob_event()</code>
+handler: this is the address of the routine which should be called
+each time an out-of-band tick is received from the underlying timer
+hardware the proxy controls. This is the only information required
+from the setup handler, the rest may be inherited from the pre-set
+data if the user does not need any particular setting.</p>
+<p>If the user code proxying the tick device prefers dealing with
+nanoseconds instead of clock ticks directly, CLOCK_EVT_FEAT_KTIME
+should be added to <code>proxy_device.features</code>, along with a valid
+<code>proxy_device.set_next_ktime()</code> handler and proper min/max delta
+values.</p>
+<blockquote>
+<p>A <code>setup_proxy()</code> routine preparing a proxy device</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static DEFINE_PER_CPU(struct clock_proxy_device, tick_device);
+
+static void oob_event_handler(struct clock_event_device *dev)
+{
+	/*
+	 * We are running on the out-of-band stage, in NMI-like mode.
+	 * Schedule a tick on the proxy device to satisfy the
+	 * corresponding timing request asap.
+	 */
+	tick_notify_proxy();
+}
+
+static void setup_proxy(struct clock_proxy_device *dev)
+{
+	 * Create a proxy which acts as a transparent device, simply
+	 * relaying the timing requests to the in-band code, without
+	 * any additional out-of-band processing.
+	 */
+	dev-&gt;handle_oob_event = oob_event_handler;
+}
+</code></pre></div>
+<div class="notices tip">
+    <div class="label">Совет</div><p>The <code>proxy_device.set_next_event()</code> or <code>proxy_device.set_next_ktime()</code>
+members can be set with the address of a handler which receives timer
+requests from the in-band kernel. This handler is normally implemented
+by the autonomous core which takes control over the timer hardware via
+the proxy device. Whenever that core determines that a tick is due for
+an outstanding request received from such handler, it should call
+<code>tick_notify_proxy()</code> to signal the event to the main kernel.</p>
+
+</div>
+<p>Once the user-supplied <code>setup_proxy()</code> routine returns, the following
+events happen in sequence:</p>
+<ol>
+<li>
+<p>the proxy device is registered on the clock event framework.</p>
+</li>
+<li>
+<p>the real device is detached from the <code>clockevent</code> framework,
+switched to the CLOCK_EVT_STATE_RESERVED state, which makes it
+non-eligible for any regular operation from the framework. However,
+its hardware is left in a functional state. In the same move, the
+proxy device is picked as the new tick device by the
+framework. From that point, requests to the proxy device may be
+indirectly channeled to the real device via the proxy when
+operations on the hardware should be carried out.</p>
+</li>
+<li>
+<p>the proxy device now controls the real device under the hood to
+carry out timing requests from the in-band kernel. When the
+<code>hrtimer</code> layer from the in-band kernel wants to program the next
+shot of the current tick device, it invokes the <code>set_next_event()</code>
+handler of the proxy device, which was defined by the user (which
+defaults to the real device&rsquo;s <code>set_next_event()</code> handler). If the
+autonomous core implements its own timer management, this handler
+should be scheduling in-band ticks at the requested time based on
+such scheme.</p>
+</li>
+<li>
+<p>the timer interrupt triggered by the real device is switched to
+out-of-band handling. As a result, <code>handle_oob_event()</code> receives
+tick events sent by the real device hardware directly from the
+out-of-band stage of the interrupt pipeline. This ensures
+high-precision timing, which the in-band stage cannot delay via
+interrupt masking. From that point, the out-of-band code can carry
+out its own timing duties, in addition to honoring the in-band
+kernel requests for timing.</p>
+</li>
+</ol>
+<p>Step 3. involves emulating ticks scheduled by the in-band kernel by a
+software logic controlled by some out-of-band timer management, paced
+by the real ticks received as described in step 4. When this logic
+decides than the next in-band tick is due, it should call
+<code>tick_notify_proxy()</code> to trigger the corresponding event for the
+in-band kernel, which would honor the pending (hr)timer request.</p>
+<blockquote>
+<p>Under the hood</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	     [in-band timing request]
+	         proxy_dev-&gt;set_next_event(proxy_dev)
+	             oob_program_event(proxy_dev)
+	                 real_dev-&gt;set_next_event(real_dev)
+	         ...
+	         &lt;tick event&gt;
+	         inband_event_handler() [out-of-band stage]
+	             clockevents_handle_event(real_dev)
+	                 handle_oob_event(proxy_dev)
+	                     ...(in-band tick emulation)...
+	                          tick_notify_proxy()
+	         ...
+	         proxy_irq_handler(proxy_dev) [in-band stage]
+	             clockevents_handle_event(proxy_dev)
+	                 inband_event_handler(proxy_dev)
+</code></pre></div><hr>
+<p style="text-align:right">Последнее изменение: Wed, 27 Jun 2018 17:15:23 &#43;0200
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/" title="Reading clock sources"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

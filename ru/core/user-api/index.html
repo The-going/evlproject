@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <link rel="alternate" type="application/rss&#43;xml" href="https://the-going.github.io/evlproject/ru/core/user-api/index.xml" title="Xenomai 4" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Using libevl :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/user-api/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/">English</option>
+                    <option id="ru" value="/ru/core/user-api/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/" aria-disabled="true"><span itemprop="name">Using libevl</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#evl-application">What is an &ldquo;EVL application process&rdquo;?</a></li>
+    <li><a href="#is-libevl-a-replacement-for-my-favourite-c-library-glibc-musl-uclibc-etc">Is libevl a replacement for my favourite C library? (glibc, musl, uClibc etc.)</a></li>
+    <li><a href="#multi-process-apps">What about multi-process applications?</a></li>
+    <li><a href="#element-visibility">Visibility: public and private elements</a></li>
+    <li><a href="#evl-fs-hierarchy">The <code>/dev/evl</code> device file hierarchy</a></li>
+    <li><a href="#device-ownership-and-access">Managing access permissions to EVL device files</a></li>
+    <li><a href="#element-naming-convention">Element names</a></li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Using libevl</h1>
+
+<h2 id="evl-application">What is an &ldquo;EVL application process&rdquo;?</h2>
+<p>An EVL application process is composed of one or more EVL threads,
+running along with any number of regular POSIX threads.</p>
+<ul>
+<li>
+<p>an EVL thread is initially a plain regular POSIX thread spawned by a call to
+<a href="http://man7.org/linux/man-pages/man3/pthread_create.3.html">pthread_create(3)</a>
+or the <code>main()</code> context which has issued the <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">evl_attach_self()</a> system
+call. This service binds the caller to the EVL core, which enables it
+to invoke the real-time, ultra-low latency services the latter
+delivers.</p>
+</li>
+<li>
+<p>once attached, such thread may call EVL core services, until it
+detaches from the core by a call to <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_detach_thread">evl_detach_self()</a>, or exits,
+whichever comes first.</p>
+</li>
+<li>
+<p>whenever an EVL thread has to meet real-time requirements, it must
+rely on the services provided by <code>libevl</code> exclusively. If such a
+thread invokes a common C library service while in the middle of a
+time-critical code, the EVL core does keep the system safe by
+transparently demoting the caller to <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">in-band context</a>.  However, the calling
+thread would loose any real-time guarantee in the process, meaning
+that unwanted jitter would happen.</p>
+</li>
+</ul>
+<p>To sum up, the lifetime of an EVL application usually looks like this:</p>
+<ol>
+<li>
+<p>When a new process initializes, a regular thread - often the
+<code>main()</code> one - invokes routines from the C library in order to get
+common resources, like opening files, allocating memory buffers and so
+on. At some point later on, this thread calls <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">evl_attach_self()</a> in
+order to bind itself to the EVL core, which in turn allows it to
+create other EVL objects (e.g. <a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#evl_create_mutex">evl_create_mutex()</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/event/#evl_create_event">evl_create_event()</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/#evl_create_xbuf">evl_create_xbuf()</a>). If the application
+needs more EVL threads, it simply spawns additional POSIX threads
+using
+<a href="http://man7.org/linux/man-pages/man3/pthread_create.3.html">pthread_create(3)</a>,
+then ensures those threads bind themselves to the core with a call to
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">evl_attach_self()</a>.</p>
+</li>
+<li>
+<p>Each EVL thread runs its time-critical work loop, only calling EVL
+services which operate from the <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">out-of-band context</a>, therefore guaranteeing
+bounded, ultra-low latency. The pivotal EVL service from such loop has
+to be a blocking call, waiting for the next real-time event to
+process. For instance, such call could be <a href="https://the-going.github.io/evlproject/ru/core/user-api/flags/#evl_wait_flags">evl_wait_flags()</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/#evl_get_sem">evl_get_sem()</a>, <a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/#evl_poll">evl_poll()</a>, <a href="https://the-going.github.io/evlproject/ru/core/user-api/io/#oob_read">oob_read()</a> and so on.</p>
+</li>
+<li>
+<p>Eventually, EVL threads may call common C library services in order
+to cleanup/unwind the application context when their time-critical
+loop is over and time has come to exit.</p>
+</li>
+</ol>
+<p><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">This page</a>
+is an index of all EVL system calls available to applications, which
+should help you finding out which call is legit from which context.
+In order to use the ultra-low latency EVL services, you need to link
+your application code against the <a href="https://the-going.github.io/evlproject/ru/core/build-steps/">libevl</a> library which provides the
+EVL system call wrappers.</p>
+<h2 id="is-libevl-a-replacement-for-my-favourite-c-library-glibc-musl-uclibc-etc">Is libevl a replacement for my favourite C library? (glibc, musl, uClibc etc.)</h2>
+<p><em>NO, not even remotely.</em> This is a drop-in <em>complement</em> to the common
+C library and NPTL support you may be using, which enables your
+thread(s) of choice to be scheduled with ultra-low latency guarantee
+by the EVL core. As it should be clear now from the above section, you
+may - and actually have to - use a combination of these libraries into
+a single application, but you must do this in a way that ensures
+your time-critical code only relies on either:</p>
+<ul>
+<li>
+<p><code>libevl</code>&rsquo;s <a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">well-defined set</a> of low-latency
+services which operate from the <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">out-of-band context</a>.</p>
+</li>
+<li>
+<p>a (very) small subset of the common C library which is known <em>not</em>
+to depend on regular in-band kernel services. In other words, only
+routines which do not issue common Linux system calls directly or
+indirectly are fine in a time-critical execution context. For
+instance, routines from the
+<a href="http://man7.org/linux/man-pages/man3/string.3.html">string(3)</a>
+section may be fine in a time-critical code, like
+<a href="http://man7.org/linux/man-pages/man3/strcpy.3.html">strcpy(3)</a>,
+<a href="http://man7.org/linux/man-pages/man3/memcpy.3.html">memcpy(3)</a> and
+friends. At the opposite, any routine which may directly or
+indirectly invoke
+<a href="http://man7.org/linux/man-pages/man3/malloc.3.html">malloc(3)</a> must
+be banned from your time-critical code, which includes
+<a href="http://man7.org/linux/man-pages/man3/stdio.3.html">stdio(3)</a>
+routines, or C++ default constructors which rely on the standard
+memory allocator.</p>
+</li>
+</ul>
+<p>Outside of those time-critical sections which require the EVL core to
+guarantee ultra-low latency scheduling for your application threads,
+your code may happily call whatever service from whatever C library.</p>
+<h2 id="multi-process-apps">What about multi-process applications?</h2>
+<p><code>libevl</code> does not impose any policy regarding how you might want to
+organize your application over multiple processes. However, the design
+and implementation of the interface to the EVL core makes sharing EVL
+resources between processes a fairly simple task. EVL elements can be
+made visible as common <a href="https://the-going.github.io/evlproject/ru/core/#everything-is-a-file">devices</a>, such as <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">threads</a>, <a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">mutexes</a>, <a href="https://the-going.github.io/evlproject/ru/core/user-api/event/">events</a>, <a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">semaphores</a>.  Therefore, every element
+you may want to share can be exported to the device file system, based
+on a <a href="#element-visibility">visibility attribute</a>
+mentioned at creation time.</p>
+<p>In addition, EVL provides a couple of additional features which come
+in handy for sharing data between processes:</p>
+<ul>
+<li>
+<p>a general memory-sharing mechanism based on the <a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/#proxy-mapping-export">file proxy</a>,
+which is used as an anchor point for memory-mappable devices.</p>
+</li>
+<li>
+<p>the <a href="https://the-going.github.io/evlproject/ru/core/user-api/tube/">tube</a> data
+structure, which is a lightweight FIFO working locklessly, you can
+also use for <a href="https://the-going.github.io/evlproject/ru/core/user-api/tube/#inter-process-tube">inter-process messaging</a>.</p>
+</li>
+<li>
+<p>the <a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable</a> element which gives your application a built-in support for
+implementing the <a href="https://en.wikipedia.org/wiki/Observer_pattern">observer design
+pattern</a> among one or
+more processes transparently.</p>
+</li>
+</ul>
+<h2 id="element-visibility">Visibility: public and private elements</h2>
+<p>As hinted earlier, EVL elements created by the user API can be either
+publically visible to other processes, or private to the process which
+creates them. This is a choice you make at creation time, by passing
+the proper visibility attribute to any of the <code>evl_create_*()</code> system
+calls, either <code>EVL_CLONE_PUBLIC</code> or <code>EVL_CLONE_PRIVATE</code>.</p>
+<p>A public element is represented in the <a href="#evl-fs-hierarchy">/dev/evl</a> hierarchy by a device file, which is visible
+to any process.  Once a file descriptor is available from
+<a href="http://man7.org/linux/man-pages/man2/open.2.html">opening</a> such file,
+it can be used to send requests to the element it refers to.</p>
+<p>Conversely, a private element has no presence in the <code>/dev/evl</code>
+hierarchy. Only the process which created such element receives a file
+descriptor referring to it, directly from the creation call.</p>
+<h2 id="evl-fs-hierarchy">The <code>/dev/evl</code> device file hierarchy</h2>
+<p>Because of its <a href="https://the-going.github.io/evlproject/ru/core/#everything-is-a-file">everything-is-a-file</a> mantra, EVL exports a
+number of device files in the <code>/dev/evl</code> hierarchy, which lives in the
+DEVTMPFS file system. Each device file either represents an active
+<a href="#element-visibility">public element</a>, or a special
+command device used internally by <code>libevl</code>.</p>
+<p>In <a href="http://man7.org/linux/man-pages/man2/open.2.html">opening</a> a
+public element device, an application receives a file descriptor which
+can be used to submit requests to the underlying element. For
+instance, the scheduling parameters of a thread running in <em>process A</em>
+could be changed by a thread running in <em>process B</em> by a call to
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#evl_set_schedattr">evl_set_schedattr()</a> using the
+proper file descriptor.</p>
+<p>Element device files are organized in directories, one for each
+<a href="https://the-going.github.io/evlproject/ru/core/#evl-core-elements">element class</a>:
+clock, monitor, proxy, thread, cross-buffer and observable; general
+command devices appear at the top level, such as <em>control</em>, <em>poll</em> and
+<em>trace</em>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">~ # cd /dev/evl
+/dev/evl # ls -l
+total 0
+drwxr-xr-x    2 root     root            80 Jan  1  1970 clock
+crw-rw----    1 root     root      246,   0 Jan  1  1970 control
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 monitor
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 observable
+crw-rw----    1 root     root      246,   3 Jan  1  1970 poll
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 proxy
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 thread
+crw-rw----    1 root     root      246,   6 Jan  1  1970 trace
+drwxr-xr-x    2 root     root            60 Apr 18 17:38 xbuf
+</code></pre></div><p>Inside each class directory, the live public elements of that class
+are visible, in addition to the special <em>clone</em> command device. For
+the curious, the role of this special device is documented in the
+<a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/#hood-element-creation">under-the-hood</a> section.</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/dev/evl/thread # ls -l
+total 0
+crw-rw----    1 root     root      246,   1 Jan  1  1970 clone
+crw-rw----    1 root     root      244,   0 Apr 19 10:45 timer-responder:2562
+</code></pre></div><h2 id="device-ownership-and-access">Managing access permissions to EVL device files</h2>
+<p>In some situations, you may want to restrict access to EVL devices
+files present in the <a href="#evl-fs-hierarchy"><code>/dev/evl</code></a>
+file hierarchy to a particular user or group of users. Because a
+kernel device object is associated to each live EVL element in the
+system, you can attach rules to UDEV events generated for public EVL
+elements or special command devices appearing in the <a href="#evl-fs-hierarchy"><code>/dev/evl</code></a> file hierarchy, in order to set up
+their ownership and access permissions at creation time.</p>
+<p>For <a href="#element-visibility">public elements</a> which come
+and go dynamically, EVL enforces a simple rule internally to set the
+initial user and group ownership of any element device file, which is
+to inherit it from the <em>clone</em> device file of the class it belongs
+to. For instance, if you set the ownership of the
+<code>/dev/evl/thread/clone</code> device file via some UDEV rule to
+<code>square.wheel</code>, all public <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">EVL threads</a> will belong at creation time to
+user <code>square</code>, group <code>wheel</code>.</p>
+<h2 id="element-naming-convention">Element names</h2>
+<p>Every <code>evl_create_*()</code> call which creates a new element, along with
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">evl_attach_thread()</a> accepts a
+<a href="http://man7.org/linux/man-pages/man3/printf.3.html">printf</a>-like
+format string to generate the element name. A common way of generating
+unique names is to include the calling process&rsquo;s <em>pid</em> somewhere into
+the format string, so that you may start multiple instances of the
+same application without running into naming conflicts. The
+requirement for a unique name does not depend on the visibility
+attribute: distinct elements must have distinct names, regardless of
+their visibility. For instance:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;unistd.h&gt;
+#include &lt;evl/thread.h&gt;
+
+	 ret = evl_attach_self(&#34;a-private-thread:%d&#34;, getpid());
+
+~# ls -l /dev/evl/thread
+total 0
+crw-rw----    1 root     root      248,   1 Apr 17 11:59 clone
+</code></pre></div><p>The generated name is used to create a <code>/sysfs</code> attribute directory
+exporting the state information about the element. For <a href="#element-visibility">public
+elements</a>, a device file is
+created with the same name in the <a href="#evl-fs-hierarchy">/dev/evl</a> hierarchy, for accessing the element via the
+<a href="http://man7.org/linux/man-pages/man2/open.2.html">open(2)</a> system
+call.  Therefore, a name must contain only valid characters in the
+context of a file name.</p>
+<p>As a shorthand, <code>libevl</code> forces in the <code>EVL_CLONE_PUBLIC</code> <a href="#element-visibility">visibility
+attribute</a> whenever the element
+name passed to the system call starts with a slash &lsquo;/&rsquo; character, in
+which case this leading character will be skipped to form the actual
+element name:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;unistd.h&gt;
+#include &lt;evl/thread.h&gt;
+
+	 ret = evl_attach_self(&#34;/a-publically-visible-thread:%d&#34;, getpid());
+
+~# ls -l /dev/evl/thread
+total 0
+crw-rw----    1 root     root      248,   1 Apr 17 11:59 clone
+crw-rw----    1 root     root      246,   0 Apr 17 11:59 a-publically-visible-thread
+</code></pre></div><p>Note that when found, such shorthand overrides the <code>EVL_CLONE_PRIVATE</code>
+visibility attribute which might have been mentioned in the creation
+flags for the same call. The slash character is invalid in any other
+part of the element name, although it would be silently remapped to a
+placeholder for private elements without leading to an API error.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/benchmarks/" title="Запуск benchmarks"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/" title="libevl function index"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

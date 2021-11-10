@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>API revisions :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/api-revs/">English</option>
+                    <option id="ru" value="/ru/core/user-api/api-revs/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/"><span itemprop="name">Using libevl</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/" aria-disabled="true"><span itemprop="name">API revisions</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#rev-18-libevl-r26httpsgitxenomaiorgxenomai4libevl-tagsr26">rev. 18 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r26">libevl r26</a>)</a></li>
+        <li><a href="#rev-17-libevl-r17httpsgitxenomaiorgxenomai4libevl-tagsr17">rev. 17 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r17">libevl r17</a>)</a></li>
+        <li><a href="#rev-16-libevl-r17httpsgitxenomaiorgxenomai4libevl-tagsr17">rev. 16 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r17">libevl r17</a>)</a></li>
+        <li><a href="#rev-15-libevl-r16httpsgitxenomaiorgxenomai4libevl-tagsr16">rev. 15 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r16">libevl r16</a>)</a></li>
+        <li><a href="#rev-14">rev. 14</a></li>
+        <li><a href="#rev-13">rev. 13</a></li>
+        <li><a href="#rev-12-libevl-r15httpsgitxenomaiorgxenomai4libevl-tagsr15">rev. 12 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r15">libevl r15</a>)</a></li>
+        <li><a href="#rev-11-libevl-r14httpsgitxenomaiorgxenomai4libevl-tagsr14">rev. 11 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r14">libevl r14</a>)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>API revisions</h1>
+
+<p>You can obtain the current API revision of <a href="https://the-going.github.io/evlproject/ru/core/user-api/">libevl</a> either at compilation time using the
+value of the <code>__EVL__</code> macro defined in the <code>&lt;evl/evl.h&gt;</code> main header
+file, or dynamically by calling <a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/#evl_get_version">evl_get_version()</a>.</p>
+<h3 id="rev-18-libevl-r26httpsgitxenomaiorgxenomai4libevl-tagsr26">rev. 18 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r26">libevl r26</a>)</h3>
+<p>Introduces the socket interface:</p>
+<ul>
+<li>
+<p>oob_recvmsg() to receive a message in out-of-band mode.</p>
+</li>
+<li>
+<p>oob_sendmsg() to send a message in out-of-band mode.</p>
+</li>
+</ul>
+<p>The regular socket(2) call as extended by ABI 26 is capable of
+creating oob-capable sockets when receiving the SOCK_OOB type flag, so
+there is no EVL-specific call for this operation.</p>
+<h3 id="rev-17-libevl-r17httpsgitxenomaiorgxenomai4libevl-tagsr17">rev. 17 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r17">libevl r17</a>)</h3>
+<p>Enables HM support for threads. Since <a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI 23</a>, the core is able to channel T_WOSS, T_WOLI
+and T_WOSX error notifications (SIGDEBUG_xxx) through the <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">thread
+observable</a> component if
+present. Introduce the T_HMSIG and T_HMOBS mode bits for configuring
+the HM notification source(s) of a thread with
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_set_thread_mode">evl_set_thread_mode()</a>.</p>
+<p>SIGDEBUG_xxx codes are renamed to <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#health-monitoring">EVL_HMDIAG_xxx diag codes</a>, so
+that we have a single nomenclature for these errors regardless of
+whether threads are notified via SIGDEBUG or their observable
+component.</p>
+<h3 id="rev-16-libevl-r17httpsgitxenomaiorgxenomai4libevl-tagsr17">rev. 16 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r17">libevl r17</a>)</h3>
+<p>Introduces the API changes for supporting the new Observable element:</p>
+<ul>
+<li>
+<p>adds <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_subscribe">evl_subscribe()</a> and
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_unsubscribe">evl_unsubscribe()</a> to the thread
+API.</p>
+</li>
+<li>
+<p>adds the <a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/#evl_create_observable">evl_create_observable()</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/#evl_update_observable">evl_update_observable()</a> and
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/#evl_read_observable">evl_read_observable()</a> services
+for the new Observable API.</p>
+</li>
+<li>
+<p>allows to pass an opaque data to <a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/#evl_add_pollfd">evl_add_pollfd()</a> and
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/#evl_mode_pollfd">evl_mode_pollfd()</a>, which is
+returned into the <code>struct evl_poll_event</code> descriptor.</p>
+</li>
+</ul>
+<h3 id="rev-15-libevl-r16httpsgitxenomaiorgxenomai4libevl-tagsr16">rev. 15 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r16">libevl r16</a>)</h3>
+<p>Adds <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_set_thread_mode">evl_set_thread_mode()</a> and
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_set_clear_mode">evl_clear_thread_mode()</a>.</p>
+<h3 id="rev-14">rev. 14</h3>
+<p>Adds <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_unblock_thread">evl_unblock_thread()</a> and
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_demote_thread">evl_demote_thread()</a>.</p>
+<h3 id="rev-13">rev. 13</h3>
+<p>Adds <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#evl_yield">evl_yield()</a>.</p>
+<h3 id="rev-12-libevl-r15httpsgitxenomaiorgxenomai4libevl-tagsr15">rev. 12 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r15">libevl r15</a>)</h3>
+<p><a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-visibility">Element visibility is introduced</a>, as a result:</p>
+<ul>
+<li>
+<p>Most element classes provides a new long-form evl_create_*() call,
+in order to receive creation flags. Currently, the visibility
+attribute of elements is the only flag supported (see
+<code>EVL_CLONE_PRIVATE</code>, <code>EVL_CLONE_PUBLIC</code>). The additional creation
+calls are <a href="https://the-going.github.io/evlproject/ru/core/user-api/event/#evl_create_event">evl_create_event()</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/flags/#evl_create_flags">evl_create_flags()</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#evl_create_mutex">evl_create_mutex()</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/#evl_create_proxy">evl_create_proxy()</a>,
+<a href="">evl_create_sem()</a> and
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/#evl_create_xbuf">evl_create_xbuf()</a>.  Likewise, the
+new <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_thread">evl_attach_thread()</a> and
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_detach_thread">evl_detach_thread()</a> calls
+receive attachment and detachment flags for
+threads. <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_attach_self">evl_attach_self()</a> is now
+equivalent to attaching a private thread by default, unless the
+thread name <a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-naming-convention">says otherwise</a>. <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/#evl_detach_self">evl_detach_self()</a> is unchanged.</p>
+</li>
+<li>
+<p>All evl_new_*() calls become shorthands to their respective
+evl_create_*() counterparts, picking reasonable default creation
+parameters for the new element, including private visibility (unless
+overriden by the <em>leading slash rule</em> explained in this
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-naming-convention">document</a>).</p>
+</li>
+<li>
+<p>All long-form evl_new_*_any() calls have been removed from the
+API. Applications should use the corresponding evl_create_*() call
+instead.</p>
+</li>
+<li>
+<p><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/#evl_new_proxy">evl_new_proxy()</a> creates a proxy
+element with no write granularity by default, which caused this this
+parameter to be dropped from the call signature. Applications should
+use <a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/#evl_create_proxy">evl_create_proxy()</a> to specify a
+non-default granularity.</p>
+</li>
+<li>
+<p><a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/#evl_new_xbuf">evl_new_xbuf()</a> creates a
+cross-buffer element with identically sized input and output buffers
+by default, which caused one of the two size parameters to be
+dropped from the call signature. Applications should use
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/#evl_create_xbuf">evl_create_xbuf()</a> to specify
+distinct sizes for input and output.</p>
+</li>
+<li>
+<p>All former long-form static initializers EVL_*_ANY_INITIALIZER()
+have been renamed EVL_*_INITIALIZER(), dropping the former
+short-form (if any). For instance, EVL_MUTEX_ANY_INITIALIZER() has
+been renamed <a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#EVL_MUTEX_INITIALIZER">EVL_MUTEX_INITIALIZER()</a>, with an
+additional parameter for mentioning both the lock type and
+visibility attribute.</p>
+</li>
+<li>
+<p>Selecting the lock type of a mutex is now done using the
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/#evl_create_mutex">evl_create_mutex()</a> call, ORing
+either <code>EVL_MUTEX_NORMAL</code> or <code>EVL_MUTEX_RECURSIVE</code> into the creation
+flags. This method replaces the <em>type</em> argument to the former
+evl_new_mutex_any() call.</p>
+</li>
+</ul>
+<hr>
+<h3 id="rev-11-libevl-r14httpsgitxenomaiorgxenomai4libevl-tagsr14">rev. 11 (<a href="https://git.xenomai.org/xenomai4/libevl/-/tags/r14">libevl r14</a>)</h3>
+<p>For naming consistency, evl_sched_control() was renamed
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#evl_control_sched">evl_control_sched()</a>.</p>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/user-api/misc/" title="Miscellanea"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/caveat/" title="Это вы определенно хотите знать"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

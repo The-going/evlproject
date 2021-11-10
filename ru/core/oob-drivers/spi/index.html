@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>SPI :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item active"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/oob-drivers/spi/">English</option>
+                    <option id="ru" value="/ru/core/oob-drivers/spi/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/oob-drivers/"><span itemprop="name">Real-time I/O drivers</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/" aria-disabled="true"><span itemprop="name">SPI</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#adding-out-of-band-capabilities-to-a-spi-controller">Adding out-of-band capabilities to a SPI controller</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>SPI</h1>
+
+<p>EVL provides support for running high frequency SPI transfers which
+are useful in implementing closed-loop control systems. Applications
+manage the out-of-band transfers from user space via requests sent to
+the <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/Documentation/spi/spidev.rst">SPIDEV
+driver</a>,
+which exports a user-space API to reach the SPI devices overs a given
+bus. To this end, EVL makes a few of strong assumptions:</p>
+<ul>
+<li>
+<p>a DMA is available for transferring the data over the SPI bus
+between the controller and the device. Since configuring the DMA
+cannot be done from the out-of-band stage, selecting the SPI device
+to talk to over the bus involves stopping the real-time operations,
+in order to switch to the in-band execution stage. Fortunately, most
+use cases which require high frequency, ultra-low latency transfers
+involve talking to a single device over a dedicated SPI bus. In this
+case, the device selection and DMA configuration need to be done
+only once, when setting up the communication.</p>
+</li>
+<li>
+<p>the data to be exchanged with the SPI device is stored into a
+fixed-size memory buffer, shared between the kernel and the
+application. The buffer is split in two parts: an input area
+containing the data received from the remote device during the last
+transfer cycle, and an output area containing the data to be sent to
+that device during the same cycle. The shared memory is coherent,
+CPU cache is disabled. The DMA is managed in <a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/#dma-pulsed-mode">pulsed out-of-band
+mode</a> from
+the
+<a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/spi/spidev.c#L439">SPIDEV</a>
+interface.</p>
+</li>
+<li>
+<p>while operating in out-of-band mode, the SPI bus cannot be used for
+regular in-band traffic.</p>
+</li>
+<li>
+<p>only the SPI <em>master</em> mode is supported for out-of-band operations.</p>
+</li>
+</ul>
+<p><img src="https://the-going.github.io/evlproject/images/spi-basics.png" alt="Alt text" title="Out-of-band capable SPI"></p>
+<p>Enabling the out-of-band SPI capabilities is threefold, this requires:</p>
+<ul>
+<li>
+<p>adding the out-of-band management logic to the <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/spi/spi.c#L4058">generic SPI master
+framework</a>. This
+is done once and readily available from EVL.</p>
+</li>
+<li>
+<p>having the <a href="https://git.xenomai.org/xenomai4/linux-evl/-/blob/37f57d73123c3b05b9b4f11d5cd3aa2768010dee/drivers/spi/spidev.c#L451">SPIDEV
+driver</a>
+export the out-of-band I/O interface to applications, which is also
+done once and readily available from EVL.</p>
+</li>
+<li>
+<p>adding the needed bits to the SPI controller driver which manages
+the particular controller chip to be used for out-of-band I/O. This
+is the part you may have to implement for your own SPI controller of
+choice. The list of SPI controllers EVL currently extends with
+out-of-band capabilities is visible <a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/#oob-driver-list">at this location</a>.</p>
+</li>
+</ul>
+<h3 id="adding-out-of-band-capabilities-to-a-spi-controller">Adding out-of-band capabilities to a SPI controller</h3>
+<p>As stated in the <a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">introduction</a>, the out-of-band I/O logic slips
+into the regular Linux device driver model as much as possible,
+without imposing a separate driver stack. In the SPI case, this means
+extending the generic SPI framework with a small set of operations
+which control the bus from the <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">out-of-band</a> execution
+stage. The handlers for those operations must be added to the <code>struct spi_controller</code> descriptor as follows:</p>
+<ul>
+<li><code>.prepare_oob_transfer</code> should finish the setup for preparing a
+particular SPI bus for out-of-band transfers. This is called once,
+after the generic SPI framework has created the shared memory area,
+and configured the DMA. This is the right place to provide for any
+setup which is specific to out-of-band I/O, or any additional sanity
+check which is specific to the controller in such a context. For
+instance, the controller could make sure the size of the data frame
+to send/receive at each transfer is within the bounds supported by
+the hardware. This is an in-band operation, the SPI bus is locked
+for out-of-band traffic which means that regular in-band request to
+the same bus will have to wait until it leaves the out-of-band mode.
+This handler runs upon request from the application to enable
+out-of-band mode (<code>SPI_IOC_ENABLE_OOB_MODE</code>) for a given SPI bus.</li>
+</ul>
+<blockquote>
+<p>Example: the prepare_oob_transfer() handler for the BCM2835 chip</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static int bcm2835_spi_prepare_oob_transfer(struct spi_controller *ctlr,
+					struct spi_oob_transfer *xfer)
+{
+	/*
+	 * The size of a transfer is limited by DLEN which is 16-bit
+	 * wide, and we don&#39;t want to scatter transfers in out-of-band
+	 * mode, so cap the frame size accordingly.
+	 */
+	if (xfer-&gt;setup.frame_len &gt; 65532)
+		return -EINVAL;
+
+	return 0;
+}
+</code></pre></div><ul>
+<li><code>.start_oob_transfer</code> should select the SPI device to talk to, set
+the SPI communication settings in the controller (e.g. speed, word
+size), then turn on the DMA operations on the configured channels
+Since the DMA is set in <a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/#dma-pulsed-mode">pulsed mode</a>, no transfer takes place
+yet, but once <code>start_oob_transfer()</code> has returned, everything should
+be ready to trigger them simply by pulsing the DMA.  Like
+<code>prepare_oob_transfer()</code>, this is an in-band operation which is
+invoked by the SPIDEV driver, upon request from the application
+(<code>SPI_IOC_ENABLE_OOB_MODE</code>). The bus is first prepared for
+out-of-band operations, before these are effectively started.</li>
+</ul>
+<blockquote>
+<p>Example: the start_oob_transfer() handler for the BCM2835 chip</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static void bcm2835_spi_start_oob_transfer(struct spi_controller *ctlr,
+					struct spi_oob_transfer *xfer)
+{
+	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
+	struct spi_device *spi = xfer-&gt;spi;
+	u32 cs = bs-&gt;prepare_cs[spi-&gt;chip_select], effective_speed_hz;
+	unsigned long cdiv;
+
+	/* See bcm2835_spi_prepare_message(). */
+	bcm2835_wr(bs, BCM2835_SPI_CS, cs);
+
+	cdiv = bcm2835_get_clkdiv(bs, xfer-&gt;setup.speed_hz, &amp;effective_speed_hz);
+	xfer-&gt;effective_speed_hz = effective_speed_hz;
+	bcm2835_wr(bs, BCM2835_SPI_CLK, cdiv);
+	bcm2835_wr(bs, BCM2835_SPI_DLEN, xfer-&gt;setup.frame_len);
+
+	if (spi-&gt;mode &amp; SPI_3WIRE)
+		cs |= BCM2835_SPI_CS_REN;
+	bcm2835_wr(bs, BCM2835_SPI_CS,
+		   cs | BCM2835_SPI_CS_TA | BCM2835_SPI_CS_DMAEN);
+}
+</code></pre></div><ul>
+<li><code>.pulse_oob_transfer</code> is called when the application asks for
+triggering the next transfer by a request to the SPIDEV driver
+(<code>SPI_IOC_RUN_OOB_XFER</code>). This handler is called to apply the
+controller-specific tweaks which might be needed before the generic
+SPI framework pulses the DMA, causing the I/O operation to take
+place. This is an out-of-band operation; what this handler may do is
+restricted to the set of calls available to the out-of-band
+execution stage (reading/writing a couple of I/O registers should be
+enough in most cases here).</li>
+</ul>
+<blockquote>
+<p>Example: the pulse_oob_transfer() handler for the BCM2835 chip</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static void bcm2835_spi_pulse_oob_transfer(struct spi_controller *ctlr,
+					struct spi_oob_transfer *xfer)
+{
+	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
+
+	/* Reload DLEN for the next pulse. */
+	bcm2835_wr(bs, BCM2835_SPI_DLEN, xfer-&gt;setup.frame_len);
+}
+</code></pre></div><ul>
+<li><code>.terminate_oob_transfer</code> should stop and disable out-of-band DMA
+operations for the controller. This handler is called when the
+generic SPI framework was told by the SPIDEV driver to leave the
+out-of-band management mode for the controller
+(<code>SPI_IOC_DISABLE_OOB_MODE</code>). This is an in-band operation. Once the
+out-of-band mode is left, the bus is available for regular in-band
+traffic anew.</li>
+</ul>
+<blockquote>
+<p>Example: the terminate_oob_transfer() handler for the BCM2835 chip</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static void bcm2835_spi_reset_hw(struct bcm2835_spi *bs)
+{
+	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
+
+	/* Disable SPI interrupts and transfer */
+	cs &amp;= ~(BCM2835_SPI_CS_INTR |
+		BCM2835_SPI_CS_INTD |
+		BCM2835_SPI_CS_DMAEN |
+		BCM2835_SPI_CS_TA);
+	/*
+	 * Transmission sometimes breaks unless the DONE bit is written at the
+	 * end of every transfer.  The spec says it&#39;s a RO bit.  Either the
+	 * spec is wrong and the bit is actually of type RW1C, or it&#39;s a
+	 * hardware erratum.
+	 */
+	cs |= BCM2835_SPI_CS_DONE;
+	/* and reset RX/TX FIFOS */
+	cs |= BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX;
+
+	/* and reset the SPI_HW */
+	bcm2835_wr(bs, BCM2835_SPI_CS, cs);
+	/* as well as DLEN */
+	bcm2835_wr(bs, BCM2835_SPI_DLEN, 0);
+}
+
+static void bcm2835_spi_terminate_oob_transfer(struct spi_controller *ctlr,
+					struct spi_oob_transfer *xfer)
+{
+	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
+
+	bcm2835_spi_reset_hw(bs);
+}
+
+</code></pre></div><p>Eventually, the SPI controller should fill the corresponding function
+pointers into its descriptor with the address of the out-of-band
+handlers.</p>
+<blockquote>
+<p>Example: declaring the out-of-band handlers for the BCM2835 chip</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">static int bcm2835_spi_probe(struct platform_device *pdev)
+{
+	struct spi_controller *ctlr;
+	struct bcm2835_spi *bs;
+	int err;
+
+	ctlr = devm_spi_alloc_master(&amp;pdev-&gt;dev, ALIGN(sizeof(*bs),
+						  dma_get_cache_alignment()));
+	if (!ctlr)
+		return -ENOMEM;
+
+	platform_set_drvdata(pdev, ctlr);
+
+	...
+	ctlr-&gt;prepare_oob_transfer = bcm2835_spi_prepare_oob_transfer;
+	ctlr-&gt;start_oob_transfer = bcm2835_spi_start_oob_transfer;
+	ctlr-&gt;pulse_oob_transfer = bcm2835_spi_pulse_oob_transfer;
+	ctlr-&gt;terminate_oob_transfer = bcm2835_spi_terminate_oob_transfer;
+	...
+}
+</code></pre></div><hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class="footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/" title="DMA"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/" title="GPIO"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

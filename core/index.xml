@@ -5,7 +5,7 @@
     <link>https://the-going.github.io/evlproject/core/</link>
     <description>Recent content in The EVL core on Xenomai 4</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
+    <language>en</language>
     <copyright>Copyright 2021 - The Xenomai project.</copyright>
     <lastBuildDate>Sat, 16 Feb 2019 16:10:44 +0100</lastBuildDate><atom:link href="https://the-going.github.io/evlproject/core/index.xml" rel="self" type="application/rss+xml" />
     <item>
@@ -90,7 +90,7 @@ By doing so, having some random in-band work evicting cache lines on a CPU where
       <link>https://the-going.github.io/evlproject/core/abi-revs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/core/abi-revs/</guid>
-      <description>#abimap { width: 35%; margin-left: auto; margin-right: auto; } #abimap th { text-align: center; } #abimap td { text-align: center; } #abimap tr:nth-child(even) { background-color: #f2f2f2; }   Revision Purpose libevl release   26 Add socket interface. r21   25 Add latmus request for measuring in-band response time to synthetic interrupt latency. r21   24 Add proxy read side. r19   23 Add the Observable element, and thread observability.</description>
+      <description>#abimap { width: 35%; margin-left: auto; margin-right: auto; } #abimap th { text-align: center; } #abimap td { text-align: center; } #abimap tr:nth-child(even) { background-color: #f2f2f2; }   Revision Purpose libevl release   27 Handle prctl()-based syscall form. This enables Valgrind for EVL applications, while keeping backward compatibility for the legacy call form. r28   26 Add socket interface. r21   25 Add latmus request for measuring in-band response time to synthetic interrupt latency.</description>
     </item>
   </channel>
 </rss>

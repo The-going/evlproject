@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title> :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/user-api/thread/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/thread/" title="" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">Thread<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/thread/">English</option>
+                    <option id="ru" value="/ru/core/user-api/thread/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/"><span itemprop="name">Using libevl</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/thread/" aria-disabled="true"><span itemprop="name"></span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#thread-element">Thread element</a></li>
+        <li><a href="#thread-services">Thread services</a></li>
+        <li><a href="#health-monitoring">Health monitoring of threads</a></li>
+        <li><a href="#can-evl-threads-run-in-kernel-space">Can EVL threads run in kernel space?</a></li>
+        <li><a href="#where-do-public-thread-devices-live">Where do public thread devices live?</a></li>
+        <li><a href="#thread-device-open">How to reach a remote EVL thread?</a></li>
+        <li><a href="#thread-stats">Where to look for thread information?</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1></h1>
+
+<h3 id="thread-element">Thread element</h3>
+<p>The main kernel&rsquo;s thread is the basic execution unit in EVL. The most
+common kind of EVL threads is a regular POSIX thread started by
+<a href="http://man7.org/linux/man-pages/man3/pthread_create.3.html">pthread_create(3)</a>
+which has attached itself to the EVL core by a call to
+<a href="#evl_attach_self">evl_attach_self()</a>. Once a POSIX
+thread attached itself to EVL, it can:</p>
+<ul>
+<li>
+<p>request real-time services to the core, exclusively by calling
+routines available from the EVL library . In this case, and only in
+this one, you get real-time guarantees for the caller. This is what
+time-critical processing loops are supposed to use. Such request may
+switch the calling thread to the out-of-band <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">execution
+stage</a>, for running under EVL&rsquo;s supervision in order to ensure
+real-time behaviour.</p>
+</li>
+<li>
+<p>invoke services from your favourite C library (<em>glibc</em>, <em>musl</em>,
+<em>uClibc</em> etc.), which may end up issuing system calls to the main
+kernel for carrying out the job. EVL may have to demote the caller
+automatically from the EVL context to the in-band stage, so that it
+enters a runtime mode which is compatible with using the main kernel
+services. As a result of this, you get NO help from EVL for keeping
+short and bounded latency figures anymore, but you do have access to
+any feature the main kernel provides. This mode is normally reserved
+to initialization and cleanup phases of your application. If you end
+up using them in the middle of a would-be time-critical loop, well,
+something is seriously wrong in this code.</p>
+</li>
+</ul>
+
+<div class="notices info">
+    <div class="label">Информация</div><p>A thread which is being scheduled by EVL instead of the main kernel is
+said to be running <em>out-of-band</em>, as defined by <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">Dovetail</a>. It remains in this mode
+until it asks for a service which the main kernel provides.
+Conversely, a thread which is being scheduled by the main kernel
+instead of EVL is said to be running <em>in-band</em>, as defined by
+<a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">Dovetail</a>. It remains
+in this mode until it asks for a service which EVL can only provide
+to the caller when it runs out-of-band.</p>
+
+</div>
+<h3 id="thread-services">Thread services</h3>
+<hr>
+
+<div class="proto"><a name="evl_attach_thread"></a>
+int evl_attach_thread(int flags, const char *fmt, ...)
+</div>
+
+<p>EVL does not actually <em>create</em> threads; instead, it enables a regular
+POSIX thread to invoke its real-time services once this thread has
+attached to the EVL core.  <a href="#evl_attach_thread">evl_attach_thread()</a> is the initial service which requests such
+attachment. In most cases, applications would use the
+<a href="#evl_attach_self">evl_attach_self()</a> shorthand
+instead, which calls <a href="#evl_attach_thread">evl_attach_thread()</a> under the hood with the default set of
+creation flags.</p>
+<p>There is no requirement as of when <a href="#evl_attach_thread">evl_attach_thread()</a> (or <a href="#evl_attach_self">evl_attach_self()</a>) should be called in the thread execution
+flow. You just have to call it before it starts requesting other EVL
+services. Note that the main thread of a process is no different from
+any other thread to EVL. It may call <a href="#evl_attach_thread">evl_attach_thread()</a> whenever you see fit, or not at all if you
+don&rsquo;t plan to request EVL services from this context.</p>
+<p>As part of the attachment process, the calling thread is also pinned
+on its current CPU. You may change this default affinity by calling
+<a href="http://man7.org/linux/man-pages/man2/sched_setaffinity.2.html">sched_setaffinity(2)</a>
+as you see fit any time after <a href="#evl_attach_thread">evl_attach_thread()</a> has returned, but keep in mind that such
+<em>libc</em> service will trigger a common Linux system call, which will
+cause your thread to switch to <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">in-band context</a> automatically when doing
+so. So you may want to avoid calling
+<a href="http://man7.org/linux/man-pages/man2/sched_setaffinity.2.html">sched_setaffinity(2)</a>
+from your time-critical loop, which would not make much sense anyway
+since this is fundamentally an heavyweight operation kernel-wise.</p>
+<p>As part of the attachment process, the in-band scheduling settings
+your thread had before the call is translated to the closest EVL
+counterpart, as follows:</p>
+<table>
+<thead>
+<tr>
+<th>in-band settings</th>
+<th>out-of-band settings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SCHED_OTHER, 0</td>
+<td><a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#SCHED_WEAK">SCHED_WEAK</a>, 0</td>
+</tr>
+<tr>
+<td>SCHED_BATCH, 0</td>
+<td><a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#SCHED_WEAK">SCHED_WEAK</a>, 0</td>
+</tr>
+<tr>
+<td>SCHED_IDLE, 0</td>
+<td><a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#SCHED_WEAK">SCHED_WEAK</a>, 0</td>
+</tr>
+<tr>
+<td>&lt;other policies&gt;, prio</td>
+<td><a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#SCHED_FIFO">SCHED_FIFO</a>, prio</td>
+</tr>
+</tbody>
+</table>
+<p>As a consequence, the thread would still run in-band on return from
+<a href="#evl_attach_thread">evl_attach_thread()</a> if it was
+originally assigned to the <code>SCHED_OTHER</code>, <code>SCHED_BATCH</code> or
+<code>SCHED_IDLE</code> classes. Conversely, the thread would run out-of-band on
+return from <a href="#evl_attach_thread">evl_attach_thread()</a> if
+it was originally assigned to any other in-band scheduling class
+(e.g. <code>SCHED_FIFO</code>).</p>
+<blockquote>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sched.h&gt;
+#include &lt;pthread.h&gt;
+#include &lt;evl/sched.h&gt;
+#include &lt;evl/thread.h&gt;
+
+int main(int argc, char *argv[])
+{
+	struct sched_param param;
+	int ret, tfd;
+
+	param.sched_priority = 8;
+	ret = pthread_setschedparam(pthread_self(), SCHED_FIFO, &amp;param);
+	...
+
+	/* EVL inherits the in-band scheduling params upon attachment. */
+	tfd = evl_attach_self(&#34;app-main-thread:%d&#34;, getpid());
+
+	/*
+	 * Now main() is running out-of-band, in the EVL SCHED_FIFO
+	 * class at priority 8.
+	 */
+}
+
+</code></pre></div>
+<p><li><i>flags</i><p>A set of creation flags for the new element, defining its
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-visibility">visibility</a>:</p>
+<ul>
+<li>
+<p><code>EVL_CLONE_PUBLIC</code> denotes a public element which is represented
+by a device file in the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl</a> file hierarchy, which
+makes it visible to other processes for sharing.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_PRIVATE</code> denotes an element which is private to the
+calling process. No device file appears for it in the
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl</a>
+file hierarchy.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_OBSERVABLE</code> denotes a thread which may be observed for
+health monitoring purpose. See
+the <a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/#observable-thread">Observable element</a>.</p>
+</li>
+<li>
+<p>Only if <code>EVL_CLONE_OBSERVABLE</code> is present in <em>flags</em>,
+<code>EVL_CLONE_MASTER</code> may be added to set the Observable associated
+to the new thread to <a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/#evl_create_observable">master mode</a>. Passing <code>EVL_CLONE_MASTER</code> for a non-observable thread causes
+the attachment to fail with -EINVAL.</p>
+</li>
+<li>
+<p><code>EVL_CLONE_NONBLOCK</code> sets the file descriptor of the new thread in
+non-blocking I/O mode (<code>O_NONBLOCK</code>). By default, <code>O_NONBLOCK</code> is
+cleared for the file descriptor.</p>
+</li>
+</ul>
+</li></p>
+
+
+<p><li><i>fmt</i><p>A <a href="http://man7.org/linux/man-pages/man3/printf.3.html">printf</a>-like
+format string to generate the thread name. See this description of the
+[naming convention]
+(/ru/core/user-api/#element-naming-convention).</p>
+</li></p>
+
+
+<p><li><i>...</i><p>The optional variable argument list completing the format.</p>
+</li></p>
+
+<p><a href="#evl_attach_thread">evl_attach_thread()</a> returns the
+file descriptor of the newly attached thread on success. You may use
+this <em>fd</em> to submit requests for this thread in any call which asks
+for a thread file descriptor. If the call fails, a negated error code
+is returned instead:</p>
+<ul>
+<li>
+<p>-EEXIST	The generated name is conflicting with an existing thread
+name.</p>
+</li>
+<li>
+<p>-EINVAL	Either <em>flags</em> is wrong, or the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-naming-convention">generated name</a> is badly formed.</p>
+</li>
+<li>
+<p>-ENAMETOOLONG	The overall length of the device element&rsquo;s file path including
+the generated name exceeds PATH_MAX.</p>
+</li>
+<li>
+<p>-EMFILE	The per-process limit on the number of open file descriptors
+has been reached.</p>
+</li>
+<li>
+<p>-ENFILE	The system-wide limit on the total number of open files
+has been reached.</p>
+</li>
+<li>
+<p>-EPERM	The caller is not allowed to lock memory via a call to
+<a href="http://man7.org/linux/man-pages/man2/mlock.2.html">mlockall(2)</a>. Since
+memory locking is a requirement for running EVL
+threads, no joy.</p>
+</li>
+<li>
+<p>-ENOMEM	No memory available, whether the kernel could not
+lock down all of the calling process&rsquo;s virtual address
+space into RAM, or some other reason related to some
+process or driver eating way too much virtual or physical
+memory.	You may start panicking.</p>
+</li>
+<li>
+<p>-ENOSYS	The EVL core is not enabled in the running kernel.</p>
+</li>
+<li>
+<p>-ENOEXEC      ABI mismatch error, as reported by
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/init/#evl_init">evl_init()</a>.</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
+
+static void *byte_crunching_thread(void *arg)
+{
+	int efd;
+
+	/* Attach the current thread to the EVL core. */
+	efd = evl_attach_self(&#34;/cruncher-%d&#34;, getpid());
+	...
+}
+</code></pre></div><p>As a result of this call, you should see a new device appear into the
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl/thread</a> hierarchy, e.g.:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ ls -l /dev/evl/thread
+total 0
+crw-rw----    1 root     root      248,   1 Jan  1  1970 clone
+crw-rw----    1 root     root      246,   0 Jan  1  1970 cruncher-2712
+</code></pre></div><ol>
+<li>
+<p>You can revert the attachment to EVL at any time by calling
+<a href="#evl_detach_self">evl_detach_self()</a> from the
+context of the thread to detach.</p>
+</li>
+<li>
+<p>Closing all the file descriptors referring to an EVL thread is not
+enough to drop its attachment to the EVL core. It merely prevents to
+submit any further request for the original thread via calls taking
+file descriptors. You would still have to call
+<a href="#evl_detach_self">evl_detach_self()</a> from the
+context of this thread to fully detach it.</p>
+</li>
+<li>
+<p>If a valid file descriptor is still referring to a detached thread,
+or after the thread has exited, any request submitted for that thread
+using such <em>fd</em> would receive -ESTALE.</p>
+</li>
+<li>
+<p>An EVL thread which exits is automatically detached from the EVL
+core, you don&rsquo;t have to call <a href="#evl_detach_self">evl_detach_self()</a> explicitly before exiting your thread.</p>
+</li>
+<li>
+<p>The EVL core drops the kernel resources attached to a thread once
+it has detached itself or has exited, and only after all the file
+descriptors referring to that thread have been closed.</p>
+</li>
+<li>
+<p>The EVL library sets the O_CLOEXEC flag on the file descriptor
+referring to the newly attached thread before returning from
+<a href="#evl_attach_thread">evl_attach_thread()</a>.</p>
+</li>
+</ol>
+<hr>
+
+<div class="proto"><a name="evl_attach_self"></a>
+int evl_attach_self(const char *fmt, ...)
+</div>
+
+<p>This call is a shorthand for attaching the calling thread to the EVL
+core, with the private <a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-visibility">visibility attribute</a> set. It is identical
+to calling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	evl_attach_thread(EVL_CLONE_PRIVATE, fmt, ...);
+</code></pre></div>
+<div class="notices info">
+    <div class="label">Информация</div><p>Note that if the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-naming-convention">generated name</a> starts with a
+slash ('/') character, <code>EVL_CLONE_PRIVATE</code> would be automatically turned
+into <code>EVL_CLONE_PUBLIC</code> internally.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="evl_detach_thread"></a>
+int evl_detach_thread(int flags)
+</div>
+
+<p><a href="#evl_detach_thread">evl_detach_thread()</a> reverts the
+action of <a href="#evl_attach_thread">evl_attach_thread()</a>,
+detaching the calling thread from the EVL core. Once this operation
+has succeeded, the current thread cannot submit EVL requests
+anymore. Applications should use the <a href="#evl_detach_self">evl_detach_self()</a> shorthand, which calls
+<a href="#evl_detach_thread">evl_detach_thread()</a> with
+<em>flags</em> set to zero as recommended.</p>
+<p>This call returns zero on success, otherwise a negated error code if
+something went wrong:</p>
+
+<p><li><i>flags</i><p>This parameter is currently unused and should be passed as zero.</p>
+</li></p>
+
+<p>-EINVAL		<em>flags</em> is not zero.</p>
+<p>-EPERM		The current thread is not attached to the EVL core.</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
+
+static void *byte_crunching_thread(void *arg)
+{
+	int efd;
+
+	/* Attach the current thread to the EVL core (using the long call form). */
+	efd = evl_attach_thread(EVL_CLONE_PUBLIC, &#34;cruncher-%d&#34;, getpid());
+	...
+	/* Then detach it (also with the long call form). */
+	evl_detach_thread(0);
+	...
+}
+</code></pre></div><ol>
+<li>
+<p>You can re-attach the detached thread to EVL at any time by calling
+<a href="#evl_attach_thread">evl_attach_thread()</a> again (or
+the <a href="#evl_attach_self">evl_attach_self()</a> shorthand).</p>
+</li>
+<li>
+<p>If a valid file descriptor is still referring to a detached thread,
+or after the thread has exited, any request submitted for that thread
+using such descriptor would receive -ESTALE.</p>
+</li>
+<li>
+<p>An EVL thread which exits is automatically detached from the EVL
+core, you don&rsquo;t have to call <a href="#evl_detach_thread">evl_detach_thread()</a> explicitly before exiting your thread.</p>
+</li>
+<li>
+<p>The EVL core drops the kernel resources attached to a thread once
+it has detached itself or has exited, and only after all the file
+descriptors referring to that thread have been closed.</p>
+</li>
+</ol>
+<hr>
+
+<div class="proto"><a name="evl_detach_self"></a>
+int evl_detach_self(void)
+</div>
+
+<p>This call is a shorthand for detaching the calling thread from the EVL
+core. It is identical to calling:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	evl_detach_thread(0);
+</code></pre></div><hr>
+
+<div class="proto"><a name="evl_get_self"></a>
+int evl_get_self(void)
+</div>
+
+<p><a href="#evl_get_self">evl_get_self()</a> returns the file
+descriptor obtained for the current thread after a successful call to
+<a href="#evl_attach_thread">evl_attach_thread()</a>.  You may use
+this <em>fd</em> to submit requests for the current thread in other calls
+from the EVL library which ask for a thread file descriptor.  This
+call returns a valid file descriptor referring to the caller on
+success, otherwise a negated error code if something went wrong:</p>
+<p>-EPERM		The current thread is not attached to the EVL core.</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;evl/thread.h&gt;
+
+static void get_caller_info(void)
+{
+	struct evl_thread_state statebuf;
+	int efd, ret;
+
+	/* Fetch the current thread&#39;s fd. */
+	efd = evl_get_self();
+	...
+	/* Retrieve the caller&#39;s state information. */
+	ret = evl_get_state(efd, &amp;statebuf);
+	...
+}
+</code></pre></div><p><a href="#evl_get_self">evl_get_self()</a> fails with -EPERM
+after a call to <a href="#evl_detach_thread">evl_detach_thread()</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_switch_oob"></a>
+int evl_switch_oob(void)
+</div>
+
+<p>Applications are unlikely to ever use this call explicitly: it
+switches the calling thread to the out-of-band <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">execution
+stage</a>, for running under EVL&rsquo;s supervision which ensures real-time
+behaviour. Any EVL service which requires it will enforce such switch
+if and when required automatically, so in most cases there should be
+no point in dealing with this manually in applications.</p>
+<p><a href="#evl_switch_oob">evl_switch_oob()</a> is defined for
+the rare circumstances where some high-level API based on the EVL core
+library might have to enforce a particular execution stage, based on a
+deep knowledge of how EVL works internally. Entering a syscall-free
+section of code for which running out-of-band must be guaranteed on
+entry would be the only valid reason to call <a href="#evl_switch_oob">evl_switch_oob()</a>.  This call returns zero on success,
+otherwise a negated error code if something went wrong:</p>
+<p>-EPERM		The current thread is not attached to the EVL core.</p>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>Forcing the current execution stage between in-band and out-of-band
+stages is a heavyweight operation: this entails two thread context
+switches both ways, as the switching thread is offloaded to the
+opposite scheduler. You really don&rsquo;t want to force this explicitly
+unless you definitely have to and fully understand the implications of
+it runtime-wise. Bottom line is that <strong>calling a main kernel service
+from within a time-critical code is a clear indication that something
+is wrong</strong> in such code. This invalidates the reason why a
+time-critical code would need to switch back to the out-of-band stage
+eagerly.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="evl_switch_inband"></a>
+int evl_switch_inband(void)
+</div>
+
+<p>Applications are unlikely to ever use this call explicitly: it
+switches the calling thread to the in-band <a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/#two-stage-pipeline">execution stage</a>, for running
+under the main kernel supervision. Any EVL thread which issues a
+system call to the main kernel will be switched to the <a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">in-band
+context</a>
+automatically, so in most cases there should be no point in dealing
+with this manually in applications.</p>
+<p><a href="#evl_switch_inband">evl_switch_inband()</a> is defined
+for the rare circumstances where some high-level API based on the EVL
+core library might have to enforce a particular execution stage, based
+on a deep knowledge of how EVL works internally. Entering a
+syscall-free section of code for which the in-band mode needs to be
+guaranteed on entry would be the only valid reason to call
+<a href="#evl_switch_inband">evl_switch_inband()</a>.  This call
+returns zero on success, otherwise a negated error code if something
+went wrong:</p>
+<p>-EPERM		The current thread is not attached to the EVL core.</p>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>Forcing the current execution stage between in-band and out-of-band
+stages is a heavyweight operation: this entails two thread context
+switches both ways, as the switching thread is offloaded to the
+opposite scheduler. You really don&rsquo;t want to force this explicitly
+unless you definitely have to and fully understand the implications of
+it runtime-wise. Bottom line is that <strong>switching the execution stage
+to in-band from within a time-critical code is a clear indication that
+something is wrong</strong> in such code.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="evl_is_inband"></a>
+bool evl_is_inband(void)
+</div>
+
+<p>In some cases, you may need to check the current execution stage for
+the caller. <a href="#evl_is_inband">evl_is_inband()</a> returns
+a <em>true</em> boolean value if the caller runs <a href="#evl_switch_inband">in-band</a>, <em>false</em> otherwise.</p>
+
+<div class="notices note">
+    <div class="label">Заметка</div><p>A POSIX thread which is not currently attached to the EVL core always
+receives a <em>true</em> value when issuing this call, which makes sense
+since it cannot run out-of-band.</p>
+
+</div>
+<hr>
+
+<div class="proto"><a name="evl_get_state"></a>
+int evl_get_state(int efd, struct evl_thread_state *statebuf)
+</div>
+
+<p><a href="#evl_get_state">evl_get_state()</a> is an extended
+variant of <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#evl_get_schedattr">evl_get_schedattr()</a> for
+retrieving runtime information about the state of a thread. The return
+buffer is of type <code>struct evl_thread_state</code>, which is defined as
+follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">struct evl_thread_state {
+	struct evl_sched_attrs eattrs;
+	int cpu;
+};
+</code></pre></div><ul>
+<li>
+<p>unlike <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#evl_get_schedattr">evl_get_schedattr()</a>, the value
+returned in <code>statebuf-&gt;attrs.sched_priority</code> by <a href="#evl_get_state">evl_get_state()</a> may reflect an ongoing <a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">priority
+inheritance/ceiling boost</a>.</p>
+</li>
+<li>
+<p><code>statebuf-&gt;cpu</code> is the CPU the target thread runs on at the time of
+the call.</p>
+</li>
+</ul>
+
+<p><li><i>efd</i><p>A file descriptor referring to the thread to inquire about.</p>
+</li></p>
+
+
+<p><li><i>statbuf</i><p>A pointer to the information buffer.</p>
+</li></p>
+
+<p><a href="#evl_get_state">evl_get_state()</a> returns zero on
+success, otherwise a negated error code:</p>
+<p>-EBADF		<em>efd</em> is not a valid thread descriptor.</p>
+<p>-ESTALE		<em>efd</em> refers to a stale thread, see these <a href="#evl_detach_thread">notes</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_unblock_thread"></a>
+int evl_unblock_thread(int efd)
+</div>
+
+<p>Unblocks the thread referred to by <em>efd</em> if it is currently sleeping
+on some EVL core <a href="">monitor element</a>, waiting for it to be
+signaled/available. In other words, the blocking system call is forced
+to fail, and as a result the target thread receives the -EINTR error
+on return.</p>
+
+<p><li><i>efd</i><p>A file descriptor referring to the thread to unblock.</p>
+</li></p>
+
+<p><a href="#evl_unblock_thread">evl_unblock_thread()</a> returns
+zero on success, otherwise a negated error code:</p>
+<p>-EBADF		<em>efd</em> is not a valid thread descriptor.</p>
+<p>-ESTALE		<em>efd</em> refers to a stale thread, see these <a href="#evl_detach_thread">notes</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_demote_thread"></a>
+int evl_demote_thread(int efd)
+</div>
+
+<p>Demotes the thread referred to by <em>efd</em> if it is currently running
+out-of-band with <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/">real-time scheduling</a> attributes.</p>
+<p>Demoting a thread means to force it out of any real-time scheduling
+class, unblock it like <a href="#evl_unblock_thread">evl_unblock_thread()</a> would do, and kick it out of the
+out-of-band stage, all in the same move. Once demoted, a thread runs
+in-band and undergoes the <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#SCHED_WEAK">SCHED_WEAK</a> policy.
+<a href="#evl_unblock_thread">evl_demote_thread()</a> is a
+pretty big hammer you don&rsquo;t want to use lightly; it should be reserved
+to specific (read: <em>desperate</em>) cases when you have to perform some
+aggressive recovery procedure, and/or you want to stop a thread
+running out-of-band from hogging a CPU.</p>
+
+<p><li><i>efd</i><p>A file descriptor referring to the thread to demote.</p>
+</li></p>
+
+<p><a href="#evl_demote_thread">evl_demote_thread()</a> returns
+zero on success, otherwise a negated error code:</p>
+<p>-EBADF		<em>efd</em> is not a valid thread descriptor.</p>
+<p>-ESTALE		<em>efd</em> refers to a stale thread, see these <a href="#evl_detach_thread">notes</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_set_thread_mode"></a>
+int evl_set_thread_mode(int efd, int mask, int *oldmask)
+</div>
+
+<p>Each EVL thread has a few so-called <em>mode bits</em> which affect its
+behavior depending on whether they are
+set. <a href="#evl_set_thread_mode">evl_set_thread_mode()</a>
+can set the following flags when present in <em>mask</em>:</p>
+<ul>
+<li>T_WOSS: warn on stage switch</li>
+<li>T_WOLI: warn on locking inconsistency</li>
+<li>T_WOSX: warn on stage exclusion</li>
+<li>T_HMSIG: enable notification of HM events via the SIGDEBUG signal</li>
+<li>T_HMOBS: enable notification of HM events via the built-in observable</li>
+</ul>
+<p>See the section about the <a href="#health-monitoring">health monitoring</a> of EVL threads for details about these bits.</p>
+<p>If any of T_WOSS, T_WOLI or T_WOSX are present in <em>mask</em> but none of
+T_HMSIG or T_HMOBS is, then T_HMSIG is turned on automatically,
+enabling notification delivery via the SIGDEBUG signal.</p>
+
+<p><li><i>efd</i><p>A file descriptor referring to the target thread.</p>
+</li></p>
+
+
+<p><li><i>mask</i><p>A bitmask mentioning the mode bits to set. Zero is valid, and leads
+to a no-op. Passing a null <em>mask</em> and a valid <em>oldmask</em> pointer
+allows peeking at the mode bits currently set for a thread without
+changing them.</p>
+</li></p>
+
+
+<p><li><i>oldmask</i><p>The address of a bitmask which should collect the previous set of
+active mode bits for the thread, before the update. NULL
+can be passed to discard this information.</p>
+</li></p>
+
+<p><a href="#evl_set_thread_mode">evl_set_thread_mode()</a> returns
+zero on success, otherwise a negated error code:</p>
+<p>-EINVAL 	 <em>mask</em> contains invalid mode bits. Setting T_HMOBS for a
+thread which was not created with the <a href="#evl_attach_thread">EVL_CLONE_OBSERVABLE</a> attribute set is an error.</p>
+<p>-EBADF		<em>efd</em> is not a valid thread descriptor.</p>
+<p>-ESTALE		<em>efd</em> refers to a stale thread, see these <a href="#evl_detach_thread">notes</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_clear_thread_mode"></a>
+int evl_clear_thread_mode(int efd, int mask, int *oldmask)
+</div>
+
+<p><a href="#evl_clear_thread_mode">evl_clear_thread_mode()</a> is
+the converse call to <a href="#evl_set_thread_mode">evl_set_thread_mode()</a>, clearing the mode bits mentioned in
+<em>mask</em>.</p>
+<p>If all of T_WOSS, T_WOLI and T_WOSX are cleared for the thread as a
+result, T_HMSIG and T_HMOBS are automatically cleared as well by
+<a href="#evl_clear_thread_mode">evl_clear_thread_mode()</a>.</p>
+
+<p><li><i>efd</i><p>A file descriptor referring to the target thread.</p>
+</li></p>
+
+
+<p><li><i>mask</i><p>A bitmask mentioning the mode bits to clear. Zero is valid, and leads
+to a no-op. Passing a null <em>mask</em> and a valid <em>oldmask</em> pointer
+allows peeking at the mode bits currently set for a thread without changing
+them.</p>
+</li></p>
+
+
+<p><li><i>oldmask</i><p>The address of a bitmask which should collect the previous set of
+active mode bits for the thread, before the update. NULL
+can be passed to discard this information.</p>
+</li></p>
+
+<p><a href="#evl_clear_thread_mode">evl_clear_thread_mode()</a> returns
+zero on success, otherwise a negated error code:</p>
+<p>-EINVAL		<em>mask</em> contains invalid bits.</p>
+<p>-EBADF		<em>efd</em> is not a valid thread descriptor.</p>
+<p>-ESTALE		<em>efd</em> refers to a stale thread, see these <a href="#evl_detach_thread">notes</a>.</p>
+<hr>
+
+<div class="proto"><a name="evl_subscribe"></a>
+int evl_subscribe(int ofd, unsigned int backlog_count, int flags)
+</div>
+
+<p>This service subscribes the current thread to an <a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable</a> element, which makes
+the former an observer of the latter. This thread does not have to be
+<a href="#evl_attach_thread">attached</a> to EVL in order to
+subscribe to an Observable. Subscribers are independent from each
+other, the target Observable may vanish while subscriptions are still
+active, observers can come and go freely. In other words, the
+relationship between an Observable and its observers is losely
+coupled. However, a thread can only have a single active subscription
+to a particular Observable, although it can subscribe to any number of
+distinct Observables.</p>
+
+<p><li><i>ofd</i><p>A file descriptor referring to the Observable to subscribe to.</p>
+</li></p>
+
+
+<p><li><i>backlog_count</i><p>The number of notifications which the core can buffer for this
+subscription. On overflow, the unread events already queued are
+preserved, the new ones are lost for the observer.</p>
+</li></p>
+
+
+<p><li><i>flags</i><p>A mask of ORed operation flags which further
+qualify the type of subscription. If <code>EVL_NOTIFY_ONCHANGE</code> is passed,
+the EVL core will merge multiple consecutive notifications for the
+same tag and event values. In other words, the returned <em>( tag, value
+)</em> pairs will be different at every <a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/#evl_read_observable">receipt</a>. Passing
+zero or <code>EVL_NOTIFY_ALWAYS</code> ensures that all notices received by the
+Observable are passed to this subscriber, unfiltered.</p>
+</li></p>
+
+<p><a href="#evl_subscribe">evl_subscribe()</a> returns
+zero on success, otherwise a negated error code:</p>
+<ul>
+<li>
+<p>-EINVAL 	 <em>flags</em> contains invalid operations bits. The only
+valid bit is <code>EVL_NOTIFY_ONCHANGE</code>, or <em>backlock_log_count</em>
+is zero.</p>
+</li>
+<li>
+<p>-EBADF	<em>ofd</em> is not a valid file descriptor.</p>
+</li>
+<li>
+<p>-EPERM	<em>ofd</em> does not refer to an Observable element.</p>
+</li>
+<li>
+<p>-ENOMEM	No memory available for the operation. That is a problem.</p>
+</li>
+</ul>
+<hr>
+
+<div class="proto"><a name="evl_unsubscribe"></a>
+int evl_unsubscribe(int ofd)
+</div>
+
+<p>This service unsubscribes the current thread from an <a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable</a> element. This is the
+converse call to <a href="#evl_unsubscribe">evl_subscribe()</a>.</p>
+
+<p><li><i>ofd</i><p>A file descriptor referring to the Observable to unsubscribe from.</p>
+</li></p>
+
+<p><a href="#evl_unsubscribe">evl_unsubscribe()</a> returns
+zero on success, otherwise a negated error code:</p>
+<ul>
+<li>
+<p>-EBADF	<em>ofd</em> is not a valid file descriptor.</p>
+</li>
+<li>
+<p>-EPERM	<em>ofd</em> does not refer to an Observable element.</p>
+</li>
+<li>
+<p>-ENOENT	the current thread is not subscribed to the Observable
+referred to by _ofd.</p>
+</li>
+</ul>
+<hr>
+<h3 id="health-monitoring">Health monitoring of threads</h3>
+<p>The EVL core has some health monitoring (HM) capabilities, which can
+be enabled separately on a per-thread basis using
+<a href="#evl_set_thread_mode">evl_set_thread_mode()</a>, or
+global to the system via the kernel configuration. They are based on
+runtime error detection when performing user requests which involve
+threads. Each type of error is associated with a diagnostic code, such
+as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/* Health monitoring diag codes (via observable or SIGDEBUG). */
+#define EVL_HMDIAG_SIGDEMOTE	1
+#define EVL_HMDIAG_SYSDEMOTE	2
+#define EVL_HMDIAG_EXDEMOTE	3
+#define EVL_HMDIAG_WATCHDOG	4
+#define EVL_HMDIAG_LKDEPEND	5
+#define EVL_HMDIAG_LKIMBALANCE	6
+#define EVL_HMDIAG_LKSLEEP	7
+#define EVL_HMDIAG_STAGEX	8
+</code></pre></div><p>Each of these codes identifies a specific cause of trouble for the
+thread which receives it:</p>
+<ul>
+<li>
+<p><code>EVL_HMDIAG_SIGDEMOTE</code>, enabled by the <a href="#evl_set_thread_mode">T_WOSS</a> mode bit. The thread was demoted to the
+in-band stage because it received a (POSIX) signal. In such an
+event, the core had to release the recipient from any blocked state
+from the out-of-band stage, because handling any pending in-band
+signal is a requirement for the overall system sanity.</p>
+</li>
+<li>
+<p><code>EVL_HMDIAG_SYSDEMOTE</code>, enabled by the <a href="#evl_set_thread_mode">T_WOSS</a> mode bit. The thread was demoted to the
+in-band stage because it issued an in-band Linux syscall, such as
+those defined in your C library of choice. Requesting the in-band
+kernel to handle a system call is by definition a reason to switch
+to in-band execution.</p>
+</li>
+<li>
+<p><code>EVL_HMDIAG_EXDEMOTE</code>, enabled by the <a href="#evl_set_thread_mode">T_WOSS</a> mode bit. The thread was demoted to the
+in-band stage because it received a processor exception while
+running on the out-of-band stage, which it could not handle from
+there. There are different sources of CPU exceptions, the most
+common ones involve invalid memory addressing which typically ends
+up with receiving a SIGSEGV or SIGBUS signal from the kernel as a
+result. When the exception cannot be handled directly from the
+out-of-band stage, the EVL core has to demote the faulting thread so
+that the common (in-band) exception handling code can run safely.</p>
+</li>
+<li>
+<p><code>EVL_HMDIAG_WATCHDOG</code>, enabled by <a href="https://the-going.github.io/evlproject/ru/core/build-steps/#core-kconfig">kernel configuration</a>. The thread was kicked out of
+out-of-band execution because it hogged a CPU for too long without
+reliquishing it to the in-band stage. The delay applies to the
+entire period while a CPU executes on the out-of-band stage, so this
+may involve multiple EVL threads. Only the thread which is running
+at the time the watchdog expires receives the notification. The
+longer the detection delay (4s by default), the higher the risk of
+breaking the whole system since there is a point when the kernel is
+going to freak out badly if some CPU is unavailable for too long for
+handling in-band work. The timeout delay can be configured using
+<a href="https://the-going.github.io/evlproject/ru/core/build-steps/#core-kconfig">CONFIG_EVL_WATCHDOG</a>.</p>
+</li>
+<li>
+<p><code>EVL_HMDIAG_LKDEPEND</code>, enabled by the <a href="#evl_set_thread_mode">T_WOLI</a> mode bit.  There are two converse
+conditions causing this error, both due to an incorrect usage of
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">EVL mutexes</a>
+leading to a priority inversion:</p>
+<ol>
+<li>
+<p>if a thread is about to switch in-band while owning an EVL mutex
+which is awaited by another thread. This situation would cause a
+priority inversion for the waiter(s), since the latter would depend
+on a mutex owner who lost any guarantee for real-time execution as a
+result of switching in-band.</p>
+</li>
+<li>
+<p>if a thread running out-of-band is about to sleep on an EVL mutex
+owned by another thread running in-band. Same reasoning as
+previously, an out-of-band thread would depend on the non real-time
+scheduling undergone by the current owner of the mutex.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><code>EVL_HMDIAG_LKIMBALANCE</code>, enabled by the <a href="#evl_set_thread_mode">T_WOLI</a> mode bit. An attempt to unlock a free
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">EVL mutex</a> was
+detected.</p>
+</li>
+<li>
+<p><code>EVL_HMDIAG_LKSLEEP</code>, enabled by the <a href="#evl_set_thread_mode">T_WOLI</a> mode bit. A thread which undergoes the
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#SCHED_WEAK">SCHED_WEAK</a> which already
+holds an <a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">EVL mutex</a>
+subsequently wants to wait for a different type of EVL resource to
+be available, i.e. pretty much any EVL synchronization mechanism
+which may block the caller except EVL mutexes. Such pattern is a bad
+idea: a weakly scheduled thread (EVL-wise, that is) has neither
+real-time requirements nor capabilities, and some real-time thread
+may well wait for it to release the mutex it holds. Therefore,
+waiting for an undefined amount of time for an event to - maybe -
+occur before the mutex can be released eventually is logically
+flawed.</p>
+</li>
+<li>
+<p><code>EVL_HMDIAG_STAGEX</code>, enabled by the <a href="#evl_set_thread_mode">T_WOSX</a> mode bit. A thread is performing an
+out-of-band <a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">I/O operation</a> which is blocked on a <a href="">stage exclusion lock</a> waiting for all in-band tasks
+to leave the section guarded by that lock. This issue leads to a
+priority inversion. <a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">Real-time I/O drivers</a> using stage exclusion should
+provide an interface to applications which enforces a clear
+separation between in-band and out-of-band runtime modes, so that
+this does not normally happen. Blocking on a stax from the
+out-of-band stage might be fine in some circumstances in case
+portions of code are to be shared between in-band and out-of-band
+threads without risking priority inversions, this is the reason why
+such locks exist in the first place. However, this behavior has to
+be specifically allowed by the driver implementation. If
+<a href="#evl_set_thread_mode">T_WOSX</a> is set for the
+thread, then such event must be unexpected.</p>
+</li>
+</ul>
+<h4 id="hm-notification-methods"><code>SIGDEBUG</code> and HM notifications via the observable</h4>
+<p>Once an error condition is detected, the EVL core can notify the
+faulting thread by sending it a regular POSIX signal (aka <code>SIGDEBUG</code>,
+which is <code>SIGXCPU</code> in disguise), and/or pushing a notification to the
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/#observable-thread">observable</a> component
+of the thread if enabled. Both options are cumulative.</p>
+<h5 id="hm-sigdebug">Signal-based HM notifications</h5>
+<p><code>SIGDEBUG</code> is enabled by setting the <a href="#evl_set_thread_mode">T_HMSIG</a> mode bit for the thread. A signal handler
+should have been installed for receiving them, otherwise the process
+would be killed. The macro <code>sigdebug_cause()</code> retrieves the diag code
+(<code>EVL_HMDIAG_xxx</code>) from the SIGDEBUG information block. Checking that
+SIGDEBUG was actually sent by the EVL core is recommended, using the
+<code>sigdebug_marked()</code> macro as illustrated below. If this macro returns
+<em>false</em> when passed the signal information block, then your thread has
+received <code>SIGXCPU</code> from another source, this is <em>not</em> a HM event sent
+by the EVL core.</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#include &lt;signal.h&gt;
+#include &lt;evl/thread.h&gt;
+
+/* A basic SIGDEBUG (aka SIGXCPU) handler which only prints out the cause. */
+
+static void sigdebug_handler(int sig, siginfo_t *si, void *context)
+{
+	if (!sigdebug_marked(si)) {	/* Is this from EVL? */
+		you_should_handle_sigxcpu(sig, si, context);
+		return;
+	}
+
+	/* This is a HM event, handle it. */
+	you_should_handle_the_hm_event(sigdebug_cause(si));
+}
+
+void install_sigdebug_handler(void)
+{
+	struct sigaction sa;
+
+	sigemptyset(&amp;sa.sa_mask);
+	sa.sa_sigaction = sigdebug_handler;
+	sa.sa_flags = SA_SIGINFO;
+	sigaction(SIGDEBUG, &amp;sa, NULL);
+}
+</code></pre></div><p><code>libevl</code> defines the <a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/#evl_sigdebug_handler">evl_sigdebug_handler()</a> routine which
+simply prints out the diagnostics to <em>stdout</em> then returns.</p>
+<h3 id="can-evl-threads-run-in-kernel-space">Can EVL threads run in kernel space?</h3>
+<p>Yes. Drivers may create kernel-based EVL threads backed by regular
+<em>kthreads</em>, using EVL&rsquo;s <a href="">kernel API</a>. The attachment phase is hidden
+inside the API call starting the EVL kthread in this case. Most of the
+notions explained in this document apply to them too, except that
+there is no system call interface between the EVL core and the
+kthread. For this reason, unlike EVL threads running in user-space,
+<strong>nothing prevents EVL kthreads from calling the in-band kernel
+routines from the wrong context.</strong></p>
+<h3 id="where-do-public-thread-devices-live">Where do public thread devices live?</h3>
+<p>Each time a new public thread element is created, it appears into the
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl/thread</a> hierarchy, e.g.:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ ls -l /dev/evl/threads
+total 0
+crw-rw----    1 root     root      248,   1 Jan  1  1970 clone
+crw-rw----    1 root     root      246,   0 Mar  1 11:26 rtk1@0:1682
+crw-rw----    1 root     root      246,  18 Mar  1 11:26 rtk1@1:1682
+crw-rw----    1 root     root      246,  36 Mar  1 11:26 rtk1@2:1682
+crw-rw----    1 root     root      246,  54 Mar  1 11:26 rtk1@3:1682
+crw-rw----    1 root     root      246,   1 Mar  1 11:26 rtk2@0:1682
+crw-rw----    1 root     root      246,  19 Mar  1 11:26 rtk2@1:1682
+crw-rw----    1 root     root      246,  37 Mar  1 11:26 rtk2@2:1682
+crw-rw----    1 root     root      246,  55 Mar  1 11:26 rtk2@3:1682
+                           (snip)
+crw-rw----    1 root     root      246,   9 Mar  1 11:26 rtus_ufps0-10:1682
+crw-rw----    1 root     root      246,   8 Mar  1 11:26 rtus_ufps0-9:1682
+crw-rw----    1 root     root      246,  27 Mar  1 11:26 rtus_ufps1-10:1682
+crw-rw----    1 root     root      246,  26 Mar  1 11:26 rtus_ufps1-9:1682
+crw-rw----    1 root     root      246,  45 Mar  1 11:26 rtus_ufps2-10:1682
+crw-rw----    1 root     root      246,  44 Mar  1 11:26 rtus_ufps2-9:1682
+crw-rw----    1 root     root      246,  63 Mar  1 11:26 rtus_ufps3-10:1682
+crw-rw----    1 root     root      246,  62 Mar  1 11:26 rtus_ufps3-9:1682
+</code></pre></div>
+<div class="notices info">
+    <div class="label">Информация</div><p>The <em>clone</em> file is a special device which allows the EVL library to
+request the creation of a thread element. <em>This is for internal use only</em>.</p>
+
+</div>
+<h3 id="thread-device-open">How to reach a remote EVL thread?</h3>
+<p>If you need to submit requests to an EVL thread which belongs to a
+different process, you first need it to have
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-visibility">public visibility</a>.
+If so, then you can open the device file representing
+this element in <a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl/thread</a>, then use the file
+descriptor just obtained in the thread-related request you want to
+send it. For instance, we could change the scheduling parameters of an
+EVL kernel thread named rtk1@3:1682 from a companion application in
+userland as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">	struct evl_sched_attrs attrs;
+	int efd, ret;
+
+ 	efd = open(&#34;/dev/evl/thread/rtk1@3:1682&#34;, O_RDWR);
+	/* skipping checks */
+
+	attrs.sched_policy = SCHED_FIFO;
+	attrs.sched_priority = 90;
+	ret = evl_set_schedattr(efd, &amp;attrs);
+	/* skipping checks */
+</code></pre></div><h3 id="thread-stats">Where to look for thread information?</h3>
+<h4 id="using-the-evl-ps-command">Using the &lsquo;evl ps&rsquo; command</h4>
+<p>Running the following command from the shell will report the current
+EVL thread activity on your system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># evl ps
+CPU   PID   SCHED   PRIO  NAME
+  0   398      rt    90   [latmus-klat:394]
+  0   399    weak     0   lat-measure:394
+</code></pre></div><p>There are display options you can pass to the <a href="https://the-going.github.io/evlproject/ru/core/commands/">&lsquo;evl ps&rsquo;</a> command to get more information
+about each EVL thread, sorting the result list according to various
+criteria.</p>
+<h4 id="thread-sysfs-data">Looking at the /sysfs data</h4>
+<p>Since every EVL element is backed by a regular character device, so
+are threads. Therefore, what to look for is the set of thread device
+attributes available from the /sysfs hierarchy. The &lsquo;evl ps&rsquo; command
+actually parses this raw information before rendering it in a
+human-readable format. Let&rsquo;s have a look at the attributes exported by
+the sampling thread of some random run of EVL&rsquo;s <em>latmus</em> utility:</p>
+<div class="highlight"><pre tabindex="0" style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># cd /sys/devices/virtual/thread/timer-responder:2136
+# ls -l
+total 0
+-r--r--r--    1 root     root          4096 Mar  1 12:01 pid
+-r--r--r--    1 root     root          4096 Mar  1 12:01 sched
+-r--r--r--    1 root     root          4096 Mar  1 12:01 state
+-r--r--r--    1 root     root          4096 Mar  1 12:01 stats
+-r--r--r--    1 root     root          4096 Mar  1 12:01 timeout
+-r--r--r--    1 root     root          4096 Mar  1 12:01 observable
+
+# cat pid sched state stats timeout observable
+2140
+0 90 90 rt
+0x8002
+1 311156 311175 0 46999122352 0
+0
+0
+</code></pre></div><p>The format of these fields is as follows:</p>
+<ul>
+<li>
+<p><em>pid</em> is the thread identifier (kernel TID); this is a positive
+integer of type pid_t.</p>
+</li>
+<li>
+<p><em>sched</em> contains the scheduling attributes of the thread, with by
+order of appearance:</p>
+<ul>
+<li>
+<p>the CPU the thread is running on.</p>
+</li>
+<li>
+<p>the current priority level of the thread within its scheduling
+class. With SCHED_FIFO for instance, that would be a figure in the
+[1..99] range. This value may reflect an ongoing priority boost
+due to enforcing the priority inheritance protocol with some EVL
+mutex(es) that thread contends for.</p>
+</li>
+<li>
+<p>the base priority level of the thread within its scheduling class,
+<em>not</em> reflecting any priority boost. This is the value that you last
+set with <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#evl_set_schedattr">evl_set_schedattr()</a> when
+assigning the thread its scheduling class.</p>
+</li>
+<li>
+<p>the name of the scheduling class the thread is assigned to. This
+is an ASCII string (unquoted), like <em>rt</em> for the SCHED_FIFO class.</p>
+</li>
+<li>
+<p>depending on the scheduling class, you may see optional
+information after the class name which gives some class-specific
+details about the thread. Currently, only SCHED_TP and SCHED_QUOTA
+define such information:</p>
+<ul>
+<li>
+<p>SCHED_QUOTA appends the <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#create-quota-group">quota group identifier</a> for
+that thread.</p>
+</li>
+<li>
+<p>SCHED_TP appends the <a href="https://the-going.github.io/evlproject/ru/core/user-api/scheduling/#SCHED_TP">identifier of the partition</a> the thread is
+attached to.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><em>state</em> is the hexadecimal value of the thread&rsquo;s internal state
+word. This information is very ABI dependent, each bit is tersely
+documented in <em>uapi/evl/thread.h</em> from the linux-evl kernel
+tree. This is intended at being food for geek brain.</p>
+</li>
+<li>
+<p><em>stats</em> gives statistical information about the CPU consumption of
+the thread, in the following order:</p>
+<ul>
+<li>
+<p>the number of (forced) switches to in-band mode, which happens
+when a thread issues an in-band system call from an out-of-band
+context (ISW). This figure should not increase once a real-time
+EVL thread has entered its time-critical work loop, otherwise this
+would mean that such thread is actually leaving the out-of-band
+execution stage while it should not, getting latency hits in the
+process.</p>
+</li>
+<li>
+<p>the number of EVL context switches the thread was subject to,
+meaning the number of times the thread was given back the CPU
+after a blocked state (CTXSW). This value <em>exclusively</em> reflects
+the number of switches performed by EVL as a result of resuming
+threads aslept on the out-of-band stage (context switches involved
+in resuming threads aslept on the in-band stage are not <em>counted</em>
+here).</p>
+</li>
+<li>
+<p>the number of EVL system calls the thread has issued to the core
+(SYS). Here again, only the EVL system calls are counted, in-band
+system calls from the same threads are tracked by this counter.</p>
+</li>
+<li>
+<p>the number of times the core had to wake up the thread from a
+remote CPU (RWA). This information is useful to find out thread
+placement issues on CPUs.  The best situation is when the core can
+wake up threads directly from the CPU they were put to sleep,
+without inter-processor messaging (IPI) in order to force a remote
+CPU to re-schedule. Although this is not always possible, as
+multiple threads may have to synchronize from distinct CPUs, the
+lesser this number, the smaller the overhead caused by wake up
+requests.</p>
+</li>
+<li>
+<p>the cumulated CPU usage of the thread since its creation,
+expressed as a count of nanoseconds.</p>
+</li>
+<li>
+<p>the percentage of the CPU bandwidth consumed by the thread, from
+the last time this counter was read until the current readout.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><em>timeout</em> is a count of nanoseconds representing the ongoing delay
+until the thread wakes up from its current timed wait. Zero means no
+timeout. EVL starts a timer when a thread enters a timed wait on
+some kernel resource; <em>timeout</em> reports the time to go until this
+timer fires.</p>
+</li>
+<li>
+<p><em>observable</em> is a boolean value denoting the <a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/#observable-thread">observability</a>
+of the thread. Non-zero indicates that <a href="#evl_attach_thread">EVL_CLONE_OBSERVABLE</a> was set for this thread, typically
+for <a href="#health_monitoring">health monitoring</a>
+purpose, which made it observable to itself or to other threads.</p>
+</li>
+</ul>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/" title="libevl function index"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/" title="Mutex"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>

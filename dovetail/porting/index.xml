@@ -5,7 +5,7 @@
     <link>https://the-going.github.io/evlproject/dovetail/porting/</link>
     <description>Recent content in Porting Dovetail on Xenomai 4</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
+    <language>en</language>
     <copyright>Copyright 2021 - The Xenomai project.</copyright><atom:link href="https://the-going.github.io/evlproject/dovetail/porting/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Prerequisites</title>
@@ -42,7 +42,7 @@ This is required to keep those helpers usable on data which might be accessed fr
       <pubDate>Wed, 27 Jun 2018 17:07:51 +0200</pubDate>
       <guid>https://the-going.github.io/evlproject/dovetail/porting/arch/</guid>
       <description>Interrupt mask virtualization The architecture-specific code which manipulates the interrupt flag in the CPU&amp;rsquo;s state register in arch//include/asm/irqflags.h should be split between real and virtual interrupt control. The real interrupt control operations are inherited from the in-band kernel implementation. The virtual ones should be built upon services provided by the interrupt pipeline core.
- firstly, the original *arch_local_** helpers should be renamed as *native_** helpers, affecting the hardware interrupt state in the CPU.</description>
+ firstly, the original arch_local_* helpers should be renamed as native_* helpers, affecting the hardware interrupt state in the CPU.</description>
     </item>
     <item>
       <title>Tick devices</title>
@@ -63,7 +63,7 @@ This is required to keep those helpers usable on data which might be accessed fr
       <link>https://the-going.github.io/evlproject/dovetail/porting/syscall/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://the-going.github.io/evlproject/dovetail/porting/syscall/</guid>
-      <description>Last modified: Sun, 08 Mar 2020 13:06:41 &amp;#43;0100</description>
+      <description> Last modified: Sun, 08 Mar 2020 13:06:41 &amp;#43;0100 </description>
     </item>
     <item>
       <title>Raw printk support</title>
@@ -80,7 +80,7 @@ This is required to keep those helpers usable on data which might be accessed fr
       <guid>https://the-going.github.io/evlproject/dovetail/porting/misc/</guid>
       <description>printk() support printk() may be called by out-of-band code safely, without encurring extra latency. The output is conveyed like NMI-originated output, which involves some delay until the in-band code resumes, and the console driver(s) can handle it.
 Tracing Tracepoints can be traversed by out-of-band code safely. Dynamic tracing is available to a kernel running the pipelined interrupt model too.
- Last modified: Tue, 26 Jun 2018 19:27:55 &amp;#43;0200</description>
+ Last modified: Tue, 26 Jun 2018 19:27:55 &amp;#43;0200 </description>
     </item>
     <item>
       <title>Developer&#39;s Notes</title>

@@ -1,0 +1,252 @@
+:root{
+    
+    --MAIN-TEXT-color:#323232; /* Color of text by default */
+    --MAIN-TITLES-TEXT-color: #5e5e5e; /* Color of titles h2-h3-h4-h5 */
+    --MAIN-LINK-color:#0082ed; /* Color of links */
+    --MAIN-LINK-HOVER-color:#0082ed; /* Color of hovered links */
+    --MAIN-ANCHOR-color: #eeeeee; /* color of anchors on titles */
+
+    --MENU-HEADER-BG-color:#0084ba; /* Background color of menu header */
+    --MENU-HEADER-BORDER-color:#0084ba; /*Color of menu header border */ 
+
+    --MENU-SEARCH-BG-color:#f0f0f0; /* Search field background color (by default borders + icons) */
+    --MENU-SEARCH-BOX-color: #f0f0f0; /* Override search field border color */
+    --MENU-SEARCH-BOX-ICONS-color: #0084ba; /* Override search field icons color */
+
+    --MENU-SECTIONS-ACTIVE-BG-color:#0084ba; /* Background color of the active section and its childs */
+    --MENU-SECTIONS-BG-color:#0084ba; /* Background color of other sections */
+    --MENU-SECTIONS-LINK-color: #fafafa; /* Color of links in menu */
+    --MENU-SECTIONS-LINK-HOVER-color: #00d0d6;  /* Color of links in menu, when hovered */
+    --MENU-SECTION-ACTIVE-CATEGORY-color: #0084ba; /* Color of active category text */
+    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #ffffff; /* Color of background for the active category (only) */
+
+    --MENU-VISITED-color: #0084ba; /* Color of 'page visited' icons in menu */
+    --MENU-SECTION-HR-color: #004fd0; /* Color of <hr> separator in menu */
+    
+}
+
+body {
+    color: var(--MAIN-TEXT-color) !important;
+}
+
+textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="url"]:focus, input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, select[multiple=multiple]:focus {
+    border-color: none;
+    box-shadow: none;
+}
+body {
+    font-family: "Open Sans Light", "Work Sans", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    font-size: 18px !important;
+}
+h2, h3, h4, h5 h6 {
+    color: var(--MAIN-TITLES-TEXT-color) !important;
+	font-family: "Open Sans Semibold", "Work Sans", "Helvetica", "FreeSans", "Open Sans", 'Work Sans', "Open Sans Light", "Cantarell Thin", sans-serif;
+	text-rendering: optimizeLegibility;
+	color: #5e5e5e;
+	#letter-spacing: -1px;
+}
+
+h1 {
+	font-family:  "Cantarell Thin", "Open Sans Light", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+	font-weight: 200;
+	line-height: 1.6;
+	text-align: center;
+    text-rendering: optimizeLegibility;
+    color: #222;
+    letter-spacing: -1px;
+}
+
+a {
+    color: var(--MAIN-LINK-color);
+}
+
+.anchor {
+    color: var(--MAIN-ANCHOR-color);
+}
+
+a:hover {
+    color: var(--MAIN-LINK-HOVER-color);
+}
+
+#sidebar ul li.visited > a .read-icon {
+	color: var(--MENU-VISITED-color);
+}
+
+#body a.highlight:after {
+    display: block;
+    content: "";
+    height: 1px;
+    width: 0%;
+    -webkit-transition: width 0.5s ease;
+    -moz-transition: width 0.5s ease;
+    -ms-transition: width 0.5s ease;
+    transition: width 0.5s ease;
+    background-color: var(--MAIN-LINK-HOVER-color);
+}
+#sidebar {
+	background-color: var(--MENU-SECTIONS-BG-color);
+}
+#sidebar #header-wrapper {
+    background: var(--MENU-HEADER-BG-color);
+    color: var(--MENU-SEARCH-BOX-color);
+    border-color: var(--MENU-HEADER-BORDER-color);
+}
+#sidebar .searchbox {
+	border-color: var(--MENU-SEARCH-BOX-color);
+    background: var(--MENU-SEARCH-BG-color);
+}
+#sidebar ul.topics > li.parent, #sidebar ul.topics > li.active {
+    background: var(--MENU-SECTIONS-ACTIVE-BG-color);
+}
+#sidebar .searchbox * {
+    color: var(--MENU-SEARCH-BOX-ICONS-color);
+}
+
+#sidebar a {
+    color: var(--MENU-SECTIONS-LINK-color);
+}
+
+#sidebar a:hover {
+    color: var(--MENU-SECTIONS-LINK-HOVER-color);
+}
+
+#sidebar ul li.active > a {
+    background: var(--MENU-SECTION-ACTIVE-CATEGORY-BG-color);
+    color: var(--MENU-SECTION-ACTIVE-CATEGORY-color) !important;
+}
+
+#sidebar hr {
+    border-color: var(--MENU-SECTION-HR-color);
+}
+
+div.notices.warning {
+    border-color: #004fd0;
+    background-color: #f7f7f7;
+}
+
+div.notices.note {
+    border-color: #00a5d0;
+    background-color: #f7f7f7;
+}
+
+div.notices.tip {
+    border-color: #799ba5;
+    background-color: #f7f7f7;
+}
+
+div.notices.info {
+    border-color: #4897CC;
+    background-color: #f7f7f7;
+}
+
+div.proto {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 500;
+    font-family: "Consolas", menlo, monospace;
+    font-size: 115%;
+}
+
+code {
+    border-radius: 2px;
+    white-space: nowrap;
+    color: #5e5e5e;
+    background: #ffffff;
+    border: 0px;
+    padding: 0px 2px;
+}
+
+.signature-item {
+    grid-area: evl_signature_area;
+}
+
+.overview-item {
+    grid-area: overview_button_area;
+}
+
+.repo-table-item {
+    grid-area: repo_table_area;
+    justify-self: center;
+}
+
+.home-grid-container {
+  display: grid;
+  grid-template-areas:	    "evl_signature_area"
+			    "overview_button_area"
+			    "repo_table_area" ;
+  grid-template-columns: auto;
+  grid-template-rows: 320px 120px auto;
+  grid-gap: 50px;
+  background-color: #0084ba;
+  padding: 0px;
+}
+
+.home-grid-container > div {
+  background-color: #0084ba;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 18px;
+}
+
+.mixed-grid-container {
+  display: grid;
+  grid-template-areas: 'mixed_area mixed_area';
+  grid-template-columns: 600px auto;
+  grid-gap: 0px;
+  padding: 0px;
+}
+
+.mixed-grid-container > div {
+  text-align: justify;
+  padding: 0px 0;
+}
+
+.mixed-grid-right-container {
+  display: grid;
+  grid-template-areas: 'mixed_area mixed_area';
+  grid-template-columns: 800px 600px;
+  grid-gap: 0px;
+  padding: 0px;
+}
+
+.mixed-grid-right-container > div {
+  text-align: justify;
+  padding: 0px 0;
+}
+
+.mixed-grid-small-container {
+  display: grid;
+  grid-template-areas: 'mixed_area mixed_area';
+  grid-template-columns: 400px 500px;
+  grid-gap: 30px;
+  padding: 0px;
+}
+
+.mixed-grid-small-container > div {
+  text-align: justify;
+  padding: 0px 0;
+}
+
+.bigbutton {
+  background-color: #0084ba;
+  border: none;
+  color: #fff;
+  padding: 15px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 2px solid #fff;
+}
+
+.bigbutton:hover {
+  background-color: #00d2ed;
+  color: white;
+}
+
+.bigbutton:active {
+    transform: translateY(4px);
+}

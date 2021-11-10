@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ru" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.89.1" />
+    <link rel="alternate" type="application/rss&#43;xml" href="https://the-going.github.io/evlproject/ru/core/user-api/io/index.xml" title="Xenomai 4" />
+    <meta name="description" content="Xenomai 4 project">
+    <meta name="author" content="Philippe Gerum &lt;rpm@xenomai.org&gt;">
+    
+    <title>Out-of-band I/O services :: Xenomai 4</title>
+    <link href="https://the-going.github.io/evlproject/css/nucleus.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/fontawesome-all.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/featherlight.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/perfect-scrollbar.min.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/auto-complete.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/theme-evl-ml.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/variant.css?1636572175" rel="stylesheet">
+    <link href="https://the-going.github.io/evlproject/css/print.css?1636572175" rel="stylesheet" media="print">
+    <link href="https://the-going.github.io/evlproject/css/font-mix.css?1636572175" rel="stylesheet">
+    <script src="https://the-going.github.io/evlproject/js/jquery.min.js?1636572175"></script>
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+        display:none !important;
+      }
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+    </style>
+  </head>
+  <body class="" data-url="https://the-going.github.io/evlproject/ru/core/user-api/io/">
+    <script>
+      var index_url="https://the-going.github.io/evlproject/ru/index.json";
+      var root_url="https://the-going.github.io/evlproject/";
+      var baseUri=root_url.replace(/\/$/, '');
+    </script>
+    <nav id="sidebar" class="showVisitedLinks">
+      <div id="header-wrapper">
+        <div id="header">
+<a href="https://the-going.github.io/evlproject/"><img src="https://the-going.github.io/evlproject/images/xenomai-logo.png"></a>
+
+        </div>
+        <div class="searchbox">
+          <label for="search-by"><i class="fas fa-search"></i></label>
+          <input data-search-input id="search-by" type="search" placeholder="Поиск...">
+          <span data-search-clear=""><i class="fas fa-times"></i></span>
+        </div>
+        <script src="https://the-going.github.io/evlproject/js/lunr.min.js?1636572175"></script>
+        <script src="https://the-going.github.io/evlproject/js/auto-complete.js?1636572175"></script>
+        <!-- hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic: -->
+        <!-- https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72 -->
+        <script src="https://the-going.github.io/evlproject/js/search.js?1636572175"></script>
+      </div>
+      <div class="highlightable">
+        <ul class="topics">
+          <li data-nav-id="/ru/overview/" title="Обзор" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/">&#8226; Начало<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/overview/testing-page/" title="Протестируем рендер страницы" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/overview/testing-page/">Тестовая страница<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/" title="Ядро EVL" class="dd-item parent"><a href="https://the-going.github.io/evlproject/ru/core/">&#8226; Ядро реального времени<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/build-steps/" title="Сборка EVL" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/build-steps/">Компиляция EVL<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/runtime-settings/" title="Конфигурация времени выполнения" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/runtime-settings/">Уставки времени выполнения<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/testing/" title="Тестирование установки" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/testing/">Выполнение тестов<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/commands/" title="Команда &#39;evl&#39;" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/commands/">Команды<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/benchmarks/" title="Запуск benchmarks" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/benchmarks/">Benchmarking<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/" title="Using libevl" class="dd-item parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/">&#9702; Application interface<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/user-api/function_index/" title="libevl function index" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/function_index/">Function index<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/mutex/" title="Mutex" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/mutex/">Mutex<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/semaphore/" title="Semaphore" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/semaphore/">Semaphore<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/observable/" title="Observable" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/observable/">Observable<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/proxy/" title="File proxy" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">File proxy<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/poll/" title="Polling file descriptors" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/poll/">Polling file descriptors<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/io/" title="Out-of-band I/O services" class="dd-item active parent alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/io/">Out-of-band I/O services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/misc/" title="Miscellanea" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/user-api/misc/">Misc. services<i class="fas fa-check read-icon"></i></a><ul></ul></li>
+          <li data-nav-id="/ru/core/user-api/api-revs/" title="API revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/user-api/api-revs/">API revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/caveat/" title="Это вы определенно хотите знать" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/caveat/">Предостережение<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/" title="Real-time I/O drivers" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/">&#9702; Real-time I/O drivers<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/oob-drivers/dma/" title="DMA" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/dma/">DMA<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/spi/" title="SPI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/spi/">SPI<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/core/oob-drivers/gpio/" title="GPIO" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/oob-drivers/gpio/">GPIO<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/under-the-hood/" title="Под капотом" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/">&#9702; Под капотом<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/core/under-the-hood/abi/" title="The EVL ABI" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/under-the-hood/abi/">Изменения ABI<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/core/abi-revs/" title="ABI revisions" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/core/abi-revs/">ABI revisions<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/" title="Интерфейс Dovetail" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/">&#8226; Интерфейс Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/" title="Interrupt pipeline" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/">&#9702; Interrupt pipeline<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/pipeline/irq_handling/" title="IRQ handling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/irq_handling/">IRQ handling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/synthetic/" title="Synthetic IRQs" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/synthetic/">Synthetic IRQs<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/pipeline_inject/" title="IRQ injection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/pipeline_inject/">IRQ injection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/interrupt_protection/" title="Interrupt protection" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/interrupt_protection/">Interrupt protection<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_push/" title="Installing the out-of-band stage" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_push/">OOB stage installation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/stage_escalation/" title="Stage escalation" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/stage_escalation/">Stage escalation<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/pipeline/locking/" title="Locking" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/pipeline/locking/">Locking<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/porting/" title="Перенос Dovetail" class="dd-item alwaysopen"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/">&#9702; Перенос Dovetail<i class="fas fa-check read-icon"></i></a><ul>
+          <li data-nav-id="/ru/dovetail/porting/prerequisites/" title="Prerequisites" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/prerequisites/">Prerequisites<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/irqflow/" title="Interrupt flow" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/irqflow/">Interrupt flow<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/atomic/" title="Атомарные операции" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/atomic/">Атомарные операции<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/arch/" title="Биты, зависящие от архитектуры" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/arch/">Биты архитектуры<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/timer/" title="Tick devices" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/timer/">Tick devices<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/clocksource/" title="Reading clock sources" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/clocksource/">Clock sources<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/syscall/" title="Syscall path" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/syscall/">Syscall path<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/rawprintk/" title="Raw printk support" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/rawprintk/">Serial debugging<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/misc/" title="Misc" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/misc/">Misc<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/porting/devnotes/" title="Developer&#39;s Notes" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/porting/devnotes/">Developer&#39;s Notes<i class="fas fa-check read-icon"></i></a></li></ul></li>
+          <li data-nav-id="/ru/dovetail/altsched/" title="Alternate scheduling" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/altsched/">Alternate scheduling<i class="fas fa-check read-icon"></i></a></li>
+          <li data-nav-id="/ru/dovetail/rulesofthumb/" title="Rules Of Thumb" class="dd-item"><a href="https://the-going.github.io/evlproject/ru/dovetail/rulesofthumb/">Rules Of Thumb<i class="fas fa-check read-icon"></i></a></li></ul></li>
+        </ul>
+        <div id="shortcuts">
+          <div class="nav-title"></div>
+          <ul>
+            <li><a class="padding" href="https://the-going.github.io/evlproject/ru/"><i class='fas fa-home'></i> На главную</a></li>
+            <li><a class="padding" href="https://riot.im/app/#/room/#evlproject:matrix.org/"><i class='fas fa-comments'></i> канал RIOT</a></li>
+            <li><a class="padding" href="https://xenomai.org/mailman/listinfo/xenomai/"><i class='fas fa-comment-dots'></i> Список рассылки</a></li>
+          </ul>
+        </div>
+        <div id="prefooter">
+          <hr/>
+          <ul>
+            <li>
+              <a class="padding">
+                <i class="fas fa-language fa-fw"></i>
+                <div class="select-style">
+                  <select id="select-language" onchange="location = baseUri + this.value;">
+                    <option id="en" value="/core/user-api/io/">English</option>
+                    <option id="ru" value="/ru/core/user-api/io/" selected>Русский</option>
+                  </select>
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+                    <g>
+                      <g id="arrow-drop-down">
+                        <polygon points="0,63.75 127.5,191.25 255,63.75" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </li>
+            <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Очистить историю</a></li>
+          </ul>
+        </div>
+        <div id="footer">
+
+        </div>
+      </div>
+    </nav>
+    <div id="body">
+      <div id="overlay"></div>
+      <div class="padding highlightable">
+        <div id="top-bar">
+          <div id="breadcrumbs">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fas fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+            <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+              <meta itemprop="itemListOrder" content="Descending" />
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="4" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/"><span itemprop="name">Xenomai 4</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="3" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/"><span itemprop="name">Ядро EVL</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="2" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/"><span itemprop="name">Using libevl</span></a> > </li>
+                <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><meta itemprop="position" content="1" /><a itemprop="item" href="https://the-going.github.io/evlproject/ru/core/user-api/io/" aria-disabled="true"><span itemprop="name">Out-of-band I/O services</span></a></li>
+            </ol>
+          </div>
+            <div class="progress">
+              <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#talking-to-real-time-capable-device-drivers">Talking to real-time capable device drivers</a></li>
+        <li><a href="#opening-an-out-of-band-capable-io-channel">Opening an out-of-band capable I/O channel</a></li>
+        <li><a href="#oob-io-services">Out-of-band I/O services</a></li>
+      </ul>
+    </li>
+    <li><a href="#oob-msghdr">The out-of-band message header</a></li>
+  </ul>
+</nav>
+              </div>
+            </div>
+        </div>
+        <div id="head-tags">
+        </div>
+        <main id="body-inner">
+          <h1>Out-of-band I/O services</h1>
+
+<h3 id="talking-to-real-time-capable-device-drivers">Talking to real-time capable device drivers</h3>
+<p>Using the <a href="">EVL kernel API</a>, you can extend an existing driver for supporting out-of-band I/O
+operations, or even write one from scratch. Both character-based I/O
+and socket protocol drivers are supported.</p>
+<p>On the user side, application can exchange data with, send requests to
+these real-time capable drivers from the out-of-band execution stage
+with the a couple of additional services <a href="https://the-going.github.io/evlproject/ru/core/user-api/">libevl</a> provides.</p>
+<p>You may notice that several POSIX file I/O services such as
+<a href="http://man7.org/linux/man-pages/man2/open.2.html">open(2)</a>,
+<a href="http://man7.org/linux/man-pages/man2/socket.2.html">socket(2)</a>,
+<a href="http://man7.org/linux/man-pages/man2/close.2.html">close(2)</a>,
+<a href="http://man7.org/linux/man-pages/man2/fcntl.2.html">fcntl(2)</a>,
+<a href="http://man7.org/linux/man-pages/man2/mmap.2.html">mmap(2)</a> and so on
+have no out-of-band counterpart in the following list. The reason is
+that we don&rsquo;t need them: opening, closing or mapping a file are
+inherently non-deterministic operations, which may block for an
+unspecified amount of time for a number of reasons, depending on the
+underlying file and current runtime conditions. Besides, those are
+hardly useful in a time-critical loop.</p>
+<p>However, issuing data transfers and control requests to the driver is
+definitely something we may want to happen within a bounded time,
+hence directly from the out-of-band execution stage.</p>
+
+<div class="notices tip">
+    <div class="label">Совет</div><p>Since the EVL core exports every <a href="https://the-going.github.io/evlproject/ru/core/user-api/#element-visibility">public element</a>
+as a character device which can be accessed from
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl</a>,
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/">libevl</a> can interface with
+elements from other processes through the out-of-band I/O requests
+documented here, which are sent to the corresponding devices.</p>
+
+</div>
+<h3 id="opening-an-out-of-band-capable-io-channel">Opening an out-of-band capable I/O channel</h3>
+<p>Since the EVL core does not redefine the
+<a href="http://man7.org/linux/man-pages/man2/open.2.html">open(2)</a> and
+<a href="http://man7.org/linux/man-pages/man2/socket.2.html">socket(2)</a> calls,
+there has to be a way to tell the kernel code managing the device
+and/or protocol that we want to enable out-of-band operations.</p>
+<p>In most cases, we don&rsquo;t have to do so though, because the purpose of
+the corresponding device driver is all about providing out-of-band
+services, so enabling them for any connecting file is implicit. For
+instance, most of the drivers accessed through the <a href="https://the-going.github.io/evlproject/ru/core/user-api/#evl-fs-hierarchy">/dev/evl</a> file hierarchy
+turn on out-of-band services automatically.</p>
+<p>However, some drivers might distinguish between out-of-band capable
+files and others, providing a different set of services. Typically, a
+regular in-band driver which is extended in order to handle
+out-of-band requests too should be told when to do so for any given
+file.</p>
+<p>To meet this requirement, <a href="https://the-going.github.io/evlproject/ru/dovetail/">Dovetail</a> introduces the additional open flag <code>O_OOB</code>, which can be passed
+to <a href="http://man7.org/linux/man-pages/man2/open.2.html">open(2)</a> ORed
+into the <code>flags</code> argument. Similarly, it defines the <code>SOCK_OOB</code> flag
+which can be passed to
+<a href="http://man7.org/linux/man-pages/man2/socket.2.html">socket(2)</a> ORed
+into the <code>type</code> argument for the same purpose. If the receiving driver
+implements opt-in out-of-band services, passing this flag when opening
+a file/socket should enable them.</p>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>Not all devices drivers may support out-of-band operations (the
+overwhelming majority does not). Whether passing either <code>O_OOB</code> or
+<code>SOCK_OOB</code> to them when opening a file/socket would cause an error, or
+the flag would just be ignored depends on the driver code.</p>
+
+</div>
+<h3 id="oob-io-services">Out-of-band I/O services</h3>
+
+<div class="proto"><a name="oob_read"></a>
+ssize_t oob_read(int efd, void *buf, size_t count)
+</div>
+
+<p>This is the strict equivalent to the standard
+<a href="http://man7.org/linux/man-pages/man2/read.2.html">read(2)</a> system
+call, for sending the request from the out-of-band stage to an EVL
+driver. In other words, <a href="#oob_read">oob_read()</a>
+attempts to read up to <em>count</em> bytes from file descriptor <em>fd</em> into
+the buffer starting at <em>buf</em>, from the out-of-band execution stage.</p>
+<p>The caller must be an <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">EVL thread</a>, which may be switched
+automatically by the EVL core to the out-of-band execution stage as a
+result of this call.</p>
+
+<p><li><i>efd</i><p>A file descriptor obtained by opening a <a href="">real-time
+capable driver</a> which we
+want to read from.</p>
+</li></p>
+
+
+<p><li><i>buf</i><p>A buffer to receive the data.</p>
+</li></p>
+
+
+<p><li><i>count</i><p>The number of bytes to read at most, which should fit into <em>buf</em>.</p>
+</li></p>
+
+<p><a href="#oob_read">oob_read()</a> returns the actual number of
+bytes read, copied to <em>buf</em> on success. Otherwise, -1 is returned, and
+errno is set to the error code:</p>
+<p>EBADF	if <em>fd</em> does not refer to a real-time capable driver, or <em>fd</em>
+was not opened for reading.</p>
+<p>EINVAL  if <em>fd</em> does not support the <a href="">.oob_read operation</a>.</p>
+<p>EFAULT	if <em>buf</em> points to invalid memory.</p>
+<p>EAGAIN	<em>fd</em> is marked as [non-blocking (O_NONBLOCK)]
+(<a href="http://man7.org/linux/man-pages/man2/fcntl.2.html),">http://man7.org/linux/man-pages/man2/fcntl.2.html),</a> and the read
+operation would block.</p>
+<p>Other driver-specific error codes may be returned, such as:</p>
+<p>ENOBUFS <em>fd</em> is a <a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/">cross-buffer</a> file descriptor, and there
+is no ring buffer space associated with the outbound traffic
+(i.e. <em>o_bufsz</em> parameter was zero when <a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/#evl_create_xbuf">creating the
+cross-buffer</a>).</p>
+<p>EINVAL  <em>fd</em> is a <a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/">cross-buffer</a> file descriptor, and
+<em>count</em> is greater than the size of the ring buffer associated
+with the traffic direction. (i.e. either the <em>i_bufsz</em> or
+<em>o_bufsz</em> parameter given when <a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/#evl_create_xbuf">creating the
+cross-buffer</a>).</p>
+<p>ENXIO	<em>fd</em> is a <a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">proxy</a> file descriptor which is not available for input. See
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/#evl_create_proxy">EVL_CLONE_INPUT</a>.</p>
+<hr>
+
+<div class="proto"><a name="oob_write"></a>
+ssize_t oob_write(int efd, const void *buf, size_t count)
+</div>
+
+<p>This is the strict equivalent to the standard
+<a href="http://man7.org/linux/man-pages/man2/write.2.html">write(2)</a> system
+call, for sending the request from the out-of-band stage to an EVL
+driver. In other words, <a href="#oob_write">oob_write()</a>
+attempts to write up to <em>count</em> bytes to file descriptor <em>fd</em> from the
+buffer starting at <em>buf</em>, from the out-of-band execution stage.</p>
+<p>The caller must be an <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">EVL thread</a>, which may be switched
+automatically by the EVL core to the out-of-band execution stage as a
+result of this call.</p>
+
+<p><li><i>efd</i><p>A file descriptor obtained by opening a <a href="">real-time
+capable driver</a> which we
+want to read from.</p>
+</li></p>
+
+
+<p><li><i>buf</i><p>A buffer containing the data to be written.</p>
+</li></p>
+
+
+<p><li><i>count</i><p>The number of bytes to write starting from <em>buf</em>.</p>
+</li></p>
+
+<p><a href="#oob_write">oob_write()</a> returns the actual number
+of bytes written from <em>buf</em> on success. Otherwise, -1 is returned, and
+errno is set to the error code:</p>
+<p>EBADF	if <em>fd</em> does not refer to a real-time capable driver, or <em>fd</em> was
+not opened for writing.</p>
+<p>EINVAL  if <em>fd</em> does not support the <a href="">.oob_write operation</a>.</p>
+<p>EFAULT	if <em>buf</em> points to invalid memory.</p>
+<p>EAGAIN	<em>fd</em> is marked as [non-blocking (O_NONBLOCK)]
+(<a href="http://man7.org/linux/man-pages/man2/fcntl.2.html),">http://man7.org/linux/man-pages/man2/fcntl.2.html),</a> and the
+write operation would block.</p>
+<p>Other driver-specific error codes may be returned, such as:</p>
+<p>EFBIG	<em>fd</em> is a <a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">proxy</a> file descriptor, and <em>count</em> is larger than the size of the
+output buffer as specified in the call to [evl_create_proxy()]
+(/ru/core/user-api/proxy/#evl_create_proxy).</p>
+<p>EINVAL	<em>fd</em> is a <a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">proxy</a> file descriptor, and <em>count</em> is not a multiple of the
+output granularity as specified in the call to [evl_create_proxy()]
+(/ru/core/user-api/proxy/#evl_create_proxy).</p>
+<p>ENOBUFS <em>fd</em> is a <a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/">cross-buffer</a> file descriptor, and there is no
+ring buffer space associated with the inbound traffic (i.e. <em>i_bufsz</em>
+parameter was zero when <a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/#evl_create_xbuf">creating the cross-buffer</a>).</p>
+<p>EINVAL  <em>fd</em> is a <a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/">cross-buffer</a> file descriptor, and
+<em>count</em> is greater than the size of the ring buffer associated
+with the traffic direction. (i.e. either the <em>i_bufsz</em> or
+<em>o_bufsz</em> parameter given when <a href="https://the-going.github.io/evlproject/ru/core/user-api/xbuf/#evl_create_xbuf">creating the
+cross-buffer</a>).</p>
+<p>ENXIO	<em>fd</em> is a <a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/">proxy</a> file descriptor which is not available for output. See
+<a href="https://the-going.github.io/evlproject/ru/core/user-api/proxy/#evl_create_proxy">EVL_CLONE_OUTPUT</a>.</p>
+<hr>
+
+<div class="proto"><a name="oob_ioctl"></a>
+int oob_ioctl(int efd, unsigned long request, ...)
+</div>
+
+<p>This is the strict equivalent to the standard
+<a href="http://man7.org/linux/man-pages/man2/ioctl.2.html">ioctl(2)</a> system
+call, for sending the I/O control request from the out-of-band stage
+to an EVL driver. In other words, <a href="#oob_ioctl">oob_ioctl()</a> issues <em>request</em> to file descriptor <em>fd</em> from the
+out-of-band execution stage.</p>
+<p>The caller must be an <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">EVL thread</a>, which may be switched
+automatically by the EVL core to the out-of-band execution stage as a
+result of this call.</p>
+
+<p><li><i>efd</i><p>A file descriptor obtained by opening a <a href="">real-time
+capable driver</a> which we
+want to send a request to.</p>
+</li></p>
+
+
+<p><li><i>request</i><p>The I/O control request code.</p>
+</li></p>
+
+
+<p><li><i>...</i><p>An optional variable argument list which applies to <em>request</em>.</p>
+</li></p>
+
+<p><a href="#oob_ioctl">oob_ioctl()</a> returns zero on
+success. Otherwise, -1 is returned, and errno is set to the error
+code:</p>
+<p>EBADF	if <em>fd</em> does not refer to a real-time capable driver.</p>
+<p>ENOTTY  if <em>fd</em> does not support the <a href="">.oob_ioctl operation</a>, or the driver does not
+implement <em>request</em>.</p>
+<p>EFAULT	if <em>buf</em> points to invalid memory.</p>
+<p>EAGAIN  <em>fd</em> is marked as <a href="http://man7.org/linux/man-pages/man2/fcntl.2.html">non-blocking (O_NONBLOCK)</a>, and the control
+request would block.</p>
+<p>Other driver-specific error codes may be returned.</p>
+<hr>
+
+<div class="proto"><a name="oob_recvmsg"></a>
+ssize_t oob_recvmsg(int s, struct oob_msghdr *msghdr, const struct timespec *timeout, int flags)
+</div>
+
+<p>This is an equivalent to the standard
+<a href="http://man7.org/linux/man-pages/man2/recvmsg.2.html">recvmsg(2)</a>
+system call, for sending the request from the out-of-band stage to an
+EVL driver with a socket-based interface.  In other words,
+<a href="#oob_recvmsg">oob_recvmsg()</a> is used to receive
+messages from an out-of-band capable EVL socket from the out-of-band
+execution stage.</p>
+<p>The caller must be an <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">EVL thread</a>, which may be switched
+automatically by the EVL core to the out-of-band execution stage as a
+result of this call.</p>
+
+<p><li><i>s</i><p>A socket descriptor obtained from a regular
+<a href="http://man7.org/linux/man-pages/man2/recvmsg.2.html">socket(2)</a> call,
+with the <code>SOCK_OOB</code> flag set in the <em>type</em> argument, denoting that
+out-of-band services are enabled for the socket.</p>
+</li></p>
+
+
+<p><li><i>msghdr</i><p>A pointer to a structure containing the multiple arguments to this
+call, <a href="#oob-msghdr">which is described below</a>.</p>
+</li></p>
+
+
+<p><li><i>timeout</i><p>A time limit to wait for a message before the call returns on
+error. The built-in clock <a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/#builtin-clocks">EVL_CLOCK_MONOTONIC</a> is used for
+tracking the elapsed time. If NULL is passed, the call is allowed
+to wait indefinitely for a message.</p>
+</li></p>
+
+
+<p><li><i>flags</i><p>A set of flags further qualifying the operation. Only the following
+flags should be recognized for out-of-band requests:</p>
+<ul>
+<li>
+<p><code>MSG_DONTWAIT</code> causes the call to fail with the error EAGAIN if no
+message is immediately available at the time of the
+call. <code>MSG_DONTWAIT</code> is implied if O_NONBLOCK was set for the socket
+descriptor via the
+<a href="http://man7.org/linux/man-pages/man2/fcntl.2.html">fcntl(2)</a> F_SETFL
+operation.</p>
+</li>
+<li>
+<p><code>MSG_PEEK</code> causes the receive operation to return data from the
+beginning of the receive queue without removing that data from the
+queue.  Thus, a subsequent receive call will return the same data.</p>
+</li>
+</ul>
+</li></p>
+
+<p><a href="#oob_recvmsg">oob_recvmsg()</a> returns the actual
+number of bytes received on success. Otherwise, -1 is returned, and
+errno is set to the error code:</p>
+<p>EBADF   if <em>s</em> does not refer to a valid socket opened with the
+<code>SOCK_OOB</code> type flag set, or <em>s</em> was not opened for reading.</p>
+<p>EINVAL  if <em>s</em> does not support the <a href="">.oob_ioctl operation</a>.</p>
+<p>EFAULT	if <em>msghdr</em>, or any buffer it refers to indirectly points to
+invalid memory.</p>
+<p>EAGAIN	<em>s</em> is marked as <a href="http://man7.org/linux/man-pages/man2/fcntl.2.html">non-blocking (O_NONBLOCK)</a>, or
+<code>MSG_DONTWAIT</code> is set in <em>flags</em>, and the receive operation would
+block.</p>
+<p>ETIMEDOUT  the <em>timeout</em> fired before the operation could complete successfully.</p>
+<hr>
+
+<div class="proto"><a name="oob_sendmsg"></a>
+ssize_t oob_sendmsg(int s, const struct oob_msghdr *msghdr, const struct timespec *timeout, int flags)
+</div>
+
+<p>This call is equivalent to the standard
+<a href="http://man7.org/linux/man-pages/man2/sendmsg.2.html">sendmsg(2)</a>
+system call, for sending the request from the out-of-band stage to an
+EVL driver with a socket-based interface.  In other words,
+<a href="#oob_sendmsg">oob_sendmsg()</a> is used to send
+messages to an out-of-band capable EVL socket from the out-of-band
+execution stage.</p>
+<p>The caller must be an <a href="https://the-going.github.io/evlproject/ru/core/user-api/thread/">EVL thread</a>, which may be switched
+automatically by the EVL core to the out-of-band execution stage as a
+result of this call.</p>
+
+<p><li><i>s</i><p>A socket descriptor obtained from a regular
+<a href="http://man7.org/linux/man-pages/man2/recvmsg.2.html">socket(2)</a> call,
+with the <code>SOCK_OOB</code> flag set in the <em>type</em> argument, denoting that
+out-of-band services are enabled for the socket.</p>
+</li></p>
+
+
+<p><li><i>msghdr</i><p>A pointer to a structure containing the multiple arguments to this
+call, <a href="#oob-msghdr">which is described below</a>.</p>
+</li></p>
+
+
+<p><li><i>timeout</i><p>A time limit to wait for an internal buffer to be available for
+sending the message before the call returns on error. The built-in
+clock <a href="https://the-going.github.io/evlproject/ru/core/user-api/clock/#builtin-clocks">EVL_CLOCK_MONOTONIC</a> is used for
+tracking the elapsed time.  If NULL is passed, the call is allowed
+to wait indefinitely for a buffer.</p>
+</li></p>
+
+
+<p><li><i>flags</i><p>A set of flags further qualifying the operation. Only the following
+flag should be recognized for out-of-band requests:</p>
+<ul>
+<li><code>MSG_DONTWAIT</code> causes the call to fail with the error EAGAIN if no
+buffer is immediately available at the time of the call for sending
+the message. <code>MSG_DONTWAIT</code> is implied if O_NONBLOCK was set for the
+socket descriptor via the
+<a href="http://man7.org/linux/man-pages/man2/fcntl.2.html">fcntl(2)</a> F_SETFL
+operation.</li>
+</ul>
+</li></p>
+
+<p><a href="#oob_sendmsg">oob_sendmsg()</a> returns the actual
+number of bytes sent on success. Otherwise, -1 is returned, and errno
+is set to the error code:</p>
+<p>EBADF	if <em>s</em> does not refer to a valid socket opened with the
+<code>SOCK_OOB</code> type flag set, or <em>s</em> was not opened for writing.</p>
+<p>EINVAL  if <em>s</em> does not support the <a href="">.oob_ioctl operation</a>.</p>
+<p>EFAULT	if <em>msghdr</em>, or any buffer it refers to indirectly points to
+invalid memory.</p>
+<p>EAGAIN	<em>s</em> is marked as <a href="http://man7.org/linux/man-pages/man2/fcntl.2.html">non-blocking (O_NONBLOCK)</a>, or
+<code>MSG_DONTWAIT</code> is set in <em>flags</em>, and the send operation would
+block.</p>
+<p>ETIMEDOUT  the <em>timeout</em> fired before the operation could complete successfully.</p>
+<p>&ndash;</p>
+<h2 id="oob-msghdr">The out-of-band message header</h2>
+<p>The structure <code>oob_msghdr</code> which is passed to the <a href="#oob_recvmsg">oob_recvmsg()</a> and <a href="#oob_sendmsg">oob_sendmsg()</a> calls is defined as follows:</p>
+<pre><code>       struct oob_msghdr {
+           void           *msg_name;       /* Optional address */
+           socklen_t       msg_namelen;    /* Size of address */
+           struct iovec   *msg_iov;        /* Scatter/gather array */
+           size_t          msg_iovlen;     /* # elements in msg_iov */
+           void           *msg_control;    /* Ancillary data, see below */
+           size_t          msg_controllen; /* Ancillary data buffer len */
+           int             msg_flags;      /* Flags on received message */
+           struct timespec msg_time;       /* Optional time, see below */
+       };
+
+       struct iovec {                    /* Scatter/gather array items */
+           void  *iov_base;              /* Starting address */
+           size_t iov_len;               /* Number of bytes to transfer */
+       };
+</code></pre>
+<p>The <code>msg_name</code> field points to a caller-allocated buffer that is used
+to return the source address if the socket is unconnected.  The caller
+should set <code>msg_namelen</code> to the size of this buffer before this call.
+On success, <a href="#oob_recvmsg">oob_recvmsg()</a> updates
+<code>msg_namelen</code> to contain the length of the returned address.  If the
+application does not need to know the source address, <code>msg_name</code> can
+be specified as NULL.</p>
+<p>The fields <code>msg_iov</code> and <code>msg_iovlen</code> describe scatter-gather
+locations pointing at the message data being sent or received, as
+discussed in
+<a href="http://man7.org/linux/man-pages/man2/readv.2.html">readv(2)</a>.</p>
+<p>The field <code>msg_control</code> points to a buffer for other protocol
+control-related messages or miscellaneous ancillary data.  When either
+<a href="#oob_recvmsg">oob_recvmsg()</a> or <a href="#oob_sendmsg">oob_sendmsg()</a> is called, <code>msg_controllen</code> should contain
+the length of the available buffer in <code>msg_control</code>. On success,
+<a href="#oob_recvmsg">oob_recvmsg()</a> updates
+<code>msg_controllen</code> to contain the actual length of the control message
+sequence returned by the call.</p>
+<p>The <code>msg_flags</code> field is only set on return of <a href="#oob_recvmsg">oob_recvmsg()</a>.  It can contain any of the flags which may
+be returned by
+<a href="http://man7.org/linux/man-pages/man2/recvmsg.2.html">recvmsg(2)</a>.</p>
+<p><code>msg_time</code> may be used to send or receive timestamping information
+to/from the protocol driver implementing out-of-band operations.</p>
+
+<div class="notices warning">
+    <div class="label">Внимание</div><p>Protocol drivers should no attach any meaning to <code>MSG_OOB</code> when
+operating in out-of-band mode, so that no additional confusion arises
+with the common usage of this flag with
+<a href="http://man7.org/linux/man-pages/man2/recvmsg.2.html">recvmsg(2)</a>.</p>
+
+</div>
+<hr>
+<p style="text-align:right">Последнее изменение: Mon, 01 Jan 0001 00:00:00 UTC
+
+	
+</p>
+
+
+          <footer class=" footline">
+          </footer>
+        </main>
+      </div>
+      <div id="navigation">
+        <a class="nav nav-prev" href="https://the-going.github.io/evlproject/ru/core/user-api/poll/" title="Polling file descriptors"><i class="fa fa-chevron-left"></i></a>
+        <a class="nav nav-next" href="https://the-going.github.io/evlproject/ru/core/user-api/misc/" title="Miscellanea"><i class="fa fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://the-going.github.io/evlproject/js/clipboard.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/perfect-scrollbar.jquery.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/jquery.svg.pan.zoom.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/featherlight.min.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/modernizr.custom-3.6.0.js?1636572175"></script>
+    <script src="https://the-going.github.io/evlproject/js/relearn.js?1636572175"></script>
+  </body>
+</html>
